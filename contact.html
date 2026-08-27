@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Consultation — Camnemi TOPIK Preparation</title>
+<meta name="description" content="Free consultation for Cambodian students: TOPIK preparation, Korean university admission, and study-in-Korea guidance.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="container page-head">
+  <span class="eyebrow">Consultation · ការពិគ្រោះយោបល់</span>
+  <h1>Get a free consultation</h1>
+  <p>Tell Camnemi your goal — TOPIK level, university, or full study-in-Korea plan. We'll reply with a clear roadmap. Free for Cambodian students.</p>
+</div>
+
+<section class="section tight">
+  <div class="container">
+    <div class="grid" style="grid-template-columns:1fr 1.2fr;gap:30px;">
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3>What you get</h3>
+          <ul style="padding-left:18px;color:var(--muted);font-size:14.5px;line-height:2.1;">
+            <li>Personal level check &amp; study plan</li>
+            <li>TOPIK test date &amp; registration help (incl. Phnom Penh)</li>
+            <li>University shortlist matching your level &amp; budget</li>
+            <li>Scholarship (GKS) guidance</li>
+            <li>Visa &amp; application step-by-step</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Prefer chat?</h3>
+          <p style="margin-bottom:10px;">Reach us directly on Telegram / WhatsApp.</p>
+          <a class="btn btn-teal btn-block" href="https://t.me/camnemi" target="_blank" rel="noopener">Telegram Camnemi</a>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="lead-form">
+          <div class="form-ok" id="lead-ok"></div>
+          <div class="form-err" id="lead-err"></div>
+          <div class="field">
+            <label>Your name · ឈ្មោះ</label>
+            <input type="text" name="name" placeholder="e.g. Sreypov" required>
+          </div>
+          <div class="field">
+            <label>Contact (Telegram / Phone / Email)</label>
+            <input type="text" name="contact" placeholder="@username · 012 345 678 · email" required>
+            <div class="hint">We reply fastest on Telegram.</div>
+          </div>
+          <div class="field">
+            <label>What do you need help with?</label>
+            <select name="goal">
+              <option value="topik-prep">TOPIK preparation</option>
+              <option value="university-admission">Korean university admission</option>
+              <option value="visa">Student visa (D-4 / D-2)</option>
+              <option value="scholarship">GKS scholarship</option>
+              <option value="full-plan">Full study-in-Korea plan</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Current Korean level (optional)</label>
+            <select name="level">
+              <option value="">Not sure yet</option>
+              <option value="1a">Beginner — just starting (1A)</option>
+              <option value="1b">Beginner — can introduce myself (1B)</option>
+              <option value="2">Upper beginner (TOPIK 2)</option>
+              <option value="3">Intermediate (TOPIK 3)</option>
+              <option value="4+">Upper intermediate or above (TOPIK 4+)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Your goal or question (optional)</label>
+            <textarea name="message" rows="3" placeholder="e.g. I want TOPIK 3 to enter university in 2027…"></textarea>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Send — free consultation</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+<script src="js/common.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // pre-fill level from URL ?level=
+    var lv = new URLSearchParams(location.search).get('level');
+    if (lv) {
+      var sel = document.querySelector('#lead-form select[name=level]');
+      if (sel && ['1a','1b','2','3','4+'].indexOf(lv) !== -1) sel.value = lv;
+    }
+    bindLeadForm('lead-form', { source: qs('src') || 'contact-page' });
+  });
+</script>
+</body>
+</html>

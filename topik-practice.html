@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOPIK I Practice App — Camnemi TOPIK</title>
+<meta name="description" content="Free original TOPIK I practice questions with instant answers and explanations. Built by Camnemi from official test patterns.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* Practice app specific styles */
+  .app-toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:18px 0; }
+  .filter-pill {
+    padding:8px 16px; border-radius:999px; border:1.5px solid var(--border);
+    background:#fff; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink);
+    transition:all .15s ease;
+  }
+  .filter-pill:hover { border-color:var(--navy); }
+  .filter-pill.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .star-row { display:inline-flex; gap:2px; }
+  .star { color:#d9dce2; font-size:18px; }
+  .star.on { color:var(--gold); }
+
+  .q-card {
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+    padding:22px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  .q-meta { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .badge-section { background:#eef1fa; color:var(--navy); padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+  .badge-type { background:var(--bg); color:var(--muted); padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+  .q-passage { background:#f7f8fb; border-left:4px solid var(--teal); padding:12px 16px; border-radius:6px; margin:10px 0; font-size:15px; line-height:1.7; }
+  .q-text { font-size:16px; font-weight:600; margin:8px 0 12px; }
+  .q-dialogue { background:#fff8ec; border-left:4px solid var(--gold); padding:12px 16px; border-radius:6px; margin:10px 0; font-size:15px; line-height:1.7; }
+
+  .opt {
+    display:flex; align-items:flex-start; gap:10px; padding:11px 14px;
+    border:1.5px solid var(--border); border-radius:10px; margin:8px 0;
+    cursor:pointer; transition:all .12s ease; background:#fff; font-size:15px;
+  }
+  .opt:hover { border-color:var(--navy); background:#f7f9ff; }
+  .opt input { margin-top:4px; accent-color:var(--navy); }
+  .opt .opt-gl { display:block; color:var(--muted); font-size:13px; margin-top:2px; }
+  .opt.correct { border-color:var(--teal); background:#eafaf7; }
+  .opt.correct .opt-gl { color:var(--teal); font-weight:600; }
+  .opt.wrong { border-color:var(--red); background:#fdf0ef; }
+  .opt.wrong .opt-gl { color:var(--red); }
+
+  .explain-box {
+    display:none; margin-top:14px; border-radius:10px; overflow:hidden;
+  }
+  .explain-box.show { display:block; }
+  .explain-correct { background:#eafaf7; border:1px solid #bfe9e0; border-radius:10px; padding:14px 18px; margin-bottom:8px; }
+  .explain-correct b { color:var(--teal); }
+  .explain-traps { background:#fff8ec; border:1px solid #f0dcae; border-radius:10px; padding:12px 18px; }
+  .explain-traps b { color:#b37e00; }
+  .explain-traps li { margin:3px 0; font-size:14px; }
+  .explain-tip { background:#eef1fa; border:1px solid #d3dcf5; border-radius:10px; padding:12px 18px; margin-top:8px; font-size:14px; }
+  .explain-tip b { color:var(--navy); }
+
+  .result-panel { text-align:center; padding:30px; }
+  .result-score { font-size:52px; font-weight:800; color:var(--navy); }
+  .result-bar { max-width:420px; margin:16px auto; height:14px; background:#e4e7ec; border-radius:999px; overflow:hidden; }
+  .result-bar-fill { height:100%; background:linear-gradient(90deg,var(--navy),var(--teal)); border-radius:999px; transition:width .6s ease; }
+  .result-msg { font-size:17px; color:var(--ink); margin-top:10px; }
+  .level-dots { display:flex; justify-content:center; gap:6px; margin:18px 0; flex-wrap:wrap; }
+  .ldot { width:36px; height:36px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:13px; border:2px solid var(--border); }
+  .ldot.ok { background:var(--teal); color:#fff; border-color:var(--teal); }
+  .ldot.no { background:var(--red); color:#fff; border-color:var(--red); }
+
+  .app-cta { margin-top:30px; text-align:center; }
+</style>
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="container page-head">
+  <span class="eyebrow">Practice app · 연습 앱</span>
+  <h1>TOPIK I practice app</h1>
+  <p>Original questions built from official test patterns. Pick a section and difficulty, answer, and get an instant explanation — <b>why it's right, why the others are wrong</b>.</p>
+</div>
+
+<section class="section tight">
+  <div class="container">
+
+    <div class="app-toolbar">
+      <button class="filter-pill active" data-sec="all" onclick="setSection('all')">All sections</button>
+      <button class="filter-pill" data-sec="listening" onclick="setSection('listening')">🎧 Listening</button>
+      <button class="filter-pill" data-sec="reading" onclick="setSection('reading')">📖 Reading</button>
+      <span style="flex:1"></span>
+      <span style="font-size:13px;color:var(--muted);margin-right:4px;">Difficulty:</span>
+      <button class="filter-pill active" data-level="0" onclick="setLevel(0)">All ★</button>
+      <button class="filter-pill" data-level="1" onclick="setLevel(1)">★</button>
+      <button class="filter-pill" data-level="2" onclick="setLevel(2)">★★</button>
+      <button class="filter-pill" data-level="3" onclick="setLevel(3)">★★★</button>
+      <button class="filter-pill" data-level="4" onclick="setLevel(4)">★★★★</button>
+      <button class="filter-pill" data-level="5" onclick="setLevel(5)">★★★★★</button>
+    </div>
+
+    <div id="app-status" style="font-size:14px;color:var(--muted);margin-bottom:14px;"></div>
+
+    <div id="quiz-root"></div>
+
+    <div id="result-root"></div>
+
+    <div class="app-cta">
+      <h2 style="font-size:24px;color:var(--navy-dark);margin-bottom:8px;">Want a guided TOPIK plan?</h2>
+      <p style="color:var(--muted);margin-bottom:18px;">Tell us your goal and Camnemi builds your roadmap — level, timeline, materials.</p>
+      <a class="btn btn-primary btn-lg" href="contact.html">Get a free study plan</a>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer"></div>
+<script src="data/topik1-bank.js"></script>
+<script src="js/common.js"></script>
+<script src="js/topik-practice.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camnemi TOPIK Preparation — The Book</title>
+<meta name="description" content="The first TOPIK preparation book in Khmer for Cambodian students. From 한글 to TOPIK 6, built on the Seoul National University curriculum.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="nav"></div>
+
+<section class="section tight">
+  <div class="container">
+    <div class="book-hero">
+      <span class="eyebrow" style="color:#ffd7d4;">The book · សៀវភៅ</span>
+      <h1>Camnemi TOPIK Preparation</h1>
+      <p>The first complete TOPIK preparation book written in Khmer for Cambodian students. Every grammar point, explained in Khmer, with Korean examples, romanization, and audio — from 한글 to TOPIK 6.</p>
+      <div class="chips">
+        <span class="chip">🇰🇭 Written in Khmer</span>
+        <span class="chip">📖 12 levels · 100+ lessons</span>
+        <span class="chip">🗣 Korean + romanization + Khmer</span>
+        <span class="chip">🎧 Audio for every example</span>
+        <span class="chip">📝 Practice after every chapter</span>
+        <span class="chip">🎯 TOPIK-mapped</span>
+      </div>
+      <div style="margin-top:26px;">
+        <a class="btn btn-red btn-lg" href="contact.html?src=book">Pre-order / get notified</a>
+        <a class="btn btn-ghost btn-lg" href="lesson.html?book=1a&lesson=1a-01" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.6);">Read a free sample chapter →</a>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin:48px 0 20px;">
+      <span class="eyebrow">Inside the book</span>
+      <h2 style="font-size:26px;">Table of contents</h2>
+      <p>Twelve books following the Seoul National University Korean series. Each chapter is a grammar lesson — rule in Khmer, examples in Korean, review quiz at the end.</p>
+    </div>
+
+    <div class="toc" id="toc-root"></div>
+
+    <div class="callout" style="margin-top:34px;">
+      <b>How this book is made.</b> Camnemi follows the public grammar <i>order</i> of the 서울대 한국어 series as a curriculum blueprint, but every explanation, example sentence, and exercise is original Camnemi content — nothing is copied from the textbooks.
+    </div>
+
+    <div style="text-align:center;margin:40px 0 10px;">
+      <h2 style="font-size:24px;color:var(--navy-dark);margin-bottom:8px;">Be the first to get the book</h2>
+      <p style="color:var(--muted);margin-bottom:18px;">Leave your contact and we'll notify you on release — and send free chapters meanwhile.</p>
+    </div>
+
+    <div class="form-card">
+      <form id="book-form">
+        <div class="form-ok" id="book-ok"></div>
+        <div class="form-err" id="book-err"></div>
+        <div class="field"><label>Your name · ឈ្មោះ</label><input type="text" name="name" placeholder="e.g. Sreypov" required></div>
+        <div class="field"><label>Telegram / Phone / Email</label><input type="text" name="contact" placeholder="@username or phone" required></div>
+        <div class="field"><label>Your Korean level (optional)</label>
+          <select name="goal">
+            <option value="book-beginner">I'm a beginner (no Korean yet)</option>
+            <option value="book-some">I know some Korean</option>
+            <option value="book-topik">I'm preparing for TOPIK</option>
+            <option value="book-other">Other</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Notify me about the book</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer"></div>
+<script src="js/common.js"></script>
+<script>
+(function () {
+  // Render table of contents from the curriculum
+  var toc = [
+    ["1A", "Greetings, identity, daily life — from 한글 to your first sentences", "beginner"],
+    ["1B", "Work, ability, plans, desire", "beginner"],
+    ["2A", "Routines, likes, experiences", "beginner"],
+    ["2B", "Feelings, habits, experiences", "beginner"],
+    ["3A", "Reported speech, suggestion, obligation", "intermediate"],
+    ["3B", "Guesswork, regret, cause & effect", "intermediate"],
+    ["4A", "Explanations, opinions, comparisons", "intermediate"],
+    ["4B", "Formal register, news style", "intermediate"],
+    ["5A", "Academic & journalistic patterns", "advanced"],
+    ["5B", "Discourse markers, idiomatic patterns", "advanced"],
+    ["6A", "Formal registers, nuanced conditionals", "advanced"],
+    ["6B", "Literary & formal patterns", "advanced"]
+  ];
+  var host = document.getElementById('toc-root');
+  if (host) {
+    host.innerHTML = toc.map(function (t) {
+      return '<div class="toc-item"><span class="num"></span><div><span class="t">Level ' + t[0] + '</span> <span class="badge ' + t[2] + '">' + (t[2] === 'beginner' ? 'Beginner' : t[2] === 'intermediate' ? 'Intermediate' : 'Advanced') + '</span><div class="d">' + t[1] + '</div></div></div>';
+    }).join('');
+  }
+  // Bind the pre-order form
+  bindLeadForm('book-form', { source: 'book-page' });
+})();
+</script>
+</body>
+</html>
