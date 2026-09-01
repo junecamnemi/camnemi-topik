@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Drama Clips — Learn Korean with Scenes · Camnemi TOPIK</title>
+<meta name="description" content="Learn real Korean from short drama clips: watch, read the subtitles, and get grammar explanations for every line.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .drama-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:24px; box-shadow:var(--shadow); }
+  .video-wrap { position:relative; padding-top:56.25%; background:#000; border-radius:12px; overflow:hidden; margin:14px 0; }
+  .video-wrap video { position:absolute; top:0; left:0; width:100%; height:100%; }
+  .line-block { border-left:4px solid var(--teal); padding:10px 16px; margin:10px 0; background:#f7f8fb; border-radius:0 8px 8px 0; }
+  .line-kr { font-size:17px; font-weight:700; }
+  .line-rom { color:var(--muted); font-size:13px; font-style:italic; }
+  .line-en { color:var(--ink); font-size:14px; margin-top:2px; }
+  .line-points { margin-top:8px; padding-left:18px; font-size:13.5px; color:var(--ink); }
+  .line-points li { margin:3px 0; }
+  .jump-btn { background:#eef1fa; color:var(--navy); border:1px solid #d3dcf5; border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer; margin-left:8px; }
+  .jump-btn:hover { background:#dfe6f7; }
+  .drama-meta { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+</style>
+</head>
+<body>
+<div id="nav"></div>
+
+<div class="container page-head">
+  <span class="eyebrow">Drama clips · 드라마로 배우기</span>
+  <h1>Learn Korean from drama scenes</h1>
+  <p>Watch a short clip, read the real Korean with translations, and tap any line to jump to it. Every sentence has a grammar breakdown. <b>Real Korean from real scenes.</b></p>
+</div>
+
+<section class="section tight">
+  <div class="container">
+    <div id="drama-root"></div>
+
+    <div style="text-align:center;margin:30px 0 10px;">
+      <h2 style="font-size:22px;color:var(--navy-dark);margin-bottom:8px;">Want more of these?</h2>
+      <p style="color:var(--muted);margin-bottom:16px;">We add a new drama-clip lesson every week. Tell us which drama you want!</p>
+      <a class="btn btn-primary" href="contact.html?goal=drama">Request a drama</a>
+    </div>
+  </div>
+</section>
+
+<div id="footer"></div>
+<script src="data/drama-lessons.js"></script>
+<script src="js/common.js"></script>
+<script src="js/drama.js"></script>
+</body>
+</html>

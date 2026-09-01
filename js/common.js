@@ -1,5 +1,11 @@
 /* Camnemi TOPIK Preparation — shared site JS */
 
+/* ---------- Auth bootstrap (all pages) ----------
+   Loads Supabase config + auth module synchronously so the navbar user chip
+   and login state are available on every page. config.js is gitignored. */
+document.write('<script src="js/config.js"><\/script>');
+document.write('<script src="js/auth.js"><\/script>');
+
 /* ---------- Config (backend) ---------- */
 /* Fill config.js with the real Supabase project URL + anon key (public by design).
    config.js is gitignored; config.example.js shows the shape. localStorage overrides win. */
@@ -72,8 +78,9 @@ const NAV = [
   { href: 'curriculum.html', label: 'Curriculum' },
   { href: 'practice.html', label: 'Practice Library' },
   { href: 'topik-practice.html', label: 'Practice App', cls: 'app' },
+  { href: 'drama.html', label: 'Drama Clips', cls: 'drama' },
   { href: 'level-test.html', label: 'Level Test' },
-  { href: 'topik-info.html', label: 'TOPIK & Cambodia' },
+  { href: 'topik-info.html', label: 'TOPIK II Guide' },
   { href: 'book.html', label: 'Camnemi Book', cls: 'book' },
   { href: 'contact.html', label: 'Consult', cls: 'cta' }
 ];
@@ -94,6 +101,7 @@ function renderNav() {
         </a>
         <button class="nav-toggle" aria-label="Menu" onclick="toggleNav()">☰</button>
         <nav class="nav-links" id="nav-links">${links}
+          <span id="auth-chip"></span>
           <a href="contact.html" class="nav-cta" style="background:var(--navy);color:#fff;border-radius:9px;padding:9px 16px;margin-left:4px;">Free Consultation</a>
         </nav>
       </div>
@@ -118,7 +126,7 @@ function renderFooter() {
       <div class="footer-inner">
         <div>
           <div class="brand"><span class="logo">C</span><span>Camnemi TOPIK</span></div>
-          <p style="font-size:14px;line-height:1.7;">Free Korean &amp; TOPIK preparation for Cambodian students — built on the Seoul National University curriculum, taught in Khmer.</p>
+          <p style="font-size:14px;line-height:1.7;">Free Korean &amp; TOPIK preparation for students worldwide aiming for TOPIK II Level 3 and their Korean university dream.</p>
           <p style="font-size:13px;margin-top:10px;opacity:.8;">Part of Camnemi Study Abroad Consulting.</p>
         </div>
         ${cols}
@@ -160,4 +168,5 @@ function bindLeadForm(formId, extra) {
 document.addEventListener('DOMContentLoaded', () => {
   renderNav();
   renderFooter();
+  if (window.initAuth) initAuth();
 });

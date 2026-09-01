@@ -38,6 +38,44 @@ function loadProgress() {
 }
 function saveProgress(p) {
   localStorage.setItem('camnemi_topik_progress', JSON.stringify(p));
+  pushProgressToCloud(p);   // fire-and-forget sync when logged in
+}
+/* Upload the whole progress object to the user's topik_progress rows.
+   Uses upsert keyed on (user_id, q_id). No-op when not logged in. */
+async function pushProgressToCloud(p) {
+  const sb = (window.getSupabase && getSupabase());
+  const session = (window.getSession && getSession());
+  if (!sb || !session) return;
+  const rows = Object.entries(p).map(([q_id, v]) => ({
+    user_id: session.user.id,
+    q_id,
+    correct: (v.correct || 0) > 0,
+    attempts: (v.total || v.attempts || 1),
+    last_result: new Date().toISOString()
+  }));
+  if (!rows.length) return;
+  try { await sb.from('topik_progress').upsert(rows, { onConflict: 'user_id,q_id' }); }
+  catch (e) { console.warn('progress sync failed:', e.message); }
+}
+/* Pull the logged-in user's saved progress on load and merge it locally. */
+async function syncProgressFromCloud() {
+  const sb = (window.getSupabase && getSupabase());
+  const session = (window.getSession && getSession());
+  if (!sb || !session) return;
+  try {
+    const { data, error } = await sb.from('topik_progress')
+      .select('q_id, correct, attempts')
+      .eq('user_id', session.user.id);
+    if (error) throw error;
+    const local = loadProgress();
+    (data || []).forEach(r => {
+      local[r.q_id] = {
+        correct: r.correct ? 1 : 0,
+        total: r.attempts || 1
+      };
+    });
+    saveProgress(local);
+  } catch (e) { console.warn('progress pull failed:', e.message); }
 }
 
 function setSection(sec) {
@@ -176,4 +214,8 @@ function playNamhee(id, audioSrc) {
   audio.onended = () => { if (status) status.textContent = '✓ done'; };
 }
 
-document.addEventListener('DOMContentLoaded', renderApp);
+document.addEventListener('DOMContentLoaded', () => {
+  renderApp();
+  // if logged in, pull saved progress from the cloud before first paint matters
+  if (window.isLoggedIn && isLoggedIn()) syncProgressFromCloud();
+});

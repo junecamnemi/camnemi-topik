@@ -8,9 +8,11 @@ global.window = {};
 eval(fs.readFileSync(path.join(base, 'data', 'lessons.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'level-test.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik1-bank.js'), 'utf8'));
+eval(fs.readFileSync(path.join(base, 'data', 'drama-lessons.js'), 'utf8'));
 const LESSONS = window.LESSONS;
 const QUIZ = window.QUIZ;
 const TOPIK1 = window.TOPIK1_BANK;
+const DRAMA = window.DRAMA_LESSONS;
 
 const errors = [];
 
@@ -84,6 +86,22 @@ TOPIK1.forEach((q) => {
 });
 if (TOPIK1.length < 10) errors.push(`topik1 bank too small (${TOPIK1.length})`);
 console.log('TOPIK1 bank:', TOPIK1.length, '| listening:', secCount.listening, '| reading:', secCount.reading, '| levels:', JSON.stringify(levelCount), '| answers:', JSON.stringify(ansDist));
+
+// 4c. Drama lessons integrity
+const dramaIds = new Set();
+DRAMA.forEach((d) => {
+  if (dramaIds.has(d.id)) errors.push(`drama dup id ${d.id}`);
+  dramaIds.add(d.id);
+  if (!d.title || !d.video) errors.push(`drama ${d.id} missing title/video`);
+  if (!fs.existsSync(path.join(base, d.video))) errors.push(`drama ${d.id} video missing: ${d.video}`);
+  if (d.namheeAudio && !fs.existsSync(path.join(base, d.namheeAudio))) errors.push(`drama ${d.id} audio missing: ${d.namheeAudio}`);
+  if (!d.lines || !d.lines.length) errors.push(`drama ${d.id} no lines`);
+  d.lines.forEach((l, i) => {
+    if (!l.text || !l.en) errors.push(`drama ${d.id} line ${i} missing text/en`);
+    if (!l.points || !l.points.length) errors.push(`drama ${d.id} line ${i} no points`);
+  });
+});
+console.log('Drama lessons:', DRAMA.length, '| ids:', [...dramaIds].join(','));
 console.log(errors.length ? `ERRORS (${errors.length}):\n - ` + errors.join('\n - ') : 'ALL DATA CHECKS PASSED');
 
 // 5. Quiz scoring engine (replicate pure function from quiz.js)
