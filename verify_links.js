@@ -5,7 +5,7 @@ const http = require('http');
 
 const PORT = 8731;
 const ROOT = __dirname;
-const pages = ['index.html','login.html','curriculum.html','level-test.html','lesson.html','practice.html','topik-practice.html','drama.html','topik-info.html','book.html','contact.html'];
+const pages = ['index.html','login.html','app.html','curriculum.html','level-test.html','lesson.html','practice.html','topik-practice.html','drama.html','topik-info.html','book.html','contact.html'];
 
 const errors = [];
 const checked = new Set();

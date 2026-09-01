@@ -8,10 +8,14 @@ global.window = {};
 eval(fs.readFileSync(path.join(base, 'data', 'lessons.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'level-test.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik1-bank.js'), 'utf8'));
+eval(fs.readFileSync(path.join(base, 'data', 'topik2-bank.js'), 'utf8'));
+eval(fs.readFileSync(path.join(base, 'data', 'mock-tests.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'drama-lessons.js'), 'utf8'));
 const LESSONS = window.LESSONS;
 const QUIZ = window.QUIZ;
 const TOPIK1 = window.TOPIK1_BANK;
+const TOPIK2 = window.TOPIK2_BANK;
+const MOCK = window.MOCK_TESTS;
 const DRAMA = window.DRAMA_LESSONS;
 
 const errors = [];
@@ -102,6 +106,22 @@ DRAMA.forEach((d) => {
   });
 });
 console.log('Drama lessons:', DRAMA.length, '| ids:', [...dramaIds].join(','));
+
+// 4d. TOPIK II bank + mock tests integrity
+const T2ids = new Set();
+TOPIK2.forEach((q) => {
+  if (T2ids.has(q.id)) errors.push(`topik2 dup id ${q.id}`);
+  T2ids.add(q.id);
+  if (!q.q || !q.section) errors.push(`topik2 ${q.id} missing fields`);
+  if (q.section !== 'writing' && !(q.options && q.correct >= 0 && q.correct < q.options.length)) errors.push(`topik2 ${q.id} bad options/correct`);
+  if (q.section === 'writing' && !q.writePrompt) errors.push(`topik2 ${q.id} writing missing writePrompt`);
+  if (q.level < 3) errors.push(`topik2 ${q.id} level should be 3+`);
+});
+MOCK.forEach((m) => {
+  if (!m.id || !m.date || !m.name) errors.push(`mock missing fields`);
+  m.qids.forEach(qid => { if (!T2ids.has(qid) && !TOPIK1.some(x => x.id === qid)) errors.push(`mock ${m.id} unknown qid ${qid}`); });
+});
+console.log('TOPIK2 bank:', TOPIK2.length, '| Mock tests:', MOCK.length);
 console.log(errors.length ? `ERRORS (${errors.length}):\n - ` + errors.join('\n - ') : 'ALL DATA CHECKS PASSED');
 
 // 5. Quiz scoring engine (replicate pure function from quiz.js)
