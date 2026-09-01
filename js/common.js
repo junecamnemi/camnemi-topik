@@ -7,13 +7,16 @@ document.write('<script src="js/config.js"><\/script>');
 document.write('<script src="js/auth.js"><\/script>');
 
 /* ---------- Config (backend) ---------- */
-/* Fill config.js with the real Supabase project URL + anon key (public by design).
-   config.js is gitignored; config.example.js shows the shape. localStorage overrides win. */
+/* The URL/key below are the PUBLIC anon credentials (safe to ship — Supabase anon
+   keys are designed to be public). config.js is gitignored and not deployed, so a
+   hard-coded fallback keeps the live site working. localStorage overrides win. */
 function cfgUrl() {
-  return localStorage.getItem('camnemi_topik_url') || window.CAMNEMI_TOPIK_URL || 'https://zjdvzpylxazfbazioxto.supabase.co';
+  return localStorage.getItem('camnemi_topik_url') ||
+    (window.CAMNEMI_TOPIK_URL || 'https://srwatzpxnpxohhodylgc.supabase.co');
 }
 function cfgKey() {
-  return localStorage.getItem('camnemi_topik_key') || (window.CAMNEMI_TOPIK_KEY || '');
+  return localStorage.getItem('camnemi_topik_key') ||
+    (window.CAMNEMI_TOPIK_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyd2F0enB4bnB4b2hob2R5bGdjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNzE3MTAsImV4cCI6MjEwMTk0NzcxMH0.rl3KcSz_mZLRhFCGpWxnF2PBKtc3-iHbEp9BAoqI1l8');
 }
 function backendReady() {
   return !!(cfgUrl() && cfgKey());
