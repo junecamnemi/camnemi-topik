@@ -240,6 +240,27 @@
 .stat-box b { display: block; font-size: 24px; color: var(--ios-label); font-weight: 800; letter-spacing: -.3px; }
 .stat-box span { font-size: 11px; color: var(--ios-secondary-label); font-weight: 500; }
 
+/* ---------- Level / XP ---------- */
+.level-card { margin-bottom: 10px; }
+.lvl-badge { position: relative; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.lvl-badge b { position: absolute; font-size: 12px; font-weight: 800; color: var(--ios-blue); }
+.lvl-badge svg { position: absolute; inset: 0; }
+.lvl-main { flex: 1; min-width: 0; }
+
+/* ---------- Daily quests ---------- */
+.quest-card { margin-bottom: 10px; }
+.quest-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 0.5px solid var(--ios-separator); }
+.quest-item:last-child { border-bottom: none; }
+.quest-item .quest-ico {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+  background: var(--ios-fill); color: var(--ios-blue);
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+}
+.quest-item.done .quest-ico { background: rgba(48, 209, 88, .15); color: var(--ios-green); }
+.quest-main { flex: 1; min-width: 0; }
+.quest-label { font-size: 13px; font-weight: 600; color: var(--ios-label); }
+.quest-xp { font-size: 11px; font-weight: 700; color: var(--ios-green); flex-shrink: 0; }
+
 /* ---------- Question card (iOS) ---------- */
 .q-num { font-size: 11px; font-weight: 700; color: var(--ios-red); letter-spacing: .5px; }
 .q-type {

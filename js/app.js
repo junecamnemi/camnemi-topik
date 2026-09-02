@@ -45,7 +45,9 @@ const LS = {
   mockStatus: 'camnemi_topik_mock_status', // { mockId: 'progress'|'done' }
   scores:   'camnemi_topik_scores',    // [{date, level, score, maxScore, pct, passI, passII, correct, wrong, unanswered}]
   theme:    'camnemi_topik_theme',     // 'light' | 'dark' | 'auto'
-  srs:      'camnemi_topik_srs'        // { qid: {interval:1|3|7, due:'YYYY-MM-DD', last:0|1} }
+  srs:      'camnemi_topik_srs',        // { qid: {interval:1|3|7, due:'YYYY-MM-DD', last:0|1} }
+  xp:       'camnemi_topik_xp',         // { total: number }
+  quests:   'camnemi_topik_quests'      // { date, daily:{n,target}, flash:{n,target}, mock:{n,target} }
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -109,6 +111,8 @@ const T = {
     menu_stats: 'My stats', menu_streak: 'Day streak', menu_acc: 'Accuracy', menu_due: 'Flashcards due',
     menu_progress: 'My progress', menu_schedule: 'TOPIK schedule', menu_level: 'Test level',
     menu_theme: 'Theme', menu_lang: 'Language', menu_sync: 'Sync my data', menu_synced: '✓ Synced', menu_sync_err: 'Sync failed',
+    xp_level: 'Level', xp_to_next: '{n} XP to Level {l}', xp_levelup: '🎉 Level up! You reached Level {l}', xp_reward: '+{n} XP',
+    quest_title: 'Daily quests', quest_daily: 'Solve {n}/{t} questions', quest_flash: 'Review {n}/{t} flashcards', quest_mock: 'Finish {n}/{t} mock test', quest_done: '✓ Done', quest_reward: '+{n} XP',
   },
   ko: {
     nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
@@ -169,6 +173,8 @@ const T = {
     menu_stats: '내 통계', menu_streak: '연속 학습일', menu_acc: '정답률', menu_due: '복습 카드',
     menu_progress: '내 진행 상황', menu_schedule: 'TOPIK 시험 일정', menu_level: '시험 레벨',
     menu_theme: '테마', menu_lang: '언어', menu_sync: '내 데이터 동기화', menu_synced: '✓ 동기화됨', menu_sync_err: '동기화 실패',
+    xp_level: '레벨', xp_to_next: '레벨 {l}까지 {n} XP', xp_levelup: '🎉 레벨업! 레벨 {l}에 도달했어요', xp_reward: '+{n} XP',
+    quest_title: '데일리 미션', quest_daily: '문제 {n}/{t}개 풀기', quest_flash: '복습 카드 {n}/{t}장', quest_mock: '모의고사 {n}/{t}회', quest_done: '✓ 완료', quest_reward: '+{n} XP',
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
@@ -229,6 +235,8 @@ const T = {
     menu_stats: 'ស្ថិតិរបស់ខ្ញុំ', menu_streak: 'ថ្ងៃបន្ត', menu_acc: 'ភាពត្រឹមត្រូវ', menu_due: 'បៀរពិនិត្យ',
     menu_progress: 'វឌ្ឍនភាពរបស់ខ្ញុំ', menu_schedule: 'កាលវិភាគប្រឡង', menu_level: 'កម្រិតប្រឡង',
     menu_theme: 'របៀប', menu_lang: 'ភាសា', menu_sync: 'ធ្វើសមកាលកម្មទិន្នន័យ', menu_synced: '✓ បានធ្វើសមកាលកម្ម', menu_sync_err: 'សមកាលកម្មបរាជ័យ',
+    xp_level: 'កម្រិត', xp_to_next: '{n} XP ទៅកម្រិត {l}', xp_levelup: '🎉 ឡើងកម្រិត! អ្នកបានដល់កម្រិត {l}', xp_reward: '+{n} XP',
+    quest_title: 'បេសកកម្មប្រចាំថ្ងៃ', quest_daily: 'ដោះស្រាយ {n}/{t} សំណួរ', quest_flash: 'ពិនិត្យ {n}/{t} បៀរ', quest_mock: 'ប្រឡងសាក {n}/{t} វគ្គ', quest_done: '✓ រួចរាល់', quest_reward: '+{n} XP',
   }
 };
 let LANG = localStorage.getItem(LS.lang) || 'en';
@@ -444,7 +452,9 @@ function viewHome() {
         <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">${ic('mock',17)} ${t('btn_mock')}</button>
       </div>
     </div>`}
+    ${levelCardHTML()}
     ${smartRecCard(acc)}
+    ${questHTML()}
     ${isNew ? '' : `
     <div class="sec-h"><h2>${ic('chart',15)} ${t('avg_acc')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
     <div class="app-card filled">
@@ -660,6 +670,8 @@ function finishDaily() {
   });
   APP.dailyResult = { correct, wrong, unanswered, total: qs.length };
   APP.dailyDone = true;
+  // XP: daily set finished +50 · (daily quest already bumped per answer)
+  addXP(XP_RULES.daily_finish, 'daily_finish');
   // persist score record for the progress page
   try {
     const est = estimatedScore();
@@ -910,6 +922,122 @@ function accBar(label, p, sub) {
       ${sub ? `<div class="sub" style="font-size:10.5px;margin-top:2px;">${sub}</div>` : ''}
     </div>`;
 }
+/* ================= XP / LEVELS / DAILY QUESTS ================= */
+// level thresholds: L1→L2→L3→L4→L5→L6 (TOPIK ladder)
+const XP_LEVELS = [
+  { lv: 1, need: 0 }, { lv: 2, need: 200 }, { lv: 3, need: 500 },
+  { lv: 4, need: 900 }, { lv: 5, need: 1500 }, { lv: 6, need: 2500 }
+];
+const XP_RULES = { correct: 10, wrong: 3, daily_finish: 50, mock_finish: 100, flash: 5 };
+function xpTotal() { return (lsGet(LS.xp, {})).total || 0; }
+function xpLevel(xp) {
+  let lv = 1;
+  for (const l of XP_LEVELS) if (xp >= l.need) lv = l.lv;
+  return lv;
+}
+function xpProgress() {
+  const xp = xpTotal();
+  const lv = xpLevel(xp);
+  const cur = XP_LEVELS[lv - 1];
+  const next = XP_LEVELS[lv] || null;
+  if (!next) return { lv, xp, into: 1, need: 1, pct: 100, maxed: true };
+  const into = xp - cur.need;
+  const need = next.need - cur.need;
+  return { lv, xp, into, need, pct: Math.min(100, Math.round(into / need * 100)), maxed: false };
+}
+function addXP(n, why) {
+  const st = lsGet(LS.xp, { total: 0 });
+  const before = xpLevel(st.total || 0);
+  st.total = (st.total || 0) + n;
+  lsSet(LS.xp, st);
+  const after = xpLevel(st.total);
+  if (after > before) {
+    // level up! celebrate
+    toast(t('xp_levelup', { l: after }));
+    try { if (navigator.vibrate) navigator.vibrate([60, 40, 60]); } catch (e) {}
+  }
+  return after;
+}
+/* ---- daily quests ---- */
+function questDefaults() {
+  return { date: todayStr(), daily: { n: 0, target: 10 }, flash: { n: 0, target: 3 }, mock: { n: 0, target: 1 } };
+}
+function questState() {
+  const q = lsGet(LS.quests, null);
+  const today = todayStr();
+  if (!q || q.date !== today) {
+    const fresh = questDefaults();
+    lsSet(LS.quests, fresh);
+    return fresh;
+  }
+  return q;
+}
+function bumpQuest(key, step = 1) {
+  const q = questState();
+  if (!q[key]) return;
+  q[key].n = Math.min(q[key].target, q[key].n + step);
+  const justDone = q[key].n === q[key].target && q[key].n - step < q[key].target;
+  lsSet(LS.quests, q);
+  if (justDone) {
+    const bonus = key === 'mock' ? 100 : key === 'flash' ? 30 : 50;
+    toast(t('quest_done') + ' ' + t('xp_reward', { n: bonus }));
+    addXP(bonus, 'quest:' + key);
+  }
+  return q;
+}
+function questDoneCount() {
+  const q = questState();
+  return ['daily', 'flash', 'mock'].filter(k => q[k] && q[k].n >= q[k].target).length;
+}
+function questHTML() {
+  const q = questState();
+  const mk = (k, label, reward) => {
+    const done = q[k].n >= q[k].target;
+    return `<div class="quest-item ${done ? 'done' : ''}">
+      <span class="quest-ico">${done ? '✓' : (k === 'daily' ? '📅' : k === 'flash' ? '🔁' : '📝')}</span>
+      <div class="quest-main">
+        <div class="quest-label">${label}</div>
+        <div class="daily-progress" style="height:5px;margin:4px 0 0;"><div style="width:${Math.round(q[k].n / q[k].target * 100)}%;background:${done ? 'var(--ios-green)' : 'var(--ios-blue)'};"></div></div>
+      </div>
+      <span class="quest-xp">${done ? t('quest_done') : t('xp_reward', { n: reward })}</span>
+    </div>`;
+  };
+  return `<div class="app-card quest-card">
+    <div class="row" style="margin-bottom:6px;"><b style="font-size:14px;color:var(--ios-label);">${ic('target',16)} ${t('quest_title')}</b>
+    <span class="sub">${questDoneCount()}/3</span></div>
+    ${mk('daily', t('quest_daily', { n: q.daily.n, t: q.daily.target }), 50)}
+    ${mk('flash', t('quest_flash', { n: q.flash.n, t: q.flash.target }), 30)}
+    ${mk('mock', t('quest_mock', { n: q.mock.n, t: q.mock.target }), 100)}
+  </div>`;
+}
+function levelBadgeHTML(size = 40) {
+  const p = xpProgress();
+  return `<div class="lvl-badge" style="width:${size}px;height:${size}px;">
+    <b>L${p.lv}</b>
+    <svg viewBox="0 0 40 40" width="${size}" height="${size}">
+      <circle cx="20" cy="20" r="17" fill="none" stroke="var(--ios-fill)" stroke-width="3"/>
+      <circle cx="20" cy="20" r="17" fill="none" stroke="var(--ios-blue)" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="${2 * Math.PI * 17}" stroke-dashoffset="${2 * Math.PI * 17 * (1 - p.pct / 100)}" transform="rotate(-90 20 20)"/>
+    </svg>
+  </div>`;
+}
+function levelCardHTML() {
+  const p = xpProgress();
+  const nextLbl = p.maxed ? t('xp_level') + ' 6 · MAX' : t('xp_to_next', { n: p.need - p.into, l: p.lv + 1 });
+  return `<div class="app-card elevated level-card">
+    <div class="row">
+      ${levelBadgeHTML(46)}
+      <div class="lvl-main">
+        <div class="row" style="justify-content:flex-start;gap:8px;">
+          <b style="font-size:15px;color:var(--ios-label);">${t('xp_level')} ${p.lv}</b>
+          <span class="sub">${p.xp} XP</span>
+        </div>
+        <div class="daily-progress" style="height:7px;margin:6px 0 3px;"><div style="width:${p.pct}%;background:linear-gradient(90deg,var(--ios-blue),var(--ios-teal));"></div></div>
+        <div class="sub" style="font-size:11.5px;">${nextLbl}</div>
+      </div>
+    </div>
+  </div>`;
+}
 function recordResult(q, correct) {
   // progress
   const prog = lsGet(LS.progress, {});
@@ -918,6 +1046,9 @@ function recordResult(q, correct) {
   if (correct) p.correct += 1;
   prog[q.id] = p;
   lsSet(LS.progress, prog);
+  // XP: correct +10, wrong +3 · daily quest counter
+  addXP(correct ? XP_RULES.correct : XP_RULES.wrong, 'answer:' + (correct ? 'c' : 'w'));
+  bumpQuest('daily', 1);
   // wrong note
   if (!correct) {
     const wrong = lsGet(LS.wrong, []);
@@ -980,6 +1111,9 @@ function flashAnswer(knew) {
     srs[cur.q.id] = { interval: 1, due: addDays(1), last: 0 };
   }
   lsSet(LS.srs, srs);
+  // XP + flashcard quest
+  addXP(XP_RULES.flash, 'flash');
+  bumpQuest('flash', 1);
   APP.flash.idx++;
   APP.flash.flipped = false;
   if (APP.flash.idx >= APP.flash.due.length) {
@@ -1172,6 +1306,9 @@ function navMock(d) {
   if (d > 0 && APP.mockIdx >= qs.length - 1) {
     const st = lsGet(LS.mockStatus, {});
     st[APP.mock.id] = 'done'; lsSet(LS.mockStatus, st);
+    // XP: mock finished +100 · mock quest
+    addXP(XP_RULES.mock_finish, 'mock_finish');
+    bumpQuest('mock', 1);
     if (_mockTimer) { clearInterval(_mockTimer); _mockTimer = null; }
   }
   APP.mockIdx = next;
@@ -1643,7 +1780,7 @@ function renderUserMenu() {
     <div class="um-stats">
       <div class="stat-box"><b>${streak.count}</b><span>${t('menu_streak')}</span></div>
       <div class="stat-box"><b>${acc}%</b><span>${t('menu_acc')}</span></div>
-      <div class="stat-box"><b>${due}</b><span>${t('menu_due')}</span></div>
+      <div class="stat-box"><b>L${xpProgress().lv}</b><span>${xpTotal()} XP</span></div>
     </div>`;
   const items = `
     <div class="um-item" onclick="go('progress');closeUserMenu()">${ic('progress',19)}<span>${t('menu_progress')}</span><em>→</em></div>
