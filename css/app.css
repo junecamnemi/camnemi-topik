@@ -64,14 +64,15 @@
   padding: 8px 8px env(safe-area-inset-bottom);
 }
 .tab-item {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 4px 2px; border-radius: 0; cursor: pointer;
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 4px 0; border-radius: 0; cursor: pointer;
   color: var(--ios-secondary-label);
-  font-size: 10px; font-weight: 500; background: none; border: none; font-family: var(--ios-font);
+  font-size: 9.5px; font-weight: 500; background: none; border: none; font-family: var(--ios-font);
   white-space: nowrap; transition: color .15s;
   -webkit-tap-highlight-color: transparent;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis;
 }
-.tab-item .tab-ico { font-size: 23px; line-height: 1; }
+.tab-item .tab-ico { font-size: 21px; line-height: 1; }
 .tab-item.active { color: var(--ios-blue); font-weight: 600; }
 
 /* ---------- Cards (iOS grouped cells) ---------- */

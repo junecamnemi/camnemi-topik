@@ -29,13 +29,14 @@ const LS = {
   wrong:    'camnemi_topik_wrong',      // [ {qid, at} ] — recent misses
   streak:   'camnemi_topik_streak',     // { last: 'YYYY-MM-DD', count: n }
   lang:     'camnemi_topik_lang',       // 'en' | 'ko' | 'km'
-  mockStatus: 'camnemi_topik_mock_status' // { mockId: 'progress'|'done' }
+  mockStatus: 'camnemi_topik_mock_status', // { mockId: 'progress'|'done' }
+  scores:   'camnemi_topik_scores'      // [{date, level, score, maxScore, pct, passI, passII, correct, wrong, unanswered}]
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
 const T = {
   en: {
-    nav_home: 'Home', nav_daily: 'Daily 10', nav_mock: 'Mock Test', nav_notes: 'My Notes', nav_learn: 'Learn',
+    nav_home: 'Home', nav_daily: 'Daily 10', nav_mock: 'Mock Test', nav_notes: 'My Notes', nav_learn: 'Learn', nav_progress: 'Progress',
     home_sub: 'AI questions · daily mocks · weak-spot review',
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
     btn_today: 'Daily 10', btn_mock: 'Mock Test',
@@ -68,6 +69,11 @@ const T = {
     result_correct: '✓ correct', result_wrong: '✗ wrong', result_unanswered: '⏳ unanswered',
     result_note: '* Estimate based on 10 questions — real exam may differ.',
     result_continue: 'What next?', result_new: '✨ More new questions', result_mock: '📝 Go to Mock Test', result_notes: '📓 View wrong notes', result_done_today: '🏠 Done for today',
+    prog_title: 'My Progress', prog_sub: 'scores & next steps',
+    prog_last: 'Latest score', prog_today: 'Today', prog_no_scores: 'No scores yet — finish a Daily 10 set to see your estimated TOPIK score!',
+    prog_hist: 'Score history', prog_last7: 'last {n} days', prog_no_hist: 'Your score history will appear here.',
+    prog_todo: 'What I need to do', prog_todo_daily: 'Finish today\u2019s Daily 10 ({d}/10)', prog_todo_weak: 'Practice your weak type: {t} ({p}%)', prog_todo_wrong: 'Review {n} wrong answers', prog_todo_exam: 'Next TOPIK: {s} in D-{d}', prog_todo_reg: 'Registration for {s} closes in D-{d}', prog_todo_none: 'All caught up! 🎉 Come back tomorrow.',
+    prog_streak: 'streak', prog_mastered: 'mastered', prog_avg: 'avg accuracy', prog_tests: 'sets done', prog_btn_daily: '📅 Daily 10', prog_btn_weak: '✨ Practice {t}', prog_btn_wrong: '📓 Review',
     learn_title: 'Weak-spot review', learn_sub: 'from your mistakes',
     learn_intro: 'You missed questions in: {t}. Here\u2019s focused review content.',
     learn_intro_empty: 'Answer some questions first, and we\u2019ll build your personal review set.',
@@ -79,7 +85,7 @@ const T = {
     status_open: '📌 Reg. opens', status_ing: '🔥 Registering', status_wait: '✏️ Reg. closed · exam', status_result: '📄 Exam done · waiting', status_done: '✓ Ended',
   },
   ko: {
-    nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습',
+    nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
     home_sub: 'AI 문제 · 매일 모의고사 · 취약점 복습',
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
     btn_today: '데일리 10', btn_mock: '모의고사',
@@ -112,6 +118,11 @@ const T = {
     result_correct: '✓ 정답', result_wrong: '✗ 오답', result_unanswered: '⏳ 미응답',
     result_note: '※ 10문제 기준 예상치입니다. 실제 시험과 다를 수 있어요.',
     result_continue: '계속할까요?', result_new: '✨ 새 문제 더 풀기', result_mock: '📝 모의고사 보기', result_notes: '📓 오답노트 보기', result_done_today: '🏠 오늘 끝내기',
+    prog_title: '내 진행 상황', prog_sub: '점수 & 다음 할 일',
+    prog_last: '최근 점수', prog_today: '오늘', prog_no_scores: '아직 점수가 없어요 — 데일리 10을 완료하면 예상 TOPIK 점수가 표시돼요!',
+    prog_hist: '점수 이력', prog_last7: '최근 {n}일', prog_no_hist: '점수 이력이 여기에 표시돼요.',
+    prog_todo: '지금 할 일', prog_todo_daily: '오늘의 데일리 10 완료하기 ({d}/10)', prog_todo_weak: '약한 유형 연습: {t} ({p}%)', prog_todo_wrong: '오답 {n}개 복습하기', prog_todo_exam: '다음 TOPIK: {s} D-{d}', prog_todo_reg: '{s} 접수 마감 D-{d}', prog_todo_none: '모두 완료! 🎉 내일 또 만나요.',
+    prog_streak: '연속', prog_mastered: '마스터', prog_avg: '평균 정답률', prog_tests: '완료 세트', prog_btn_daily: '📅 데일리 10', prog_btn_weak: '✨ {t} 연습', prog_btn_wrong: '📓 복습',
     learn_title: '취약점 복습', learn_sub: '틀린 문제 기반',
     learn_intro: '틀린 유형: {t}. 집중 복습 콘텐츠예요.',
     learn_intro_empty: '문제를 먼저 풀면 맞춤 복습 세트를 만들어 드려요.',
@@ -123,7 +134,7 @@ const T = {
     status_open: '📌 접수 예정', status_ing: '🔥 접수 중', status_wait: '✏️ 접수 마감 · 시험 대기', status_result: '📄 시험 완료 · 결과 대기', status_done: '✓ 종료',
   },
   km: {
-    nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន',
+    nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
     home_sub: 'សំណួរ AI · ប្រឡងសាកប្រចាំថ្ងៃ · ពិនិត្យចំណុចខ្សោយ',
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
     btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក',
@@ -156,6 +167,11 @@ const T = {
     result_correct: '✓ ត្រឹមត្រូវ', result_wrong: '✗ ខុស', result_unanswered: '⏳ មិនឆ្លើយ',
     result_note: '* ការប៉ាន់ស្មានពី ១០ សំណួរ — ប្រឡងពិតប្រាកដអាចខុសគ្នា។',
     result_continue: 'តើបន្ទាប់ទៀត?', result_new: '✨ សំណួរថ្មីបន្ថែម', result_mock: '📝 ទៅប្រឡងសាក', result_notes: '📓 មើលកំណត់ចំណាំកំហុស', result_done_today: '🏠 បញ្ចប់សម្រាប់ថ្ងៃនេះ',
+    prog_title: 'វឌ្ឍនភាពរបស់ខ្ញុំ', prog_sub: 'ពិន្ទុ & ជំហានបន្ទាប់',
+    prog_last: 'ពិន្ទុចុងក្រោយ', prog_today: 'ថ្ងៃនេះ', prog_no_scores: 'មិនទាន់មានពិន្ទុទេ — បញ្ចប់ Daily 10 ដើម្បីមើលពិន្ទុ TOPIK ប៉ាន់ស្មាន!',
+    prog_hist: 'ប្រវត្តិពិន្ទុ', prog_last7: '{n} ថ្ងៃចុងក្រោយ', prog_no_hist: 'ប្រវត្តិពិន្ទុនឹងបង្ហាញនៅទីនេះ។',
+    prog_todo: 'អ្វីដែលខ្ញុំត្រូវធ្វើ', prog_todo_daily: 'បញ្ចប់ Daily 10 ថ្ងៃនេះ ({d}/10)', prog_todo_weak: 'អនុវត្តចំណុចខ្សោយ: {t} ({p}%)', prog_todo_wrong: 'ពិនិត្យ {n} ចម្លើយខុស', prog_todo_exam: 'TOPIK បន្ទាប់: {s} នៅ D-{d}', prog_todo_reg: 'ការចុះឈ្មោះ {s} បិទ D-{d}', prog_todo_none: 'រួចរាល់ទាំងអស់! 🎉 ជួបគ្នាថ្ងៃស្អែក។',
+    prog_streak: 'streak', prog_mastered: 'mastered', prog_avg: 'ភាពត្រឹមត្រូវ', prog_tests: 'បានបញ្ចប់', prog_btn_daily: '📅 Daily 10', prog_btn_weak: '✨ អនុវត្ត {t}', prog_btn_wrong: '📓 ពិនិត្យ',
     learn_title: 'ពិនិត្យចំណុចខ្សោយ', learn_sub: 'ពីកំហុសរបស់អ្នក',
     learn_intro: 'អ្នកខុសសំណួរ: {t}. នេះជាខ្លឹមសារពិនិត្យផ្តោត។',
     learn_intro_empty: 'ឆ្លើយសំណួរខ្លះមុន យើងនឹងបង្កើតសំណុំពិនិត្យផ្ទាល់ខ្លួនរបស់អ្នក។',
@@ -236,6 +252,7 @@ function render() {
     case 'mock': s.innerHTML = viewMock(); bindMock(); break;
     case 'wrong': s.innerHTML = viewWrong(); bindWrong(); break;
     case 'learn': s.innerHTML = viewLearn(); bindLearn(); break;
+    case 'progress': s.innerHTML = viewProgress(); bindProgress(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
 }
@@ -488,6 +505,20 @@ function finishDaily() {
   });
   APP.dailyResult = { correct, wrong, unanswered, total: qs.length };
   APP.dailyDone = true;
+  // persist score record for the progress page
+  try {
+    const est = estimatedScore();
+    const scores = lsGet(LS.scores, []);
+    const rec = {
+      date: today, level: APP.level, score: est.score, maxScore: est.maxScore,
+      pct: Math.round(est.pct * 100), passI: est.passI, passII: est.passII,
+      correct, wrong, unanswered, total: qs.length
+    };
+    const idx = scores.findIndex(s => s.date === today);
+    if (idx >= 0) scores[idx] = rec; else scores.push(rec);
+    scores.sort((a, b) => a.date < b.date ? -1 : 1);
+    lsSet(LS.scores, scores.slice(-30));
+  } catch (e) { /* non-fatal */ }
   render();
 }
 
@@ -867,6 +898,111 @@ function viewLearn() {
 }
 function bindLearn() {}
 
+/* ================= MY PROGRESS (scores + what to do) ================= */
+function viewProgress() {
+  const scores = lsGet(LS.scores, []);
+  const prog = lsGet(LS.progress, {});
+  const wrong = lsGet(LS.wrong, []);
+  const streak = lsGet(LS.streak, { last: null, count: 0 });
+  const acc = accuracyStats();
+  const today = todayStr();
+  const doneToday = lsGet(LS.daily, {})[today];
+  const doneCount = doneToday ? Object.keys(doneToday.done || {}).length : 0;
+
+  // latest score card
+  let lastCard = '';
+  if (scores.length) {
+    const last = scores[scores.length - 1];
+    const pass = last.level === 'I' ? last.passI : last.passII;
+    lastCard = `
+    <div class="app-card elevated big-cta">
+      <div class="cta-ico">🎯</div>
+      <div style="font-size:13px;color:var(--ios-secondary-label);">${last.date === today ? t('prog_today') : t('prog_last')} · TOPIK ${last.level} (${last.date})</div>
+      <div style="font-size:44px;font-weight:800;color:var(--ios-blue);margin:6px 0;">${last.score}<span style="font-size:18px;color:var(--ios-secondary-label);"> / ${last.maxScore}</span></div>
+      <div class="row" style="justify-content:center;gap:10px;">
+        <span class="mock-badge t2">${t('result_pass')} ${pass}%</span>
+        <span class="mock-badge t1" style="background:#E7F9EF;color:#1B7A3D;">${last.correct}✓ ${last.wrong}✗</span>
+      </div>
+    </div>`;
+  } else {
+    lastCard = `<div class="app-card filled"><p class="sub" style="text-align:center;padding:10px 0;">${t('prog_no_scores')}</p></div>`;
+  }
+
+  // score history (last 7 entries) — simple CSS bars
+  const hist = scores.slice(-7);
+  const maxScore = hist.length ? Math.max(...hist.map(s => s.score), 1) : 1;
+  const histHTML = hist.length ? `
+    <div style="display:flex;align-items:flex-end;gap:6px;height:110px;padding:10px 0 0;">
+      ${hist.map(s => `
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <span style="font-size:10px;font-weight:700;color:${s.score >= 120 ? 'var(--ios-green)' : 'var(--ios-secondary-label)'};">${s.score}</span>
+          <div style="width:70%;max-width:34px;height:${Math.max(8, Math.round(s.score / maxScore * 80))}px;border-radius:6px 6px 2px 2px;background:${s.score >= 120 ? 'var(--ios-green)' : 'var(--ios-blue)'};opacity:.85;"></div>
+          <span style="font-size:9px;color:var(--ios-secondary-label);">${s.date.slice(5)}</span>
+        </div>`).join('')}
+    </div>` : `<p class="sub" style="padding:8px 0;">${t('prog_no_hist')}</p>`;
+
+  // ---- What I need to do ----
+  const todos = [];
+  // 1. today's daily
+  if (doneCount < 10) todos.push({ icon: '📅', label: t('prog_todo_daily', { d: doneCount }), act: "go('daily')", btn: t('prog_btn_daily') });
+  // 2. weak type (>=2 attempts, <70%)
+  const weak = (acc.byType || []).filter(r => r.n >= 2 && r.p < 70)[0];
+  if (weak) todos.push({ icon: '🎯', label: t('prog_todo_weak', { t: typeLabel(weak.k), p: weak.p }), act: `generateAI('${escAttr(weak.k)}')`, btn: t('prog_btn_weak', { t: typeLabel(weak.k) }) });
+  // 3. wrong answers to review
+  if (wrong.length) todos.push({ icon: '📓', label: t('prog_todo_wrong', { n: wrong.length }), act: "go('wrong')", btn: t('prog_btn_wrong') });
+  // 4. next exam / reg deadline (Korea schedule)
+  const sch = window.TOPIK_SCHEDULE;
+  if (sch && sch.pbt) {
+    const todayD = new Date(today + 'T00:00:00');
+    let nextExam = null, nextReg = null;
+    sch.pbt.forEach(p => {
+      const reg = parseReg(p.reg, p.date);
+      if (reg && new Date(reg.end + 'T00:00:00') >= todayD && !nextReg) nextReg = { p, end: reg.end };
+      if (new Date(p.date + 'T00:00:00') >= todayD && !nextExam) nextExam = { p, date: p.date };
+    });
+    if (nextExam) {
+      const d = Math.round((new Date(nextExam.date + 'T00:00:00') - todayD) / 86400000);
+      if (d > 0) todos.push({ icon: '🗓', label: t('prog_todo_exam', { s: nextExam.p.session, d }), act: "go('schedule')", btn: '🗓' });
+    }
+    if (nextReg) {
+      const d = Math.round((new Date(nextReg.end + 'T00:00:00') - todayD) / 86400000);
+      if (d >= 0) todos.push({ icon: '🖥', label: t('prog_todo_reg', { s: nextReg.p.session, d }), act: "go('schedule')", btn: '🗓' });
+    }
+  }
+  const todosHTML = todos.length ? todos.map(td => `
+    <div class="row" style="padding:11px 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:17px;margin-right:8px;">${td.icon}</span>
+      <div style="flex:1;min-width:0;"><span style="font-size:13.5px;">${td.label}</span></div>
+      <button class="btn btn-primary btn-sm" onclick="${td.act}">${td.btn}</button>
+    </div>`).join('')
+    : `<p class="sub" style="text-align:center;padding:14px 0;">${t('prog_todo_none')}</p>`;
+
+  const mastered = Object.values(prog).filter(p => (p.correct || 0) > 0).length;
+  const testsDone = scores.length;
+
+  return `
+    <div class="sec-h"><h2>📈 ${t('prog_title')}</h2><span class="sub">${t('prog_sub')}</span></div>
+    ${lastCard}
+
+    <div class="sec-h"><h2>${t('prog_hist')}</h2><span class="sub">${t('prog_last7', { n: hist.length })}</span></div>
+    <div class="app-card filled">${histHTML}</div>
+
+    <div class="sec-h"><h2>✅ ${t('prog_todo')}</h2></div>
+    <div class="app-card">${todosHTML}</div>
+
+    <div class="sec-h"><h2>📊 ${t('avg_acc')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
+    <div class="app-card filled">
+      <div class="stat-row" style="margin:0;">
+        <div class="stat-box"><b>${streak.count}</b><span>🔥 ${t('prog_streak')}</span></div>
+        <div class="stat-box"><b>${mastered}</b><span>🏆 ${t('prog_mastered')}</span></div>
+        <div class="stat-box"><b>${testsDone}</b><span>📈 ${t('prog_tests')}</span></div>
+      </div>
+      ${acc.byType.length ? `<div style="margin-top:10px;">${acc.byType.slice(0, 3).map(r => accBar(typeLabel(r.k), r.p, `${r.c}/${r.n}`)).join('')}</div>` : ''}
+    </div>
+  `;
+}
+function bindProgress() {}
+
 /* ================= TOPIK SCHEDULE (나라별 일정 + 달력 + D-Day) ================= */
 function ddayStr(target) {
   // target: 'YYYY-MM-DD' → 'D-N' / 'D-DAY' / 'D+N'
@@ -1062,7 +1198,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','daily','mock','wrong','learn','schedule'].includes(q) ? q : (['home','daily','mock','wrong','learn','schedule'].includes(h) ? h : 'home'));
+  go(['home','daily','mock','wrong','learn','progress','schedule'].includes(q) ? q : (['home','daily','mock','wrong','learn','progress','schedule'].includes(h) ? h : 'home'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {
