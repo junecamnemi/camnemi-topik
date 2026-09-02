@@ -15,6 +15,12 @@
   <header class="app-header">
     <a class="brand" href="index.html"><span class="logo">C</span><span>Camnemi TOPIK</span></a>
     <div class="spacer"></div>
+    <select id="lang-sel" onchange="setLang(this.value)" title="Language / 언어 / ភាសា"
+      style="border:none;background:var(--ios-fill);border-radius:8px;padding:4px 6px;font-size:12px;font-weight:700;color:var(--ios-blue);font-family:var(--ios-font);">
+      <option value="en">EN</option>
+      <option value="ko">한국어</option>
+      <option value="km">ខ្មែរ</option>
+    </select>
     <span id="app-h-sub" style="font-size:14px;color:var(--ios-secondary-label);font-weight:700;"></span>
   </header>
 
@@ -24,19 +30,19 @@
   <!-- Bottom tab bar (standard mobile pattern) -->
   <nav class="tab-bar">
     <button class="tab-item active" data-tab="home" onclick="go('home')">
-      <span class="tab-ico">🏠</span><span>Home</span>
+      <span class="tab-ico">🏠</span><span data-nav-label="home">Home</span>
     </button>
     <button class="tab-item" data-tab="daily" onclick="go('daily')">
-      <span class="tab-ico">📅</span><span>Daily 10</span>
+      <span class="tab-ico">📅</span><span data-nav-label="daily">Daily 10</span>
     </button>
     <button class="tab-item" data-tab="mock" onclick="go('mock')">
-      <span class="tab-ico">📝</span><span>Mock Test</span>
+      <span class="tab-ico">📝</span><span data-nav-label="mock">Mock Test</span>
     </button>
     <button class="tab-item" data-tab="wrong" onclick="go('wrong')">
-      <span class="tab-ico">📓</span><span>My Notes</span>
+      <span class="tab-ico">📓</span><span data-nav-label="notes">My Notes</span>
     </button>
     <button class="tab-item" data-tab="learn" onclick="go('learn')">
-      <span class="tab-ico">📚</span><span>Learn</span>
+      <span class="tab-ico">📚</span><span data-nav-label="learn">Learn</span>
     </button>
   </nav>
 
