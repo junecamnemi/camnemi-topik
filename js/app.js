@@ -271,6 +271,16 @@ function setCountry(k) {
   renderDdayStrip();
   render();
 }
+/* tap the country name on the D-day strip → next country */
+function cycleCountry(ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const list = countryList();
+  if (!list.length) return;
+  const cur = selectedCountry();
+  const idx = list.findIndex(c => c.key === (cur ? cur.key : 'KR'));
+  const next = list[(idx + 1) % list.length];
+  setCountry(next.key);
+}
 function initCountrySel() {
   const sel = $id('country-sel');
   if (!sel) return;
@@ -307,7 +317,7 @@ function renderDdayStrip() {
     return `<div class="strip-slide ${i === _stripIdx ? 'active' : ''}" data-i="${i}">
       <span class="strip-flag">${country.flag}</span>
       <div class="strip-main">
-        <div class="strip-title">${esc(country.name)} · ${esc(x.p.session)}</div>
+        <div class="strip-title"><span class="strip-country" onclick="cycleCountry(event)" title="${LANG==='ko'?'나라 바꾸기 (탭)':'Change country (tap)'}">${esc(country.name)} <span class="strip-swap">⇄</span></span> · ${esc(x.p.session)}</div>
         <div class="strip-sub">${esc(sub)}</div>
       </div>
       <div class="strip-dday"><b>${dday}</b><span>${label}</span></div>
