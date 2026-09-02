@@ -69,6 +69,7 @@ const T = {
     result_correct: '✓ correct', result_wrong: '✗ wrong', result_unanswered: '⏳ unanswered',
     result_note: '* Estimate based on 10 questions — real exam may differ.',
     result_continue: 'What next?', result_new: '✨ More new questions', result_mock: '📝 Go to Mock Test', result_notes: '📓 View wrong notes', result_done_today: '🏠 Done for today',
+    related_q: '📚 Related questions (past-exam type)', related_hide: 'Hide related', related_show_ans: 'Show answer', related_hide_ans: 'Hide answer',
     prog_title: 'My Progress', prog_sub: 'scores & next steps',
     prog_last: 'Latest score', prog_today: 'Today', prog_no_scores: 'No scores yet — finish a Daily 10 set to see your estimated TOPIK score!',
     prog_hist: 'Score history', prog_last7: 'last {n} days', prog_no_hist: 'Your score history will appear here.',
@@ -118,6 +119,7 @@ const T = {
     result_correct: '✓ 정답', result_wrong: '✗ 오답', result_unanswered: '⏳ 미응답',
     result_note: '※ 10문제 기준 예상치입니다. 실제 시험과 다를 수 있어요.',
     result_continue: '계속할까요?', result_new: '✨ 새 문제 더 풀기', result_mock: '📝 모의고사 보기', result_notes: '📓 오답노트 보기', result_done_today: '🏠 오늘 끝내기',
+    related_q: '📚 관련 문제 (기출 유형)', related_hide: '관련 문제 숨기기', related_show_ans: '답 보기', related_hide_ans: '답 숨기기',
     prog_title: '내 진행 상황', prog_sub: '점수 & 다음 할 일',
     prog_last: '최근 점수', prog_today: '오늘', prog_no_scores: '아직 점수가 없어요 — 데일리 10을 완료하면 예상 TOPIK 점수가 표시돼요!',
     prog_hist: '점수 이력', prog_last7: '최근 {n}일', prog_no_hist: '점수 이력이 여기에 표시돼요.',
@@ -167,6 +169,7 @@ const T = {
     result_correct: '✓ ត្រឹមត្រូវ', result_wrong: '✗ ខុស', result_unanswered: '⏳ មិនឆ្លើយ',
     result_note: '* ការប៉ាន់ស្មានពី ១០ សំណួរ — ប្រឡងពិតប្រាកដអាចខុសគ្នា។',
     result_continue: 'តើបន្ទាប់ទៀត?', result_new: '✨ សំណួរថ្មីបន្ថែម', result_mock: '📝 ទៅប្រឡងសាក', result_notes: '📓 មើលកំណត់ចំណាំកំហុស', result_done_today: '🏠 បញ្ចប់សម្រាប់ថ្ងៃនេះ',
+    related_q: '📚 សំណួរពាក់ព័ន្ធ (ប្រភេទប្រឡងមុន)', related_hide: 'លាក់សំណួរពាក់ព័ន្ធ', related_show_ans: 'មើលចម្លើយ', related_hide_ans: 'លាក់ចម្លើយ',
     prog_title: 'វឌ្ឍនភាពរបស់ខ្ញុំ', prog_sub: 'ពិន្ទុ & ជំហានបន្ទាប់',
     prog_last: 'ពិន្ទុចុងក្រោយ', prog_today: 'ថ្ងៃនេះ', prog_no_scores: 'មិនទាន់មានពិន្ទុទេ — បញ្ចប់ Daily 10 ដើម្បីមើលពិន្ទុ TOPIK ប៉ាន់ស្មាន!',
     prog_hist: 'ប្រវត្តិពិន្ទុ', prog_last7: '{n} ថ្ងៃចុងក្រោយ', prog_no_hist: 'ប្រវត្តិពិន្ទុនឹងបង្ហាញនៅទីនេះ។',
@@ -437,6 +440,7 @@ function viewDaily() {
         ` : ''}
       </div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
+      ${relatedBlock(q)}
       ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
     </div>
     <div style="display:flex;gap:8px;">
@@ -695,6 +699,61 @@ function toggleTip(btn) {
   const on = card.classList.toggle('tip-on');
   btn.innerHTML = (on ? ic('tip', 15) + ' ' + t('tip_hide') : ic('tip', 15) + ' ' + t('tip'));
 }
+
+/* ---------- Related questions (same type/level, past-exam pattern) ---------- */
+function relatedQuestions(q, limit) {
+  const seen = {};
+  const pool = allQuestions().slice();
+  (APP.daily || []).forEach(x => { if (!seen[x.id]) { seen[x.id] = 1; pool.push(x); } });
+  // 1) same type + similar level
+  let out = pool.filter(x => x.id !== q.id && x.type === q.type && Math.abs((x.level || 0) - (q.level || 0)) <= 1);
+  // 2) same type any level
+  if (out.length < limit) {
+    const more = pool.filter(x => x.id !== q.id && !out.some(o => o.id === x.id) && x.type === q.type)
+      .slice(0, limit - out.length);
+    out = out.concat(more);
+  }
+  // 3) same section
+  if (out.length < limit) {
+    const more = pool.filter(x => x.id !== q.id && !out.some(o => o.id === x.id) && x.section === q.section)
+      .slice(0, limit - out.length);
+    out = out.concat(more);
+  }
+  return out.slice(0, limit);
+}
+function relatedBlock(q) {
+  const rel = relatedQuestions(q, 3);
+  if (!rel.length) return '';
+  return `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;color:var(--ios-blue);" onclick="toggleRelated(this)">${ic('notes',14)} ${t('related_q')}</button>
+    <div class="related-list" style="display:none;margin-top:8px;">
+      ${rel.map((r, i) => `
+        <div class="related-item" style="background:var(--ios-fill);border-radius:10px;padding:10px;margin-bottom:8px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--ios-secondary-label);margin-bottom:4px;">${t('related_q')} ${i + 1} · ${typeLabel(r.type)} · L${r.level}</div>
+          <div style="font-size:13.5px;line-height:1.5;">${esc(r.q)}</div>
+          ${r.qGl ? `<div class="sub" style="font-size:11.5px;margin-top:3px;">${esc(r.qGl)}</div>` : ''}
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px;color:var(--ios-green);" onclick="toggleRelAns(this)">${t('related_show_ans')}</button>
+          <div class="rel-ans" style="display:none;margin-top:6px;font-size:12.5px;color:var(--ios-label);">
+            <b>✓ ${r.correct !== undefined ? '①②③④'[r.correct] : ''}</b> — ${esc(r.explain || '')}
+            ${r.options && r.options[r.correct] ? `<div style="margin-top:2px;">${esc(r.options[r.correct].t)}${r.options[r.correct].gl ? ' · ' + esc(r.options[r.correct].gl) : ''}</div>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+function toggleRelated(btn) {
+  const card = btn.parentElement;
+  const list = card.querySelector('.related-list');
+  if (!list) return;
+  const open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'block';
+  btn.innerHTML = (open ? ic('notes',14) + ' ' + t('related_q') : ic('notes',14) + ' ' + t('related_hide'));
+}
+function toggleRelAns(btn) {
+  const ans = btn.parentElement.querySelector('.rel-ans');
+  if (!ans) return;
+  const open = ans.style.display !== 'none';
+  ans.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? t('related_show_ans') : t('related_hide_ans');
+}
 function accBar(label, p, sub) {
   const color = p >= 70 ? 'var(--ios-green)' : p >= 40 ? 'var(--ios-orange)' : 'var(--ios-red)';
   return `
@@ -787,6 +846,7 @@ function viewMockRun() {
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
+      ${relatedBlock(q)}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.mockIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navMock(-1)">${t('prev')}</button>
