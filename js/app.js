@@ -71,6 +71,7 @@ const T = {
     result_note: '* Estimate based on 10 questions — real exam may differ.',
     result_continue: 'What next?', result_new: '✨ More new questions', result_mock: '📝 Go to Mock Test', result_notes: '📓 View wrong notes', result_done_today: '🏠 Done for today',
     related_q: '📚 Related questions (past-exam type)', related_hide: 'Hide related', related_show_ans: 'Show answer', related_hide_ans: 'Hide answer',
+    passage_en: '🔁 View passage in English', passage_ko: '🔁 Back to Korean',
     prog_title: 'My Progress', prog_sub: 'scores & next steps',
     prog_last: 'Latest score', prog_today: 'Today', prog_no_scores: 'No scores yet — finish a Daily 10 set to see your estimated TOPIK score!',
     prog_hist: 'Score history', prog_last7: 'last {n} days', prog_no_hist: 'Your score history will appear here.',
@@ -122,6 +123,7 @@ const T = {
     result_note: '※ 10문제 기준 예상치입니다. 실제 시험과 다를 수 있어요.',
     result_continue: '계속할까요?', result_new: '✨ 새 문제 더 풀기', result_mock: '📝 모의고사 보기', result_notes: '📓 오답노트 보기', result_done_today: '🏠 오늘 끝내기',
     related_q: '📚 관련 문제 (기출 유형)', related_hide: '관련 문제 숨기기', related_show_ans: '답 보기', related_hide_ans: '답 숨기기',
+    passage_en: '🔁 지문 영어로 보기', passage_ko: '🔁 한국어로 돌아가기',
     prog_title: '내 진행 상황', prog_sub: '점수 & 다음 할 일',
     prog_last: '최근 점수', prog_today: '오늘', prog_no_scores: '아직 점수가 없어요 — 데일리 10을 완료하면 예상 TOPIK 점수가 표시돼요!',
     prog_hist: '점수 이력', prog_last7: '최근 {n}일', prog_no_hist: '점수 이력이 여기에 표시돼요.',
@@ -173,6 +175,7 @@ const T = {
     result_note: '* ការប៉ាន់ស្មានពី ១០ សំណួរ — ប្រឡងពិតប្រាកដអាចខុសគ្នា។',
     result_continue: 'តើបន្ទាប់ទៀត?', result_new: '✨ សំណួរថ្មីបន្ថែម', result_mock: '📝 ទៅប្រឡងសាក', result_notes: '📓 មើលកំណត់ចំណាំកំហុស', result_done_today: '🏠 បញ្ចប់សម្រាប់ថ្ងៃនេះ',
     related_q: '📚 សំណួរពាក់ព័ន្ធ (ប្រភេទប្រឡងមុន)', related_hide: 'លាក់សំណួរពាក់ព័ន្ធ', related_show_ans: 'មើលចម្លើយ', related_hide_ans: 'លាក់ចម្លើយ',
+    passage_en: '🔁 មើលអត្ថបទជាអង់គ្លេស', passage_ko: '🔁 ត្រឡប់ទៅកូរ៉េ',
     prog_title: 'វឌ្ឍនភាពរបស់ខ្ញុំ', prog_sub: 'ពិន្ទុ & ជំហានបន្ទាប់',
     prog_last: 'ពិន្ទុចុងក្រោយ', prog_today: 'ថ្ងៃនេះ', prog_no_scores: 'មិនទាន់មានពិន្ទុទេ — បញ្ចប់ Daily 10 ដើម្បីមើលពិន្ទុ TOPIK ប៉ាន់ស្មាន!',
     prog_hist: 'ប្រវត្តិពិន្ទុ', prog_last7: '{n} ថ្ងៃចុងក្រោយ', prog_no_hist: 'ប្រវត្តិពិន្ទុនឹងបង្ហាញនៅទីនេះ។',
@@ -497,6 +500,7 @@ function viewDaily() {
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -776,6 +780,19 @@ function toggleTip(btn) {
   btn.innerHTML = (on ? ic('tip', 15) + ' ' + t('tip_hide') : ic('tip', 15) + ' ' + t('tip'));
 }
 
+/* ---------- Passage language toggle (지문 ↔ English) ---------- */
+function togglePassage(btn) {
+  const card = btn.closest('.app-card') || btn.parentElement;
+  const kr = card.querySelector('.q-passage');
+  const en = card.querySelector('.passage-gloss');
+  if (!kr || !en) return;
+  const showEn = kr.style.display !== 'none';
+  kr.style.display = showEn ? 'none' : '';
+  en.style.display = showEn ? 'block' : 'none';
+  en.style.color = showEn ? 'var(--ios-label)' : 'var(--ios-secondary-label)';
+  btn.innerHTML = (showEn ? ic('tip', 13) + ' ' + t('passage_ko') : ic('tip', 13) + ' ' + t('passage_en'));
+}
+
 /* ---------- Related questions (same type/level, past-exam pattern) ---------- */
 function relatedQuestions(q, limit) {
   const seen = {};
@@ -912,6 +929,7 @@ function viewMockRun() {
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
