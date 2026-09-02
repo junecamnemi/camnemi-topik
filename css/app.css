@@ -107,3 +107,30 @@
 .big-cta .cta-ico { font-size: 44px; }
 .muted { color: var(--muted); }
 .tight { margin-top: 4px; }
+
+/* ---------- Schedule calendar ---------- */
+.cal { width: 100%; border-collapse: collapse; table-layout: fixed; background: #fff; border-radius: 10px; overflow: hidden; }
+.cal th { font-size: 10px; color: var(--muted); padding: 4px 0; font-weight: 700; }
+.cal td { text-align: center; padding: 0; height: 42px; font-size: 12px; vertical-align: top; border: 1px solid #f0f2f7; position: relative; }
+.cal td.empty { background: #fafbfc; }
+.cal td.today .day-num { background: var(--navy); color: #fff; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; display: inline-block; margin-top: 2px; font-weight: 800; }
+.cal td.past { color: #c5cad6; }
+.cal .day-num { display: block; padding-top: 2px; font-weight: 600; }
+.cal .mk { display: block; height: 4px; border-radius: 2px; margin: 1px 3px; }
+.cal .mk.reg { background: var(--navy); }
+.cal .mk.test { background: var(--teal); }
+.cal .mk.result { background: var(--gold); }
+.cal-legend { display: flex; gap: 12px; font-size: 10.5px; color: var(--muted); margin: 6px 0 2px; flex-wrap: wrap; }
+.cal-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.cal-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.cal-legend .r1 { background: var(--navy); } .cal-legend .r2 { background: var(--teal); } .cal-legend .r3 { background: var(--gold); }
+
+/* D-day pills */
+.dday-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.dday-pill { flex: 1; min-width: 90px; background: #f0f3fa; border-radius: 10px; padding: 8px 6px; text-align: center; }
+.dday-pill b { display: block; font-size: 15px; color: var(--navy); }
+.dday-pill span { font-size: 10px; color: var(--muted); }
+.dday-pill.hot { background: #e6f7f5; }
+.dday-pill.hot b { color: var(--teal); }
+.dday-pill.warn { background: #fff7e8; }
+.dday-pill.warn b { color: #c78a00; }

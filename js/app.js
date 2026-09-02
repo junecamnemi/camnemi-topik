@@ -634,26 +634,71 @@ function viewLearn() {
 }
 function bindLearn() {}
 
-/* ================= TOPIK SCHEDULE (나라별 일정) ================= */
+/* ================= TOPIK SCHEDULE (나라별 일정 + 달력 + D-Day) ================= */
+function ddayStr(target) {
+  // target: 'YYYY-MM-DD' → 'D-N' / 'D-DAY' / 'D+N'
+  const t = new Date(target + 'T00:00:00');
+  const n = new Date(todayStr() + 'T00:00:00');
+  const diff = Math.round((t - n) / 86400000);
+  if (diff === 0) return 'D-DAY';
+  return diff > 0 ? 'D-' + diff : 'D+' + Math.abs(diff);
+}
+function parseReg(reg, testDate) {
+  // '2025-12-09 ~ 12-15' → {start:'2025-12-09', end:'2025-12-15'}
+  const m = String(reg).match(/(\d{4})-(\d{2})-(\d{2})\s*~\s*(\d{2})-(\d{2})/);
+  if (!m) return null;
+  let sy = +m[1], sm = +m[2], sd = +m[3], em = +m[4], ed = +m[5];
+  let ey = sy;
+  if (em < sm) ey = sy + 1;              // 연말 접수 → 연초 시험인 경우
+  const pad = n => String(n).padStart(2, '0');
+  return { start: `${sy}-${pad(sm)}-${pad(sd)}`, end: `${ey}-${pad(em)}-${pad(ed)}` };
+}
+function sessionStatus(p) {
+  // 접수 기간 기준으로 상태 판정
+  const today = todayStr();
+  const reg = parseReg(p.reg, p.date);
+  if (!reg) return { key: 'unknown', label: '정보 확인 필요' };
+  if (today < reg.start) return { key: 'reg_open', label: '접수 예정', reg: reg };
+  if (today <= reg.end) return { key: 'reg_ing', label: '접수 중', reg: reg };
+  if (today < p.date) return { key: 'test_wait', label: '접수 마감 · 시험 대기', reg: reg };
+  if (today < p.result) return { key: 'result_wait', label: '시험 완료 · 결과 대기', reg: reg };
+  return { key: 'done', label: '종료', reg: reg };
+}
+
 function viewSchedule() {
   const sch = window.TOPIK_SCHEDULE;
   if (!sch) return '<div class="app-card"><p class="sub">일정 데이터가 없습니다.</p></div>';
   const today = todayStr();
   const sel = APP.scheduleCountry || 'KR';
   const country = sch.countries.find(c => c.key === sel) || sch.countries[0];
-  // 국가별 회차 상세
   const sessions = country.sessions;
   const rows = sch.pbt.filter(p => sessions.includes(parseInt(p.session)));
-  // 지난 회차 표시 구분
-  const statusOf = (date) => date < today ? 'past' : (date === today ? 'today' : 'upcoming');
-  const sessionLabel = (s) => s.session.replace('회', '');
+  // D-Day 계산: 다가오는 접수 / 시험 / 결과
+  const upcoming = rows.map(p => ({ p, st: sessionStatus(p) }))
+    .filter(x => x.st.key !== 'done');
+  // 접수 마감 D-day (접수 중 or 예정인 것 중 가장 가까운)
+  const regTargets = upcoming.filter(x => x.st.key === 'reg_ing' || x.st.key === 'reg_open');
+  const testTargets = upcoming.filter(x => x.st.key === 'reg_ing' || x.st.key === 'test_wait' || x.st.key === 'reg_open');
+  const resultTargets = upcoming.filter(x => x.st.key === 'result_wait');
+  const regNear = regTargets.length ? regTargets[0] : null;
+  const testNear = testTargets.length ? testTargets[0] : null;
+  const resultNear = resultTargets.length ? resultTargets[0] : null;
+  // 달력 이벤트
+  const events = [];
+  rows.forEach(p => {
+    const reg = parseReg(p.reg, p.date);
+    if (reg) {
+      events.push({ date: reg.start, type: 'reg', label: p.session + ' 접수시작' });
+      events.push({ date: reg.end, type: 'reg', label: p.session + ' 접수마감' });
+    }
+    events.push({ date: p.date, type: 'test', label: p.session + ' 시험' });
+    events.push({ date: p.result, type: 'result', label: p.session + ' 결과' });
+  });
+  const calMonth = APP.scheduleMonth || today.slice(0, 7);   // 'YYYY-MM'
   return `
     <div class="sec-h"><h2>🗓 TOPIK 시험 일정</h2><span class="sub">${sch.year}년</span></div>
-    <div class="app-card">
-      <p class="sub" style="font-size:12px;">${sch.note}</p>
-    </div>
+    <div class="app-card"><p class="sub" style="font-size:12px;">${sch.note}</p></div>
 
-    <!-- 국가 선택 -->
     <div class="sec-h"><h2>나라 선택</h2></div>
     <div class="app-card">
       <select id="schedule-country" style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font);" onchange="setScheduleCountry(this.value)">
@@ -661,25 +706,60 @@ function viewSchedule() {
       </select>
     </div>
 
-    <!-- 선택 국가 상세 -->
-    <div class="sec-h"><h2>${country.flag} ${country.name}</h2><span class="sub">${country.cities}</span></div>
+    <!-- D-Day 요약 -->
+    <div class="sec-h"><h2>${country.flag} ${country.name} · D-Day</h2></div>
+    <div class="app-card">
+      <div class="dday-row">
+        <div class="dday-pill ${regNear && regNear.st.key === 'reg_ing' ? 'hot' : ''}">
+          <b>${regNear ? ddayStr(regNear.st.reg.end) : '—'}</b><span>접수 마감</span>
+        </div>
+        <div class="dday-pill ${testNear && testNear.st.key === 'test_wait' ? 'warn' : ''}">
+          <b>${testNear ? ddayStr(testNear.p.date) : '—'}</b><span>다음 시험</span>
+        </div>
+        <div class="dday-pill">
+          <b>${resultNear ? ddayStr(resultNear.p.result) : '—'}</b><span>결과 발표</span>
+        </div>
+      </div>
+      ${regNear ? `<div class="sub" style="font-size:11px;">${regNear.p.session} 접수: ${regNear.st.reg.start} ~ ${regNear.st.reg.end} · ${regNear.st.label}</div>` : ''}
+      ${resultNear ? `<div class="sub" style="font-size:11px;">${resultNear.p.session} 결과 발표: ${resultNear.p.result}</div>` : ''}
+    </div>
+
+    <!-- 달력 -->
+    <div class="sec-h"><h2>📅 달력 보기</h2>
+      <span style="display:flex;gap:6px;">
+        <button class="btn btn-ghost btn-sm" onclick="scheduleMonth(-1)">◀</button>
+        <span style="font-size:13px;font-weight:800;color:var(--navy);">${calMonth.slice(0,4)}년 ${+calMonth.slice(5,7)}월</span>
+        <button class="btn btn-ghost btn-sm" onclick="scheduleMonth(1)">▶</button>
+      </span>
+    </div>
+    <div class="app-card">
+      ${calendarHTML(calMonth, events)}
+      <div class="cal-legend">
+        <span><i class="r1"></i>접수기간</span><span><i class="r2"></i>시험일</span><span><i class="r3"></i>결과발표</span>
+      </div>
+    </div>
+
+    <!-- 회차별 상세 -->
+    <div class="sec-h"><h2>${country.flag} ${country.name} · 회차별</h2><span class="sub">${country.cities}</span></div>
     ${rows.length ? rows.map(p => {
-      const st = statusOf(p.date);
+      const st = sessionStatus(p);
+      const reg = st.reg;
       const d = p.date.split('-');
       const dow = ['일','월','화','수','목','금','토'][new Date(p.date + 'T00:00:00').getDay()];
+      const badgeColor = st.key === 'reg_ing' ? 'hot' : st.key === 'test_wait' ? 'warn' : st.key === 'done' ? '' : '';
+      const statusTxt = st.key === 'done' ? '✓ 종료' : st.key === 'reg_ing' ? '🔥 접수 중' : st.key === 'reg_open' ? '📌 접수 예정' : st.key === 'test_wait' ? '✏️ 시험 대기' : '📄 결과 대기';
       return `
-        <div class="app-card" style="${st === 'past' ? 'opacity:.55;' : ''}${st === 'today' ? 'border-color:var(--teal);' : ''}">
+        <div class="app-card" style="${st.key === 'done' ? 'opacity:.5;' : ''}">
           <div class="row">
-            <span class="mock-badge t2">${sessionLabel(p)}회</span>
-            <span style="font-size:12px;font-weight:700;${st === 'past' ? 'color:var(--muted);' : 'color:var(--navy);'}">
-              ${st === 'past' ? '✓ 지난 시험' : st === 'today' ? '🔥 오늘!' : '📌 예정'}
-            </span>
+            <span class="mock-badge t2">${p.session}</span>
+            <span style="font-size:12px;font-weight:800;color:${st.key === 'reg_ing' ? 'var(--teal)' : st.key === 'test_wait' ? '#c78a00' : 'var(--muted)'};">${statusTxt}</span>
           </div>
-          <div style="font-size:17px;font-weight:800;color:var(--navy-dark);margin:8px 0 4px;">
+          <div style="font-size:16px;font-weight:800;color:var(--navy-dark);margin:8px 0 4px;">
             ${d[1]}월 ${d[2]}일 (${dow}) <span style="font-size:12px;color:var(--muted);font-weight:600;">${p.date.slice(0,4)}</span>
           </div>
-          <div class="sub" style="font-size:12.5px;margin:3px 0;">🖥 접수: <b>${p.reg}</b></div>
-          <div class="sub" style="font-size:12.5px;margin:3px 0;">📄 결과: <b>${p.result}</b></div>
+          <div class="sub" style="font-size:12.5px;margin:3px 0;">🖥 접수: <b>${p.reg}</b> ${reg && st.key !== 'done' && st.key !== 'result_wait' ? `<span style="color:var(--navy);font-weight:700;">(${ddayStr(reg.end)})</span>` : ''}</div>
+          <div class="sub" style="font-size:12.5px;margin:3px 0;">✏️ 시험: <b>${p.date}</b> ${st.key !== 'done' && st.key !== 'result_wait' ? `<span style="color:var(--navy);font-weight:700;">(${ddayStr(p.date)})</span>` : ''}</div>
+          <div class="sub" style="font-size:12.5px;margin:3px 0;">📄 결과: <b>${p.result}</b> ${st.key === 'result_wait' || st.key === 'test_wait' || st.key === 'reg_ing' ? `<span style="color:var(--navy);font-weight:700;">(${ddayStr(p.result)})</span>` : ''}</div>
           <div class="sub" style="font-size:11.5px;margin-top:4px;">📍 ${country.cities} · 접수처: ${country.reg}</div>
         </div>`;
     }).join('') : `<div class="app-card"><p class="sub">이 나라에서는 아직 시행 정보가 없습니다.</p></div>`}
@@ -688,11 +768,11 @@ function viewSchedule() {
     <div class="sec-h"><h2>📋 전체 일정 (PBT)</h2></div>
     <div class="app-card">
       ${sch.pbt.map(p => {
-        const st = statusOf(p.date);
-        return `<div class="row" style="padding:6px 0;border-bottom:1px solid var(--border);${st==='past'?'opacity:.5':''}">
+        const st = sessionStatus(p);
+        return `<div class="row" style="padding:6px 0;border-bottom:1px solid var(--border);${st.key==='done'?'opacity:.5':''}">
           <span style="font-size:13px;font-weight:700;">${p.session}</span>
           <span style="font-size:13px;">${p.date.slice(5)}</span>
-          <span class="sub" style="font-size:11px;">접수 ${p.reg}</span>
+          <span class="sub" style="font-size:10.5px;">${st.label}</span>
           <span class="mock-badge ${p.overseas ? 't2' : 't1'}" style="font-size:9px;">${p.overseas ? '해외' : '한국'}</span>
         </div>`;}).join('')}
     </div>
@@ -706,6 +786,36 @@ function viewSchedule() {
       <p class="sub" style="font-size:10.5px;margin-top:6px;">IBT는 2026년 17개국 확대 예정 (한국 중심)</p>
     </div>
   `;
+}
+function calendarHTML(ym, events) {
+  // ym: 'YYYY-MM', events: [{date, type, label}]
+  const [y, m] = ym.split('-').map(Number);
+  const first = new Date(y, m - 1, 1);
+  const startDow = first.getDay();                 // 0=일
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const today = todayStr();
+  const evByDate = {};
+  events.forEach(e => { (evByDate[e.date] = evByDate[e.date] || []).push(e.type); });
+  let html = `<table class="cal"><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr><tr>`;
+  for (let i = 0; i < startDow; i++) html += `<td class="empty"></td>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = `${ym}-${String(d).padStart(2, '0')}`;
+    const cls = [ds === today ? 'today' : '', ds < today ? 'past' : ''].join(' ');
+    const mks = (evByDate[ds] || []).slice(0, 3).map(t => `<span class="mk ${t}"></span>`).join('');
+    html += `<td class="${cls}"><span class="day-num">${d}</span>${mks}</td>`;
+    if ((startDow + d) % 7 === 0 && d < daysInMonth) html += `</tr><tr>`;
+  }
+  const trail = (startDow + daysInMonth) % 7;
+  if (trail) for (let i = trail; i < 7; i++) html += `<td class="empty"></td>`;
+  html += `</tr></table>`;
+  return html;
+}
+function scheduleMonth(delta) {
+  const cur = APP.scheduleMonth || todayStr().slice(0, 7);
+  const [y, m] = cur.split('-').map(Number);
+  const nd = new Date(y, m - 1 + delta, 1);
+  APP.scheduleMonth = `${nd.getFullYear()}-${String(nd.getMonth() + 1).padStart(2, '0')}`;
+  render();
 }
 function setScheduleCountry(k) { APP.scheduleCountry = k; render(); }
 function bindSchedule() {}
