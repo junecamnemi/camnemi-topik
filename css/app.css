@@ -75,6 +75,14 @@
 .q-explain b { color: var(--navy); }
 .q-explain .why-wrong { color: var(--red); }
 
+/* English only when TIP is on — hidden by default */
+.opt-gloss { display: none; font-size: 12px; color: var(--muted); font-weight: 400; }
+.passage-gloss { display: none; font-size: 12.5px; color: var(--muted); background: #f0f3fa; border-radius: 8px; padding: 8px 12px; margin: 8px 0 4px; line-height: 1.6; }
+.app-card.tip-on .opt-gloss { display: inline; }
+.app-card.tip-on .passage-gloss { display: block; }
+.app-card.tip-on .q-explain { display: block; }
+.tip-btn { width: 100%; margin-top: 10px; }
+
 /* ---------- Writing ---------- */
 .q-write { width: 100%; min-height: 90px; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 14px; resize: vertical; }
 .q-answer-model { margin-top: 10px; padding: 10px 12px; background: #fffbea; border-left: 3px solid var(--gold); border-radius: 8px; font-size: 13.5px; display: none; }

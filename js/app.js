@@ -201,6 +201,7 @@ function viewDaily() {
           : '<button class="btn btn-teal btn-sm" onclick="generateAI()">✨ Generate with AI</button>'}
       </div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
+      ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.section === 'writing'
@@ -208,15 +209,16 @@ function viewDaily() {
            <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitWriting()">Submit answer</button>`
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''} ${picked !== undefined && picked !== i ? 'disabled' : ''}" ${picked !== undefined ? 'disabled' : ''} onclick="pickDaily(${i})">
-            <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)} ${o.gl ? `<span class="sub" style="font-size:12px;"> · ${esc(o.gl)}</span>` : ''}
+            <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
           </button>`).join('')}
-      <div class="q-explain ${picked !== undefined ? 'show' : ''}" id="daily-ex">
+      <div class="q-explain" id="daily-ex">
         ${picked !== undefined ? `
           <b>✓ 정답: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}
           ${q.traps && q.traps.length ? `<div class="why-wrong" style="margin-top:6px;"><b>✗ 오답 이유:</b> ${q.traps.map(esc).join(' · ')}</div>` : ''}
           ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
         ` : ''}
       </div>
+      ${picked !== undefined ? `<button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">💡 TIP 보기</button>` : ''}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.dailyIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navDaily(-1)">← Prev</button>
@@ -232,7 +234,7 @@ async function generateAI() {
   const status = $id('ai-status');
   if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
   try {
-    const res = await fetch(AI_API_BASE + '/api/generate', {
+    const res = await fetch(AI_API_BASE + '/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ level: APP.level, count: 10, section: 'all' })
@@ -427,6 +429,12 @@ function accuracyStats() {
 }
 
 /* 정답률 바 렌더 헬퍼 */
+function toggleTip(btn) {
+  const card = btn.closest('.app-card');
+  if (!card) return;
+  const on = card.classList.toggle('tip-on');
+  btn.textContent = on ? '🙈 TIP 숨기기' : '💡 TIP 보기';
+}
 function accBar(label, p, sub) {
   const color = p >= 70 ? 'var(--teal)' : p >= 40 ? 'var(--gold)' : 'var(--red)';
   return `
@@ -502,13 +510,15 @@ function viewMockRun() {
       <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ⏱ ${m.duration}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
+      ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.section === 'writing'
         ? `<textarea class="q-write" id="mock-write">${picked && picked.w ? esc(picked.w) : ''}</textarea><button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitMockWriting()">Save</button>`
         : q.options.map((o, i) => `
-          <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}</button>`).join('')}
-      ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain show"><b>✓ 정답: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
+          <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
+      ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ 정답: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>
+      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">💡 TIP 보기</button>` : ''}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.mockIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navMock(-1)">← Prev</button>
