@@ -115,6 +115,7 @@ TOPIK2.forEach((q) => {
   if (T2ids.has(q.id)) errors.push(`topik2 dup id ${q.id}`);
   T2ids.add(q.id);
   if (!q.q || !q.section) errors.push(`topik2 ${q.id} missing fields`);
+  if (!q.qGl) errors.push(`topik2 ${q.id} missing qGl (EN translation)`);
   if (q.section !== 'writing' && !(q.options && q.correct >= 0 && q.correct < q.options.length)) errors.push(`topik2 ${q.id} bad options/correct`);
   if (q.section === 'writing' && !q.writePrompt) errors.push(`topik2 ${q.id} writing missing writePrompt`);
   if (q.level < 3) errors.push(`topik2 ${q.id} level should be 3+`);

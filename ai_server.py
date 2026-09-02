@@ -78,10 +78,10 @@ Given structure: the caller passes you the real exam structure (section counts, 
 level-appropriate grammar pool, vocabulary guide). Use it to pick realistic types.
 
 Return STRICT JSON only, no markdown, no commentary:
-{"questions":[{"section":"reading|listening|writing","type":"one of: grammar|vocab|main_idea|order|sentence_pos|topic|place|intent|comprehension|writing_short|writing_letter","level":1..6,"points":2|3|4|10|20,"q":"question text in Korean","passage":"passage or blank-sentence (Korean), omit if none","passageGl":"full English translation of the passage (empty string if no passage)","options":[{"t":"choice","gl":"english gloss"}],"correct":0..3,"explain":"why correct (English)","traps":["why each wrong (English)"],"tip":"study tip (English)","freq":2,"freqNote":"which official section + Q-range it mirrors"}]}
+{"questions":[{"section":"reading|listening|writing","type":"one of: grammar|vocab|main_idea|order|sentence_pos|topic|place|intent|comprehension|writing_short|writing_letter","level":1..6,"points":2|3|4|10|20,"q":"question text in Korean","qGl":"English translation of the question text","passage":"passage or blank-sentence (Korean), omit if none","passageGl":"full English translation of the passage (empty string if no passage)","options":[{"t":"choice","gl":"english gloss"}],"correct":0..3,"explain":"why correct (English)","traps":["why each wrong (English)"],"tip":"study tip (English)","freq":2,"freqNote":"which official section + Q-range it mirrors"}]}
 Rules:
 - IMPORTANT: "q" and "passage" MUST be 100% Korean — absolutely zero English words inside them. Korean ONLY.
-- English belongs ONLY in: options[].gl, passageGl, explain, traps, tip.
+- English belongs ONLY in: qGl, options[].gl, passageGl, explain, traps, tip.
 - reading/listening questions have EXACTLY 4 options; correct MUST be the index of the right option (0-3). ALWAYS set correct explicitly and match it to the option text.
 - Choose question types according to the provided type_weights (weighted random).
 - Use the provided grammar_pool / vocab_guide so difficulty matches the level.
@@ -162,6 +162,7 @@ def _normalize(q, idx, level, section):
     q.setdefault("explain", "")
     q.setdefault("traps", [])
     q.setdefault("tip", "")
+    q.setdefault("qGl", "")
     q.setdefault("passageGl", "")
     # validate required text
     if not q.get("q"):
