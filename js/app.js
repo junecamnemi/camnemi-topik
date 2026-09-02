@@ -289,7 +289,7 @@ function finishDaily() {
 function estimatedScore() {
   const r = APP.dailyResult || { correct: 0, wrong: 0, unanswered: 0, total: 1 };
   const total = r.correct + r.wrong;
-  if (total === 0) return { score: 0, pct: 0, level: '—', next: '—' };
+  if (total === 0) return { score: 0, pct: 0, level: '—', next: '—', passI: 0, passII: 0, passLabel: '' };
   const maxScore = APP.level === 'I' ? 200 : 300;
   const pct = r.correct / total;
   const score = Math.round(pct * maxScore);
@@ -305,22 +305,42 @@ function estimatedScore() {
     else if (score >= 120) { level = 'TOPIK II · Level 3'; next = 'Your goal! Keep going → 150'; }
     else { level = 'Below Level 3'; next = 'Need 120+ for Level 3'; }
   }
-  return { score, pct, level, next, maxScore };
+  // 합격 확률: 정답률을 합격 커트라인에 선형 매핑 (10문항 샘플 보정)
+  let passI = 0, passII = 0, passLabel = '';
+  if (APP.level === 'I') {
+    passI = clampPct(pct * 100);
+    passII = clampPct(((pct - 140 / 200) / (1 - 140 / 200)) * 100);
+    passLabel = 'TOPIK I 합격확률';
+  } else {
+    passII = clampPct(pct * 100);
+    passI = clampPct(((pct - 120 / 300) / (1 - 120 / 300)) * 100);
+    passLabel = 'TOPIK II 합격확률';
+  }
+  return { score, pct, level, next, maxScore, passI, passII, passLabel };
 }
+function clampPct(v) { return Math.max(0, Math.min(100, Math.round(v))); }
 
 function viewDailyResult() {
   const r = APP.dailyResult || { correct: 0, wrong: 0, unanswered: 0, total: 1 };
   const est = estimatedScore();
+  // 상단 요약: 예상 점수 + 합격 확률
+  const passTarget = APP.level === 'I' ? 'TOPIK I (L1 이상)' : 'TOPIK II (L3 이상)';
   return `
     <div class="app-card big-cta">
       <div class="cta-ico">🎯</div>
       <h2 style="font-size:22px;color:var(--navy-dark);margin-bottom:6px;">Daily 10 완료!</h2>
       <p class="sub">${r.total}문항 중 ${r.correct + r.wrong}문항 답변</p>
       <div style="margin:18px 0;">
-        <div style="font-size:15px;color:var(--muted);">예상 TOPIK 점수</div>
+        <div style="font-size:15px;color:var(--muted);">나의 예상 점수</div>
         <div style="font-size:52px;font-weight:800;color:var(--navy);">${est.score}<span style="font-size:20px;color:var(--muted);"> / ${est.maxScore}</span></div>
         <div class="mock-badge ${APP.level === 'I' ? 't1' : 't2'}" style="margin-top:8px;">${est.level}</div>
         <div class="sub" style="margin-top:6px;">${est.next}</div>
+        <!-- 합격 확률 -->
+        <div style="margin-top:16px;padding:12px;background:#f0f3fa;border-radius:12px;">
+          <div style="font-size:13px;color:var(--muted);margin-bottom:6px;">${est.passLabel} · ${passTarget}</div>
+          <div style="font-size:30px;font-weight:800;color:var(--teal);">${APP.level === 'I' ? est.passI : est.passII}%</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">TOPIK ${APP.level === 'I' ? 'II' : 'I'} 전환 시 ${APP.level === 'I' ? est.passII : est.passI}%</div>
+        </div>
       </div>
       <div class="stat-row">
         <div class="stat-box"><b style="color:var(--teal);">${r.correct}</b><span>✓ 정답</span></div>
