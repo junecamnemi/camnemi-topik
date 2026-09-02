@@ -42,6 +42,26 @@ function allQuestions() {
 }
 function qById(id) { return allQuestions().find(q => q.id === id); }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
+
+/* ---------- TTS listening playback ---------- */
+let _audioEl = null;
+function playListening(btn, text) {
+  if (!text) { alert('듣기 대본이 없습니다.'); return; }
+  const url = AI_API_BASE + '/tts?text=' + encodeURIComponent(text) + '&voice=alloy';
+  if (!_audioEl) {
+    _audioEl = new Audio();
+    _audioEl.onended = () => { if (btn) { btn.textContent = '🔊 듣기 재생'; btn.disabled = false; } };
+    _audioEl.onerror = () => { if (btn) { btn.textContent = '🔊 듣기 재생'; btn.disabled = false; alert('오디오를 불러오지 못했어요. AI 서버가 켜져 있는지 확인하세요.'); } };
+  }
+  _audioEl.src = url;
+  _audioEl.play().then(() => {
+    if (btn) { btn.textContent = '🔇 재생 중…'; btn.disabled = true; }
+  }).catch(e => {
+    if (btn) { btn.textContent = '🔊 듣기 재생'; btn.disabled = false; }
+    alert('재생에 실패했어요: ' + e.message);
+  });
+}
 function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
@@ -91,6 +111,7 @@ function viewHome() {
         <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">📝 Mock Test</button>
       </div>
     </div>
+    ${smartRecCard(acc)}
     <div class="sec-h"><h2>📊 평균 정답률</h2><span class="sub">전체 ${acc.overall}%</span></div>
     <div class="app-card filled">
       <b style="font-size:13px;color:var(--ios-blue);">유형별</b>
@@ -201,6 +222,7 @@ function viewDaily() {
       </div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">🔊 듣기 재생</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
@@ -227,17 +249,19 @@ function viewDaily() {
   `;
 }
 /* ---------- AI question generation ---------- */
-async function generateAI() {
+async function generateAI(optType) {
   // find the triggering button safely (no reliance on global `event`)
-  const btn = document.querySelector('[onclick="generateAI()"]') || null;
+  const btn = document.querySelector('[onclick^="generateAI"]') || null;
   if (btn) { btn.disabled = true; btn.textContent = '✨ Generating… (AI)'; }
   const status = $id('ai-status');
   if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
   try {
+    const body = { level: APP.level, count: 10, section: 'all' };
+    if (optType) body.type = optType;   // smart rec: generate the weak type
     const res = await fetch(AI_API_BASE + '/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ level: APP.level, count: 10, section: 'all' })
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     if (!res.ok || !data.questions) throw new Error(data.error || 'AI server error');
@@ -246,7 +270,7 @@ async function generateAI() {
     // store as today's AI set (full question objects so it survives reload)
     const today = todayStr();
     const all = lsGet(LS.daily, {});
-    all[today] = { questions: qs, done: {}, ai: true };
+    all[today] = { questions: qs, done: {}, ai: true, aiType: optType || '' };
     lsSet(LS.daily, all);
     APP.daily = qs;
     APP.dailyIdx = 0;
@@ -399,6 +423,28 @@ const TYPE_LABELS = {
 };
 function typeLabel(t) { return TYPE_LABELS[t] || t; }
 
+/* ---------- Smart recommendation card (weakest type → AI practice) ---------- */
+function smartRecCard(acc) {
+  // find weakest type with >=2 attempts (stable signal)
+  const weak = (acc.byType || []).filter(r => r.n >= 2 && r.p < 70)[0];
+  if (!weak) {
+    return `<div class="app-card filled" style="background:linear-gradient(135deg,#EAF3FF,#F0F8FF);border:none;">
+      <div class="row">
+        <div><b style="font-size:14px;color:var(--ios-blue);">🎯 스마트 추천</b>
+        <div class="sub" style="font-size:12.5px;margin-top:3px;">문제를 더 풀면 약한 유형을 찾아 집중 연습을 추천해 드려요.</div></div>
+      </div></div>`;
+  }
+  const label = typeLabel(weak.k);
+  const emoji = { grammar:'🧩', vocab:'📚', main_idea:'💡', order:'🔢', sentence_pos:'📍', topic:'🗣️', place:'🏠', intent:'🎯', comprehension:'📖', writing_short:'✍️', writing_letter:'💌' }[weak.k] || '🎯';
+  return `<div class="app-card" style="border:1.5px solid var(--ios-blue);background:linear-gradient(135deg,#EAF3FF,#F6FAFF);">
+    <div class="row">
+      <div><b style="font-size:14px;color:var(--ios-label);">${emoji} 약한 유형: ${esc(label)}</b>
+      <div class="sub" style="font-size:12.5px;margin-top:3px;">정답률 <b style="color:var(--ios-red);">${weak.p}%</b> (${weak.c}/${weak.n}문항) — 이 유형을 집중 공략해 볼까요?</div></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateAI('${escAttr(weak.k)}')">✨ ${esc(label)} 문제 10개 AI 생성</button>
+  </div>`;
+}
+
 /* 유형별·난이도별 평균 정답률 계산 (progress 기반) */
 function accuracyStats() {
   const prog = lsGet(LS.progress, {});
@@ -511,6 +557,7 @@ function viewMockRun() {
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">🔊 듣기 재생</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}

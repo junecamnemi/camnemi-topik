@@ -216,6 +216,15 @@ async def generate(req: Request):
     section = (body.get("section") or "all").lower()
     if section not in ("reading", "listening", "writing", "all"):
         section = "all"
+    focus_type = (body.get("type") or "").lower().strip()
+    # if a specific weak type is requested, generate that type (best-effort)
+    if focus_type:
+        valid_types = set()
+        for lv in EXAM_STRUCTURE.values():
+            for w in lv["type_weights"].values():
+                valid_types.update(w.keys())
+        if focus_type not in valid_types:
+            focus_type = ""
     # split requested count across sections when "all", matching real exam ratio.
     # TOPIK I: 듣기30:읽기40 (no writing). TOPIK II: 듣기50:쓰기4:읽기50.
     if section == "all":
@@ -229,6 +238,10 @@ async def generate(req: Request):
             plan = [("listening", half), ("reading", rest - half), ("writing", wr)]
     else:
         plan = [(section, count)]
+    # focus type overrides: put all questions in the section that hosts the type
+    if focus_type:
+        host = "writing" if focus_type.startswith("writing") else ("listening" if focus_type in ("topic","place","intent") else "reading")
+        plan = [(host, count)]
     try:
         import asyncio
         chunk = 3
@@ -249,7 +262,7 @@ async def generate(req: Request):
         for sec, n in plan:
             if n <= 0:
                 continue
-            types = _pick_types(level, sec, n)
+            types = [focus_type] * n if focus_type else _pick_types(level, sec, n)
             for start in range(0, n, chunk):
                 types_chunk = types[start:start + chunk]
                 p = _build_prompt(level, sec, len(types_chunk), types_chunk)
@@ -273,6 +286,60 @@ async def generate(req: Request):
 @app.get("/health")
 async def health():
     return {"ok": True, "model": NOUS_MODEL}
+
+# =========================================================================
+# TTS — listen to listening questions aloud (same Nous auth as LLM)
+# GET /api/tts?text=...&voice=...  -> mp3 bytes (cached on disk)
+# =========================================================================
+import hashlib
+from fastapi.responses import Response
+
+TTS_CACHE = os.path.join(APP_ROOT, "assets", "audio", "tts_cache")
+os.makedirs(TTS_CACHE, exist_ok=True)
+
+def _nous_api_key():
+    api_key = None
+    try:
+        import sys
+        HERMES_AGENT = os.environ.get("HERMES_AGENT_DIR", r"C:\Users\USER\AppData\Local\hermes\hermes-agent")
+        if HERMES_AGENT not in sys.path:
+            sys.path.insert(0, HERMES_AGENT)
+        from agent.credential_pool import load_pool
+        pool = load_pool("nous")
+        if pool and pool.has_credentials():
+            entry = pool.peek()
+            if entry:
+                api_key = str(getattr(entry, "access_token", "") or getattr(entry, "runtime_api_key", "")).strip()
+    except Exception:
+        pass
+    if not api_key:
+        api_key = os.environ.get("NOUS_API_KEY") or os.environ.get("OPENAI_API_KEY") or ""
+    return api_key
+
+@app.get("/api/tts")
+async def tts(text: str = "", voice: str = "alloy"):
+    if not text.strip():
+        return Response("missing text", status_code=400)
+    text = text.strip()
+    key = hashlib.md5((voice + "|" + text).encode("utf-8")).hexdigest()
+    path = os.path.join(TTS_CACHE, key + ".mp3")
+    if os.path.exists(path):
+        return Response(open(path, "rb").read(), media_type="audio/mpeg")
+    try:
+        import httpx
+        r = httpx.post(
+            "https://openai-audio-gateway.nousresearch.com/v1/audio/speech",
+            headers={"Authorization": "Bearer " + (_nous_api_key() or "dummy")},
+            json={"model": "gpt-4o-mini-tts", "voice": voice, "input": text[:1200]},
+            timeout=60,
+        )
+        if r.status_code == 200 and r.content:
+            with open(path, "wb") as f:
+                f.write(r.content)
+            return Response(r.content, media_type="audio/mpeg")
+        return Response(f"tts failed {r.status_code}", status_code=502)
+    except Exception as e:
+        return Response("tts error: " + str(e), status_code=500)
 
 # serve the static app from the same origin → ONE tunnel/URL for everything
 # (mounted LAST so /api/* and /health win over static)
