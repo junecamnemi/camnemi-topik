@@ -240,7 +240,7 @@
 
 /* ---------- Schedule calendar ---------- */
 .cal {
-  width: 100%; border-collapse: collapse; table-layout: fixed;
+  width: 100%; min-width: 0; border-collapse: collapse; table-layout: fixed;
   background: #fff; border-radius: 12px; overflow: hidden;
 }
 .cal th { font-size: 10px; color: var(--ios-secondary-label); padding: 4px 0; font-weight: 600; }
