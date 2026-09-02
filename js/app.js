@@ -47,7 +47,9 @@ const LS = {
   theme:    'camnemi_topik_theme',     // 'light' | 'dark' | 'auto'
   srs:      'camnemi_topik_srs',        // { qid: {interval:1|3|7, due:'YYYY-MM-DD', last:0|1} }
   xp:       'camnemi_topik_xp',         // { total: number }
-  quests:   'camnemi_topik_quests'      // { date, daily:{n,target}, flash:{n,target}, mock:{n,target} }
+  quests:   'camnemi_topik_quests',      // { date, daily:{n,target}, flash:{n,target}, mock:{n,target} }
+  challenge: 'camnemi_topik_challenge',  // { type, idx, answers:{qid:pick}, startAt, timeLeft, qids[] } (in-progress)
+  conquered: 'camnemi_topik_conquered'   // { [type]: { n: times conquered, last: date } }
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -113,6 +115,7 @@ const T = {
     menu_theme: 'Theme', menu_lang: 'Language', menu_sync: 'Sync my data', menu_synced: '✓ Synced', menu_sync_err: 'Sync failed',
     xp_level: 'Level', xp_to_next: '{n} XP to Level {l}', xp_levelup: '🎉 Level up! You reached Level {l}', xp_reward: '+{n} XP',
     quest_title: 'Daily quests', quest_daily: 'Solve {n}/{t} questions', quest_flash: 'Review {n}/{t} flashcards', quest_mock: 'Finish {n}/{t} mock test', quest_done: '✓ Done', quest_reward: '+{n} XP',
+    chal_title: 'Weak-spot challenge', chal_sub: 'Beat your weakest type in 5 minutes', chal_start: '⚔️ Start challenge', chal_time: 'Time', chal_correct: 'Correct', chal_conquer: '🏆 Conquered {t}!', chal_fail: 'Keep training — try again!', chal_reward: '+{n} XP bonus', chal_q: 'Question {i}/{n}', chal_done: 'Challenge finished', chal_conquered_before: 'Conquered {n}×', chal_again: 'Challenge again',
   },
   ko: {
     nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
@@ -175,6 +178,7 @@ const T = {
     menu_theme: '테마', menu_lang: '언어', menu_sync: '내 데이터 동기화', menu_synced: '✓ 동기화됨', menu_sync_err: '동기화 실패',
     xp_level: '레벨', xp_to_next: '레벨 {l}까지 {n} XP', xp_levelup: '🎉 레벨업! 레벨 {l}에 도달했어요', xp_reward: '+{n} XP',
     quest_title: '데일리 미션', quest_daily: '문제 {n}/{t}개 풀기', quest_flash: '복습 카드 {n}/{t}장', quest_mock: '모의고사 {n}/{t}회', quest_done: '✓ 완료', quest_reward: '+{n} XP',
+    chal_title: '약점 정복 챌린지', chal_sub: '5분 안에 가장 약한 유형을 정복하세요', chal_start: '⚔️ 챌린지 시작', chal_time: '시간', chal_correct: '정답', chal_conquer: '🏆 {t} 정복!', chal_fail: '더 연습하고 다시 도전하세요!', chal_reward: '+{n} XP 보너스', chal_q: '문제 {i}/{n}', chal_done: '챌린지 완료', chal_conquered_before: '{n}회 정복', chal_again: '다시 도전',
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
@@ -237,6 +241,7 @@ const T = {
     menu_theme: 'របៀប', menu_lang: 'ភាសា', menu_sync: 'ធ្វើសមកាលកម្មទិន្នន័យ', menu_synced: '✓ បានធ្វើសមកាលកម្ម', menu_sync_err: 'សមកាលកម្មបរាជ័យ',
     xp_level: 'កម្រិត', xp_to_next: '{n} XP ទៅកម្រិត {l}', xp_levelup: '🎉 ឡើងកម្រិត! អ្នកបានដល់កម្រិត {l}', xp_reward: '+{n} XP',
     quest_title: 'បេសកកម្មប្រចាំថ្ងៃ', quest_daily: 'ដោះស្រាយ {n}/{t} សំណួរ', quest_flash: 'ពិនិត្យ {n}/{t} បៀរ', quest_mock: 'ប្រឡងសាក {n}/{t} វគ្គ', quest_done: '✓ រួចរាល់', quest_reward: '+{n} XP',
+    chal_title: 'បេសកកម្មយកឈ្នះចំណុចខ្សោយ', chal_sub: 'យកឈ្នះប្រភេទខ្សោយបំផុតក្នុង ៥ នាទី', chal_start: '⚔️ ចាប់ផ្តើម', chal_time: 'ពេល', chal_correct: 'ត្រឹមត្រូវ', chal_conquer: '🏆 បានយកឈ្នះ {t}!', chal_fail: 'ហ្វឹកហាត់បន្ថែម ហើយព្យាយាមម្តងទៀត!', chal_reward: '+{n} XP បន្ថែម', chal_q: 'សំណួរ {i}/{n}', chal_done: 'បេសកកម្មបានបញ្ចប់', chal_conquered_before: 'បានយកឈ្នះ {n}ដង', chal_again: 'ព្យាយាមម្តងទៀត',
   }
 };
 let LANG = localStorage.getItem(LS.lang) || 'en';
@@ -412,6 +417,7 @@ function render() {
     case 'wrong': s.innerHTML = viewWrong(); bindWrong(); break;
     case 'learn': s.innerHTML = viewLearn(); bindLearn(); break;
     case 'progress': s.innerHTML = viewProgress(); bindProgress(); break;
+    case 'challenge': s.innerHTML = viewChallenge(); bindChallenge(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
 }
@@ -803,6 +809,7 @@ function smartRecCard(acc) {
       <div class="sub" style="font-size:12.5px;margin-top:3px;">${t('smart_weak_pct', { p: weak.p, c: weak.c, n: weak.n })}</div></div>
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateAI('${escAttr(weak.k)}')">${ic('spark',15)} ${t('smart_btn', { t: label })}</button>
+    <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-orange);border:1.5px solid var(--ios-orange);border-radius:10px;" onclick="startChallenge('${escAttr(weak.k)}')">${t('chal_start')}</button>
   </div>`;
 }
 
@@ -1038,6 +1045,163 @@ function levelCardHTML() {
     </div>
   </div>`;
 }
+/* ================= WEAK-SPOT CHALLENGE (boss mode) ================= */
+const CHAL_SECONDS = 300;        // 5 minutes
+const CHAL_QS = 5;               // 5 questions
+const CHAL_PASS = 0.6;           // ≥60% to conquer
+let _chalTimer = null, _chalRemain = CHAL_SECONDS;
+
+function chalPickQs(type) {
+  // prefer bank questions of that type FIRST (up to CHAL_QS); pad from same section only if needed
+  const pool = allQuestions().concat(APP.daily || []);
+  const same = pool.filter(q => q.type === type && q.options && q.options.length === 4);
+  const shufSame = same.slice().sort(() => Math.random() - 0.5);
+  const chosen = shufSame.slice(0, CHAL_QS);
+  if (chosen.length >= CHAL_QS) return chosen;
+  // pad: same section, different type
+  const section = chosen[0] ? chosen[0].section : (same[0] ? same[0].section : 'reading');
+  const sec = pool.filter(q => q.section === section && q.options && q.options.length === 4
+    && q.type !== type && !chosen.some(c => c.id === q.id));
+  const shufSec = sec.slice().sort(() => Math.random() - 0.5);
+  return chosen.concat(shufSec.slice(0, CHAL_QS - chosen.length));
+}
+function startChallenge(type) {
+  const qs = chalPickQs(type);
+  if (!qs.length) { toast(LANG === 'ko' ? '챌린지 문제가 부족해요.' : 'Not enough challenge questions.'); return; }
+  APP.challenge = {
+    type, qids: qs.map(q => q.id), idx: 0,
+    answers: {}, startAt: Date.now(), remain: CHAL_SECONDS, done: false
+  };
+  lsSet(LS.challenge, APP.challenge);
+  if (_chalTimer) clearInterval(_chalTimer);
+  _chalRemain = CHAL_SECONDS;
+  _chalTimer = setInterval(() => {
+    _chalRemain--;
+    if (APP.challenge && !APP.challenge.done) APP.challenge.remain = _chalRemain;
+    const el = $id('chal-timer');
+    if (el) { el.textContent = fmtTime(_chalRemain); if (_chalRemain < 60) el.style.color = 'var(--ios-red)'; }
+    if (_chalRemain <= 0) { clearInterval(_chalTimer); _chalTimer = null; finishChallenge(true); }
+  }, 1000);
+  go('challenge');
+}
+function viewChallenge() {
+  const ch = APP.challenge;
+  if (!ch) return `<div class="app-card"><p class="sub">${t('chal_title')}</p>
+    <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="go('home')">← Home</button></div>`;
+  if (ch.done) return viewChallengeResult();
+  const qs = ch.qids.map(qById).filter(Boolean);
+  const q = qs[ch.idx];
+  if (!q) return viewChallengeResult();
+  const picked = ch.answers[q.id];
+  const label = typeLabel(ch.type);
+  const conquered = lsGet(LS.conquered, {})[ch.type];
+  return `
+    <div class="sec-h"><h2>⚔️ ${t('chal_title')}</h2><span class="sub">${conquered ? t('chal_conquered_before', { n: conquered.n }) : ''}</span></div>
+    <div class="app-card" style="border:1.5px solid var(--ios-orange);">
+      <div class="row">
+        <span class="q-num">${t('chal_q', { i: ch.idx + 1, n: qs.length })}</span>
+        <span id="chal-timer" style="font-weight:800;color:${_chalRemain < 60 ? 'var(--ios-red)' : 'var(--ios-orange)'};font-size:15px;">⏱ ${fmtTime(_chalRemain)}</span>
+        <button class="btn btn-ghost btn-sm" onclick="exitChallenge()">${t('exit')}</button>
+      </div>
+      <div class="daily-progress"><div style="width:${Math.round((ch.idx + 1) / qs.length * 100)}%;background:var(--ios-orange);"></div></div>
+      ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
+      ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
+      <div class="q-kr">${q.q}</div>
+      ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
+      ${q.options.map((o, i) => `
+        <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickChallenge(${i})">
+          <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
+        </button>`).join('')}
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button class="btn btn-ghost" ${ch.idx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navChallenge(-1)">${t('prev')}</button>
+        <button class="btn btn-primary" style="flex:1;background:var(--ios-orange);" onclick="navChallenge(1)">${ch.idx >= qs.length - 1 ? t('finish') : t('next')}</button>
+      </div>
+    </div>`;
+}
+function pickChallenge(i) {
+  const ch = APP.challenge;
+  const qs = ch.qids.map(qById).filter(Boolean);
+  const q = qs[ch.idx];
+  if (!q) return;
+  ch.answers[q.id] = i;
+  lsSet(LS.challenge, ch);
+  // XP per answer (same as normal)
+  addXP(i === q.correct ? XP_RULES.correct : XP_RULES.wrong, 'challenge:' + (i === q.correct ? 'c' : 'w'));
+  bumpQuest('daily', 1);
+  render();
+}
+function navChallenge(d) {
+  const ch = APP.challenge;
+  const qs = ch.qids.map(qById).filter(Boolean);
+  const next = Math.min(qs.length - 1, Math.max(0, ch.idx + d));
+  if (d > 0 && ch.idx >= qs.length - 1) { finishChallenge(false); return; }
+  ch.idx = next;
+  lsSet(LS.challenge, ch);
+  render();
+}
+function finishChallenge(timedOut) {
+  const ch = APP.challenge;
+  if (!ch || ch.done) return;
+  const qs = ch.qids.map(qById).filter(Boolean);
+  let correct = 0, attempted = 0;
+  qs.forEach(q => {
+    const a = ch.answers[q.id];
+    if (a === undefined) return;
+    attempted++;
+    if (a === q.correct) correct++;
+  });
+  const pct = attempted ? correct / attempted : 0;
+  const conquered = attempted > 0 && pct >= CHAL_PASS;
+  ch.done = true;
+  ch.result = { correct, attempted, total: qs.length, conquered, pct: Math.round(pct * 100) };
+  lsSet(LS.challenge, ch);
+  if (_chalTimer) { clearInterval(_chalTimer); _chalTimer = null; }
+  // conquer → bonus XP + record
+  if (conquered) {
+    const bonus = 150;
+    addXP(bonus, 'conquer:' + ch.type);
+    const cq = lsGet(LS.conquered, {});
+    const prev = cq[ch.type] || { n: 0, last: null };
+    cq[ch.type] = { n: prev.n + 1, last: todayStr() };
+    lsSet(LS.conquered, cq);
+    toast(t('chal_conquer', { t: typeLabel(ch.type) }) + ' ' + t('chal_reward', { n: bonus }));
+  } else {
+    toast(t('chal_fail'));
+  }
+  render();
+}
+function viewChallengeResult() {
+  const ch = APP.challenge;
+  if (!ch || !ch.done) return `<div class="app-card"><p class="sub">${t('chal_title')}</p></div>`;
+  const r = ch.result;
+  const label = typeLabel(ch.type);
+  const conquered = lsGet(LS.conquered, {})[ch.type];
+  return `
+    <div class="app-card elevated big-cta" style="${r.conquered ? 'border:2px solid var(--ios-green);' : ''}">
+      <div class="cta-ico" style="color:${r.conquered ? 'var(--ios-green)' : 'var(--ios-orange)'};font-size:52px;">${r.conquered ? '🏆' : '⚔️'}</div>
+      <h2 style="font-size:22px;color:var(--ios-label);margin:6px 0;">${r.conquered ? t('chal_conquer', { t: label }) : t('chal_fail')}</h2>
+      <div class="stat-row">
+        <div class="stat-box"><b>${r.correct}/${r.attempted}</b><span>${t('chal_correct')}</span></div>
+        <div class="stat-box"><b>${r.pct}%</b><span>${t('menu_acc')}</span></div>
+        <div class="stat-box"><b>${conquered ? conquered.n : 0}</b><span>${t('chal_conquered_before', { n: conquered ? conquered.n : 0 }).replace(/[0-9]+×/, conquered ? conquered.n + '×' : '×')}</span></div>
+      </div>
+      ${r.conquered ? `<div class="sub" style="color:var(--ios-green);font-weight:700;">${t('chal_reward', { n: 150 })}</div>` : `<div class="sub">${t('chal_sub')}</div>`}
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-ghost" style="flex:1;border:1.5px solid var(--ios-border,var(--ios-separator));" onclick="go('home')">← ${t('nav_home')}</button>
+        <button class="btn btn-primary" style="flex:1;background:var(--ios-orange);" onclick="startChallenge('${escAttr(ch.type)}')">${t('chal_again')}</button>
+      </div>
+    </div>`;
+}
+function exitChallenge() {
+  if (_chalTimer) { clearInterval(_chalTimer); _chalTimer = null; }
+  APP.challenge = null;
+  lsSet(LS.challenge, null);
+  go('home');
+}
+function bindChallenge() {}
+
 function recordResult(q, correct) {
   // progress
   const prog = lsGet(LS.progress, {});
