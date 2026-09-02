@@ -10,12 +10,14 @@ eval(fs.readFileSync(path.join(base, 'data', 'level-test.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik1-bank.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik2-bank.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'mock-tests.js'), 'utf8'));
+eval(fs.readFileSync(path.join(base, 'data', 'topik-schedule.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'drama-lessons.js'), 'utf8'));
 const LESSONS = window.LESSONS;
 const QUIZ = window.QUIZ;
 const TOPIK1 = window.TOPIK1_BANK;
 const TOPIK2 = window.TOPIK2_BANK;
 const MOCK = window.MOCK_TESTS;
+const SCHEDULE = window.TOPIK_SCHEDULE;
 const DRAMA = window.DRAMA_LESSONS;
 
 const errors = [];
@@ -122,6 +124,16 @@ MOCK.forEach((m) => {
   m.qids.forEach(qid => { if (!T2ids.has(qid) && !TOPIK1.some(x => x.id === qid)) errors.push(`mock ${m.id} unknown qid ${qid}`); });
 });
 console.log('TOPIK2 bank:', TOPIK2.length, '| Mock tests:', MOCK.length);
+
+// 4e. schedule integrity
+const SCHED_PBTS = new Set(SCHEDULE.pbt.map(p => parseInt(p.session)));
+const allSessions = new Set(SCHEDULE.pbt.map(p => parseInt(p.session)));
+SCHEDULE.countries.forEach(c => {
+  if (!c.key || !c.name || !c.sessions.length) errors.push(`schedule country ${c.key || '?'} missing fields`);
+  c.sessions.forEach(s => { if (!allSessions.has(s)) errors.push(`schedule ${c.key} unknown session ${s}`); });
+});
+if (SCHEDULE.pbt.length !== 6) errors.push('schedule: PBT should have 6 sessions');
+console.log('Schedule: PBT', SCHEDULE.pbt.length, '| IBT', SCHEDULE.ibt.length, '| countries', SCHEDULE.countries.length);
 console.log(errors.length ? `ERRORS (${errors.length}):\n - ` + errors.join('\n - ') : 'ALL DATA CHECKS PASSED');
 
 // 5. Quiz scoring engine (replicate pure function from quiz.js)

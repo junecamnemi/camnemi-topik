@@ -62,6 +62,7 @@ function render() {
     case 'mock': s.innerHTML = viewMock(); bindMock(); break;
     case 'wrong': s.innerHTML = viewWrong(); bindWrong(); break;
     case 'learn': s.innerHTML = viewLearn(); bindLearn(); break;
+    case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
 }
 
@@ -118,6 +119,8 @@ function viewHome() {
     </div>
 
     <div class="sec-h"><h2>Quick actions</h2></div>
+    <div class="app-card"><div class="row" onclick="go('schedule')" style="cursor:pointer;">
+      <div><b>🗓 TOPIK 시험 일정</b><div class="sub">나라별 시험일 · 접수기간 · 결과 발표</div></div><span style="color:var(--teal);">→</span></div></div>
     <div class="app-card"><div class="row" onclick="go('learn')" style="cursor:pointer;">
       <div><b>📚 Weak-spot review</b><div class="sub">Vocab &amp; grammar based on your mistakes</div></div><span style="color:var(--teal);">→</span></div></div>
     <div class="app-card"><div class="row" onclick="go('wrong')" style="cursor:pointer;">
@@ -631,6 +634,82 @@ function viewLearn() {
 }
 function bindLearn() {}
 
+/* ================= TOPIK SCHEDULE (나라별 일정) ================= */
+function viewSchedule() {
+  const sch = window.TOPIK_SCHEDULE;
+  if (!sch) return '<div class="app-card"><p class="sub">일정 데이터가 없습니다.</p></div>';
+  const today = todayStr();
+  const sel = APP.scheduleCountry || 'KR';
+  const country = sch.countries.find(c => c.key === sel) || sch.countries[0];
+  // 국가별 회차 상세
+  const sessions = country.sessions;
+  const rows = sch.pbt.filter(p => sessions.includes(parseInt(p.session)));
+  // 지난 회차 표시 구분
+  const statusOf = (date) => date < today ? 'past' : (date === today ? 'today' : 'upcoming');
+  const sessionLabel = (s) => s.session.replace('회', '');
+  return `
+    <div class="sec-h"><h2>🗓 TOPIK 시험 일정</h2><span class="sub">${sch.year}년</span></div>
+    <div class="app-card">
+      <p class="sub" style="font-size:12px;">${sch.note}</p>
+    </div>
+
+    <!-- 국가 선택 -->
+    <div class="sec-h"><h2>나라 선택</h2></div>
+    <div class="app-card">
+      <select id="schedule-country" style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font);" onchange="setScheduleCountry(this.value)">
+        ${sch.countries.map(c => `<option value="${c.key}" ${c.key === sel ? 'selected' : ''}>${c.flag} ${c.name}</option>`).join('')}
+      </select>
+    </div>
+
+    <!-- 선택 국가 상세 -->
+    <div class="sec-h"><h2>${country.flag} ${country.name}</h2><span class="sub">${country.cities}</span></div>
+    ${rows.length ? rows.map(p => {
+      const st = statusOf(p.date);
+      const d = p.date.split('-');
+      const dow = ['일','월','화','수','목','금','토'][new Date(p.date + 'T00:00:00').getDay()];
+      return `
+        <div class="app-card" style="${st === 'past' ? 'opacity:.55;' : ''}${st === 'today' ? 'border-color:var(--teal);' : ''}">
+          <div class="row">
+            <span class="mock-badge t2">${sessionLabel(p)}회</span>
+            <span style="font-size:12px;font-weight:700;${st === 'past' ? 'color:var(--muted);' : 'color:var(--navy);'}">
+              ${st === 'past' ? '✓ 지난 시험' : st === 'today' ? '🔥 오늘!' : '📌 예정'}
+            </span>
+          </div>
+          <div style="font-size:17px;font-weight:800;color:var(--navy-dark);margin:8px 0 4px;">
+            ${d[1]}월 ${d[2]}일 (${dow}) <span style="font-size:12px;color:var(--muted);font-weight:600;">${p.date.slice(0,4)}</span>
+          </div>
+          <div class="sub" style="font-size:12.5px;margin:3px 0;">🖥 접수: <b>${p.reg}</b></div>
+          <div class="sub" style="font-size:12.5px;margin:3px 0;">📄 결과: <b>${p.result}</b></div>
+          <div class="sub" style="font-size:11.5px;margin-top:4px;">📍 ${country.cities} · 접수처: ${country.reg}</div>
+        </div>`;
+    }).join('') : `<div class="app-card"><p class="sub">이 나라에서는 아직 시행 정보가 없습니다.</p></div>`}
+
+    <!-- 전체 회차 -->
+    <div class="sec-h"><h2>📋 전체 일정 (PBT)</h2></div>
+    <div class="app-card">
+      ${sch.pbt.map(p => {
+        const st = statusOf(p.date);
+        return `<div class="row" style="padding:6px 0;border-bottom:1px solid var(--border);${st==='past'?'opacity:.5':''}">
+          <span style="font-size:13px;font-weight:700;">${p.session}</span>
+          <span style="font-size:13px;">${p.date.slice(5)}</span>
+          <span class="sub" style="font-size:11px;">접수 ${p.reg}</span>
+          <span class="mock-badge ${p.overseas ? 't2' : 't1'}" style="font-size:9px;">${p.overseas ? '해외' : '한국'}</span>
+        </div>`;}).join('')}
+    </div>
+    <div class="app-card">
+      <b style="font-size:13px;color:var(--navy);">💻 IBT (컴퓨터 시험, 한국)</b>
+      ${sch.ibt.map(p => `<div class="row" style="padding:5px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:12.5px;font-weight:700;">${p.session}</span>
+        <span style="font-size:12.5px;">${p.date.slice(5)}</span>
+        <span class="sub" style="font-size:10.5px;">결과 ${p.result.slice(5)}</span>
+      </div>`).join('')}
+      <p class="sub" style="font-size:10.5px;margin-top:6px;">IBT는 2026년 17개국 확대 예정 (한국 중심)</p>
+    </div>
+  `;
+}
+function setScheduleCountry(k) { APP.scheduleCountry = k; render(); }
+function bindSchedule() {}
+
 /* ---------- boot ---------- */
 // expose for tests / debugging
 window.APP = APP;
@@ -639,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','daily','mock','wrong','learn'].includes(q) ? q : (['home','daily','mock','wrong','learn'].includes(h) ? h : 'home'));
+  go(['home','daily','mock','wrong','learn','schedule'].includes(q) ? q : (['home','daily','mock','wrong','learn','schedule'].includes(h) ? h : 'home'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {
