@@ -15,6 +15,8 @@
   <header class="app-header">
     <a class="brand" href="index.html"><span class="logo"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9 12 4l10 5-10 5L2 9z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v5"/></svg></span><span>Camnemi TOPIK</span></a>
     <div class="spacer"></div>
+    <select id="country-sel" onchange="setCountry(this.value)" title="Country / 나라 / ប្រទេស"
+      style="border:none;background:var(--ios-fill);border-radius:8px;padding:4px 6px;font-size:12px;font-weight:700;color:var(--ios-green);font-family:var(--ios-font);max-width:86px;"></select>
     <select id="lang-sel" onchange="setLang(this.value)" title="Language / 언어 / ភាសា"
       style="border:none;background:var(--ios-fill);border-radius:8px;padding:4px 6px;font-size:12px;font-weight:700;color:var(--ios-blue);font-family:var(--ios-font);">
       <option value="en">EN</option>
@@ -23,6 +25,9 @@
     </select>
     <span id="app-h-sub" style="font-size:14px;color:var(--ios-secondary-label);font-weight:700;"></span>
   </header>
+
+  <!-- Country D-day strip (auto-rotates when multiple sessions) -->
+  <div id="dday-strip" class="dday-strip" onclick="go('schedule')"></div>
 
   <!-- Screen container -->
   <main class="app-content" id="screen"></main>

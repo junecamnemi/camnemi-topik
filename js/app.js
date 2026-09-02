@@ -29,6 +29,7 @@ const LS = {
   wrong:    'camnemi_topik_wrong',      // [ {qid, at} ] — recent misses
   streak:   'camnemi_topik_streak',     // { last: 'YYYY-MM-DD', count: n }
   lang:     'camnemi_topik_lang',       // 'en' | 'ko' | 'km'
+  country:  'camnemi_topik_country',    // 'KR' | 'VN' | ... (header selector)
   mockStatus: 'camnemi_topik_mock_status', // { mockId: 'progress'|'done' }
   scores:   'camnemi_topik_scores'      // [{date, level, score, maxScore, pct, passI, passII, correct, wrong, unanswered}]
 };
@@ -84,6 +85,7 @@ const T = {
     sched_legend_reg: 'Registration', sched_legend_test: 'Exam day', sched_legend_result: 'Results',
     sched_sessions: 'By session', sched_all: 'All schedule (PBT)', sched_ibt: '💻 IBT (computer test, Korea)',
     status_open: '📌 Reg. opens', status_ing: '🔥 Registering', status_wait: '✏️ Reg. closed · exam', status_result: '📄 Exam done · waiting', status_done: '✓ Ended',
+    strip_more: '{n} more sessions', strip_view: 'View schedule',
   },
   ko: {
     nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
@@ -134,6 +136,7 @@ const T = {
     sched_legend_reg: '접수기간', sched_legend_test: '시험일', sched_legend_result: '결과발표',
     sched_sessions: '회차별', sched_all: '전체 일정 (PBT)', sched_ibt: '💻 IBT (컴퓨터 시험, 한국)',
     status_open: '📌 접수 예정', status_ing: '🔥 접수 중', status_wait: '✏️ 접수 마감 · 시험 대기', status_result: '📄 시험 완료 · 결과 대기', status_done: '✓ 종료',
+    strip_more: '+{n}개 회차', strip_view: '일정 보기',
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
@@ -184,6 +187,7 @@ const T = {
     sched_legend_reg: 'ការចុះឈ្មោះ', sched_legend_test: 'ថ្ងៃប្រឡង', sched_legend_result: 'លទ្ធផល',
     sched_sessions: 'តាមវគ្គ', sched_all: 'កាលវិភាគទាំងអស់ (PBT)', sched_ibt: '💻 IBT (ប្រឡងកុំព្យូទ័រ កូរ៉េ)',
     status_open: '📌 ចុះឈ្មោះបើក', status_ing: '🔥 កំពុងចុះឈ្មោះ', status_wait: '✏️ បិទ · រង់ចាំប្រឡង', status_result: '📄 ប្រឡងរួច · រង់ចាំលទ្ធផល', status_done: '✓ បញ្ចប់',
+    strip_more: '+{n} វគ្គ', strip_view: 'មើលកាលវិភាគ',
   }
 };
 let LANG = localStorage.getItem(LS.lang) || 'en';
@@ -201,7 +205,79 @@ function setLang(l) {
   document.querySelectorAll('[data-nav-label]').forEach(el => { el.textContent = t('nav_' + el.dataset.navLabel); });
   const hsub = $id('app-h-sub');
   if (hsub) hsub.textContent = t('nav_' + APP.tab);
+  renderDdayStrip();
   render();
+}
+
+/* ---------- Country selector + rotating D-day strip ---------- */
+let _stripTimer = null, _stripIdx = 0;
+function countryList() { return (window.TOPIK_SCHEDULE && TOPIK_SCHEDULE.countries) || []; }
+function selectedCountry() {
+  const list = countryList();
+  const key = localStorage.getItem(LS.country) || 'KR';
+  return list.find(c => c.key === key) || list[0] || null;
+}
+function setCountry(k) {
+  localStorage.setItem(LS.country, k);
+  APP.scheduleCountry = k;
+  const sel = $id('country-sel'); if (sel) sel.value = k;
+  const sch = $id('schedule-country'); if (sch) sch.value = k;
+  renderDdayStrip();
+  render();
+}
+function initCountrySel() {
+  const sel = $id('country-sel');
+  if (!sel) return;
+  sel.innerHTML = countryList().map(c => `<option value="${c.key}">${c.flag} ${c.name}</option>`).join('');
+  const cur = selectedCountry();
+  sel.value = cur ? cur.key : 'KR';
+}
+function renderDdayStrip() {
+  const host = $id('dday-strip');
+  if (!host) return;
+  if (_stripTimer) { clearInterval(_stripTimer); _stripTimer = null; }
+  const country = selectedCountry();
+  const sch = window.TOPIK_SCHEDULE;
+  if (!country || !sch) { host.style.display = 'none'; return; }
+  // upcoming (not done) sessions for this country, nearest first
+  const rows = sch.pbt.filter(p => country.sessions.includes(parseInt(p.session)))
+    .map(p => ({ p, st: sessionStatus(p) }))
+    .filter(x => x.st.key !== 'done')
+    .sort((a, b) => a.p.date < b.p.date ? -1 : 1);
+  if (!rows.length) { host.style.display = 'none'; return; }
+  host.style.display = 'block';
+  _stripIdx = Math.min(_stripIdx, rows.length - 1);
+  const slideHTML = rows.map((x, i) => {
+    const st = x.st;
+    let dday, label;
+    if (st.key === 'reg_ing' || st.key === 'reg_open') { dday = ddayStr(st.reg.end); label = t('sched_reg_close'); }
+    else if (st.key === 'test_wait') { dday = ddayStr(x.p.date); label = t('sched_next_test'); }
+    else { dday = ddayStr(x.p.result); label = t('sched_result'); }
+    const statusKey = st.key === 'reg_ing' ? 'ing' : st.key === 'reg_open' ? 'open' : st.key === 'test_wait' ? 'wait' : 'result';
+    const sub = `${t('status_' + statusKey)} · ${x.p.date.slice(5)}`;
+    const more = rows.length > 1 ? `<span class="strip-more">${t('strip_more', { n: rows.length - 1 })}</span>` : '';
+    const dots = rows.length > 1 ? `<span class="strip-dots">${rows.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('')}</span>` : '';
+    return `<div class="strip-slide ${i === _stripIdx ? 'active' : ''}" data-i="${i}">
+      <span class="strip-flag">${country.flag}</span>
+      <div class="strip-main">
+        <div class="strip-title">${esc(country.name)} · ${esc(x.p.session)}</div>
+        <div class="strip-sub">${esc(sub)}</div>
+      </div>
+      <div class="strip-dday"><b>${dday}</b><span>${label}</span></div>
+      ${dots}${more}
+    </div>`;
+  }).join('');
+  host.innerHTML = slideHTML;
+  // auto-rotate when multiple sessions (e.g. Vietnam: 105~109)
+  if (rows.length > 1) {
+    _stripTimer = setInterval(() => {
+      const slides = host.querySelectorAll('.strip-slide');
+      if (!slides.length) return;
+      slides[_stripIdx].classList.remove('active');
+      _stripIdx = (_stripIdx + 1) % slides.length;
+      slides[_stripIdx].classList.add('active');
+    }, 4000);
+  }
 }
 
 /* ---------- helpers ---------- */
@@ -1121,7 +1197,7 @@ function viewSchedule() {
   const sch = window.TOPIK_SCHEDULE;
   if (!sch) return '<div class="app-card"><p class="sub">일정 데이터가 없습니다.</p></div>';
   const today = todayStr();
-  const sel = APP.scheduleCountry || 'KR';
+  const sel = APP.scheduleCountry || localStorage.getItem(LS.country) || 'KR';
   const country = sch.countries.find(c => c.key === sel) || sch.countries[0];
   const sessions = country.sessions;
   const rows = sch.pbt.filter(p => sessions.includes(parseInt(p.session)));
@@ -1268,7 +1344,7 @@ function scheduleMonth(delta) {
   APP.scheduleMonth = `${nd.getFullYear()}-${String(nd.getMonth() + 1).padStart(2, '0')}`;
   render();
 }
-function setScheduleCountry(k) { APP.scheduleCountry = k; render(); }
+function setScheduleCountry(k) { APP.scheduleCountry = k; localStorage.setItem(LS.country, k); const hs = $id('country-sel'); if (hs) hs.value = k; renderDdayStrip(); render(); }
 function bindSchedule() {}
 
 /* ---------- boot ---------- */
@@ -1276,7 +1352,9 @@ function bindSchedule() {}
 window.APP = APP;
 window.generateAI = generateAI;
 document.addEventListener('DOMContentLoaded', () => {
-  // apply saved language: selector, nav labels, header
+  // init header selectors (country first so the D-day strip renders)
+  initCountrySel();
+  // apply saved language: selector, nav labels, header, strip
   setLang(LANG);
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
