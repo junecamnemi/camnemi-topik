@@ -2,3 +2,4 @@
 js/config.js
 .env
 *.local
+assets/audio/tts_cache/
