@@ -19,9 +19,21 @@ const APP = {
 };
 
 /* ---------- AI backend ----------
-   Local dev: ai_server.py on :9001 (Hermes Nous LLM).
-   Deployed:  point AI_API_BASE to a Supabase Edge Function (see docs). */
-const AI_API_BASE = (window.CAMNEMI_AI_BASE || 'http://127.0.0.1:9001');
+   Priority:
+   1. window.CAMNEMI_AI_BASE (set by js/config.js on the integrated tunnel server)
+   2. Local dev (localhost / 127.0.0.1) -> ai_server.py on :9001
+   3. GitHub Pages (junecamnemi.github.io) -> cloudflared tunnel to the PC's ai_server
+   4. Anything else (tunnel URL itself) -> same-origin /api
+   NOTE: the Pages fallback tunnel URL changes whenever cloudflared restarts;
+   update TUNNEL_AI_BASE here when it does. */
+const TUNNEL_AI_BASE = 'https://jane-dam-been-voltage.trycloudflare.com';
+const AI_API_BASE = (window.CAMNEMI_AI_BASE || (
+  /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname)
+    ? 'http://127.0.0.1:9001'
+    : /github\.io$/.test(location.hostname)
+      ? TUNNEL_AI_BASE
+      : '/api'
+));
 
 const LS = {
   progress: 'camnemi_topik_progress',   // { qid: {correct, total} }
