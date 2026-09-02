@@ -206,6 +206,26 @@ const $id = id => document.getElementById(id);
 const todayStr = () => new Date().toISOString().slice(0, 10);
 function lsGet(k, d) { try { return JSON.parse(localStorage.getItem(k)) || d; } catch (e) { return d; } }
 function lsSet(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+/* ---------- attractive SVG icon set (stroke style, currentColor) ---------- */
+const ICONS = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/>',
+  daily: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/>',
+  mock: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6M9 4c0-1 .5-2 1.5-2h3C14.5 2 15 3 15 4"/><path d="M9 10h6M9 14h6M9 18h3"/>',
+  notes: '<path d="M12 6c-1.5-1.2-3.5-2-6-2H3v15h3c2.5 0 4.5.8 6 2 1.5-1.2 3.5-2 6-2h3V4h-3c-2.5 0-4.5.8-6 2z"/><path d="M12 6v15"/>',
+  progress: '<path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>',
+  learn: '<path d="M2 9 12 4l10 5-10 5L2 9z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v5"/>',
+  trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  listen: '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  tip: '<path d="M9 18h6M10 21h4"/><path d="M12 3a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 3z"/>',
+  schedule: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 15h.01M12 15h.01M16 15h.01"/>',
+  spark: '<path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2L12 2z"/>'
+};
+function ic(name, size = 24) {
+  const body = ICONS[name] || '';
+  return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;">${body}</svg>`;
+}
 function allQuestions() {
   const t1 = (window.TOPIK1_BANK || []);
   const t2 = (window.TOPIK2_BANK || []);
@@ -222,14 +242,14 @@ function playListening(btn, text) {
   const url = AI_API_BASE + '/tts?text=' + encodeURIComponent(text) + '&voice=alloy';
   if (!_audioEl) {
     _audioEl = new Audio();
-    _audioEl.onended = () => { if (btn) { btn.textContent = t('listen'); btn.disabled = false; } };
-    _audioEl.onerror = () => { if (btn) { btn.textContent = t('listen'); btn.disabled = false; alert(LANG==='ko'?'오디오를 불러오지 못했어요. AI 서버가 켜져 있는지 확인하세요.':'Could not load audio. Is the AI server running?'); } };
+    _audioEl.onended = () => { if (btn) { btn.innerHTML = ic('listen',15) + ' ' + t('listen'); btn.disabled = false; } };
+    _audioEl.onerror = () => { if (btn) { btn.innerHTML = ic('listen',15) + ' ' + t('listen'); btn.disabled = false; alert(LANG==='ko'?'오디오를 불러오지 못했어요. AI 서버가 켜져 있는지 확인하세요.':'Could not load audio. Is the AI server running?'); } };
   }
   _audioEl.src = url;
   _audioEl.play().then(() => {
-    if (btn) { btn.textContent = LANG==='ko' ? '🔇 재생 중…' : '🔇 Playing…'; btn.disabled = true; }
+    if (btn) { btn.innerHTML = LANG==='ko' ? '🔇 재생 중…' : '🔇 Playing…'; btn.disabled = true; }
   }).catch(e => {
-    if (btn) { btn.textContent = t('listen'); btn.disabled = false; }
+    if (btn) { btn.innerHTML = ic('listen',15) + ' ' + t('listen'); btn.disabled = false; }
     alert(LANG==='ko' ? ('재생에 실패했어요: ' + e.message) : ('Playback failed: ' + e.message));
   });
 }
@@ -271,16 +291,16 @@ function viewHome() {
   return `
     ${isNew ? `
     <div class="app-card elevated big-cta" style="background:linear-gradient(135deg,#EAF3FF,#F6FAFF);border:none;">
-      <div class="cta-ico">🇰🇷</div>
+      <div class="cta-ico" style="color:var(--ios-blue);">${ic('trophy', 40)}</div>
       <h2 style="font-size:21px;color:var(--ios-label);margin-bottom:6px;">${t('welcome_title')}</h2>
       <p class="sub" style="line-height:1.6;">${t('welcome_body')}</p>
       <div style="display:flex;gap:8px;margin-top:16px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">📅 ${t('btn_today')}</button>
-        <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">📝 ${t('btn_mock')}</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">${ic('daily',17)} ${t('btn_today')}</button>
+        <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">${ic('mock',17)} ${t('btn_mock')}</button>
       </div>
     </div>` : `
     <div class="app-card elevated big-cta">
-      <div class="cta-ico">🇰🇷</div>
+      <div class="cta-ico" style="color:var(--ios-blue);">${ic('trophy', 36)}</div>
       <h2 style="font-size:22px;color:var(--ios-label);margin-bottom:6px;">${APP.level === 'II' ? 'TOPIK II · Level 3' : 'TOPIK I · Level 1–2'}</h2>
       <p class="sub">${t('home_sub')}</p>
       <div class="stat-row">
@@ -289,8 +309,8 @@ function viewHome() {
         <div class="stat-box"><b>${mastered}</b><span>🏆 ${t('stat_mastered')}</span></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:14px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">📅 ${t('btn_today')}</button>
-        <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">📝 ${t('btn_mock')}</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">${ic('daily',17)} ${t('btn_today')}</button>
+        <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">${ic('mock',17)} ${t('btn_mock')}</button>
       </div>
     </div>`}
     ${smartRecCard(acc)}
@@ -321,11 +341,11 @@ function viewHome() {
 
     <div class="sec-h"><h2>${t('quick')}</h2></div>
     <div class="app-card elevated"><div class="row" onclick="go('schedule')" style="cursor:pointer;">
-      <div><b>🗓 ${t('sched_link')}</b><div class="sub">${t('sched_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
+      <div style="color:var(--ios-blue);margin-right:10px;">${ic('schedule',22)}</div><div><b>🗓 ${t('sched_link')}</b><div class="sub">${t('sched_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
     <div class="app-card elevated"><div class="row" onclick="go('learn')" style="cursor:pointer;">
-      <div><b>📚 ${t('learn_link')}</b><div class="sub">${t('learn_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
+      <div style="color:var(--ios-green);margin-right:10px;">${ic('learn',22)}</div><div><b>📚 ${t('learn_link')}</b><div class="sub">${t('learn_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
     <div class="app-card elevated"><div class="row" onclick="go('wrong')" style="cursor:pointer;">
-      <div><b>📓 ${t('wrong_link')}</b><div class="sub">${t('wrong_desc', { n: lsGet(LS.wrong, []).length })}</div></div><span style="color:var(--ios-green);">→</span></div></div>
+      <div style="color:var(--ios-orange);margin-right:10px;">${ic('notes',22)}</div><div><b>📓 ${t('wrong_link')}</b><div class="sub">${t('wrong_desc', { n: lsGet(LS.wrong, []).length })}</div></div><span style="color:var(--ios-green);">→</span></div></div>
   `;
 }
 function setLevel(lv) {
@@ -383,9 +403,9 @@ function viewDaily() {
   const q = qs[APP.dailyIdx];
   if (!q) {
     return `<div class="app-card big-cta">
-      <div class="cta-ico">🎉</div><h2>${LANG === 'ko' ? '오늘의 문제를 모두 풀었어요!' : 'All done for today!'}</h2>
+      <div class="cta-ico" style="color:var(--ios-green);">${ic('spark', 40)}</div><h2>${LANG === 'ko' ? '오늘의 문제를 모두 풀었어요!' : 'All done for today!'}</h2>
       <p class="sub">${LANG === 'ko' ? '내일 새로운 문제가 나와요. 틀린 문제를 오답노트에서 복습하세요.' : 'Come back tomorrow for a fresh set. Review your mistakes in My Notes.'}</p>
-      <button class="btn btn-primary" style="margin-top:14px;" onclick="go('wrong')">📓 ${t('nav_notes')}</button>
+      <button class="btn btn-primary" style="margin-top:14px;" onclick="go('wrong')">${ic('notes',16)} ${t('nav_notes')}</button>
     </div>`;
   }
   const picked = done[q.id];
@@ -398,7 +418,7 @@ function viewDaily() {
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${t('listen')}</button>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
@@ -416,8 +436,8 @@ function viewDaily() {
           ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
         ` : ''}
       </div>
-      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${t('tip')}</button>
-      ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">✨ ${t('gen_ai')}</button>` : ''}
+      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
+      ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.dailyIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navDaily(-1)">${t('prev')}</button>
@@ -563,7 +583,7 @@ function viewDailyResult() {
   const passTarget = APP.level === 'I' ? 'TOPIK I (L1+)' : 'TOPIK II (L3+)';
   return `
     <div class="app-card big-cta">
-      <div class="cta-ico">🎯</div>
+      <div class="cta-ico" style="color:var(--ios-blue);">${ic('trophy', 42)}</div>
       <h2 style="font-size:22px;color:var(--ios-label);margin-bottom:6px;">${t('result_done')}</h2>
       <p class="sub">${t('result_answered', { a: r.correct + r.wrong, n: r.total })}</p>
       <div style="margin:18px 0;">
@@ -621,18 +641,21 @@ function smartRecCard(acc) {
   if (!weak) {
     return `<div class="app-card filled" style="background:linear-gradient(135deg,#EAF3FF,#F0F8FF);border:none;">
       <div class="row">
+        <div style="color:var(--ios-blue);margin-right:10px;">${ic('spark', 24)}</div>
         <div><b style="font-size:14px;color:var(--ios-blue);">🎯 ${t('smart_title')}</b>
         <div class="sub" style="font-size:12.5px;margin-top:3px;">${t('smart_empty')}</div></div>
       </div></div>`;
   }
   const label = typeLabel(weak.k);
-  const emoji = { grammar:'🧩', vocab:'📚', main_idea:'💡', order:'🔢', sentence_pos:'📍', topic:'🗣️', place:'🏠', intent:'🎯', comprehension:'📖', writing_short:'✍️', writing_letter:'💌' }[weak.k] || '🎯';
+  const icoName = { grammar:'mock', vocab:'notes', main_idea:'tip', order:'progress', sentence_pos:'target', topic:'listen', place:'schedule', intent:'target', comprehension:'notes', writing_short:'mock', writing_letter:'mock' }[weak.k] || 'target';
+  const icoColor = { grammar:'var(--ios-red)', vocab:'var(--ios-green)', main_idea:'var(--ios-blue)', order:'var(--ios-orange)', sentence_pos:'var(--ios-blue)', topic:'var(--ios-teal)', place:'var(--ios-orange)', intent:'var(--ios-red)', comprehension:'var(--ios-blue)', writing_short:'var(--ios-green)', writing_letter:'var(--ios-green)' }[weak.k] || 'var(--ios-blue)';
   return `<div class="app-card" style="border:1.5px solid var(--ios-blue);background:linear-gradient(135deg,#EAF3FF,#F6FAFF);">
     <div class="row">
-      <div><b style="font-size:14px;color:var(--ios-label);">${emoji} ${t('smart_weak', { t: label })}</b>
+      <div style="color:${icoColor};margin-right:10px;">${ic(icoName, 24)}</div>
+      <div><b style="font-size:14px;color:var(--ios-label);">${t('smart_weak', { t: label })}</b>
       <div class="sub" style="font-size:12.5px;margin-top:3px;">${t('smart_weak_pct', { p: weak.p, c: weak.c, n: weak.n })}</div></div>
     </div>
-    <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateAI('${escAttr(weak.k)}')">✨ ${t('smart_btn', { t: label })}</button>
+    <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateAI('${escAttr(weak.k)}')">${ic('spark',15)} ${t('smart_btn', { t: label })}</button>
   </div>`;
 }
 
@@ -670,7 +693,7 @@ function toggleTip(btn) {
   const card = btn.closest('.app-card');
   if (!card) return;
   const on = card.classList.toggle('tip-on');
-  btn.textContent = on ? '🙈 TIP 숨기기' : '💡 TIP 보기';
+  btn.innerHTML = (on ? ic('tip', 15) + ' ' + t('tip_hide') : ic('tip', 15) + ' ' + t('tip'));
 }
 function accBar(label, p, sub) {
   const color = p >= 70 ? 'var(--ios-green)' : p >= 40 ? 'var(--ios-orange)' : 'var(--ios-red)';
@@ -754,7 +777,7 @@ function viewMockRun() {
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${t('listen')}</button>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
@@ -763,7 +786,7 @@ function viewMockRun() {
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
-      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${t('tip')}</button>
+      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.mockIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navMock(-1)">${t('prev')}</button>
@@ -893,7 +916,7 @@ function viewLearn() {
           </div>`).join('')}
       </div>` : ''}
 
-    ${practiceType ? `<button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="generateAI('${escAttr(practiceType)}')">${t('learn_practice')}</button>` : ''}
+    ${practiceType ? `<button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="generateAI('${escAttr(practiceType)}')">${ic('spark',15)} ${t('learn_practice')}</button>` : ''}
   `;
 }
 function bindLearn() {}
@@ -916,7 +939,7 @@ function viewProgress() {
     const pass = last.level === 'I' ? last.passI : last.passII;
     lastCard = `
     <div class="app-card elevated big-cta">
-      <div class="cta-ico">🎯</div>
+      <div class="cta-ico" style="color:var(--ios-blue);">${ic('target', 38)}</div>
       <div style="font-size:13px;color:var(--ios-secondary-label);">${last.date === today ? t('prog_today') : t('prog_last')} · TOPIK ${last.level} (${last.date})</div>
       <div style="font-size:44px;font-weight:800;color:var(--ios-blue);margin:6px 0;">${last.score}<span style="font-size:18px;color:var(--ios-secondary-label);"> / ${last.maxScore}</span></div>
       <div class="row" style="justify-content:center;gap:10px;">
@@ -944,12 +967,12 @@ function viewProgress() {
   // ---- What I need to do ----
   const todos = [];
   // 1. today's daily
-  if (doneCount < 10) todos.push({ icon: '📅', label: t('prog_todo_daily', { d: doneCount }), act: "go('daily')", btn: t('prog_btn_daily') });
+  if (doneCount < 10) todos.push({ ico: 'daily', label: t('prog_todo_daily', { d: doneCount }), act: "go('daily')", btn: t('prog_btn_daily') });
   // 2. weak type (>=2 attempts, <70%)
   const weak = (acc.byType || []).filter(r => r.n >= 2 && r.p < 70)[0];
-  if (weak) todos.push({ icon: '🎯', label: t('prog_todo_weak', { t: typeLabel(weak.k), p: weak.p }), act: `generateAI('${escAttr(weak.k)}')`, btn: t('prog_btn_weak', { t: typeLabel(weak.k) }) });
+  if (weak) todos.push({ ico: 'target', label: t('prog_todo_weak', { t: typeLabel(weak.k), p: weak.p }), act: `generateAI('${escAttr(weak.k)}')`, btn: t('prog_btn_weak', { t: typeLabel(weak.k) }) });
   // 3. wrong answers to review
-  if (wrong.length) todos.push({ icon: '📓', label: t('prog_todo_wrong', { n: wrong.length }), act: "go('wrong')", btn: t('prog_btn_wrong') });
+  if (wrong.length) todos.push({ ico: 'notes', label: t('prog_todo_wrong', { n: wrong.length }), act: "go('wrong')", btn: t('prog_btn_wrong') });
   // 4. next exam / reg deadline (Korea schedule)
   const sch = window.TOPIK_SCHEDULE;
   if (sch && sch.pbt) {
@@ -962,16 +985,16 @@ function viewProgress() {
     });
     if (nextExam) {
       const d = Math.round((new Date(nextExam.date + 'T00:00:00') - todayD) / 86400000);
-      if (d > 0) todos.push({ icon: '🗓', label: t('prog_todo_exam', { s: nextExam.p.session, d }), act: "go('schedule')", btn: '🗓' });
+      if (d > 0) todos.push({ ico: 'schedule', label: t('prog_todo_exam', { s: nextExam.p.session, d }), act: "go('schedule')", btn: '🗓' });
     }
     if (nextReg) {
       const d = Math.round((new Date(nextReg.end + 'T00:00:00') - todayD) / 86400000);
-      if (d >= 0) todos.push({ icon: '🖥', label: t('prog_todo_reg', { s: nextReg.p.session, d }), act: "go('schedule')", btn: '🗓' });
+      if (d >= 0) todos.push({ ico: 'schedule', label: t('prog_todo_reg', { s: nextReg.p.session, d }), act: "go('schedule')", btn: '🗓' });
     }
   }
   const todosHTML = todos.length ? todos.map(td => `
     <div class="row" style="padding:11px 0;border-bottom:1px solid var(--border);">
-      <span style="font-size:17px;margin-right:8px;">${td.icon}</span>
+      <span style="color:var(--ios-blue);margin-right:8px;">${ic(td.ico, 20)}</span>
       <div style="flex:1;min-width:0;"><span style="font-size:13.5px;">${td.label}</span></div>
       <button class="btn btn-primary btn-sm" onclick="${td.act}">${td.btn}</button>
     </div>`).join('')
