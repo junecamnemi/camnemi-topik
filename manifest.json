@@ -1,0 +1,15 @@
+{
+  "name": "Camnemi TOPIK",
+  "short_name": "Camnemi TOPIK",
+  "description": "AI-powered TOPIK test prep: daily questions, mock tests, wrong-answer notes, weak-spot review, exam schedule by country.",
+  "start_url": "/camnemi-topik/app.html",
+  "scope": "/camnemi-topik/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F2F7",
+  "theme_color": "#007AFF",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

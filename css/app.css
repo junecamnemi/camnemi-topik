@@ -22,6 +22,30 @@
   --ios-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
 }
 
+/* ---------- Dark mode (iOS system colors) ---------- */
+[data-theme="dark"] {
+  --ios-bg: #000000;
+  --ios-card: #1C1C1E;
+  --ios-fill: #2C2C2E;
+  --ios-label: #FFFFFF;
+  --ios-secondary-label: #98989F;
+  --ios-tertiary-label: #636366;
+  --ios-separator: rgba(84, 84, 88, .6);
+  --ios-blue: #0A84FF;
+  --ios-green: #30D158;
+  --ios-red: #FF453A;
+  --ios-orange: #FF9F0A;
+  --ios-teal: #64D2FF;
+  --ios-gray: #98989F;
+  --ios-shadow: rgba(0, 0, 0, .5);
+}
+[data-theme="dark"] .app-card { box-shadow: none; border: 0.5px solid var(--ios-separator); }
+[data-theme="dark"] .q-passage { background: #1C1C1E; color: var(--ios-label); }
+[data-theme="dark"] .q-opt { background: var(--ios-card); color: var(--ios-label); }
+[data-theme="dark"] .q-opt.correct { background: rgba(48, 209, 88, .18); }
+[data-theme="dark"] .dday-strip { background: linear-gradient(135deg, #0A2E5C, #0A84FF); }
+[data-theme="dark"] .grade-card span { background: #1C1C1E; }
+
 /* ---------- App shell ---------- */
 .app-shell { display: flex; flex-direction: column; min-height: 100vh; background: var(--ios-bg); }
 @supports (min-height: 100dvh) { .app-shell { min-height: 100dvh; } }

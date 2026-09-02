@@ -8,6 +8,7 @@ Contract:
   -> {questions:[{id,section,type,level,points,q,passage?,options:[{t,gl?}],correct,explain,traps[],tip,freq,freqNote}], ai:true}
 """
 import json, os, sys, uuid, time
+import asyncio
 import httpx
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -286,6 +287,57 @@ async def generate(req: Request):
 @app.get("/health")
 async def health():
     return {"ok": True, "model": NOUS_MODEL}
+
+GRADE_SYSTEM = """You are a TOPIK II writing examiner (쓰기 51-54번 채점관).
+Score the student's Korean writing against the TOPIK II official rubric (내용/구성/어휘·문법 0-10 each, total /30 for 51-53; 54번 is /50 with 4 sub-criteria).
+Be encouraging but honest. Return STRICT JSON only:
+{"score":0..30 or 0..50,"criteria":{"내용":0..10,"구성":0..10,"어휘문법":0..10},"band":"3급|4급|5급|6급|아직","feedback":"2-3 sentences of encouraging feedback (English)","fixes":["correction 1","correction 2","correction 3"]}
+fixes must point out specific grammar/vocab errors in the student's actual text."""
+
+@app.post("/api/grade-writing")
+async def grade_writing(req: Request):
+    body = await req.json()
+    prompt = (body.get("prompt") or "").strip()
+    answer = (body.get("answer") or "").strip()
+    if not answer:
+        return {"error": "empty answer", "ai": False}
+    user = f"Question prompt: {prompt[:300]}\n\nStudent answer:\n{answer[:1500]}"
+    try:
+        data = await asyncio.to_thread(_ask_llm_with, GRADE_SYSTEM, user)
+        if not isinstance(data, dict) or "score" not in data:
+            raise ValueError("bad grade json")
+        return {"grade": data, "ai": True, "model": NOUS_MODEL}
+    except Exception as e:
+        return {"error": str(e), "ai": False}
+
+def _ask_llm_with(system, user_prompt) -> dict:
+    from openai import OpenAI
+    api_key = None
+    try:
+        import sys
+        HERMES_AGENT = os.environ.get("HERMES_AGENT_DIR", r"C:\Users\USER\AppData\Local\hermes\hermes-agent")
+        if HERMES_AGENT not in sys.path:
+            sys.path.insert(0, HERMES_AGENT)
+        from agent.credential_pool import load_pool
+        pool = load_pool("nous")
+        if pool and pool.has_credentials():
+            entry = pool.peek()
+            if entry:
+                api_key = str(getattr(entry, "access_token", "") or getattr(entry, "runtime_api_key", "")).strip()
+    except Exception:
+        pass
+    if not api_key:
+        api_key = os.environ.get("NOUS_API_KEY") or os.environ.get("OPENAI_API_KEY") or ""
+    client = OpenAI(base_url=NOUS_BASE, api_key=api_key or "dummy")
+    r = client.chat.completions.create(
+        model=NOUS_MODEL,
+        messages=[{"role": "system", "content": system},
+                  {"role": "user", "content": user_prompt}],
+        temperature=0.4,
+        max_tokens=1200,
+    )
+    txt = r.choices[0].message.content or ""
+    return _parse_json(txt)
 
 # =========================================================================
 # TTS — listen to listening questions aloud (same Nous auth as LLM)

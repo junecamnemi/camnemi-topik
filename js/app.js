@@ -31,7 +31,9 @@ const LS = {
   lang:     'camnemi_topik_lang',       // 'en' | 'ko' | 'km'
   country:  'camnemi_topik_country',    // 'KR' | 'VN' | ... (header selector)
   mockStatus: 'camnemi_topik_mock_status', // { mockId: 'progress'|'done' }
-  scores:   'camnemi_topik_scores'      // [{date, level, score, maxScore, pct, passI, passII, correct, wrong, unanswered}]
+  scores:   'camnemi_topik_scores',    // [{date, level, score, maxScore, pct, passI, passII, correct, wrong, unanswered}]
+  theme:    'camnemi_topik_theme',     // 'light' | 'dark' | 'auto'
+  srs:      'camnemi_topik_srs'        // { qid: {interval:1|3|7, due:'YYYY-MM-DD', last:0|1} }
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -87,6 +89,10 @@ const T = {
     sched_sessions: 'By session', sched_all: 'All schedule (PBT)', sched_ibt: '💻 IBT (computer test, Korea)',
     status_open: '📌 Reg. opens', status_ing: '🔥 Registering', status_wait: '✏️ Reg. closed · exam', status_result: '📄 Exam done · waiting', status_done: '✓ Ended',
     strip_more: '{n} more sessions', strip_view: 'View schedule',
+    time_left: 'Time left', time_up: 'Time up! Auto-submitting...', mock_finished: 'Mock test finished',
+    grade_writing: '✨ AI Grade my writing', grading: 'Grading...', grade_score: 'Score', grade_feedback: 'Feedback', grade_fix: 'Corrections',
+    flash_title: '🔁 Review flashcards', flash_due: '{n} due today', flash_none: 'No cards due — great job!', flash_front: 'Question', flash_back: 'Answer', flash_knew: '✓ Knew it', flash_forgot: '✗ Forgot', flash_again_later: 'Practice again (1d)', flash_next: 'Next card',
+    dark_auto: '🌙 Auto', dark_light: '☀️ Light', dark_dark: '🌙 Dark',
   },
   ko: {
     nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
@@ -139,6 +145,10 @@ const T = {
     sched_sessions: '회차별', sched_all: '전체 일정 (PBT)', sched_ibt: '💻 IBT (컴퓨터 시험, 한국)',
     status_open: '📌 접수 예정', status_ing: '🔥 접수 중', status_wait: '✏️ 접수 마감 · 시험 대기', status_result: '📄 시험 완료 · 결과 대기', status_done: '✓ 종료',
     strip_more: '+{n}개 회차', strip_view: '일정 보기',
+    time_left: '남은 시간', time_up: '시간 종료! 자동 제출합니다...', mock_finished: '모의고사 완료',
+    grade_writing: '✨ AI 채점 받기', grading: '채점 중...', grade_score: '점수', grade_feedback: '피드백', grade_fix: '수정 제안',
+    flash_title: '🔁 복습 플래시카드', flash_due: '오늘 {n}장', flash_none: '복습할 카드 없음 — 훌륭해요!', flash_front: '문제', flash_back: '정답', flash_knew: '✓ 알고 있었어요', flash_forgot: '✗ 까먹었어요', flash_again_later: '다시 연습 (1일)', flash_next: '다음 카드',
+    dark_auto: '🌙 자동', dark_light: '☀️ 라이트', dark_dark: '🌙 다크',
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
@@ -191,6 +201,10 @@ const T = {
     sched_sessions: 'តាមវគ្គ', sched_all: 'កាលវិភាគទាំងអស់ (PBT)', sched_ibt: '💻 IBT (ប្រឡងកុំព្យូទ័រ កូរ៉េ)',
     status_open: '📌 ចុះឈ្មោះបើក', status_ing: '🔥 កំពុងចុះឈ្មោះ', status_wait: '✏️ បិទ · រង់ចាំប្រឡង', status_result: '📄 ប្រឡងរួច · រង់ចាំលទ្ធផល', status_done: '✓ បញ្ចប់',
     strip_more: '+{n} វគ្គ', strip_view: 'មើលកាលវិភាគ',
+    time_left: 'ពេលនៅសល់', time_up: 'ពេលអស់! ដាក់ស្នើដោយស្វ័យប្រវត្តិ...', mock_finished: 'ប្រឡងសាកបានបញ្ចប់',
+    grade_writing: '✨ ពិន្ទុការសរសេរដោយ AI', grading: 'កំពុងពិន្ទុ...', grade_score: 'ពិន្ទុ', grade_feedback: 'មតិ', grade_fix: 'ការកែតម្រូវ',
+    flash_title: '🔁 បៀរពិនិត្យឡើងវិញ', flash_due: '{n} សន្លឹកថ្ងៃនេះ', flash_none: 'មិនមានបៀរទេ — ពូកែណាស់!', flash_front: 'សំណួរ', flash_back: 'ចម្លើយ', flash_knew: '✓ ចាំបាន', flash_forgot: '✗ ភ្លេច', flash_again_later: 'អនុវត្តម្តងទៀត (១ថ្ងៃ)', flash_next: 'បៀរបន្ទាប់',
+    dark_auto: '🌙 ស្វ័យប្រវត្តិ', dark_light: '☀️ ភ្លឺ', dark_dark: '🌙 ងងឹត',
   }
 };
 let LANG = localStorage.getItem(LS.lang) || 'en';
@@ -210,6 +224,24 @@ function setLang(l) {
   if (hsub) hsub.textContent = t('nav_' + APP.tab);
   renderDdayStrip();
   render();
+}
+
+/* ---------- Theme (light / dark / auto) ---------- */
+let THEME = localStorage.getItem(LS.theme) || 'auto';
+function applyTheme() {
+  const t = THEME === 'auto' ? (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : THEME;
+  document.documentElement.setAttribute('data-theme', t);
+  const btn = $id('theme-btn');
+  if (btn) btn.textContent = t === 'dark' ? '🌙' : '☀️';
+  // theme-color meta
+  const mc = document.querySelector('meta[name="theme-color"]');
+  if (mc) mc.setAttribute('content', t === 'dark' ? '#000000' : '#007AFF');
+}
+function cycleTheme() {
+  const order = ['light', 'dark', 'auto'];
+  THEME = order[(order.indexOf(THEME) + 1) % order.length];
+  localStorage.setItem(LS.theme, THEME);
+  applyTheme();
 }
 
 /* ---------- Country selector + rotating D-day strip ---------- */
@@ -507,7 +539,9 @@ function viewDaily() {
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
         ? `<textarea class="q-write" id="write-ans" placeholder="${LANG==='ko'?'여기에 답을 쓰세요…':'Write your answer here…'}">${picked && picked.w ? esc(picked.w) : ''}</textarea>
-           <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitWriting()">${t('submit')}</button>`
+           <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitWriting()">${t('submit')}</button>
+           <button class="btn btn-teal" style="margin-top:8px;width:100%;" onclick="gradeWriting('daily')">${t('grade_writing')}</button>
+           <div id="write-grade"></div>`
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''} ${picked !== undefined && picked !== i ? 'disabled' : ''}" ${picked !== undefined ? 'disabled' : ''} onclick="pickDaily(${i})">
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
@@ -873,6 +907,18 @@ function recordResult(q, correct) {
     wrong.unshift({ qid: q.id, at: Date.now() });
     lsSet(LS.wrong, wrong.slice(0, 50));
   }
+  // SRS flashcard schedule (spaced repetition: 1 → 3 → 7 days)
+  const srs = lsGet(LS.srs, {});
+  const prev = srs[q.id] || { interval: 1, due: todayStr(), last: 0 };
+  const addDays = (n) => { const d = new Date(Date.now() + n * 86400000); return d.toISOString().slice(0, 10); };
+  if (correct) {
+    const nextI = prev.last === 1 ? Math.min(prev.interval * 2 + 1, 7) : prev.interval;
+    srs[q.id] = { interval: nextI, due: addDays(nextI), last: 1 };
+  } else {
+    // forgot → back to 1 day
+    srs[q.id] = { interval: 1, due: addDays(1), last: 0 };
+  }
+  lsSet(LS.srs, srs);
   // streak
   const today = todayStr();
   const st = lsGet(LS.streak, { last: null, count: 0 });
@@ -881,6 +927,114 @@ function recordResult(q, correct) {
     st.count = st.last === y ? st.count + 1 : 1;
     st.last = today;
     lsSet(LS.streak, st);
+  }
+}
+/* SRS: due cards for review */
+function dueCards() {
+  const srs = lsGet(LS.srs, {});
+  const today = todayStr();
+  return Object.entries(srs)
+    .filter(([, s]) => s.due <= today)
+    .map(([qid, s]) => ({ q: qById(qid), s }))
+    .filter(x => x.q);
+}
+function flashState() { return { due: dueCards(), idx: 0, flipped: false }; }
+/* ---------- Flashcard UI ---------- */
+function startFlash() {
+  APP.flash = flashState();
+  render();
+}
+function flipFlash() {
+  if (!APP.flash || !APP.flash.due.length) return;
+  APP.flash.flipped = !APP.flash.flipped;
+  render();
+}
+function flashAnswer(knew) {
+  if (!APP.flash || !APP.flash.due.length) return;
+  const cur = APP.flash.due[APP.flash.idx];
+  // update SRS based on answer
+  const srs = lsGet(LS.srs, {});
+  const prev = cur.s || { interval: 1, due: todayStr(), last: 0 };
+  const addDays = (n) => { const d = new Date(Date.now() + n * 86400000); return d.toISOString().slice(0, 10); };
+  if (knew) {
+    const nextI = prev.last === 1 ? Math.min(prev.interval * 2 + 1, 7) : Math.max(prev.interval, 1);
+    srs[cur.q.id] = { interval: nextI, due: addDays(nextI), last: 1 };
+  } else {
+    srs[cur.q.id] = { interval: 1, due: addDays(1), last: 0 };
+  }
+  lsSet(LS.srs, srs);
+  APP.flash.idx++;
+  APP.flash.flipped = false;
+  if (APP.flash.idx >= APP.flash.due.length) {
+    APP.flash = null; // done
+  }
+  render();
+}
+function viewFlashCard() {
+  const fl = APP.flash;
+  if (!fl || !fl.due.length) return `<p class="sub" style="text-align:center;padding:10px 0;">${t('flash_none')}</p>`;
+  const item = fl.due[fl.idx];
+  const q = item.q;
+  if (!q) return '';
+  const total = fl.due.length;
+  const i = fl.idx + 1;
+  if (!fl.flipped) {
+    return `
+      <div style="text-align:center;padding:6px 0;">
+        <div class="sub" style="margin-bottom:8px;">${t('flash_front')} ${i}/${total} · ${typeLabel(q.type)}</div>
+        <div class="q-kr" style="font-size:17px;min-height:70px;display:flex;align-items:center;justify-content:center;">${esc(q.q)}</div>
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="flipFlash()">${ic('tip',15)} ${t('flash_back')}</button>
+      </div>`;
+  }
+  const ans = q.correct !== undefined && q.options && q.options[q.correct]
+    ? '①②③④'[q.correct] + ' ' + esc(q.options[q.correct].t)
+    : (q.answerModel ? esc(q.answerModel) : esc(q.explain || ''));
+  return `
+    <div style="text-align:center;padding:6px 0;">
+      <div class="sub" style="margin-bottom:8px;">${t('flash_back')} ${i}/${total}</div>
+      <div class="q-passage" style="font-size:15px;padding:14px;">${ans}</div>
+      ${q.qGl ? `<div class="sub" style="font-size:12px;margin-top:6px;">${esc(q.qGl)}</div>` : ''}
+      ${q.explain ? `<div class="sub" style="font-size:12px;margin-top:6px;">💡 ${esc(q.explain)}</div>` : ''}
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-teal" style="flex:1;" onclick="flashAnswer(true)">${t('flash_knew')}</button>
+        <button class="btn btn-ghost" style="flex:1;border:1.5px solid var(--ios-red);color:var(--ios-red);" onclick="flashAnswer(false)">${t('flash_forgot')}</button>
+      </div>
+    </div>`;
+}
+
+/* ---------- AI writing grading ---------- */
+async function gradeWriting(area) {
+  const ta = $id(area === 'daily' ? 'write-ans' : 'mock-write');
+  const statusEl = $id(area === 'daily' ? 'write-grade' : 'mock-grade');
+  if (!ta || !ta.value.trim()) { toast(LANG==='ko'?'먼저 답을 작성하세요.':'Write your answer first.'); return; }
+  const q = area === 'daily' ? APP.daily[APP.dailyIdx] : APP.mock.qids.map(qById).filter(Boolean)[APP.mockIdx];
+  if (statusEl) statusEl.innerHTML = `<span class="sub">${t('grading')}…</span>`;
+  try {
+    const res = await fetch(AI_API_BASE + '/grade-writing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: q.q || '', answer: ta.value })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.grade) throw new Error(data.error || 'grading failed');
+    const g = data.grade;
+    const sc = Math.round(g.score);
+    const col = sc >= 24 ? 'var(--ios-green)' : sc >= 15 ? 'var(--ios-orange)' : 'var(--ios-red)';
+    const criteria = g.criteria || {};
+    if (statusEl) statusEl.innerHTML = `
+      <div class="grade-card" style="background:var(--ios-fill);border-radius:12px;padding:12px;margin-top:10px;">
+        <div class="row"><b style="font-size:15px;">${t('grade_score')}: <span style="color:${col};font-size:22px;">${sc}</span><span class="sub"> / 30</span></b>
+        <span class="mock-badge t2">${esc(g.band || '')}</span></div>
+        <div style="display:flex;gap:6px;margin:8px 0;">
+          ${Object.entries(criteria).map(([k, v]) => `<span style="font-size:11px;background:#fff;border-radius:8px;padding:3px 8px;">${esc(k)} ${v}</span>`).join('')}
+        </div>
+        <div style="font-size:13px;line-height:1.5;">${esc(g.feedback || '')}</div>
+        ${(g.fixes || []).length ? `<div style="margin-top:8px;"><b style="font-size:12px;color:var(--ios-orange);">✏️ ${t('grade_fix')}</b>
+          ${g.fixes.map(f => `<div style="font-size:12.5px;margin:3px 0 0 8px;">· ${esc(f)}</div>`).join('')}</div>` : ''}
+      </div>`;
+  } catch (e) {
+    if (statusEl) statusEl.innerHTML = `<span class="sub" style="color:var(--ios-red);">⚠ ${esc(e.message)}</span>`;
+    toast('AI grading failed: ' + e.message);
   }
 }
 
@@ -908,13 +1062,42 @@ function viewMock() {
       </div>`).join('') || `<p class="muted">No mock tests yet.</p>`}
   `;
 }
+let _mockTimer = null, _mockRemain = 0;
+function mockSeconds(m) {
+  // '180 min' -> 180*60, '100 min' -> 100*60; fallback 90 min
+  const n = parseInt(String(m.duration || '90'), 10);
+  return (isNaN(n) ? 90 : n) * 60;
+}
 function startMock(id) {
   const m = (window.MOCK_TESTS || []).find(x => x.id === id);
   if (!m) return;
   APP.mock = m; APP.mockIdx = 0; APP.mockAnswers = {};
   const st = lsGet(LS.mockStatus, {});
   st[id] = 'progress'; lsSet(LS.mockStatus, st);
+  // start countdown
+  if (_mockTimer) clearInterval(_mockTimer);
+  _mockRemain = mockSeconds(m);
+  _mockTimer = setInterval(() => {
+    _mockRemain--;
+    const el = $id('mock-timer');
+    if (el) el.textContent = fmtTime(_mockRemain);
+    if (_mockRemain <= 0) {
+      clearInterval(_mockTimer); _mockTimer = null;
+      // auto-submit: mark done and return to list
+      const st2 = lsGet(LS.mockStatus, {});
+      st2[APP.mock.id] = 'done'; lsSet(LS.mockStatus, st2);
+      APP.mock = null;
+      toast(t('time_up'));
+      go('mock');
+    }
+  }, 1000);
   go('mock');
+}
+function fmtTime(sec) {
+  if (sec < 0) sec = 0;
+  const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+  const pad = n => String(n).padStart(2, '0');
+  return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 }
 function viewMockRun() {
   const m = APP.mock;
@@ -924,8 +1107,9 @@ function viewMockRun() {
   return `
     <div class="app-card">
       <div class="row"><span class="q-num">${esc(m.name)}</span>
+      <span id="mock-timer" class="mock-timer" style="font-weight:800;color:${_mockRemain < 300 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_mockRemain)}</span>
       <button class="btn btn-ghost btn-sm" onclick="exitMock()">${t('exit')}</button></div>
-      <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ⏱ ${m.duration}</div>
+      <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
@@ -935,7 +1119,9 @@ function viewMockRun() {
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
-        ? `<textarea class="q-write" id="mock-write">${picked && picked.w ? esc(picked.w) : ''}</textarea><button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitMockWriting()">${t('save')}</button>`
+        ? `<textarea class="q-write" id="mock-write">${picked && picked.w ? esc(picked.w) : ''}</textarea><button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitMockWriting()">${t('save')}</button>
+           <button class="btn btn-teal" style="width:100%;margin-top:8px;" onclick="gradeWriting('mock')">${t('grade_writing')}</button>
+           <div id="mock-grade"></div>`
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
@@ -969,11 +1155,15 @@ function navMock(d) {
   if (d > 0 && APP.mockIdx >= qs.length - 1) {
     const st = lsGet(LS.mockStatus, {});
     st[APP.mock.id] = 'done'; lsSet(LS.mockStatus, st);
+    if (_mockTimer) { clearInterval(_mockTimer); _mockTimer = null; }
   }
   APP.mockIdx = next;
   render();
 }
-function exitMock() { APP.mock = null; render(); }
+function exitMock() {
+  if (_mockTimer) { clearInterval(_mockTimer); _mockTimer = null; }
+  APP.mock = null; render();
+}
 function bindMock() {}
 
 /* ================= WRONG / TYPE-WISE ================= */
@@ -1044,7 +1234,13 @@ function viewLearn() {
   const weakGrammar = missedTypes.includes('grammar') || missedTypes.includes('sentence_pos') || missedTypes.includes('order');
   const weakVocab = missedTypes.includes('vocab');
   const practiceType = weakGrammar ? 'grammar' : (weakVocab ? 'vocab' : '');
+  const due = dueCards();
   return `
+    <div class="sec-h"><h2>🔁 ${t('flash_title')}</h2><span class="sub">${t('flash_due', { n: due.length })}</span></div>
+    <div class="app-card">
+      ${APP.flash && APP.flash.due && APP.flash.due.length ? viewFlashCard() : (due.length ? `<button class="btn btn-primary" style="width:100%;" onclick="startFlash()">${ic('spark',15)} ${t('flash_title')} (${due.length})</button>` : `<p class="sub" style="text-align:center;padding:10px 0;">${t('flash_none')}</p>`)}
+    </div>
+
     <div class="sec-h"><h2>${t('learn_title')}</h2><span class="sub">${t('learn_sub')}</span></div>
     <div class="app-card"><p class="sub">${wrong.length
       ? t('learn_intro', { t: missedTypes.map(typeLabel).join(', ') || 'mixed' })
@@ -1372,8 +1568,13 @@ window.generateAI = generateAI;
 document.addEventListener('DOMContentLoaded', () => {
   // init header selectors (country first so the D-day strip renders)
   initCountrySel();
+  applyTheme();
   // apply saved language: selector, nav labels, header, strip
   setLang(LANG);
+  // PWA service worker (skip on file:// and non-https)
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
