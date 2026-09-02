@@ -105,6 +105,10 @@ const T = {
     grade_writing: '✨ AI Grade my writing', grading: 'Grading...', grade_score: 'Score', grade_feedback: 'Feedback', grade_fix: 'Corrections',
     flash_title: '🔁 Review flashcards', flash_due: '{n} due today', flash_none: 'No cards due — great job!', flash_front: 'Question', flash_back: 'Answer', flash_knew: '✓ Knew it', flash_forgot: '✗ Forgot', flash_again_later: 'Practice again (1d)', flash_next: 'Next card',
     dark_auto: '🌙 Auto', dark_light: '☀️ Light', dark_dark: '🌙 Dark',
+    menu_account: 'Account', menu_signed_in: 'Signed in', menu_guest: 'Guest', menu_login: 'Log in / Sign up', menu_logout: 'Log out',
+    menu_stats: 'My stats', menu_streak: 'Day streak', menu_acc: 'Accuracy', menu_due: 'Flashcards due',
+    menu_progress: 'My progress', menu_schedule: 'TOPIK schedule', menu_level: 'Test level',
+    menu_theme: 'Theme', menu_lang: 'Language', menu_sync: 'Sync my data', menu_synced: '✓ Synced', menu_sync_err: 'Sync failed',
   },
   ko: {
     nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
@@ -161,6 +165,10 @@ const T = {
     grade_writing: '✨ AI 채점 받기', grading: '채점 중...', grade_score: '점수', grade_feedback: '피드백', grade_fix: '수정 제안',
     flash_title: '🔁 복습 플래시카드', flash_due: '오늘 {n}장', flash_none: '복습할 카드 없음 — 훌륭해요!', flash_front: '문제', flash_back: '정답', flash_knew: '✓ 알고 있었어요', flash_forgot: '✗ 까먹었어요', flash_again_later: '다시 연습 (1일)', flash_next: '다음 카드',
     dark_auto: '🌙 자동', dark_light: '☀️ 라이트', dark_dark: '🌙 다크',
+    menu_account: '계정', menu_signed_in: '로그인됨', menu_guest: '게스트', menu_login: '로그인 / 가입', menu_logout: '로그아웃',
+    menu_stats: '내 통계', menu_streak: '연속 학습일', menu_acc: '정답률', menu_due: '복습 카드',
+    menu_progress: '내 진행 상황', menu_schedule: 'TOPIK 시험 일정', menu_level: '시험 레벨',
+    menu_theme: '테마', menu_lang: '언어', menu_sync: '내 데이터 동기화', menu_synced: '✓ 동기화됨', menu_sync_err: '동기화 실패',
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
@@ -217,6 +225,10 @@ const T = {
     grade_writing: '✨ ពិន្ទុការសរសេរដោយ AI', grading: 'កំពុងពិន្ទុ...', grade_score: 'ពិន្ទុ', grade_feedback: 'មតិ', grade_fix: 'ការកែតម្រូវ',
     flash_title: '🔁 បៀរពិនិត្យឡើងវិញ', flash_due: '{n} សន្លឹកថ្ងៃនេះ', flash_none: 'មិនមានបៀរទេ — ពូកែណាស់!', flash_front: 'សំណួរ', flash_back: 'ចម្លើយ', flash_knew: '✓ ចាំបាន', flash_forgot: '✗ ភ្លេច', flash_again_later: 'អនុវត្តម្តងទៀត (១ថ្ងៃ)', flash_next: 'បៀរបន្ទាប់',
     dark_auto: '🌙 ស្វ័យប្រវត្តិ', dark_light: '☀️ ភ្លឺ', dark_dark: '🌙 ងងឹត',
+    menu_account: 'គណនី', menu_signed_in: 'បានចូល', menu_guest: 'ភ្ញៀវ', menu_login: 'ចូល / ចុះឈ្មោះ', menu_logout: 'ចាកចេញ',
+    menu_stats: 'ស្ថិតិរបស់ខ្ញុំ', menu_streak: 'ថ្ងៃបន្ត', menu_acc: 'ភាពត្រឹមត្រូវ', menu_due: 'បៀរពិនិត្យ',
+    menu_progress: 'វឌ្ឍនភាពរបស់ខ្ញុំ', menu_schedule: 'កាលវិភាគប្រឡង', menu_level: 'កម្រិតប្រឡង',
+    menu_theme: 'របៀប', menu_lang: 'ភាសា', menu_sync: 'ធ្វើសមកាលកម្មទិន្នន័យ', menu_synced: '✓ បានធ្វើសមកាលកម្ម', menu_sync_err: 'សមកាលកម្មបរាជ័យ',
   }
 };
 let LANG = localStorage.getItem(LS.lang) || 'en';
@@ -1566,6 +1578,136 @@ function scheduleMonth(delta) {
 function setScheduleCountry(k) { APP.scheduleCountry = k; localStorage.setItem(LS.country, k); const hs = $id('country-sel'); if (hs) hs.value = k; renderDdayStrip(); render(); }
 function bindSchedule() {}
 
+/* ================= USER MENU (account sheet) ================= */
+function isAuthed() { return !!(window.isLoggedIn && isLoggedIn()); }
+function currentUser() {
+  const s = window.getSession && getSession();
+  const p = window.getProfile && getProfile();
+  const name = (p && (p.full_name || p.email)) || (s && s.user && s.user.email) || '';
+  const email = (s && s.user && s.user.email) || (p && p.email) || '';
+  return { name, email, initial: (name[0] || '?').toUpperCase() };
+}
+function refreshUserBtn() {
+  const btn = $id('user-btn');
+  if (!btn) return;
+  if (isAuthed()) {
+    const u = currentUser();
+    btn.textContent = u.initial;
+    btn.classList.add('authed');
+    btn.title = u.name;
+  } else {
+    btn.textContent = '👤';
+    btn.classList.remove('authed');
+    btn.title = 'Account';
+  }
+}
+function toggleUserMenu(ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  const menu = $id('user-menu'), ov = $id('user-menu-overlay');
+  if (!menu) return;
+  const open = menu.classList.contains('open');
+  if (open) { closeUserMenu(); return; }
+  renderUserMenu();
+  menu.classList.add('open');
+  if (ov) ov.classList.add('open');
+}
+function closeUserMenu() {
+  const menu = $id('user-menu'), ov = $id('user-menu-overlay');
+  if (menu) menu.classList.remove('open');
+  if (ov) ov.classList.remove('open');
+}
+function renderUserMenu() {
+  const host = $id('user-menu');
+  if (!host) return;
+  const authed = isAuthed();
+  const u = currentUser();
+  const streak = lsGet(LS.streak, { count: 0 });
+  const acc = (() => { try { return accuracyStats().overall; } catch (e) { return 0; } })();
+  const due = (() => { try { return dueCards().length; } catch (e) { return 0; } })();
+  const head = authed ? `
+    <div class="um-head">
+      <span class="um-avatar">${esc(u.initial)}</span>
+      <div class="um-id">
+        <b>${esc(u.name || t('menu_account'))}</b>
+        <span class="sub">${esc(u.email || t('menu_signed_in'))}</span>
+      </div>
+    </div>` : `
+    <div class="um-head">
+      <span class="um-avatar guest">👤</span>
+      <div class="um-id">
+        <b>${t('menu_guest')}</b>
+        <span class="sub">${t('menu_signed_in')}</span>
+      </div>
+    </div>`;
+  const stats = `
+    <div class="um-stats">
+      <div class="stat-box"><b>${streak.count}</b><span>${t('menu_streak')}</span></div>
+      <div class="stat-box"><b>${acc}%</b><span>${t('menu_acc')}</span></div>
+      <div class="stat-box"><b>${due}</b><span>${t('menu_due')}</span></div>
+    </div>`;
+  const items = `
+    <div class="um-item" onclick="go('progress');closeUserMenu()">${ic('progress',19)}<span>${t('menu_progress')}</span><em>→</em></div>
+    <div class="um-item" onclick="go('schedule');closeUserMenu()">${ic('schedule',19)}<span>${t('menu_schedule')}</span><em>→</em></div>
+    <div class="um-item" onclick="cycleTheme();renderUserMenu()">${ic('learn',19)}<span>${t('menu_theme')}</span><em>${THEME_ICONS[THEME]||'🌗'}</em></div>
+    <div class="um-item">
+      ${ic('learn',19)}<span>${t('menu_lang')}</span>
+      <select class="um-select" onchange="setLang(this.value);renderUserMenu()">
+        <option value="en" ${LANG==='en'?'selected':''}>English</option>
+        <option value="ko" ${LANG==='ko'?'selected':''}>한국어</option>
+        <option value="km" ${LANG==='km'?'selected':''}>ខ្មែរ</option>
+      </select>
+    </div>`;
+  const footer = authed ? `
+    <div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>
+    <div class="um-item danger" onclick="doLogout()">${ic('home',19)}<span>${t('menu_logout')}</span><em>→</em></div>` : `
+    <a class="btn btn-primary" style="width:100%;margin-top:4px;" href="login.html">${t('menu_login')}</a>`;
+  host.innerHTML = `<div class="um-handle"></div>${head}${stats}<div class="um-divider"></div>${items}${footer}`;
+}
+async function syncUserData(btnEl) {
+  if (!isAuthed() || !window.getSupabase) return;
+  const sb = getSupabase();
+  const payload = {};
+  [LS.progress, LS.wrong, LS.srs, LS.scores, LS.daily, LS.streak, LS.mockStatus, LS.country, LS.lang].forEach(k => {
+    const v = localStorage.getItem(k);
+    if (!v) return;
+    try { payload[k] = JSON.parse(v); } catch (e) { payload[k] = v; }  // plain strings (lang/country)
+  });
+  const lbl = $id('um-sync');
+  if (lbl) lbl.textContent = '…';
+  try {
+    const { error } = await sb.from('topik_user_data').upsert(
+      { user_id: getSession().user.id, data: payload, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    );
+    if (error) throw error;
+    if (lbl) lbl.textContent = t('menu_synced');
+    setTimeout(() => { if (lbl) lbl.textContent = t('menu_sync'); }, 1800);
+  } catch (e) {
+    if (lbl) lbl.textContent = t('menu_sync_err');
+    console.warn('sync failed:', e.message);
+  }
+}
+async function loadUserData() {
+  // pull the user's synced data from Supabase and merge into localStorage
+  if (!isAuthed() || !window.getSupabase) return;
+  const sb = getSupabase();
+  try {
+    const { data, error } = await sb.from('topik_user_data').select('data').eq('user_id', getSession().user.id).maybeSingle();
+    if (error || !data || !data.data) return;
+    Object.keys(data.data).forEach(k => {
+      const v = data.data[k];
+      if (v === undefined || v === null) return;
+      if (typeof v === 'object') localStorage.setItem(k, JSON.stringify(v));
+      else if (k === LS.lang || k === LS.country) localStorage.setItem(k, v); // scalar prefs
+    });
+  } catch (e) { console.warn('loadUserData failed:', e.message); }
+}
+function doLogout() {
+  closeUserMenu();
+  if (window.logout) logout();
+  else { localStorage.clear(); location.reload(); }
+}
+
 /* ---------- boot ---------- */
 // expose for tests / debugging
 window.APP = APP;
@@ -1574,6 +1716,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // init header selectors (country first so the D-day strip renders)
   initCountrySel();
   applyTheme();
+  refreshUserBtn();
+  // auth → refresh user button + pull synced data when signed in
+  if (window.onAuthChange) {
+    onAuthChange((session) => {
+      refreshUserBtn();
+      if (session) loadUserData().then(() => { try { render(); } catch (e) {} });
+    });
+    // in case initAuth already fired before this listener registered
+    setTimeout(() => {
+      if (isAuthed()) { refreshUserBtn(); loadUserData().then(() => { try { render(); } catch (e) {} }); }
+    }, 400);
+  }
   // apply saved language: selector, nav labels, header, strip
   setLang(LANG);
   // PWA service worker (skip on file:// and non-https)

@@ -23,6 +23,13 @@ function loadSupabaseJS() {
   });
 }
 
+/* ---------- app-side hooks (app.html registers a listener) ---------- */
+let _authListeners = [];
+function onAuthChange(fn) { if (typeof fn === 'function') _authListeners.push(fn); }
+function _notifyAuth() {
+  _authListeners.forEach(fn => { try { fn(_session, _profile); } catch (e) { console.warn(e); } });
+}
+
 /* ---------- client init ---------- */
 async function initAuth() {
   try {
@@ -33,12 +40,14 @@ async function initAuth() {
     _session = session || null;
     if (_session) await loadProfile();
     renderAuthChip();
+    _notifyAuth();
     // listen for future auth changes
     _sb.auth.onAuthStateChange(async (event, session) => {
       _session = session;
       if (event === 'SIGNED_IN' && session) await loadProfile();
       if (event === 'SIGNED_OUT') { _session = null; _profile = null; }
       renderAuthChip();
+      _notifyAuth();
     });
   } catch (e) {
     console.warn('Auth init failed:', e.message);
