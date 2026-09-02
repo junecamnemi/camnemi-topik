@@ -74,6 +74,7 @@ function viewHome() {
   const today = lsGet(LS.daily, {});
   const doneToday = today[todayStr()] && today[todayStr()].done;
   const doneCount = doneToday ? Object.keys(doneToday).length : 0;
+  const acc = accuracyStats();
   return `
     <div class="app-card big-cta">
       <div class="cta-ico">🇰🇷</div>
@@ -88,6 +89,21 @@ function viewHome() {
         <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">📅 Today's 10</button>
         <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">📝 Mock Test</button>
       </div>
+    </div>
+
+    <div class="sec-h"><h2>📊 평균 정답률</h2><span class="sub">전체 ${acc.overall}%</span></div>
+    <div class="app-card">
+      <b style="font-size:13px;color:var(--navy);">유형별</b>
+      ${acc.byType.length
+        ? acc.byType.slice(0, 5).map(r => accBar(typeLabel(r.k), r.p, `${r.c}/${r.n}문항`)).join('')
+        : '<p class="sub" style="margin-top:6px;">문제를 풀면 여기에 유형별 정답률이 표시돼요!</p>'}
+      ${acc.byType.length > 5 ? `<div class="sub" style="font-size:11px;margin-top:6px;">+ ${acc.byType.length - 5}개 유형 더 보기 → 📓 My Notes</div>` : ''}
+    </div>
+    <div class="app-card">
+      <b style="font-size:13px;color:var(--navy);">난이도별</b>
+      ${acc.byLevel.length
+        ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, `${r.c}/${r.n}문항`)).join('')
+        : '<p class="sub" style="margin-top:6px;">난이도별 정답률도 여기에 표시돼요!</p>'}
     </div>
 
     <div class="sec-h"><h2>Choose your test</h2></div>
@@ -368,6 +384,58 @@ function continueAfterFinish() {
 }
 
 /* ---------- shared result recording ---------- */
+/* 유형/난이도 라벨 (한국어 표기) */
+const TYPE_LABELS = {
+  grammar: '문법', vocab: '어휘', main_idea: '중심내용', order: '순서',
+  sentence_pos: '문장위치', reply: '대답고르기', place: '장소', topic: '주제',
+  intent: '의도', detail: '세부사항', flow: '흐름', synonym: '동의어',
+  notice: '안내문', comprehension: '내용이해', long: '장문',
+  writing_short: '쓰기·단답', writing_letter: '쓰기·편지'
+};
+function typeLabel(t) { return TYPE_LABELS[t] || t; }
+
+/* 유형별·난이도별 평균 정답률 계산 (progress 기반) */
+function accuracyStats() {
+  const prog = lsGet(LS.progress, {});
+  const byType = {}, byLevel = {};
+  allQuestions().forEach(q => {
+    const p = prog[q.id];
+    if (!p || !p.total) return;
+    const t = q.type || q.section;
+    byType[t] = byType[t] || { c: 0, n: 0 };
+    byType[t].c += p.correct; byType[t].n += p.total;
+    const lv = q.level || 1;
+    byLevel[lv] = byLevel[lv] || { c: 0, n: 0 };
+    byLevel[lv].c += p.correct; byLevel[lv].n += p.total;
+  });
+  const pct = s => s ? Math.round(s.c / s.n * 100) : 0;
+  const rows = obj => Object.entries(obj)
+    .map(([k, s]) => ({ k, ...s, p: pct(s) }))
+    .sort((a, b) => a.p - b.p);            // 취약한 것부터
+  return {
+    byType: rows(byType),
+    byLevel: rows(byLevel).sort((a, b) => a.k - b.k),
+    overall: (() => {
+      let c = 0, n = 0;
+      Object.values(byType).forEach(s => { c += s.c; n += s.n; });
+      return n ? Math.round(c / n * 100) : 0;
+    })()
+  };
+}
+
+/* 정답률 바 렌더 헬퍼 */
+function accBar(label, p, sub) {
+  const color = p >= 70 ? 'var(--teal)' : p >= 40 ? 'var(--gold)' : 'var(--red)';
+  return `
+    <div style="padding:7px 0;border-bottom:1px solid var(--border);">
+      <div class="row"><span style="font-size:13px;">${esc(label)}</span>
+        <b style="font-size:13px;color:${color};">${p}%</b></div>
+      <div class="daily-progress" style="margin:4px 0 0;height:6px;">
+        <div style="width:${p}%;background:${color};"></div>
+      </div>
+      ${sub ? `<div class="sub" style="font-size:10.5px;margin-top:2px;">${sub}</div>` : ''}
+    </div>`;
+}
 function recordResult(q, correct) {
   // progress
   const prog = lsGet(LS.progress, {});
@@ -471,6 +539,7 @@ function bindMock() {}
 function viewWrong() {
   const wrong = lsGet(LS.wrong, []);
   const prog = lsGet(LS.progress, {});
+  const acc = accuracyStats();
   // type-wise breakdown from progress misses
   const typeStats = {};
   allQuestions().forEach(q => {
@@ -481,12 +550,23 @@ function viewWrong() {
     }
   });
   const typeRows = Object.entries(typeStats).sort((a, b) => b[1] - a[1]);
+  const hasData = acc.byType.length > 0;
   return `
+    <div class="sec-h"><h2>📊 평균 정답률</h2><span class="sub">전체 ${acc.overall}%</span></div>
+    <div class="app-card">
+      <b style="font-size:13px;color:var(--navy);">유형별 평균 정답률</b>
+      ${hasData ? acc.byType.map(r => accBar(typeLabel(r.k) + (r.k === 'writing_short' || r.k === 'writing_letter' ? '' : ''), r.p, `${r.c}/${r.n}문항`)).join('') : '<p class="sub" style="margin-top:6px;">아직 푼 문제가 없어요. Daily 10이나 모의고사를 풀어보세요!</p>'}
+    </div>
+    <div class="app-card">
+      <b style="font-size:13px;color:var(--navy);">난이도별 평균 정답률</b>
+      ${hasData ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, `${r.c}/${r.n}문항`)).join('') : '<p class="sub" style="margin-top:6px;">아직 데이터가 없어요.</p>'}
+    </div>
+
     <div class="sec-h"><h2>Type-wise weak spots</h2></div>
     <div class="app-card">
       ${typeRows.length ? typeRows.map(([t, n]) => `
         <div class="row" style="padding:6px 0;border-bottom:1px solid var(--border);">
-          <span>${esc(t)}</span><span class="wrong-tag">${n} misses</span>
+          <span>${esc(typeLabel(t))}</span><span class="wrong-tag">${n} misses</span>
         </div>`).join('') : '<p class="sub">No weak types yet — answer some questions first!</p>'}
     </div>
     <div class="sec-h"><h2>Wrong answer notes</h2><span class="sub">${wrong.length} recent</span></div>
@@ -494,7 +574,7 @@ function viewWrong() {
       const q = qById(w.qid);
       if (!q) return '';
       return `<div class="app-card wrong-item">
-        <div class="row"><span class="q-num">${esc(q.id)}</span><span class="q-type">${q.section === 'reading' ? '📖' : q.section === 'listening' ? '🎧' : '✍️'} ${esc(q.type)}</span></div>
+        <div class="row"><span class="q-num">${esc(q.id)}</span><span class="q-type">${q.section === 'reading' ? '📖' : q.section === 'listening' ? '🎧' : '✍️'} ${esc(typeLabel(q.type))}</span></div>
         <div class="q-kr" style="font-size:14px;margin:8px 0;">${q.q}</div>
         <div class="q-explain show"><b>✓ ${q.correct !== undefined ? '정답: ' + '①②③④'[q.correct] : '참고'}</b> — ${esc(q.explain)}</div>
       </div>`;
