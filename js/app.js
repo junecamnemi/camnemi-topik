@@ -49,16 +49,17 @@ const LS = {
   xp:       'camnemi_topik_xp',         // { total: number }
   quests:   'camnemi_topik_quests',      // { date, daily:{n,target}, flash:{n,target}, mock:{n,target} }
   challenge: 'camnemi_topik_challenge',  // { type, idx, answers:{qid:pick}, startAt, timeLeft, qids[] } (in-progress)
-  conquered: 'camnemi_topik_conquered'   // { [type]: { n: times conquered, last: date } }
+  conquered: 'camnemi_topik_conquered',   // { [type]: { n: times conquered, last: date } }
+  section:  'camnemi_topik_section'      // { [section]: { qids[], done:{} } }
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
 const T = {
   en: {
-    nav_home: 'Home', nav_daily: 'Daily 10', nav_mock: 'Mock Test', nav_notes: 'My Notes', nav_learn: 'Learn', nav_progress: 'Progress',
+    nav_home: 'Home', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_my: 'My',
     home_sub: 'AI questions · daily mocks · weak-spot review',
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
-    btn_today: 'Daily 10', btn_mock: 'Mock Test',
+    btn_today: 'Daily 10', btn_mock: 'Mock Test', btn_read: 'Start reading',
     smart_title: 'Smart recommendation', smart_empty: 'Solve a few questions and we\u2019ll find your weak type to focus on.',
     smart_weak: 'Weak type: {t}', smart_weak_pct: 'Accuracy {p}% ({c}/{n} q) — focus on this?', smart_btn: 'Generate 10 {t} questions with AI',
     avg_acc: 'Average accuracy', overall: 'overall', by_type: 'By type', by_level: 'By difficulty',
@@ -75,6 +76,7 @@ const T = {
     listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →',
     submit: 'Submit answer', save: 'Save',
     sec_reading: '📖 Reading', sec_listening: '🎧 Listening', sec_writing: '✍️ Writing',
+    sec_practice: 'Practice {s}', sec_desc: 'Solve {s} questions generated from past-exam patterns — the AI keeps analyzing your weak spots.', sec_start: 'Start practice', sec_qs: 'questions',
     mock_header: 'Mock Tests', mock_sub: 'daily · by date',
     mock_intro_II: 'A new Camnemi TOPIK Mock Test every day — timed, graded, with explanations. TOPIK II (L3 goal) shown.',
     mock_intro_I: 'A new Camnemi TOPIK Mock Test every day — timed, graded, with explanations. TOPIK I shown.',
@@ -113,15 +115,16 @@ const T = {
     menu_stats: 'My stats', menu_streak: 'Day streak', menu_acc: 'Accuracy', menu_due: 'Flashcards due',
     menu_progress: 'My progress', menu_schedule: 'TOPIK schedule', menu_level: 'Test level',
     menu_theme: 'Theme', menu_lang: 'Language', menu_sync: 'Sync my data', menu_synced: '✓ Synced', menu_sync_err: 'Sync failed',
+    menu_best: 'Best score: {s}',
     xp_level: 'Level', xp_to_next: '{n} XP to Level {l}', xp_levelup: '🎉 Level up! You reached Level {l}', xp_reward: '+{n} XP',
     quest_title: 'Daily quests', quest_daily: 'Solve {n}/{t} questions', quest_flash: 'Review {n}/{t} flashcards', quest_mock: 'Finish {n}/{t} mock test', quest_done: '✓ Done', quest_reward: '+{n} XP',
     chal_title: 'Weak-spot challenge', chal_sub: 'Beat your weakest type in 5 minutes', chal_start: '⚔️ Start challenge', chal_time: 'Time', chal_correct: 'Correct', chal_conquer: '🏆 Conquered {t}!', chal_fail: 'Keep training — try again!', chal_reward: '+{n} XP bonus', chal_q: 'Question {i}/{n}', chal_done: 'Challenge finished', chal_conquered_before: 'Conquered {n}×', chal_again: 'Challenge again',
   },
   ko: {
-    nav_home: '홈', nav_daily: '데일리 10', nav_mock: '모의고사', nav_notes: '오답노트', nav_learn: '학습', nav_progress: '진도',
+    nav_home: '홈', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_my: 'MY',
     home_sub: 'AI 문제 · 매일 모의고사 · 취약점 복습',
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
-    btn_today: '데일리 10', btn_mock: '모의고사',
+    btn_today: '데일리 10', btn_mock: '모의고사', btn_read: '리딩 시작',
     smart_title: '스마트 추천', smart_empty: '문제를 풀면 약한 유형을 찾아 집중 연습을 추천해 드려요.',
     smart_weak: '약한 유형: {t}', smart_weak_pct: '정답률 {p}% ({c}/{n}문항) — 집중 공략?', smart_btn: '{t} 문제 10개 AI 생성',
     avg_acc: '평균 정답률', overall: '전체', by_type: '유형별', by_level: '난이도별',
@@ -138,6 +141,7 @@ const T = {
     listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →',
     submit: '답 제출', save: '저장',
     sec_reading: '📖 읽기', sec_listening: '🎧 듣기', sec_writing: '✍️ 쓰기',
+    sec_practice: '{s} 연습', sec_desc: '기출 유형을 분석한 {s} 문제를 풀어보세요 — AI가 계속해서 약점을 분석합니다.', sec_start: '연습 시작', sec_qs: '문제',
     mock_header: '모의고사', mock_sub: '매일 · 날짜별',
     mock_intro_II: '매일 새로운 Camnemi TOPIK 모의고사 — 시간 제한, 채점, 해설 포함. TOPIK II (3급 목표).',
     mock_intro_I: '매일 새로운 Camnemi TOPIK 모의고사 — 시간 제한, 채점, 해설 포함. TOPIK I.',
@@ -176,15 +180,16 @@ const T = {
     menu_stats: '내 통계', menu_streak: '연속 학습일', menu_acc: '정답률', menu_due: '복습 카드',
     menu_progress: '내 진행 상황', menu_schedule: 'TOPIK 시험 일정', menu_level: '시험 레벨',
     menu_theme: '테마', menu_lang: '언어', menu_sync: '내 데이터 동기화', menu_synced: '✓ 동기화됨', menu_sync_err: '동기화 실패',
+    menu_best: '최고 점수: {s}',
     xp_level: '레벨', xp_to_next: '레벨 {l}까지 {n} XP', xp_levelup: '🎉 레벨업! 레벨 {l}에 도달했어요', xp_reward: '+{n} XP',
     quest_title: '데일리 미션', quest_daily: '문제 {n}/{t}개 풀기', quest_flash: '복습 카드 {n}/{t}장', quest_mock: '모의고사 {n}/{t}회', quest_done: '✓ 완료', quest_reward: '+{n} XP',
     chal_title: '약점 정복 챌린지', chal_sub: '5분 안에 가장 약한 유형을 정복하세요', chal_start: '⚔️ 챌린지 시작', chal_time: '시간', chal_correct: '정답', chal_conquer: '🏆 {t} 정복!', chal_fail: '더 연습하고 다시 도전하세요!', chal_reward: '+{n} XP 보너스', chal_q: '문제 {i}/{n}', chal_done: '챌린지 완료', chal_conquered_before: '{n}회 정복', chal_again: '다시 도전',
   },
   km: {
-    nav_home: 'ទំព័រដើម', nav_daily: 'លំហាត់ ១០', nav_mock: 'ប្រឡងសាក', nav_notes: 'កំណត់ចំណាំ', nav_learn: 'រៀន', nav_progress: 'វឌ្ឍនភាព',
+    nav_home: 'ទំព័រដើម', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_my: 'ខ្ញុំ',
     home_sub: 'សំណួរ AI · ប្រឡងសាកប្រចាំថ្ងៃ · ពិនិត្យចំណុចខ្សោយ',
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
-    btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក',
+    btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក', btn_read: 'ចាប់ផ្តើមអាន',
     smart_title: 'ការណែនាំឆ្លាតវៃ', smart_empty: 'ដោះស្រាយសំណួរខ្លះ យើងនឹងរកចំណុចខ្សោយរបស់អ្នក។',
     smart_weak: 'ចំណុចខ្សោយ: {t}', smart_weak_pct: 'ភាពត្រឹមត្រូវ {p}% ({c}/{n}) — ផ្តោតលើនេះ?', smart_btn: 'បង្កើត {t} ១០ សំណួរជាមួយ AI',
     avg_acc: 'ភាពត្រឹមត្រូវ', overall: 'សរុប', by_type: 'តាមប្រភេទ', by_level: 'តាមកម្រិត',
@@ -201,6 +206,7 @@ const T = {
     listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →',
     submit: 'ដាក់ស្នើចម្លើយ', save: 'រក្សាទុក',
     sec_reading: '📖 អាន', sec_listening: '🎧 ស្តាប់', sec_writing: '✍️ សរសេរ',
+    sec_practice: 'អនុវត្ត {s}', sec_desc: 'ដោះស្រាយសំណួរ {s} ដែលបង្កើតពីលំនាំប្រឡងមុន — AI វិភាគចំណុចខ្សោយរបស់អ្នកជាបន្ត។', sec_start: 'ចាប់ផ្តើមអនុវត្ត', sec_qs: 'សំណួរ',
     mock_header: 'ប្រឡងសាក', mock_sub: 'ប្រចាំថ្ងៃ · តាមកាលបរិច្ឆេទ',
     mock_intro_II: 'ប្រឡងសាកថ្មីរាល់ថ្ងៃ — មានពេលកំណត់ ពិន្ទុ និងការពន្យល់។ TOPIK II (គោលដៅ L3)។',
     mock_intro_I: 'ប្រឡងសាកថ្មីរាល់ថ្ងៃ — មានពេលកំណត់ ពិន្ទុ និងការពន្យល់។ TOPIK I។',
@@ -239,6 +245,7 @@ const T = {
     menu_stats: 'ស្ថិតិរបស់ខ្ញុំ', menu_streak: 'ថ្ងៃបន្ត', menu_acc: 'ភាពត្រឹមត្រូវ', menu_due: 'បៀរពិនិត្យ',
     menu_progress: 'វឌ្ឍនភាពរបស់ខ្ញុំ', menu_schedule: 'កាលវិភាគប្រឡង', menu_level: 'កម្រិតប្រឡង',
     menu_theme: 'របៀប', menu_lang: 'ភាសា', menu_sync: 'ធ្វើសមកាលកម្មទិន្នន័យ', menu_synced: '✓ បានធ្វើសមកាលកម្ម', menu_sync_err: 'សមកាលកម្មបរាជ័យ',
+    menu_best: 'ពិន្ទុខ្ពស់បំផុត: {s}',
     xp_level: 'កម្រិត', xp_to_next: '{n} XP ទៅកម្រិត {l}', xp_levelup: '🎉 ឡើងកម្រិត! អ្នកបានដល់កម្រិត {l}', xp_reward: '+{n} XP',
     quest_title: 'បេសកកម្មប្រចាំថ្ងៃ', quest_daily: 'ដោះស្រាយ {n}/{t} សំណួរ', quest_flash: 'ពិនិត្យ {n}/{t} បៀរ', quest_mock: 'ប្រឡងសាក {n}/{t} វគ្គ', quest_done: '✓ រួចរាល់', quest_reward: '+{n} XP',
     chal_title: 'បេសកកម្មយកឈ្នះចំណុចខ្សោយ', chal_sub: 'យកឈ្នះប្រភេទខ្សោយបំផុតក្នុង ៥ នាទី', chal_start: '⚔️ ចាប់ផ្តើម', chal_time: 'ពេល', chal_correct: 'ត្រឹមត្រូវ', chal_conquer: '🏆 បានយកឈ្នះ {t}!', chal_fail: 'ហ្វឹកហាត់បន្ថែម ហើយព្យាយាមម្តងទៀត!', chal_reward: '+{n} XP បន្ថែម', chal_q: 'សំណួរ {i}/{n}', chal_done: 'បេសកកម្មបានបញ្ចប់', chal_conquered_before: 'បានយកឈ្នះ {n}ដង', chal_again: 'ព្យាយាមម្តងទៀត',
@@ -413,10 +420,14 @@ function render() {
   switch (APP.tab) {
     case 'home': s.innerHTML = viewHome(); bindHome(); break;
     case 'daily': s.innerHTML = viewDaily(); bindDaily(); break;
+    case 'reading': s.innerHTML = viewSection('reading'); bindDaily(); break;
+    case 'listening': s.innerHTML = viewSection('listening'); bindDaily(); break;
+    case 'writing': s.innerHTML = viewSection('writing'); bindDaily(); break;
     case 'mock': s.innerHTML = viewMock(); bindMock(); break;
     case 'wrong': s.innerHTML = viewWrong(); bindWrong(); break;
     case 'learn': s.innerHTML = viewLearn(); bindLearn(); break;
     case 'progress': s.innerHTML = viewProgress(); bindProgress(); break;
+    case 'my': s.innerHTML = viewMy(); bindMy(); break;
     case 'challenge': s.innerHTML = viewChallenge(); bindChallenge(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
@@ -440,7 +451,7 @@ function viewHome() {
       <h2 style="font-size:21px;color:var(--ios-label);margin-bottom:6px;">${t('welcome_title')}</h2>
       <p class="sub" style="line-height:1.6;">${t('welcome_body')}</p>
       <div style="display:flex;gap:8px;margin-top:16px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">${ic('daily',17)} ${t('btn_today')}</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="go('reading')">${ic('learn',17)} ${t('btn_read')}</button>
         <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">${ic('mock',17)} ${t('btn_mock')}</button>
       </div>
     </div>` : `
@@ -454,7 +465,7 @@ function viewHome() {
         <div class="stat-box"><b>${mastered}</b><span style="color:var(--ios-green);">${ic('trophy',13)} ${t('stat_mastered')}</span></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:14px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="go('daily')">${ic('daily',17)} ${t('btn_today')}</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="go('reading')">${ic('learn',17)} ${t('btn_read')}</button>
         <button class="btn btn-teal" style="flex:1;" onclick="go('mock')">${ic('mock',17)} ${t('btn_mock')}</button>
       </div>
     </div>`}
@@ -468,7 +479,7 @@ function viewHome() {
       ${acc.byType.length
         ? acc.byType.slice(0, 5).map(r => accBar(typeLabel(r.k), r.p, `${r.c}/${r.n}문항`)).join('')
         : `<p class="sub" style="margin-top:6px;">${t('type_empty')}</p>`}
-      ${acc.byType.length > 5 ? `<div class="sub" style="font-size:11px;margin-top:6px;">+ ${acc.byType.length - 5} ${t('by_type')} → ${ic('notes',12)} ${t('nav_notes')}</div>` : ''}
+      ${acc.byType.length > 5 ? `<div class="sub" style="font-size:11px;margin-top:6px;">+ ${acc.byType.length - 5} ${t('by_type')} → ${ic('notes',12)} ${t('wrong_link')}</div>` : ''}
     </div>
     <div class="app-card filled">
       <b style="font-size:13px;color:var(--ios-blue);">${t('by_level')}</b>
@@ -552,7 +563,7 @@ function viewDaily() {
     return `<div class="app-card big-cta">
       <div class="cta-ico" style="color:var(--ios-green);">${ic('spark', 40)}</div><h2>${LANG === 'ko' ? '오늘의 문제를 모두 풀었어요!' : 'All done for today!'}</h2>
       <p class="sub">${LANG === 'ko' ? '내일 새로운 문제가 나와요. 틀린 문제를 오답노트에서 복습하세요.' : 'Come back tomorrow for a fresh set. Review your mistakes in My Notes.'}</p>
-      <button class="btn btn-primary" style="margin-top:14px;" onclick="go('wrong')">${ic('notes',16)} ${t('nav_notes')}</button>
+      <button class="btn btn-primary" style="margin-top:14px;" onclick="go('wrong')">${ic('notes',16)} ${t('wrong_link')}</button>
     </div>`;
   }
   const picked = done[q.id];
@@ -603,9 +614,11 @@ async function generateAI(optType) {
   if (btn) { btn.disabled = true; btn.textContent = '✨ Generating… (AI)'; }
   const status = $id('ai-status');
   if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
+  const SECTIONS = ['reading', 'listening', 'writing'];
+  const sec = SECTIONS.includes(optType) ? optType : null;   // section practice call
   try {
-    const body = { level: APP.level, count: 10, section: 'all' };
-    if (optType) body.type = optType;   // smart rec: generate the weak type
+    const body = { level: APP.level, count: 10, section: sec || 'all' };
+    if (optType && !sec) body.type = optType;   // smart rec: generate the weak type
     const res = await fetch(AI_API_BASE + '/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -615,6 +628,21 @@ async function generateAI(optType) {
     if (!res.ok || !data.questions) throw new Error(data.error || 'AI server error');
     const qs = data.questions;
     if (!qs.length) throw new Error('AI returned no questions');
+    if (sec) {
+      // section practice: load AI set into the section quiz flow
+      APP.section = sec;
+      APP.sectionQs = qs;
+      APP.sectionIdx = 0;
+      APP.sectionAnswers = {};
+      APP.sectionDone = false;
+      APP.sectionAI = true;
+      const all = lsGet(LS.section, {});
+      all[sec] = { qids: qs.map(q => q.id), done: {}, ai: true };
+      lsSet(LS.section, all);
+      render();
+      if (status) status.textContent = '';
+      return;
+    }
     // store as today's AI set (full question objects so it survives reload)
     const today = todayStr();
     const all = lsGet(LS.daily, {});
@@ -660,6 +688,242 @@ function navDaily(d) {
   render();
 }
 function bindDaily() {}
+
+/* ================= SECTION PRACTICE (Reading / Listening / Writing) ================= */
+function startSection(sec) {
+  // build a set of 10 for this section: bank first, AI-generate button on card
+  let pool = allQuestions().filter(q => q.section === sec && levelOf(q) === APP.level);
+  if (pool.length < 10) pool = allQuestions().filter(q => q.section === sec);
+  const shuf = pool.slice().sort(() => Math.random() - 0.5);
+  const qs = shuf.slice(0, 10);
+  if (!qs.length) { toast(LANG === 'ko' ? '이 섹션 문제가 아직 없어요 — AI 생성 버튼을 눌러보세요.' : 'No questions for this section yet — try AI generate.'); return; }
+  APP.section = sec;
+  APP.sectionQs = qs;
+  APP.sectionIdx = 0;
+  APP.sectionAnswers = {};
+  APP.sectionDone = false;
+  const all = lsGet(LS.section, {});
+  all[sec] = { qids: qs.map(q => q.id), done: {} };
+  lsSet(LS.section, all);
+  render();
+}
+function viewSection(sec) {
+  const label = t('nav_' + sec);
+  const ico = sec === 'reading' ? 'learn' : sec === 'listening' ? 'listen' : 'mock';
+  const col = sec === 'reading' ? 'var(--ios-blue)' : sec === 'listening' ? 'var(--ios-teal)' : 'var(--ios-orange)';
+  // in-progress quiz → render the question card
+  if (APP.section === sec && APP.sectionQs && !APP.sectionDone) return viewSectionCard();
+  if (APP.section === sec && APP.sectionDone) return viewSectionResult();
+  // stats for this section
+  const prog = lsGet(LS.progress, {});
+  let tried = 0, corr = 0;
+  Object.entries(prog).forEach(([id, p]) => {
+    const q = qById(id);
+    if (q && q.section === sec) { tried += p.total || 0; corr += p.correct || 0; }
+  });
+  const acc = tried ? Math.round(corr / tried * 100) : null;
+  const wrong = lsGet(LS.wrong, []).filter(w => { const q = qById(w.qid); return q && q.section === sec; }).length;
+  return `
+    <div class="sec-h"><h2 style="color:${col};">${ic(ico,18)} ${label}</h2><span class="sub">${t('nav_' + sec)} · TOPIK ${APP.level}</span></div>
+    <div class="app-card big-cta" style="border:1.5px solid ${col};">
+      <div class="cta-ico" style="color:${col};">${ic(ico, 44)}</div>
+      <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })}</h2>
+      <p class="sub" style="line-height:1.6;">${t('sec_desc', { s: label })}</p>
+      <div class="stat-row">
+        <div class="stat-box"><b>${acc === null ? '—' : acc + '%'}</b><span>${t('menu_acc')}</span></div>
+        <div class="stat-box"><b>${wrong}</b><span>${t('wrong_title')}</span></div>
+        <div class="stat-box"><b>10</b><span>${t('sec_qs')}</span></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}')">${ic('daily',17)} ${t('sec_start')}</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;color:${col};" onclick="generateAI('${sec}')">${ic('spark',15)} ${t('gen_ai')}</button>
+    </div>
+    ${wrong ? `<div class="app-card" onclick="go('wrong')" style="cursor:pointer;">
+      <div class="row"><div>${ic('notes',20)} <b>${t('wrong_title')} (${wrong})</b></div><span style="color:var(--ios-green);">→</span></div>
+    </div>` : ''}`;
+}
+function viewSectionCard() {
+  const sec = APP.section;
+  const qs = APP.sectionQs;
+  const q = qs[APP.sectionIdx];
+  const done = APP.sectionAnswers || {};
+  const doneCount = Object.keys(done).length;
+  const pct = qs.length ? Math.round(doneCount / qs.length * 100) : 0;
+  if (!q) return viewSectionResult();
+  const picked = done[q.id];
+  const label = t('nav_' + sec);
+  return `
+    <div class="app-card">
+      <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
+      <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
+      <div class="daily-progress"><div style="width:${pct}%"></div></div>
+      ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
+      ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
+      ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
+      ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
+      <div class="q-kr">${q.q}</div>
+      ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
+      ${q.section === 'writing'
+        ? `<textarea class="q-write" id="write-ans" placeholder="${LANG==='ko'?'여기에 답을 쓰세요…':'Write your answer here…'}">${picked && picked.w ? esc(picked.w) : ''}</textarea>
+           <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitSectionWriting()">${t('submit')}</button>
+           <button class="btn btn-teal" style="margin-top:8px;width:100%;" onclick="gradeWriting('daily')">${t('grade_writing')}</button>
+           <div id="write-grade"></div>`
+        : q.options.map((o, i) => `
+          <button class="q-opt ${picked === i ? 'correct' : ''} ${picked !== undefined && picked !== i ? 'disabled' : ''}" ${picked !== undefined ? 'disabled' : ''} onclick="pickSection(${i})">
+            <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
+          </button>`).join('')}
+      <div class="q-explain" id="daily-ex">
+        ${picked !== undefined ? `
+          <b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}
+          ${q.traps && q.traps.length ? `<div class="why-wrong" style="margin-top:6px;"><b>✗ ${LANG==='ko'?'오답 이유':'Why wrong'}:</b> ${q.traps.map(esc).join(' · ')}</div>` : ''}
+          ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
+        ` : ''}
+      </div>
+      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
+      ${relatedBlock(q)}
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" ${APP.sectionIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navSection(-1)">${t('prev')}</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="navSection(1)">${APP.sectionIdx >= qs.length - 1 ? t('finish') : t('next')}</button>
+    </div>
+  `;
+}
+function pickSection(i) {
+  const q = APP.sectionQs[APP.sectionIdx];
+  if (!q) return;
+  APP.sectionAnswers[q.id] = i;
+  recordResult(q, i === q.correct);
+  const all = lsGet(LS.section, {});
+  if (all[APP.section]) all[APP.section].done[q.id] = i;
+  lsSet(LS.section, all);
+  render();
+}
+function submitSectionWriting() {
+  const q = APP.sectionQs[APP.sectionIdx];
+  const ta = $id('write-ans');
+  if (!q || !ta) return;
+  APP.sectionAnswers[q.id] = { w: ta.value };
+  recordResult(q, true);
+  const all = lsGet(LS.section, {});
+  if (all[APP.section]) all[APP.section].done[q.id] = { w: ta.value };
+  lsSet(LS.section, all);
+  render();
+}
+function navSection(d) {
+  if (d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) { finishSection(); return; }
+  APP.sectionIdx = Math.min(APP.sectionQs.length - 1, Math.max(0, APP.sectionIdx + d));
+  render();
+}
+function finishSection() {
+  const qs = APP.sectionQs;
+  const done = APP.sectionAnswers || {};
+  let correct = 0, wrong = 0, unanswered = 0;
+  qs.forEach(q => {
+    const ans = done[q.id];
+    if (ans === undefined) { unanswered++; return; }
+    if (q.section === 'writing') { correct++; return; }
+    if (ans === q.correct) correct++; else wrong++;
+  });
+  APP.sectionDone = true;
+  APP.sectionResult = { correct, wrong, unanswered, total: qs.length };
+  addXP(XP_RULES.daily_finish, 'section_finish');
+  render();
+}
+function viewSectionResult() {
+  const r = APP.sectionResult;
+  const label = t('nav_' + APP.section);
+  if (!r) return `<div class="app-card"><p class="sub">${label}</p></div>`;
+  const pct = r.total ? Math.round((r.correct + r.wrong ? r.correct / (r.correct + r.wrong) : 0) * 100) : 0;
+  return `
+    <div class="app-card elevated big-cta">
+      <div class="cta-ico" style="color:var(--ios-green);">${ic('trophy', 42)}</div>
+      <h2 style="font-size:22px;margin:6px 0;">${label} ${t('result_done')}</h2>
+      <div class="stat-row">
+        <div class="stat-box"><b>${r.correct}/${r.total}</b><span>${t('chal_correct')}</span></div>
+        <div class="stat-box"><b>${pct}%</b><span>${t('menu_acc')}</span></div>
+        <div class="stat-box"><b>${r.wrong}</b><span>${t('wrong_title')}</span></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn btn-ghost" style="flex:1;border:1.5px solid var(--ios-separator);" onclick="exitSection()">← ${t('nav_home')}</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="startSection('${APP.section}')">${t('chal_again')}</button>
+      </div>
+    </div>`;
+}
+function exitSection() {
+  APP.section = null; APP.sectionQs = null; APP.sectionDone = false; APP.sectionResult = null;
+  go('home');
+}
+function bindMy() {}
+
+/* ================= MY (profile & hub) ================= */
+function viewMy() {
+  const authed = isAuthed();
+  const u = currentUser();
+  const streak = lsGet(LS.streak, { count: 0 });
+  const acc = (() => { try { return accuracyStats().overall; } catch (e) { return 0; } })();
+  const due = (() => { try { return dueCards().length; } catch (e) { return 0; } })();
+  const lvl = xpProgress();
+  const wrongN = lsGet(LS.wrong, []).length;
+  const scores = lsGet(LS.scores, []);
+  const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
+  const head = authed ? `
+    <div class="um-head">
+      <span class="um-avatar">${esc(u.initial)}</span>
+      <div class="um-id">
+        <b>${esc(u.name || t('menu_account'))}</b>
+        <span class="sub">${esc(u.email || t('menu_signed_in'))}</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="doLogout()">${t('menu_logout')}</button>
+    </div>` : `
+    <div class="um-head">
+      <span class="um-avatar guest">👤</span>
+      <div class="um-id">
+        <b>${t('menu_guest')}</b>
+        <span class="sub">${t('menu_signed_in')}</span>
+      </div>
+      <a class="btn btn-primary btn-sm" style="margin-left:auto;" href="login.html">${t('menu_login')}</a>
+    </div>`;
+  const stats = `
+    <div class="um-stats">
+      <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',12)} ${t('menu_streak')}</span></div>
+      <div class="stat-box"><b>${acc}%</b><span style="color:var(--ios-blue);">${ic('chart',12)} ${t('menu_acc')}</span></div>
+      <div class="stat-box"><b>L${lvl.lv}</b><span style="color:var(--ios-green);">${lvl.xp} XP</span></div>
+    </div>`;
+  const rows = `
+    <div class="app-card" style="padding:6px 14px;">
+      ${umRow('progress', t('menu_progress'), `go('progress')`)}
+      ${umRow('notes', t('wrong_link') + ' (' + wrongN + ')', `go('wrong')`)}
+      ${umRow('learn', t('flash_title') + (due ? ` · ${due}` : ''), `go('learn')`)}
+      ${umRow('schedule', t('menu_schedule'), `go('schedule')`)}
+    </div>
+    <div class="app-card" style="padding:6px 14px;">
+      ${umRow('target', t('xp_level') + ' ' + lvl.lv + ' · ' + t('xp_to_next', { n: lvl.maxed ? 0 : lvl.need - lvl.into, l: lvl.lv + 1 }), `go('progress')`)}
+      ${umRow('trophy', t('menu_best', { s: best || '—' }), `go('progress')`)}
+    </div>`;
+  const settings = `
+    <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
+    <div class="app-card" style="padding:6px 14px;">
+      <div class="um-item" onclick="cycleTheme();render()">${ic('learn',19)}<span>${t('menu_theme')}</span><em>${THEME_ICONS[THEME] || '🌗'}</em></div>
+      <div class="um-item">
+        ${ic('learn',19)}<span>${t('menu_lang')}</span>
+        <select class="um-select" onchange="setLang(this.value)">
+          <option value="en" ${LANG === 'en' ? 'selected' : ''}>English</option>
+          <option value="ko" ${LANG === 'ko' ? 'selected' : ''}>한국어</option>
+          <option value="km" ${LANG === 'km' ? 'selected' : ''}>ខ្មែរ</option>
+        </select>
+      </div>
+      ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
+    </div>`;
+  return `
+    <div class="sec-h"><h2>${t('menu_account')}</h2></div>
+    <div class="app-card" style="padding:14px 16px;">${head}${stats}</div>
+    ${rows}
+    ${settings}
+  `;
+}
+function umRow(ico, label, act) {
+  return `<div class="um-item" onclick="${act}">${ic(ico, 19)}<span>${label}</span><em>→</em></div>`;
+}
 
 /* ---------- Daily finish → estimated TOPIK score ---------- */
 function finishDaily() {
@@ -2038,7 +2302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','daily','mock','wrong','learn','progress','schedule'].includes(q) ? q : (['home','daily','mock','wrong','learn','progress','schedule'].includes(h) ? h : 'home'));
+  go(['home','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'home'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {
