@@ -328,26 +328,6 @@ function setCountry(k) {
   render();
 }
 function initCountrySel() { /* country picker lives in the schedule tab only */ }
-/* ---------- Header schedule banner (오른쪽 토픽일정 배너) ---------- */
-function renderSchedBanner() {
-  const el = $id('sched-banner');
-  if (!el) return;
-  const sch = window.TOPIK_SCHEDULE;
-  const country = selectedCountry();
-  if (!sch || !country) { el.style.display = 'none'; return; }
-  const rows = sch.pbt.filter(p => country.sessions.includes(parseInt(p.session)))
-    .map(p => ({ p, st: sessionStatus(p) }))
-    .filter(x => x.st.key !== 'done')
-    .sort((a, b) => a.p.date < b.p.date ? -1 : 1);
-  if (!rows.length) { el.style.display = 'none'; return; }
-  const x = rows[0];
-  let dday, label;
-  if (x.st.key === 'reg_ing' || x.st.key === 'reg_open') { dday = ddayStr(x.st.reg.end); label = t('sched_reg_close'); }
-  else if (x.st.key === 'test_wait') { dday = ddayStr(x.p.date); label = t('sched_next_test'); }
-  else { dday = ddayStr(x.p.result); label = t('sched_result'); }
-  el.style.display = 'inline-flex';
-  el.innerHTML = `<span style="font-weight:800;font-size:13px;">${esc(x.p.session)}</span><span style="font-size:9px;opacity:.85;">${esc(label)}</span><b style="font-size:12px;font-weight:800;background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">${dday}</b>`;
-}
 function renderDdayStrip() {
   const host = $id('dday-strip');
   if (!host) return;
@@ -539,7 +519,6 @@ function render() {
     case 'challenge': s.innerHTML = viewChallenge(); bindChallenge(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
-  renderSchedBanner();
 }
 
 /* ================= HOME ================= */

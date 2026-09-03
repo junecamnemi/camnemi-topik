@@ -126,16 +126,6 @@
 [data-theme="dark"] .h-user { background: var(--ios-blue); color: #fff; }
 [data-theme="dark"] .h-user.authed { background: var(--ios-green); }
 .h-lang { color: var(--ios-blue); }
-/* Header schedule banner (오른쪽 토픽일정 배너) */
-.sched-banner {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--grad-brand); color: #fff !important;
-  border-radius: 10px; padding: 4px 10px; height: auto;
-  font-size: 11px; font-weight: 700;
-  box-shadow: 0 3px 10px rgba(91, 91, 214, .35);
-}
-[data-theme="dark"] .sched-banner { color: #fff !important; background: var(--grad-brand); box-shadow: 0 3px 12px rgba(99, 102, 241, .45); }
-.sched-banner b { color: #fff; }
 [data-theme="dark"] .h-chip { color: var(--ios-blue); background: var(--ios-fill); }
 
 /* ---------- User menu sheet ---------- */
