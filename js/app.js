@@ -1122,7 +1122,17 @@ const TYPE_LABELS = {
   notice: '안내문', comprehension: '내용이해', long: '장문',
   writing_short: '쓰기·단답', writing_letter: '쓰기·편지'
 };
-function typeLabel(t) { return TYPE_LABELS[t] || t; }
+const TYPE_LABELS_EN = {
+  grammar: 'Grammar', vocab: 'Vocabulary', main_idea: 'Main idea', order: 'Order',
+  sentence_pos: 'Sentence position', reply: 'Reply', place: 'Place', topic: 'Topic',
+  intent: 'Intent', detail: 'Detail', flow: 'Flow', synonym: 'Synonym',
+  notice: 'Notice', comprehension: 'Comprehension', long: 'Long passage',
+  writing_short: 'Writing · short', writing_letter: 'Writing · letter'
+};
+function typeLabel(t) {
+  const map = LANG === 'en' ? TYPE_LABELS_EN : TYPE_LABELS;
+  return map[t] || t;
+}
 
 /* ---------- Smart recommendation card (weakest type → AI practice) ---------- */
 function smartRecCard(acc) {
