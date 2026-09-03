@@ -1,5 +1,5 @@
 /* Camnemi TOPIK service worker — offline-first caching for static assets */
-const CACHE = 'camnemi-topik-v1';
+const CACHE = 'camnemi-topik-v2';
 const ASSETS = [
   './',
   './app.html',
@@ -31,6 +31,16 @@ self.addEventListener('fetch', e => {
   // never cache API calls (AI server) — network only
   if (url.pathname.includes('/api/') || url.pathname.includes('/generate') || url.pathname.includes('/tts')) return;
   if (e.request.method !== 'GET') return;
+  const isHTML = e.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/';
+  if (isHTML) {
+    // HTML: network-first so every deploy is seen immediately; offline → cached copy
+    e.respondWith(fetch(e.request).then(res => {
+      const clone = res.clone();
+      if (res.ok) caches.open(CACHE).then(c => c.put(e.request, clone));
+      return res;
+    }).catch(() => caches.match(e.request).then(hit => hit || caches.match('./app.html'))));
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
       const clone = res.clone();
