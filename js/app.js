@@ -803,6 +803,7 @@ function viewDaily() {
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
+      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -818,7 +819,6 @@ function viewDaily() {
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
       ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
     </div>
@@ -1079,6 +1079,7 @@ function viewSectionCard() {
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
+      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -1094,7 +1095,6 @@ function viewSectionCard() {
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
     </div>
     <div style="display:flex;gap:8px;">
@@ -2050,6 +2050,7 @@ function viewMockRun() {
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
+      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -2060,7 +2061,6 @@ function viewMockRun() {
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain">${explainBlock(q)}</div>` : ''}
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.mockIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navMock(-1)">${t('prev')}</button>
