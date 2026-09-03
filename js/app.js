@@ -364,7 +364,7 @@ function renderSchedBanner() {
   else if (x.st.key === 'test_wait') { dday = ddayStr(x.p.date); label = t('sched_next_test'); }
   else { dday = ddayStr(x.p.result); label = t('sched_result'); }
   el.style.display = 'inline-flex';
-  el.innerHTML = `<span style="font-weight:800;font-size:13px;">${esc(x.p.session)}</span><span style="font-size:9px;opacity:.85;">${esc(label)}</span><b style="font-size:12px;font-weight:800;">${dday}</b>`;
+  el.innerHTML = `<span style="font-size:15px;line-height:1;">${country.flag}</span><span style="font-weight:800;font-size:13px;">${esc(x.p.session)}</span><span style="font-size:9px;opacity:.85;">${esc(label)}</span><b style="font-size:12px;font-weight:800;">${dday}</b>`;
 }
 
 /* ---------- helpers ---------- */
@@ -528,13 +528,17 @@ function viewHome() {
   const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
   // Greeting — Hi, {name}! 👋 with our mascot girl (Aiko-style)
   const nm = (window.AUTH && AUTH.user && AUTH.user.email) ? (AUTH.user.name || AUTH.user.email.split('@')[0]) : (LANG === 'ko' ? '학습자' : LANG === 'km' ? 'សិស្ស' : 'learner');
+  const mc = myChar();
   const greet = `
     <div class="home-greet">
       <div style="flex:1;min-width:0;">
         <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
         <p class="greet-s">${t('home_greet_sub')}</p>
       </div>
-      <div class="greet-avatar"><img src="assets/img/girl-mascot.webp" alt="mascot"></div>
+      <div class="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
+        <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
+        <span class="avatar-edit">✎</span>
+      </div>
     </div>`;
   // Daily Goal — compact single-line bar (clean) with the helper cat
   const dailyGoal = `
@@ -660,7 +664,7 @@ function focusCardHTML() {
       </div>
       <button class="btn btn-primary focus-btn" id="focus-btn" onclick="toggleFocus()">${ic('pause',15)} ${t('home_focus_start')}</button>
     </div>
-    <div class="focus-sess"><img src="assets/img/girl-mascot.webp" alt="girl" class="fs-girl"> ${ic('flame',12)} <b id="focus-sess">${lsGet('camnemi_topik_focus_sess', 0)}</b> ${t('home_focus_sessions')}</div>
+    <div class="focus-sess"><img src="${myChar().img}" alt="girl" class="fs-girl"> ${ic('flame',12)} <b id="focus-sess">${lsGet('camnemi_topik_focus_sess', 0)}</b> ${t('home_focus_sessions')}</div>
   </div>`;
 }
 function setFocusMode(m) {
