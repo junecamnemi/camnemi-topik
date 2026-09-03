@@ -1226,8 +1226,12 @@ function relatedBlock(q) {
       ${rel.map((r, i) => `
         <div class="related-item" style="background:var(--ios-fill);border-radius:10px;padding:10px;margin-bottom:8px;">
           <div style="font-size:10.5px;font-weight:700;color:var(--ios-secondary-label);margin-bottom:4px;">${t('related_q')} ${i + 1} · ${typeLabel(r.type)} · L${r.level}</div>
+          ${r.passage ? `<div class="related-passage" style="font-size:12.5px;line-height:1.55;background:var(--ios-card);border-left:2.5px solid var(--ios-blue-2);border-radius:8px;padding:8px 10px;margin-bottom:6px;">${r.passage}</div>` : ''}
+          ${r.passageGl ? `<div class="passage-gloss" style="font-size:11.5px;">📖 ${esc(r.passageGl)}</div>` : ''}
           <div style="font-size:13.5px;line-height:1.5;">${esc(r.q)}</div>
-          ${r.qGl ? `<div class="sub" style="font-size:11.5px;margin-top:3px;">${esc(r.qGl)}</div>` : ''}
+          ${r.qGl ? `<div class="q-gloss" style="font-size:11.5px;margin-top:3px;">📝 ${esc(r.qGl)}</div>` : ''}
+          ${r.options && r.options.length ? `<div style="margin-top:6px;">${r.options.map((o, oi) => `
+            <div class="rel-opt" data-ok="${oi === r.correct ? '1' : '0'}" style="font-size:12.5px;line-height:1.5;padding:3px 0;">${'①②③④'[oi]} ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</div>`).join('')}</div>` : ''}
           <button class="btn btn-ghost btn-sm" style="margin-top:6px;color:var(--ios-green);" onclick="toggleRelAns(this)">${t('related_show_ans')}</button>
           <div class="rel-ans" style="display:none;margin-top:6px;font-size:12.5px;color:var(--ios-label);">
             <b>✓ ${r.correct !== undefined ? '①②③④'[r.correct] : ''}</b> — ${esc(r.explain || '')}
@@ -1245,11 +1249,19 @@ function toggleRelated(btn) {
   btn.innerHTML = (open ? ic('notes',14) + ' ' + t('related_q') : ic('notes',14) + ' ' + t('related_hide'));
 }
 function toggleRelAns(btn) {
-  const ans = btn.parentElement.querySelector('.rel-ans');
+  const item = btn.parentElement;
+  const ans = item.querySelector('.rel-ans');
   if (!ans) return;
   const open = ans.style.display !== 'none';
   ans.style.display = open ? 'none' : 'block';
   btn.textContent = open ? t('related_show_ans') : t('related_hide_ans');
+  // highlight the correct option (green) when the answer is shown
+  item.querySelectorAll('.rel-opt').forEach(o => {
+    if (o.dataset.ok === '1') {
+      o.style.color = 'var(--ios-green)';
+      o.style.fontWeight = '700';
+    }
+  });
 }
 function accBar(label, p, sub) {
   const color = p >= 70 ? 'var(--ios-green)' : p >= 40 ? 'var(--ios-orange)' : 'var(--ios-red)';
