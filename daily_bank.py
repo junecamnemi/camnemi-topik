@@ -32,7 +32,7 @@ PER_SECTION = PER_LEVEL // len(SECTIONS)  # ~5 per level/section
 
 
 def log(*a):
-    log(*a, flush=True)
+    print(*a, flush=True)
 
 
 def qhash(q):
