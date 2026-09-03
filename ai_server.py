@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 
 # Nous endpoint (same as Hermes config.yaml model block)
 NOUS_BASE = os.environ.get("NOUS_BASE", "https://inference-api.nousresearch.com/v1")
-NOUS_MODEL = os.environ.get("NOUS_MODEL", "deepseek/deepseek-v4-flash")
+NOUS_MODEL = os.environ.get("NOUS_MODEL", "deepseek/deepseek-v4-pro")
 
 # static app root (camnemi-topik folder)
 APP_ROOT = os.environ.get("CAMNEMI_APP_ROOT", os.path.dirname(os.path.abspath(__file__)))
@@ -79,12 +79,13 @@ Given structure: the caller passes you the real exam structure (section counts, 
 level-appropriate grammar pool, vocabulary guide). Use it to pick realistic types.
 
 Return STRICT JSON only, no markdown, no commentary:
-{"questions":[{"section":"reading|listening|writing","type":"one of: grammar|vocab|main_idea|order|sentence_pos|topic|place|intent|comprehension|writing_short|writing_letter","level":1..6,"points":2|3|4|10|20,"q":"question text in Korean","qGl":"English translation of the question text","passage":"passage or blank-sentence (Korean), omit if none","passageGl":"full English translation of the passage (empty string if no passage)","options":[{"t":"choice","gl":"english gloss"}],"correct":0..3,"explain":"why correct (English)","traps":["why each wrong (English)"],"tip":"study tip (English)","freq":2,"freqNote":"which official section + Q-range it mirrors"}]}
+{"questions":[{"section":"reading|listening|writing","type":"one of: grammar|vocab|main_idea|order|sentence_pos|topic|place|intent|comprehension|writing_short|writing_letter","level":1..6,"points":2|3|4|10|20,"q":"question text in Korean","qGl":"English translation of the question text","passage":"passage or blank-sentence (Korean), omit if none","passageGl":"full English translation of the passage (empty string if no passage)","options":[{"t":"choice","gl":"english gloss"}],"correct":0..3,"explain":"why correct (English)","traps":["why each wrong (English)"],"tip":"study tip (English)","optExplain":["Korean why-1","Korean why-2","Korean why-3","Korean why-4"],"optExplainEn":["English why-1","English why-2","English why-3","English why-4"],"tipEn":"English tip","freq":2,"freqNote":"which official section + Q-range it mirrors"}]}
 Rules:
 - IMPORTANT: "q" and "passage" MUST be 100% Korean — absolutely zero English words inside them. Korean ONLY.
 - English belongs ONLY in: qGl, options[].gl, passageGl, explain, traps, tip.
 - reading/listening questions have EXACTLY 4 options; correct MUST be the index of the right option (0-3). ALWAYS set correct explicitly and match it to the option text.
 - LISTENING questions: the actual spoken dialogue MUST be the question text itself — write the full dialogue (가: … / 나: …) into "q" in Korean, then add "audioHint" with a shorter 1-2 line condensed script (same dialogue, fewer words) for the TTS preview. The app plays "q" aloud via TTS, so q MUST contain the full dialogue, never just an instruction.
+- EVERY multiple-choice question MUST include "optExplain": an array of EXACTLY 4 Korean strings — index [correct] explains why that option is right (start with "정답:"), the other three explain why each is wrong (start with "오답:"). Also include "optExplainEn": the same 4 explanations in English, and "tipEn": the English translation of "tip". These fields are REQUIRED — do not omit them.
 - Choose question types according to the provided type_weights (weighted random).
 - Use the provided grammar_pool / vocab_guide so difficulty matches the level.
 - writing questions (type writing_short/writing_letter) have NO options; include "writePrompt":true and "answerModel":"a 150-300 char model Korean answer".
@@ -118,9 +119,11 @@ def _ask_llm(prompt: str) -> dict:
         messages=[{"role": "system", "content": SYSTEM},
                   {"role": "user", "content": prompt}],
         temperature=0.9,
-        max_tokens=4000,
+        max_tokens=16000,   # v4-pro is a reasoning model: reasoning eats tokens, keep headroom for the JSON answer
     )
     txt = r.choices[0].message.content or ""
+    if not txt:
+        print(f"[grade] EMPTY content — finish={r.choices[0].finish_reason} reasoning_len={len(r.choices[0].message.reasoning or '')}")
     return _parse_json(txt)
 
 def _parse_json(txt: str):
@@ -335,9 +338,11 @@ def _ask_llm_with(system, user_prompt) -> dict:
         messages=[{"role": "system", "content": system},
                   {"role": "user", "content": user_prompt}],
         temperature=0.4,
-        max_tokens=1200,
+        max_tokens=16000,   # v4-pro is a reasoning model — keep headroom for content after reasoning
     )
     txt = r.choices[0].message.content or ""
+    if not txt:
+        print(f"[grade] EMPTY content — finish={r.choices[0].finish_reason} reasoning_len={len(r.choices[0].message.reasoning or '')}")
     return _parse_json(txt)
 
 # =========================================================================
