@@ -523,7 +523,7 @@ function viewHome() {
   const doneCount = doneToday ? Object.keys(doneToday).length : 0;
   const acc = accuracyStats();
   const isNew = answered === 0;
-  const lv = myLevel();
+  const lvl = xpProgress();
   // AI hero — the core promise: AI analyses past exams → generates fresh questions
   const aiHero = `
     <div class="app-card elevated big-cta ai-hero">
@@ -531,9 +531,9 @@ function viewHome() {
       <h2 style="font-size:20px;color:var(--ios-label);margin-bottom:6px;">${t('home_ai_title')}</h2>
       <p class="sub" style="line-height:1.6;">${t('home_ai_sub')}</p>
       <div class="stat-row">
-        <div class="stat-box"><b>L${lv}</b><span style="color:var(--ios-blue);">${ic('chart',13)} ${t('my_level')}</span></div>
-        <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',13)} ${t('stat_streak')}</span></div>
-        <div class="stat-box"><b>${doneCount}/10</b><span style="color:var(--ios-green);">${ic('daily',13)} ${t('stat_today')}</span></div>
+        <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',13)} ${t('menu_streak')}</span></div>
+        <div class="stat-box"><b>${acc.overall}%</b><span style="color:var(--ios-blue);">${ic('chart',13)} ${t('menu_acc')}</span></div>
+        <div class="stat-box"><b>L${lvl.lv}</b><span style="color:var(--ios-green);">${lvl.xp} XP</span></div>
       </div>
       <div style="display:flex;gap:8px;margin-top:14px;">
         <button class="btn btn-primary" style="flex:1;" onclick="generateAI('reading')">${ic('spark',15)} ${t('home_ai_read')}</button>
