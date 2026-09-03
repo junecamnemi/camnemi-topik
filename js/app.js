@@ -810,7 +810,7 @@ function bindDaily() {}
 /* ================= SECTION PRACTICE (Reading / Listening / Writing) ================= */
 let _secTimer = null, _secRemain = 0;
 const SEC_MINUTES = 10;   // 10 min per 10 questions (fixed pace for all levels)
-function startSection(sec, lv, type) {
+async function startSection(sec, lv, type) {
   // build a set of 10 for this section + level (fall back to level-agnostic if scarce)
   const target = lv || APP.sectionLevel || myLevel();
   const byType = (pool) => (type ? pool.filter(q => q.type === type) : pool);
@@ -818,8 +818,19 @@ function startSection(sec, lv, type) {
   if (pool.length < 10) pool = byType(allQuestions().filter(q => q.section === sec && levelOf(q) === APP.level));
   if (pool.length < 10) pool = byType(allQuestions().filter(q => q.section === sec));
   const shuf = pool.slice().sort(() => Math.random() - 0.5);
-  const qs = shuf.slice(0, 10);
-  if (!qs.length) { toast(LANG === 'ko' ? '이 섹션·레벨 문제가 아직 없어요 — AI 생성 버튼을 눌러보세요.' : 'No questions for this section/level yet — try AI generate.'); return; }
+  const localQs = shuf.slice(0, 10);
+  // try the daily bank first — fresh AI questions, no repeats (exclude seen ids)
+  let qs = null;
+  try {
+    const seen = Object.keys(lsGet(LS.progress, {})).join(',');
+    const r = await fetch(aiUrl('/daily-bank?level=' + target + '&section=' + sec + '&exclude=' + seen), { signal: AbortSignal.timeout(6000) });
+    const d = await r.json();
+    if (d.questions && d.questions.length >= 5) qs = d.questions.slice(0, 10);
+  } catch (e) { /* offline or no bank yet → local fallback */ }
+  if (!qs) {
+    if (!localQs.length) { toast(LANG === 'ko' ? '이 섹션·레벨 문제가 아직 없어요 — AI 생성 버튼을 눌러보세요.' : 'No questions for this section/level yet — try AI generate.'); return; }
+    qs = localQs;
+  }
   APP.section = sec;
   APP.sectionLevel = target;
   APP.sectionType = type || null;

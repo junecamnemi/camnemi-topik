@@ -399,6 +399,38 @@ async def tts(text: str = "", voice: str = "alloy"):
     except Exception as e:
         return Response("tts error: " + str(e), status_code=500)
 
+# ---------------------------------------------------------------------------
+# Daily bank — 100 questions generated every day at 12:00 by daily_bank.py.
+# GET /api/daily-bank?level=3&section=reading&exclude=id1,id2 → unseen questions
+# ---------------------------------------------------------------------------
+DAILY_BANK_PATH = os.path.join(APP_ROOT, "data", "daily-bank.json")
+
+def _load_daily_bank():
+    try:
+        with open(DAILY_BANK_PATH, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return []
+
+@app.get("/api/daily-bank")
+async def daily_bank(req: Request):
+    level = (req.query_params.get("level") or "").strip()
+    section = (req.query_params.get("section") or "").strip().lower()
+    exclude_raw = (req.query_params.get("exclude") or "").strip()
+    exclude = set(x for x in exclude_raw.split(",") if x)
+    qs = _load_daily_bank()
+    out = []
+    for q in qs:
+        if q.get("id") in exclude:
+            continue
+        if level and str(q.get("level")) != str(level):
+            continue
+        if section and q.get("section") != section:
+            continue
+        out.append(q)
+    # cap at 10 per request (same UX as section practice)
+    return {"questions": out[:10], "ai": True, "source": "daily-bank", "total": len(out)}
+
 # serve the static app from the same origin → ONE tunnel/URL for everything
 # (mounted LAST so /api/* and /health win over static)
 app.mount("/", StaticFiles(directory=APP_ROOT, html=True), name="app")

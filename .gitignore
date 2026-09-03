@@ -3,3 +3,7 @@ js/config.js
 .env
 *.local
 assets/audio/tts_cache/
+# daily AI bank (generated at 12:00 by daily_bank_cron.py — lives on the PC)
+data/daily-bank.json
+data/.daily-seen.json
+data/daily-bank.log
