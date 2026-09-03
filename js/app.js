@@ -544,22 +544,17 @@ function viewHome() {
       <span class="dg-mini-bar"><span style="width:${pct}%"></span></span>
       <span class="dg-mini-c"><b>${doneCount}</b>/${goalTotal}</span>
     </div>`;
-  // AI hero — the core promise: AI analyses past exams → generates fresh questions
-  const aiHero = `
-    <div class="app-card elevated big-cta ai-hero">
-      <div class="cta-ico" style="color:var(--ios-blue);">${ic('spark', 36)}</div>
-      <h2 style="font-size:20px;color:var(--ios-label);margin-bottom:6px;">${t('home_ai_title')}</h2>
-      <p class="sub" style="line-height:1.6;">${t('home_ai_sub')}</p>
-      <div class="stat-row">
-        <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',13)} ${t('menu_streak')}</span></div>
-        <div class="stat-box"><b>${acc.overall}%</b><span style="color:var(--ios-blue);">${ic('chart',13)} ${t('menu_acc')}</span></div>
-        <div class="stat-box"><b>L${lvl.lv}</b><span style="color:var(--ios-green);">${lvl.xp} XP</span></div>
+  // AI quick-start — solve reading/listening right away (no timer, no stats)
+  const aiQuick = `
+    <div class="app-card ai-quick">
+      <div class="aq-head">
+        <div class="aq-title">${ic('spark',18)} <b>${t('home_ai_read')} · ${t('home_ai_listen')}</b></div>
+        <div class="aq-sub">${t('home_ai_sub')}</div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:14px;">
-        <button class="btn btn-primary" style="flex:1;" onclick="generateAI('reading')">${ic('spark',15)} ${t('home_ai_read')}</button>
-        <button class="btn btn-teal" style="flex:1;" onclick="generateAI('listening')">${ic('spark',15)} ${t('home_ai_listen')}</button>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="btn btn-primary aq-btn" onclick="generateAI('reading')">${ic('learn',16)} ${t('home_ai_read')}</button>
+        <button class="btn btn-teal aq-btn" onclick="generateAI('listening')">${ic('listen',16)} ${t('home_ai_listen')}</button>
       </div>
-      ${isNew ? `<p class="sub" style="margin-top:12px;text-align:center;">${t('welcome_body')}</p>` : ''}
     </div>`;
   // Today's Schedule — compact 2×2 grid (clean)
   const schedRows = [
@@ -598,9 +593,8 @@ function viewHome() {
   return `
     ${greet}
     ${dailyGoal}
-    ${focusCardHTML()}
+    ${aiQuick}
     ${weekBlock}
-    ${aiHero}
     ${schedule}
     <div class="sec-h"><h2>${ic('target',15)} ${t('goal_title')}</h2><span class="sub">${t('goal_sub')}</span></div>
     ${goalCards}
