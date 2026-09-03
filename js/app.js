@@ -88,6 +88,10 @@ const T = {
     home_greet: 'Hi, {name}! 👋', home_greet_sub: 'Ready to achieve something amazing today?',
     home_quote: '“Discipline today, success tomorrow.”', home_daily_goal: 'Daily Goal', home_tasks: 'tasks', home_schedule: 'Today\'s Schedule', home_view_all: 'View all',
     home_sch_reading: 'Reading · Chapters 1–3', home_sch_listening: 'Listening · Dialogue drills', home_sch_vocab: 'Vocabulary · New words', home_sch_mock: 'Mock Test · Full round',
+    home_week: 'This week', home_tasks_t: 'Tasks', home_done: 'Done', home_focus: 'Focus Timer', home_focus_start: 'Start', home_focus_pause: 'Pause', home_focus_reset: 'Reset',
+    home_focus_pomo: 'Pomodoro', home_focus_short: 'Short Break', home_focus_sessions: 'focus sessions', home_streak_card: 'Study Streak', home_streak_days: 'days',
+    home_task_reading: 'Complete Reading', home_task_listening: 'Revise Listening Notes', home_task_vocab: 'Vocabulary Practice', home_task_mock: 'Mock Test Round',
+    prog_week: 'This Week', prog_study_time: 'Study Time', prog_tasks_done: 'Tasks Done', prog_focus_sess: 'Focus Sessions', prog_subjects: 'Subjects',
     goal_reading: 'Reading', goal_listening: 'Listening', goal_vocab: 'Vocabulary',
     goal_start: 'Start', goal_done: 'Done', my_level: 'My level', my_level_sub: 'Default level for practice & AI questions',
     listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →',
@@ -161,6 +165,10 @@ const T = {
     home_greet: '{name}님, 안녕하세요! 👋', home_greet_sub: '오늘도 놀라운 성과를 만들어 볼까요?',
     home_quote: '“오늘의 노력이 내일의 성공을 만든다.”', home_daily_goal: '오늘의 목표', home_tasks: '개 완료', home_schedule: '오늘의 일정', home_view_all: '전체 보기',
     home_sch_reading: '리딩 · 본문 1–3', home_sch_listening: '리스닝 · 대화 연습', home_sch_vocab: '보케블러리 · 새 단어', home_sch_mock: '모의고사 · 풀세트',
+    home_week: '이번 주', home_tasks_t: '할 일', home_done: '완료', home_focus: '집중 타이머', home_focus_start: '시작', home_focus_pause: '일시정지', home_focus_reset: '리셋',
+    home_focus_pomo: '뽀모도로', home_focus_short: '짧은 휴식', home_focus_sessions: '집중 세션', home_streak_card: '학습 연속 기록', home_streak_days: '일',
+    home_task_reading: '리딩 문제 풀기', home_task_listening: '리스닝 복습', home_task_vocab: '보케블러리 연습', home_task_mock: '모의고사 1회',
+    prog_week: '이번 주', prog_study_time: '학습 시간', prog_tasks_done: '완료한 할 일', prog_focus_sess: '집중 세션', prog_subjects: '영역별 진도',
     goal_reading: '리딩', goal_listening: '리스닝', goal_vocab: '보케블러리',
     goal_start: '시작', goal_done: '완료', my_level: '나의 레벨', my_level_sub: '연습·AI 문제의 기본 레벨',
     listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →',
@@ -234,6 +242,10 @@ const T = {
     home_greet: 'សួស្តី {name}! 👋', home_greet_sub: 'ត្រៀមខ្លួនដើម្បីសម្រេចអ្វីដ៏អស្ចារ្យថ្ងៃនេះហើយ?',
     home_quote: '“វិន័យថ្ងៃនេះ ជោគជ័យថ្ងៃស្អែក។”', home_daily_goal: 'គោលដៅប្រចាំថ្ងៃ', home_tasks: 'កិច្ចការ', home_schedule: 'កាលវិភាគថ្ងៃនេះ', home_view_all: 'មើលទាំងអស់',
     home_sch_reading: 'អាន · ជំពូក 1–3', home_sch_listening: 'ស្តាប់ · ការសន្ទនា', home_sch_vocab: 'វាក្យសព្ទ · ពាក្យថ្មី', home_sch_mock: 'ប្រឡងសាកល្បង',
+    home_week: 'សប្តាហ៍នេះ', home_tasks_t: 'កិច្ចការ', home_done: 'រួចរាល់', home_focus: 'កម្មវិធីកំណត់ម៉ោង', home_focus_start: 'ចាប់ផ្តើម', home_focus_pause: 'ផ្អាក', home_focus_reset: 'កំណត់ឡើងវិញ',
+    home_focus_pomo: 'Pomodoro', home_focus_short: 'សម្រាកខ្លី', home_focus_sessions: 'វគ្គផ្តោត', home_streak_card: 'ស្ទ្រីកសិក្សា', home_streak_days: 'ថ្ងៃ',
+    home_task_reading: 'ធ្វើលំហាត់អាន', home_task_listening: 'ពិនិត្យការស្តាប់', home_task_vocab: 'អនុវត្តវាក្យសព្ទ', home_task_mock: 'ប្រឡងសាកល្បង',
+    prog_week: 'សប្តាហ៍នេះ', prog_study_time: 'ពេលសិក្សា', prog_tasks_done: 'កិច្ចការរួច', prog_focus_sess: 'វគ្គផ្តោត', prog_subjects: 'មុខវិជ្ជា',
     goal_reading: 'អាន', goal_listening: 'ស្តាប់', goal_vocab: 'វាក្យសព្ទ',
     goal_start: 'ចាប់ផ្តើម', goal_done: 'រួចរាល់', my_level: 'កម្រិតរបស់ខ្ញុំ', my_level_sub: 'កម្រិតលំនាំដើមសម្រាប់ការអនុវត្ត និងសំណួរ AI',
     listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →',
@@ -524,16 +536,12 @@ function viewHome() {
       </div>
       <div class="greet-avatar">🎓</div>
     </div>`;
-  // Daily Goal — purple card with progress bar + mascot + quote (Aiko-style)
+  // Daily Goal — compact single-line bar (clean)
   const dailyGoal = `
-    <div class="daily-goal-card">
-      <div class="dg-head"><span class="dg-title">${ic('target',14)} ${t('home_daily_goal')}</span>
-        <span class="dg-count"><b>${doneCount}</b>/${goalTotal} ${t('home_tasks')}</span></div>
-      <div class="dg-bar"><div style="width:${pct}%"></div></div>
-      <div class="dg-foot">
-        <div class="dg-quote">${t('home_quote')}</div>
-        <div class="dg-mascot">🐰</div>
-      </div>
+    <div class="dg-mini">
+      <span class="dg-mini-t">${ic('target',13)} ${t('home_daily_goal')}</span>
+      <span class="dg-mini-bar"><span style="width:${pct}%"></span></span>
+      <span class="dg-mini-c"><b>${doneCount}</b>/${goalTotal}</span>
     </div>`;
   // AI hero — the core promise: AI analyses past exams → generates fresh questions
   const aiHero = `
@@ -552,22 +560,20 @@ function viewHome() {
       </div>
       ${isNew ? `<p class="sub" style="margin-top:12px;text-align:center;">${t('welcome_body')}</p>` : ''}
     </div>`;
-  // Today's Schedule — timed rows with icons (Aiko-style)
+  // Today's Schedule — compact 2×2 grid (clean)
   const schedRows = [
     { time: '09:00', icon: 'learn', col: 'var(--ios-blue)', label: t('home_sch_reading'), go: `startSection('reading', myLevel())` },
     { time: '11:30', icon: 'listen', col: 'var(--ios-teal)', label: t('home_sch_listening'), go: `startSection('listening', myLevel())` },
     { time: '14:00', icon: 'notes', col: 'var(--ios-orange)', label: t('home_sch_vocab'), go: `startSection('reading', myLevel(), 'vocab')` },
     { time: '16:30', icon: 'mock', col: 'var(--ios-pink)', label: t('home_sch_mock'), go: `go('mock')` }
   ].map(r => `
-    <div class="sched-row" onclick="${r.go}">
-      <span class="sched-time">${r.time}</span>
+    <div class="sched-cell" onclick="${r.go}">
       <span class="sched-ico" style="background:${r.col}1A;color:${r.col};">${ic(r.icon,16)}</span>
-      <span class="sched-label">${r.label}</span>
-      <span style="color:${r.col};">→</span>
+      <div class="sched-txt"><b>${r.label}</b><span class="sub">${r.time}</span></div>
     </div>`).join('');
   const schedule = `
     <div class="sec-h"><h2>${ic('schedule',15)} ${t('home_schedule')}</h2><span class="sub" style="cursor:pointer;" onclick="go('schedule')">${t('home_view_all')} →</span></div>
-    <div class="app-card sched-card">${schedRows}</div>`;
+    <div class="app-card sched-grid">${schedRows}</div>`;
   // Today's goal — reading / listening / vocabulary
   const goalCards = [
     { key: 'reading', icon: 'learn', col: 'var(--ios-blue)', go: `startSection('reading', myLevel())` },
@@ -582,9 +588,17 @@ function viewHome() {
         <span style="color:${g.col};">→</span>
       </div>
     </div>`).join('');
+  // This Week — calendar + tasks + streak (Aiko planner)
+  const weekBlock = `
+    <div class="sec-h"><h2>${ic('daily',15)} ${t('home_week')}</h2></div>
+    ${weekCalendarHTML()}
+    <div class="app-card ht-card">${homeTasksHTML()}</div>
+    ${streakCardHTML()}`;
   return `
     ${greet}
     ${dailyGoal}
+    ${focusCardHTML()}
+    ${weekBlock}
     ${aiHero}
     ${schedule}
     <div class="sec-h"><h2>${ic('target',15)} ${t('goal_title')}</h2><span class="sub">${t('goal_sub')}</span></div>
@@ -624,6 +638,111 @@ function setLevel(lv) {
   render();
 }
 function bindHome() {}
+
+/* ================= FOCUS TIMER (Pomodoro, Aiko-style) ================= */
+let _focusTimer = null, _focusRemain = 0, _focusMode = 'pomo';
+const FOCUS_LS = 'camnemi_topik_focus';
+function focusState() { return lsGet(FOCUS_LS, { pomo: 25 * 60, short: 5 * 60 }); }
+function focusDur(mode) { const s = focusState(); return (mode || _focusMode) === 'short' ? (s.short || 300) : (s.pomo || 1500); }
+function fmtFocus(sec) { return String(Math.floor(sec / 60)).padStart(2, '0') + ':' + String(sec % 60).padStart(2, '0'); }
+function focusCardHTML() {
+  _focusMode = _focusMode || 'pomo';
+  if (_focusRemain <= 0) _focusRemain = focusDur(_focusMode);
+  const total = focusDur(_focusMode);
+  const r = 42, C = 2 * Math.PI * r;
+  const pct = Math.max(0, Math.min(1, _focusRemain / total));
+  return `
+  <div class="app-card focus-card">
+    <div class="sec-h" style="margin-bottom:8px;"><h2>${ic('target',15)} ${t('home_focus')}</h2>
+      <div class="focus-tabs">
+        <span class="ft ${_focusMode === 'pomo' ? 'on' : ''}" onclick="setFocusMode('pomo')">${t('home_focus_pomo')}</span>
+        <span class="ft ${_focusMode === 'short' ? 'on' : ''}" onclick="setFocusMode('short')">${t('home_focus_short')}</span>
+      </div></div>
+    <div class="focus-main">
+      <div class="focus-ring" style="--pct:${pct};">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="${r}" class="fr-bg"/><circle cx="50" cy="50" r="${r}" class="fr-fg" style="stroke-dasharray:${C};stroke-dashoffset:${C * (1 - pct)};"/></svg>
+        <div class="focus-time" id="focus-time">${fmtFocus(_focusRemain)}</div>
+      </div>
+      <button class="btn btn-primary focus-btn" id="focus-btn" onclick="toggleFocus()">${ic('pause',15)} ${t('home_focus_start')}</button>
+    </div>
+    <div class="focus-sess">${ic('flame',12)} <b id="focus-sess">${lsGet('camnemi_topik_focus_sess', 0)}</b> ${t('home_focus_sessions')}</div>
+  </div>`;
+}
+function setFocusMode(m) {
+  _focusMode = m; _focusRemain = focusDur(m);
+  if (_focusTimer) { clearInterval(_focusTimer); _focusTimer = null; }
+  const b = $id('focus-btn'); if (b) b.innerHTML = ic('pause',15) + ' ' + t('home_focus_start');
+  render();
+}
+function toggleFocus() {
+  const b = $id('focus-btn');
+  if (_focusTimer) {
+    clearInterval(_focusTimer); _focusTimer = null;
+    if (b) b.innerHTML = ic('pause',15) + ' ' + t('home_focus_start');
+    return;
+  }
+  if (b) b.innerHTML = ic('pause',15) + ' ' + t('home_focus_pause');
+  _focusTimer = setInterval(() => {
+    _focusRemain--;
+    const el = $id('focus-time');
+    if (el) el.textContent = fmtFocus(Math.max(0, _focusRemain));
+    if (_focusRemain <= 0) {
+      clearInterval(_focusTimer); _focusTimer = null;
+      // session complete
+      const n = (parseInt(lsGet('camnemi_topik_focus_sess', 0)) || 0) + 1;
+      localStorage.setItem('camnemi_topik_focus_sess', n);
+      const mins = (parseInt(localStorage.getItem('camnemi_topik_focus_min') || '0') || 0) + Math.round(focusDur(_focusMode) / 60);
+      localStorage.setItem('camnemi_topik_focus_min', mins);
+      const se = $id('focus-sess'); if (se) se.textContent = n;
+      _focusRemain = focusDur(_focusMode);
+      render();
+      toast(LANG === 'ko' ? '🎉 집중 세션 완료! 잠깐 쉬어요.' : '🎉 Focus session done! Take a short break.');
+    }
+  }, 1000);
+}
+
+/* ================= WEEK CALENDAR + TASKS + STREAK (Aiko-style) ================= */
+function weekCalendarHTML() {
+  const now = new Date();
+  const day = now.getDay();               // 0=Sun
+  const mon = new Date(now); mon.setDate(now.getDate() - ((day + 6) % 7));   // Monday
+  const days = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+  const cells = days.map((d, i) => {
+    const dt = new Date(mon); dt.setDate(mon.getDate() + i);
+    const isToday = dt.toDateString() === now.toDateString();
+    return `<div class="wc-day ${isToday ? 'on' : ''}"><span class="wc-d">${d}</span><span class="wc-n">${dt.getDate()}</span></div>`;
+  }).join('');
+  return `<div class="app-card wc-card"><div class="wc-grid">${cells}</div></div>`;
+}
+function homeTasksHTML() {
+  const done = lsGet('camnemi_topik_home_tasks', {});
+  const tasks = [
+    { k: 'reading', icon: 'learn', col: 'var(--ios-blue)', label: t('home_task_reading'), go: `startSection('reading', myLevel())` },
+    { k: 'listening', icon: 'listen', col: 'var(--ios-teal)', label: t('home_task_listening'), go: `startSection('listening', myLevel())` },
+    { k: 'vocab', icon: 'notes', col: 'var(--ios-orange)', label: t('home_task_vocab'), go: `startSection('reading', myLevel(), 'vocab')` },
+    { k: 'mock', icon: 'mock', col: 'var(--ios-pink)', label: t('home_task_mock'), go: `go('mock')` }
+  ];
+  return tasks.map(tk => `
+    <div class="ht-row" onclick="${tk.go}">
+      <span class="ht-check ${done[tk.k] ? 'on' : ''}" onclick="event.stopPropagation();toggleHomeTask('${tk.k}')">${done[tk.k] ? '✓' : ''}</span>
+      <span class="ht-ico" style="background:${tk.col}1A;color:${tk.col};">${ic(tk.icon,15)}</span>
+      <span class="ht-label ${done[tk.k] ? 'done' : ''}">${tk.label}</span>
+    </div>`).join('');
+}
+function toggleHomeTask(k) {
+  const d = lsGet('camnemi_topik_home_tasks', {});
+  d[k] = !d[k]; localStorage.setItem('camnemi_topik_home_tasks', JSON.stringify(d));
+  render();
+}
+function streakCardHTML() {
+  const streak = lsGet(LS.streak, { last: null, count: 0 });
+  return `
+  <div class="streak-card">
+    <div><span class="sc-ico">🔥</span></div>
+    <div class="sc-main"><b>${streak.count}</b> ${t('home_streak_days')}<div class="sc-sub">${t('home_streak_card')}</div></div>
+    <div class="sc-flame">🔥</div>
+  </div>`;
+}
 
 /* ================= DAILY 10 ================= */
 function buildDaily() {
@@ -2178,8 +2297,40 @@ function viewProgress() {
   const mastered = Object.values(prog).filter(p => (p.correct || 0) > 0).length;
   const testsDone = scores.length;
 
+  // ---- Aiko-style dashboard: study time / tasks / focus sessions / subjects ----
+  const focusMin = parseInt(localStorage.getItem('camnemi_topik_focus_min') || '0') || 0;
+  const homeTasks = lsGet('camnemi_topik_home_tasks', {});
+  const tasksDone = Object.values(homeTasks).filter(Boolean).length;
+  const focusSess = parseInt(localStorage.getItem('camnemi_topik_focus_sess') || '0') || 0;
+  const studyH = Math.floor(focusMin / 60), studyM = focusMin % 60;
+  // per-subject progress from accuracy by type
+  const subjMap = { reading: 'home_sch_reading', listening: 'home_sch_listening', vocab: 'home_sch_vocab' };
+  const subjRows = Object.entries(subjMap).map(([k, lab]) => {
+    const r = (acc.byType || []).find(x => x.k === k);
+    const p = r ? r.p : 0;
+    const color = k === 'reading' ? 'var(--ios-blue)' : k === 'listening' ? 'var(--ios-teal)' : 'var(--ios-orange)';
+    return `<div class="subj-row"><span class="subj-name">${t(lab)}</span>
+      <span class="subj-bar"><span style="width:${p}%;background:${color};"></span></span>
+      <span class="subj-pct">${p}%</span></div>`;
+  }).join('');
+  const dash = `
+    <div class="app-card dash-card">
+      <div class="dash-top">
+        <div class="dash-time"><b>${studyH}h ${studyM}m</b><span>${t('prog_study_time')}</span></div>
+        <div class="dash-stats">
+          <div class="dash-stat"><b>${tasksDone}</b><span>${ic('daily',12)} ${t('prog_tasks_done')}</span></div>
+          <div class="dash-stat"><b>${focusSess}</b><span>${ic('target',12)} ${t('prog_focus_sess')}</span></div>
+        </div>
+      </div>
+      <div class="dash-subj">
+        <div class="dash-subj-h">${t('prog_subjects')}</div>
+        ${subjRows}
+      </div>
+    </div>`;
+
   return `
     <div class="sec-h"><h2>📈 ${t('prog_title')}</h2><span class="sub">${t('prog_sub')}</span></div>
+    ${dash}
     ${lastCard}
 
     <div class="sec-h"><h2>${t('prog_hist')}</h2><span class="sub">${t('prog_last7', { n: hist.length })}</span></div>
