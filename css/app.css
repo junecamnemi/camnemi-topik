@@ -284,6 +284,57 @@
 .goal-card { transition: transform .12s, box-shadow .2s; }
 .goal-card:active { transform: scale(.98); }
 .goal-card .sub { color: var(--ios-secondary-label); font-weight: 600; }
+
+/* ---------- Home greeting (Aiko style) ---------- */
+.home-greet { display: flex; align-items: center; gap: 12px; margin: 4px 2px 14px; }
+.greet-h { font-size: 22px; font-weight: 800; color: var(--ios-label); letter-spacing: -.3px; margin: 0; }
+.greet-s { font-size: 12.5px; color: var(--ios-secondary-label); margin: 2px 0 0; font-weight: 600; }
+.greet-avatar {
+  width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 26px;
+  background: linear-gradient(135deg, #A78BFA, #F9A8D4);
+  box-shadow: 0 6px 16px rgba(167, 139, 250, .35);
+  border: 2.5px solid #fff;
+}
+[data-theme="dark"] .greet-avatar { border-color: var(--ios-card); }
+
+/* ---------- Daily Goal card (purple, Aiko style) ---------- */
+.daily-goal-card {
+  background: linear-gradient(135deg, #8B7CF6 0%, #A78BFA 55%, #C084FC 100%);
+  border-radius: 22px; padding: 16px 18px 14px; margin-bottom: 14px;
+  color: #fff; box-shadow: 0 10px 28px rgba(139, 124, 246, .35);
+  position: relative; overflow: hidden;
+}
+.daily-goal-card::after {
+  content: ''; position: absolute; right: -30px; top: -40px;
+  width: 130px; height: 130px; border-radius: 50%;
+  background: rgba(255,255,255,.12);
+}
+.dg-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; position: relative; z-index: 1; }
+.dg-title { font-size: 14px; font-weight: 800; letter-spacing: .2px; display: flex; align-items: center; gap: 6px; }
+.dg-count { font-size: 13px; font-weight: 700; background: rgba(255,255,255,.2); border-radius: 10px; padding: 3px 10px; }
+.dg-count b { font-size: 16px; }
+.dg-bar { height: 8px; border-radius: 8px; background: rgba(255,255,255,.28); overflow: hidden; position: relative; z-index: 1; }
+.dg-bar div { height: 100%; border-radius: 8px; background: #fff; box-shadow: 0 0 10px rgba(255,255,255,.6); transition: width .5s ease; }
+.dg-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; position: relative; z-index: 1; }
+.dg-quote {
+  font-size: 12px; font-style: italic; font-weight: 600; color: #fff;
+  background: rgba(255,255,255,.16); border-radius: 10px; padding: 6px 10px;
+}
+.dg-mascot { font-size: 26px; filter: drop-shadow(0 3px 6px rgba(0,0,0,.2)); }
+
+/* ---------- Today's Schedule rows (Aiko style) ---------- */
+.sched-card { padding: 6px 14px !important; }
+.sched-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 2px; border-bottom: 0.5px solid var(--ios-separator);
+  cursor: pointer; transition: background .12s;
+}
+.sched-row:last-child { border-bottom: none; }
+.sched-row:active { background: var(--ios-fill); border-radius: 10px; }
+.sched-time { font-size: 11.5px; font-weight: 800; color: var(--ios-secondary-label); width: 40px; flex-shrink: 0; }
+.sched-ico { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sched-label { flex: 1; min-width: 0; font-size: 13.5px; font-weight: 700; color: var(--ios-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lv-btn {
   border: 1.5px solid var(--ios-separator); border-radius: 14px;
   background: var(--ios-card); color: var(--ios-label);

@@ -85,6 +85,9 @@ const T = {
     home_ai_title: 'AI past-exam analysis → fresh questions', home_ai_sub: 'The AI studies real past-exam patterns and generates questions at your level — keep solving, keep improving.',
     home_ai_read: 'AI Reading questions', home_ai_listen: 'AI Listening questions',
     goal_title: 'Today\'s goal', goal_sub: 'Pick a skill and train 10 questions',
+    home_greet: 'Hi, {name}! 👋', home_greet_sub: 'Ready to achieve something amazing today?',
+    home_quote: '“Discipline today, success tomorrow.”', home_daily_goal: 'Daily Goal', home_tasks: 'tasks', home_schedule: 'Today\'s Schedule', home_view_all: 'View all',
+    home_sch_reading: 'Reading · Chapters 1–3', home_sch_listening: 'Listening · Dialogue drills', home_sch_vocab: 'Vocabulary · New words', home_sch_mock: 'Mock Test · Full round',
     goal_reading: 'Reading', goal_listening: 'Listening', goal_vocab: 'Vocabulary',
     goal_start: 'Start', goal_done: 'Done', my_level: 'My level', my_level_sub: 'Default level for practice & AI questions',
     listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →',
@@ -155,6 +158,9 @@ const T = {
     home_ai_title: 'AI 기출 분석 → 새로운 문제', home_ai_sub: 'AI가 실제 기출 유형을 분석해 내 수준에 맞는 문제를 계속 만들어요. 풀면 풀수록 실력이 늘어요.',
     home_ai_read: 'AI 리딩 문제', home_ai_listen: 'AI 리스닝 문제',
     goal_title: '오늘의 목표', goal_sub: '원하는 영역을 골라 10문제 훈련',
+    home_greet: '{name}님, 안녕하세요! 👋', home_greet_sub: '오늘도 놀라운 성과를 만들어 볼까요?',
+    home_quote: '“오늘의 노력이 내일의 성공을 만든다.”', home_daily_goal: '오늘의 목표', home_tasks: '개 완료', home_schedule: '오늘의 일정', home_view_all: '전체 보기',
+    home_sch_reading: '리딩 · 본문 1–3', home_sch_listening: '리스닝 · 대화 연습', home_sch_vocab: '보케블러리 · 새 단어', home_sch_mock: '모의고사 · 풀세트',
     goal_reading: '리딩', goal_listening: '리스닝', goal_vocab: '보케블러리',
     goal_start: '시작', goal_done: '완료', my_level: '나의 레벨', my_level_sub: '연습·AI 문제의 기본 레벨',
     listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →',
@@ -225,6 +231,9 @@ const T = {
     home_ai_title: 'ការវិភាគប្រឡងមុនដោយ AI → សំណួរថ្មី', home_ai_sub: 'AI សិក្សាលំនាំប្រឡងមុនៗ ហើយបង្កើតសំណួរតាមកម្រិតរបស់អ្នក។',
     home_ai_read: 'សំណួរអានដោយ AI', home_ai_listen: 'សំណួរស្តាប់ដោយ AI',
     goal_title: 'គោលដៅថ្ងៃនេះ', goal_sub: 'ជ្រើសរើសជំនាញ ហើយហ្វឹកហាត់ ១០ សំណួរ',
+    home_greet: 'សួស្តី {name}! 👋', home_greet_sub: 'ត្រៀមខ្លួនដើម្បីសម្រេចអ្វីដ៏អស្ចារ្យថ្ងៃនេះហើយ?',
+    home_quote: '“វិន័យថ្ងៃនេះ ជោគជ័យថ្ងៃស្អែក។”', home_daily_goal: 'គោលដៅប្រចាំថ្ងៃ', home_tasks: 'កិច្ចការ', home_schedule: 'កាលវិភាគថ្ងៃនេះ', home_view_all: 'មើលទាំងអស់',
+    home_sch_reading: 'អាន · ជំពូក 1–3', home_sch_listening: 'ស្តាប់ · ការសន្ទនា', home_sch_vocab: 'វាក្យសព្ទ · ពាក្យថ្មី', home_sch_mock: 'ប្រឡងសាកល្បង',
     goal_reading: 'អាន', goal_listening: 'ស្តាប់', goal_vocab: 'វាក្យសព្ទ',
     goal_start: 'ចាប់ផ្តើម', goal_done: 'រួចរាល់', my_level: 'កម្រិតរបស់ខ្ញុំ', my_level_sub: 'កម្រិតលំនាំដើមសម្រាប់ការអនុវត្ត និងសំណួរ AI',
     listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →',
@@ -503,6 +512,29 @@ function viewHome() {
   const acc = accuracyStats();
   const isNew = answered === 0;
   const lvl = xpProgress();
+  const goalTotal = 10;
+  const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
+  // Greeting — Hi, {name}! 👋 with a cute avatar (Aiko-style)
+  const nm = (window.AUTH && AUTH.user && AUTH.user.email) ? (AUTH.user.name || AUTH.user.email.split('@')[0]) : (LANG === 'ko' ? '학습자' : LANG === 'km' ? 'សិស្ស' : 'learner');
+  const greet = `
+    <div class="home-greet">
+      <div style="flex:1;min-width:0;">
+        <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
+        <p class="greet-s">${t('home_greet_sub')}</p>
+      </div>
+      <div class="greet-avatar">🎓</div>
+    </div>`;
+  // Daily Goal — purple card with progress bar + mascot + quote (Aiko-style)
+  const dailyGoal = `
+    <div class="daily-goal-card">
+      <div class="dg-head"><span class="dg-title">${ic('target',14)} ${t('home_daily_goal')}</span>
+        <span class="dg-count"><b>${doneCount}</b>/${goalTotal} ${t('home_tasks')}</span></div>
+      <div class="dg-bar"><div style="width:${pct}%"></div></div>
+      <div class="dg-foot">
+        <div class="dg-quote">${t('home_quote')}</div>
+        <div class="dg-mascot">🐰</div>
+      </div>
+    </div>`;
   // AI hero — the core promise: AI analyses past exams → generates fresh questions
   const aiHero = `
     <div class="app-card elevated big-cta ai-hero">
@@ -520,6 +552,22 @@ function viewHome() {
       </div>
       ${isNew ? `<p class="sub" style="margin-top:12px;text-align:center;">${t('welcome_body')}</p>` : ''}
     </div>`;
+  // Today's Schedule — timed rows with icons (Aiko-style)
+  const schedRows = [
+    { time: '09:00', icon: 'learn', col: 'var(--ios-blue)', label: t('home_sch_reading'), go: `startSection('reading', myLevel())` },
+    { time: '11:30', icon: 'listen', col: 'var(--ios-teal)', label: t('home_sch_listening'), go: `startSection('listening', myLevel())` },
+    { time: '14:00', icon: 'notes', col: 'var(--ios-orange)', label: t('home_sch_vocab'), go: `startSection('reading', myLevel(), 'vocab')` },
+    { time: '16:30', icon: 'mock', col: 'var(--ios-pink)', label: t('home_sch_mock'), go: `go('mock')` }
+  ].map(r => `
+    <div class="sched-row" onclick="${r.go}">
+      <span class="sched-time">${r.time}</span>
+      <span class="sched-ico" style="background:${r.col}1A;color:${r.col};">${ic(r.icon,16)}</span>
+      <span class="sched-label">${r.label}</span>
+      <span style="color:${r.col};">→</span>
+    </div>`).join('');
+  const schedule = `
+    <div class="sec-h"><h2>${ic('schedule',15)} ${t('home_schedule')}</h2><span class="sub" style="cursor:pointer;" onclick="go('schedule')">${t('home_view_all')} →</span></div>
+    <div class="app-card sched-card">${schedRows}</div>`;
   // Today's goal — reading / listening / vocabulary
   const goalCards = [
     { key: 'reading', icon: 'learn', col: 'var(--ios-blue)', go: `startSection('reading', myLevel())` },
@@ -535,7 +583,10 @@ function viewHome() {
       </div>
     </div>`).join('');
   return `
+    ${greet}
+    ${dailyGoal}
     ${aiHero}
+    ${schedule}
     <div class="sec-h"><h2>${ic('target',15)} ${t('goal_title')}</h2><span class="sub">${t('goal_sub')}</span></div>
     ${goalCards}
     ${levelCardHTML()}
