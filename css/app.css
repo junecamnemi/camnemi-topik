@@ -51,7 +51,6 @@
 [data-theme="dark"] .q-passage { background: var(--ios-fill); color: var(--ios-label); }
 [data-theme="dark"] .q-opt { background: var(--ios-card); color: var(--ios-label); }
 [data-theme="dark"] .q-opt.correct { background: rgba(52, 211, 153, .16); }
-[data-theme="dark"] .dday-strip { background: var(--grad-brand); }
 [data-theme="dark"] .grade-card span { background: var(--ios-card); }
 
 /* ---------- App shell (ambient gradient blobs) ---------- */
@@ -188,30 +187,16 @@
 /* ---------- App content ---------- */
 .app-content { flex: 1; padding: 16px 16px 120px; max-width: 600px; width: 100%; margin: 0 auto; position: relative; z-index: 1; }
 
-/* ---------- Country D-day strip (gradient brand) ---------- */
-.dday-strip {
-  position: sticky; top: 0; z-index: 50;
-  display: none; overflow: hidden; cursor: pointer;
-  background: var(--grad-brand);
-  color: #fff; padding: 10px 16px 9px;
-  border-bottom: none;
-  box-shadow: 0 4px 16px rgba(91, 91, 214, .28);
-  -webkit-tap-highlight-color: transparent;
+/* ---------- Header schedule banner (오른쪽 토픽일정 배너) ---------- */
+.sched-banner {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--grad-brand); color: #fff !important;
+  border-radius: 10px; padding: 4px 10px; height: auto;
+  font-size: 11px; font-weight: 700;
+  box-shadow: 0 3px 10px rgba(91, 91, 214, .35);
 }
-.dday-strip .strip-slide { display: none; animation: stripFade .45s ease; }
-.dday-strip .strip-slide.active { display: flex; align-items: center; gap: 9px; }
-@keyframes stripFade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-.strip-flag { font-size: 20px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.2)); }
-.strip-main { flex: 1; min-width: 0; }
-.strip-title { font-size: 12.5px; font-weight: 800; letter-spacing: .2px; }
-.strip-sub { font-size: 11px; opacity: .95; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
-.strip-dday { text-align: right; flex-shrink: 0; }
-.strip-dday b { display: block; font-size: 17px; font-weight: 800; line-height: 1.05; }
-.strip-dday span { font-size: 9.5px; opacity: .85; }
-.strip-dots { display: flex; gap: 4px; margin-left: 2px; flex-shrink: 0; }
-.strip-dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.4); }
-.strip-dots i.on { background: #fff; }
-.strip-more { font-size: 9.5px; opacity: .9; flex-shrink: 0; border: 1px solid rgba(255,255,255,.5); border-radius: 8px; padding: 1px 6px; }
+[data-theme="dark"] .sched-banner { color: #fff !important; background: var(--grad-brand); box-shadow: 0 3px 12px rgba(99, 102, 241, .45); }
+.sched-banner b { color: #fff; }
 
 /* ---------- Tab bar (floating glass pill) ---------- */
 .tab-bar {

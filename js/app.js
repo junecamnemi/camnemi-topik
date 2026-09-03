@@ -289,7 +289,6 @@ function setLang(l) {
   document.documentElement.dataset.lang = l;
   // re-render nav labels + current screen
   document.querySelectorAll('[data-nav-label]').forEach(el => { el.textContent = t('nav_' + el.dataset.navLabel); });
-  renderDdayStrip();
   render();
 }
 
@@ -312,8 +311,7 @@ function cycleTheme() {
   applyTheme();
 }
 
-/* ---------- Country selector + rotating D-day strip ---------- */
-let _stripTimer = null, _stripIdx = 0;
+/* ---------- Country selector ---------- */
 function countryList() { return (window.TOPIK_SCHEDULE && TOPIK_SCHEDULE.countries) || []; }
 function selectedCountry() {
   const list = countryList();
@@ -324,56 +322,28 @@ function setCountry(k) {
   localStorage.setItem(LS.country, k);
   APP.scheduleCountry = k;
   const sch = $id('schedule-country'); if (sch) sch.value = k;
-  renderDdayStrip();
   render();
 }
 function initCountrySel() { /* country picker lives in the schedule tab only */ }
-function renderDdayStrip() {
-  const host = $id('dday-strip');
-  if (!host) return;
-  if (_stripTimer) { clearInterval(_stripTimer); _stripTimer = null; }
-  const country = selectedCountry();
+/* ---------- Header schedule banner (오른쪽 토픽일정 배너) ---------- */
+function renderSchedBanner() {
+  const el = $id('sched-banner');
+  if (!el) return;
   const sch = window.TOPIK_SCHEDULE;
-  if (!country || !sch) { host.style.display = 'none'; return; }
-  // upcoming (not done) sessions for this country, nearest first
+  const country = selectedCountry();
+  if (!sch || !country) { el.style.display = 'none'; return; }
   const rows = sch.pbt.filter(p => country.sessions.includes(parseInt(p.session)))
     .map(p => ({ p, st: sessionStatus(p) }))
     .filter(x => x.st.key !== 'done')
     .sort((a, b) => a.p.date < b.p.date ? -1 : 1);
-  if (!rows.length) { host.style.display = 'none'; return; }
-  host.style.display = 'block';
-  _stripIdx = Math.min(_stripIdx, rows.length - 1);
-  const slideHTML = rows.map((x, i) => {
-    const st = x.st;
-    let dday, label;
-    if (st.key === 'reg_ing' || st.key === 'reg_open') { dday = ddayStr(st.reg.end); label = t('sched_reg_close'); }
-    else if (st.key === 'test_wait') { dday = ddayStr(x.p.date); label = t('sched_next_test'); }
-    else { dday = ddayStr(x.p.result); label = t('sched_result'); }
-    const statusKey = st.key === 'reg_ing' ? 'ing' : st.key === 'reg_open' ? 'open' : st.key === 'test_wait' ? 'wait' : 'result';
-    const sub = `${t('status_' + statusKey)} · ${x.p.date.slice(5)}`;
-    const more = rows.length > 1 ? `<span class="strip-more">${t('strip_more', { n: rows.length - 1 })}</span>` : '';
-    const dots = rows.length > 1 ? `<span class="strip-dots">${rows.map((_, j) => `<i class="${j === i ? 'on' : ''}"></i>`).join('')}</span>` : '';
-    return `<div class="strip-slide ${i === _stripIdx ? 'active' : ''}" data-i="${i}">
-      <span class="strip-flag">${country.flag}</span>
-      <div class="strip-main">
-        <div class="strip-title">${esc(country.name)} · ${esc(x.p.session)}</div>
-        <div class="strip-sub">${esc(sub)}</div>
-      </div>
-      <div class="strip-dday"><b>${dday}</b><span>${label}</span></div>
-      ${dots}${more}
-    </div>`;
-  }).join('');
-  host.innerHTML = slideHTML;
-  // auto-rotate when multiple sessions (e.g. Vietnam: 105~109)
-  if (rows.length > 1) {
-    _stripTimer = setInterval(() => {
-      const slides = host.querySelectorAll('.strip-slide');
-      if (!slides.length) return;
-      slides[_stripIdx].classList.remove('active');
-      _stripIdx = (_stripIdx + 1) % slides.length;
-      slides[_stripIdx].classList.add('active');
-    }, 4000);
-  }
+  if (!rows.length) { el.style.display = 'none'; return; }
+  const x = rows[0];
+  let dday, label;
+  if (x.st.key === 'reg_ing' || x.st.key === 'reg_open') { dday = ddayStr(x.st.reg.end); label = t('sched_reg_close'); }
+  else if (x.st.key === 'test_wait') { dday = ddayStr(x.p.date); label = t('sched_next_test'); }
+  else { dday = ddayStr(x.p.result); label = t('sched_result'); }
+  el.style.display = 'inline-flex';
+  el.innerHTML = `<span style="font-weight:800;font-size:13px;">${esc(x.p.session)}</span><span style="font-size:9px;opacity:.85;">${esc(label)}</span><b style="font-size:12px;font-weight:800;">${dday}</b>`;
 }
 
 /* ---------- helpers ---------- */
@@ -519,6 +489,7 @@ function render() {
     case 'challenge': s.innerHTML = viewChallenge(); bindChallenge(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
+  renderSchedBanner();
 }
 
 /* ================= HOME ================= */
@@ -2361,7 +2332,7 @@ function scheduleMonth(delta) {
   APP.scheduleMonth = `${nd.getFullYear()}-${String(nd.getMonth() + 1).padStart(2, '0')}`;
   render();
 }
-function setScheduleCountry(k) { APP.scheduleCountry = k; localStorage.setItem(LS.country, k); const hs = $id('country-sel'); if (hs) hs.value = k; renderDdayStrip(); render(); }
+function setScheduleCountry(k) { APP.scheduleCountry = k; localStorage.setItem(LS.country, k); const hs = $id('country-sel'); if (hs) hs.value = k; render(); }
 function bindSchedule() {}
 
 /* ================= USER MENU (account sheet) ================= */
