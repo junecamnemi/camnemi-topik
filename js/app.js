@@ -526,7 +526,7 @@ function viewHome() {
   const lvl = xpProgress();
   const goalTotal = 10;
   const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
-  // Greeting — Hi, {name}! 👋 with a cute avatar (Aiko-style)
+  // Greeting — Hi, {name}! 👋 with our mascot girl (Aiko-style)
   const nm = (window.AUTH && AUTH.user && AUTH.user.email) ? (AUTH.user.name || AUTH.user.email.split('@')[0]) : (LANG === 'ko' ? '학습자' : LANG === 'km' ? 'សិស្ស' : 'learner');
   const greet = `
     <div class="home-greet">
@@ -534,11 +534,12 @@ function viewHome() {
         <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
         <p class="greet-s">${t('home_greet_sub')}</p>
       </div>
-      <div class="greet-avatar">🎓</div>
+      <div class="greet-avatar"><img src="assets/img/girl-mascot.webp" alt="mascot"></div>
     </div>`;
-  // Daily Goal — compact single-line bar (clean)
+  // Daily Goal — compact single-line bar (clean) with the helper cat
   const dailyGoal = `
     <div class="dg-mini">
+      <img src="assets/img/cat-mascot.webp" alt="cat" class="dg-cat">
       <span class="dg-mini-t">${ic('target',13)} ${t('home_daily_goal')}</span>
       <span class="dg-mini-bar"><span style="width:${pct}%"></span></span>
       <span class="dg-mini-c"><b>${doneCount}</b>/${goalTotal}</span>
@@ -665,7 +666,7 @@ function focusCardHTML() {
       </div>
       <button class="btn btn-primary focus-btn" id="focus-btn" onclick="toggleFocus()">${ic('pause',15)} ${t('home_focus_start')}</button>
     </div>
-    <div class="focus-sess">${ic('flame',12)} <b id="focus-sess">${lsGet('camnemi_topik_focus_sess', 0)}</b> ${t('home_focus_sessions')}</div>
+    <div class="focus-sess"><img src="assets/img/girl-mascot.webp" alt="girl" class="fs-girl"> ${ic('flame',12)} <b id="focus-sess">${lsGet('camnemi_topik_focus_sess', 0)}</b> ${t('home_focus_sessions')}</div>
   </div>`;
 }
 function setFocusMode(m) {
@@ -738,7 +739,7 @@ function streakCardHTML() {
   const streak = lsGet(LS.streak, { last: null, count: 0 });
   return `
   <div class="streak-card">
-    <div><span class="sc-ico">🔥</span></div>
+    <div class="sc-ico"><img src="assets/img/cat-mascot.webp" alt="cat"></div>
     <div class="sc-main"><b>${streak.count}</b> ${t('home_streak_days')}<div class="sc-sub">${t('home_streak_card')}</div></div>
     <div class="sc-flame">🔥</div>
   </div>`;
