@@ -598,7 +598,6 @@ function viewDaily() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.dailyIdx + 1} / ${qs.length} · DAILY${isAI ? ' ✨ AI' : ''}</span>
       <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
-      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
@@ -624,6 +623,7 @@ function viewDaily() {
           ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
         ` : ''}
       </div>
+      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
       ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
@@ -797,7 +797,6 @@ function viewSectionCard() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
       <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
-      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
@@ -822,6 +821,7 @@ function viewSectionCard() {
           ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
         ` : ''}
       </div>
+      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
     </div>
@@ -1732,7 +1732,6 @@ function viewMockRun() {
       <span id="mock-timer" class="mock-timer" style="font-weight:800;color:${_mockRemain < 300 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_mockRemain)}</span>
       <button class="btn btn-ghost btn-sm" onclick="exitMock()">${t('exit')}</button></div>
       <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}</div>
-      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
@@ -1748,6 +1747,7 @@ function viewMockRun() {
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
+      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
     </div>
