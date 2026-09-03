@@ -34,6 +34,13 @@ const AI_API_BASE = (window.CAMNEMI_AI_BASE || (
       ? TUNNEL_AI_BASE
       : '/api'
 ));
+/* AI endpoint helper: base may already include /api (tunnel same-origin) or not (localhost/tunnel URL) */
+function aiUrl(path) {
+  const base = AI_API_BASE || '';
+  const p = path.startsWith('/') ? path : '/' + path;
+  if (base.endsWith('/api')) return base + p;        // '/api' + '/generate'
+  return base + '/api' + p;                           // 'http://127.0.0.1:9001' + '/api/generate'
+}
 
 const LS = {
   progress: 'camnemi_topik_progress',   // { qid: {correct, total} }
@@ -472,7 +479,7 @@ function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
 let _audioEl = null;
 function playListening(btn, text) {
   if (!text) { alert(t('listen') + ' — ' + (LANG==='ko'?'대본이 없습니다.':'No script available.')); return; }
-  const url = AI_API_BASE + '/tts?text=' + encodeURIComponent(text) + '&voice=alloy';
+  const url = aiUrl('/tts?text=') + encodeURIComponent(text) + '&voice=alloy';
   if (!_audioEl) {
     _audioEl = new Audio();
     _audioEl.onended = () => { if (btn) { btn.innerHTML = ic('listen',15) + ' ' + t('listen'); btn.disabled = false; } };
@@ -697,7 +704,7 @@ async function generateAI(optType) {
   try {
     const body = { level: APP.level, count: 10, section: sec || 'all' };
     if (optType && !sec) body.type = optType;   // smart rec: generate the weak type
-    const res = await fetch(AI_API_BASE + '/generate', {
+    const res = await fetch(aiUrl('/generate'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -1749,7 +1756,7 @@ async function gradeWriting(area) {
   const q = area === 'daily' ? APP.daily[APP.dailyIdx] : APP.mock.qids.map(qById).filter(Boolean)[APP.mockIdx];
   if (statusEl) statusEl.innerHTML = `<span class="sub">${t('grading')}…</span>`;
   try {
-    const res = await fetch(AI_API_BASE + '/grade-writing', {
+    const res = await fetch(aiUrl('/grade-writing'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt: q.q || '', answer: ta.value })
