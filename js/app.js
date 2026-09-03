@@ -382,7 +382,8 @@ function ic(name, size = 24) {
 function allQuestions() {
   const t1 = (window.TOPIK1_BANK || []);
   const t2 = (window.TOPIK2_BANK || []);
-  return t1.concat(t2);
+  const lv = [1,2,3,4,5,6].flatMap(n => window['LEVEL' + n + '_BANK'] || []);
+  return t1.concat(t2, lv);
 }
 function qById(id) { return allQuestions().find(q => q.id === id); }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -690,20 +691,23 @@ function navDaily(d) {
 function bindDaily() {}
 
 /* ================= SECTION PRACTICE (Reading / Listening / Writing) ================= */
-function startSection(sec) {
-  // build a set of 10 for this section: bank first, AI-generate button on card
-  let pool = allQuestions().filter(q => q.section === sec && levelOf(q) === APP.level);
+function startSection(sec, lv) {
+  // build a set of 10 for this section + level (fall back to level-agnostic if scarce)
+  const target = lv || APP.sectionLevel || 3;
+  let pool = allQuestions().filter(q => q.section === sec && q.level === target);
+  if (pool.length < 10) pool = allQuestions().filter(q => q.section === sec && levelOf(q) === APP.level);
   if (pool.length < 10) pool = allQuestions().filter(q => q.section === sec);
   const shuf = pool.slice().sort(() => Math.random() - 0.5);
   const qs = shuf.slice(0, 10);
-  if (!qs.length) { toast(LANG === 'ko' ? '이 섹션 문제가 아직 없어요 — AI 생성 버튼을 눌러보세요.' : 'No questions for this section yet — try AI generate.'); return; }
+  if (!qs.length) { toast(LANG === 'ko' ? '이 섹션·레벨 문제가 아직 없어요 — AI 생성 버튼을 눌러보세요.' : 'No questions for this section/level yet — try AI generate.'); return; }
   APP.section = sec;
+  APP.sectionLevel = target;
   APP.sectionQs = qs;
   APP.sectionIdx = 0;
   APP.sectionAnswers = {};
   APP.sectionDone = false;
   const all = lsGet(LS.section, {});
-  all[sec] = { qids: qs.map(q => q.id), done: {} };
+  all[sec + ':' + target] = { qids: qs.map(q => q.id), done: {}, level: target };
   lsSet(LS.section, all);
   render();
 }
@@ -714,32 +718,44 @@ function viewSection(sec) {
   // in-progress quiz → render the question card
   if (APP.section === sec && APP.sectionQs && !APP.sectionDone) return viewSectionCard();
   if (APP.section === sec && APP.sectionDone) return viewSectionResult();
-  // stats for this section
+  const selLv = APP.sectionLevel || 3;
+  // stats for this section + selected level
   const prog = lsGet(LS.progress, {});
   let tried = 0, corr = 0;
   Object.entries(prog).forEach(([id, p]) => {
     const q = qById(id);
-    if (q && q.section === sec) { tried += p.total || 0; corr += p.correct || 0; }
+    if (q && q.section === sec && q.level === selLv) { tried += p.total || 0; corr += p.correct || 0; }
   });
   const acc = tried ? Math.round(corr / tried * 100) : null;
   const wrong = lsGet(LS.wrong, []).filter(w => { const q = qById(w.qid); return q && q.section === sec; }).length;
+  // per-level question counts
+  const lvCounts = [1,2,3,4,5,6].map(lv => allQuestions().filter(q => q.section === sec && q.level === lv).length);
+  const lvBtns = [1,2,3,4,5,6].map(lv => `
+    <button class="lv-btn ${lv === selLv ? 'active' : ''}" style="--lv-col:${col};" onclick="setSectionLevel(${lv})">
+      <b>L${lv}</b><span>${lvCounts[lv-1]}</span>
+    </button>`).join('');
   return `
     <div class="sec-h"><h2 style="color:${col};">${ic(ico,18)} ${label}</h2><span class="sub">${t('nav_' + sec)} · TOPIK ${APP.level}</span></div>
+    <div class="lv-picker">${lvBtns}</div>
     <div class="app-card big-cta" style="border:1.5px solid ${col};">
       <div class="cta-ico" style="color:${col};">${ic(ico, 44)}</div>
-      <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })}</h2>
+      <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })} <span class="sub">· L${selLv}</span></h2>
       <p class="sub" style="line-height:1.6;">${t('sec_desc', { s: label })}</p>
       <div class="stat-row">
         <div class="stat-box"><b>${acc === null ? '—' : acc + '%'}</b><span>${t('menu_acc')}</span></div>
         <div class="stat-box"><b>${wrong}</b><span>${t('wrong_title')}</span></div>
-        <div class="stat-box"><b>10</b><span>${t('sec_qs')}</span></div>
+        <div class="stat-box"><b>${lvCounts[selLv-1] || 10}</b><span>${t('sec_qs')}</span></div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}')">${ic('daily',17)} ${t('sec_start')}</button>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · L${selLv}</button>
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;color:${col};" onclick="generateAI('${sec}')">${ic('spark',15)} ${t('gen_ai')}</button>
     </div>
     ${wrong ? `<div class="app-card" onclick="go('wrong')" style="cursor:pointer;">
       <div class="row"><div>${ic('notes',20)} <b>${t('wrong_title')} (${wrong})</b></div><span style="color:var(--ios-green);">→</span></div>
     </div>` : ''}`;
+}
+function setSectionLevel(lv) {
+  APP.sectionLevel = lv;
+  render();
 }
 function viewSectionCard() {
   const sec = APP.section;

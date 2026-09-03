@@ -267,6 +267,26 @@
 .ios-group .cell { padding: 13px 16px; border-bottom: 0.5px solid var(--ios-separator); background: transparent; }
 .ios-group .cell:last-child { border-bottom: none; }
 
+/* ---------- Level picker (L1–L6) ---------- */
+.lv-picker {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  margin: 0 0 12px;
+}
+.lv-btn {
+  border: 1.5px solid var(--ios-separator); border-radius: 14px;
+  background: var(--ios-card); color: var(--ios-label);
+  font-family: var(--ios-font); padding: 8px 2px 6px;
+  cursor: pointer; text-align: center;
+  transition: transform .12s, border-color .15s, background .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.lv-btn:active { transform: scale(.94); }
+.lv-btn b { display: block; font-size: 13px; font-weight: 800; }
+.lv-btn span { font-size: 10px; color: var(--ios-secondary-label); font-weight: 600; }
+.lv-btn.active { border-color: var(--lv-col, var(--ios-blue)); background: var(--grad-soft); }
+.lv-btn.active b { color: var(--lv-col, var(--ios-blue)); }
+.lv-btn.active span { color: var(--lv-col, var(--ios-blue)); }
+
 /* ---------- Level pills (modern segmented) ---------- */
 .lvl-pills { display: flex; gap: 0; margin: 12px 0; background: var(--ios-fill); border-radius: 14px; padding: 3px; }
 .lvl-pill {

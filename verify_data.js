@@ -9,6 +9,10 @@ eval(fs.readFileSync(path.join(base, 'data', 'lessons.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'level-test.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik1-bank.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik2-bank.js'), 'utf8'));
+for (let n = 1; n <= 6; n++) {
+  const p = path.join(base, 'data', `level${n}-bank.js`);
+  if (fs.existsSync(p)) eval(fs.readFileSync(p, 'utf8'));
+}
 eval(fs.readFileSync(path.join(base, 'data', 'mock-tests.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'topik-schedule.js'), 'utf8'));
 eval(fs.readFileSync(path.join(base, 'data', 'drama-lessons.js'), 'utf8'));
@@ -125,6 +129,30 @@ MOCK.forEach((m) => {
   m.qids.forEach(qid => { if (!T2ids.has(qid) && !TOPIK1.some(x => x.id === qid)) errors.push(`mock ${m.id} unknown qid ${qid}`); });
 });
 console.log('TOPIK2 bank:', TOPIK2.length, '| Mock tests:', MOCK.length);
+
+// 4d2. Level banks (L1–L6) integrity: each 10 reading + 10 listening
+const LV_ALL = [];
+for (let n = 1; n <= 6; n++) {
+  const arr = window['LEVEL' + n + '_BANK'];
+  if (!arr) { errors.push(`level${n} bank missing`); continue; }
+  const read = arr.filter(q => q.section === 'reading').length;
+  const listen = arr.filter(q => q.section === 'listening').length;
+  if (read !== 10) errors.push(`level${n} bank reading=${read} (expected 10)`);
+  if (listen !== 10) errors.push(`level${n} bank listening=${listen} (expected 10)`);
+  arr.forEach(q => {
+    if (q.level !== n) errors.push(`level${n} ${q.id} level=${q.level}`);
+    if (!q.id || !q.q || !q.qGl) errors.push(`level${n} ${q.id} missing id/q/qGl`);
+    if (!q.options || q.options.length !== 4) errors.push(`level${n} ${q.id} not 4 options`);
+    else if (!(q.correct >= 0 && q.correct < 4)) errors.push(`level${n} ${q.id} bad correct`);
+    if (!q.explain || !q.tip) errors.push(`level${n} ${q.id} missing explain/tip`);
+    if (!['reading', 'listening'].includes(q.section)) errors.push(`level${n} ${q.id} bad section`);
+    LV_ALL.push(q);
+  });
+  console.log(`Level${n} bank: ${arr.length} qs (reading ${read} / listening ${listen})`);
+}
+const lvIds = new Set(LV_ALL.map(q => q.id));
+if (lvIds.size !== LV_ALL.length) errors.push('level banks have duplicate ids');
+console.log('Level banks total:', LV_ALL.length, '| unique ids:', lvIds.size);
 
 // 4e. schedule integrity
 const SCHED_PBTS = new Set(SCHEDULE.pbt.map(p => parseInt(p.session)));
