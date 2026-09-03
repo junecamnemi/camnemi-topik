@@ -723,7 +723,7 @@ async function generateAI(optType) {
       lsSet(LS.section, all);
       if (status) status.textContent = '';
       setBtn('✨ ' + (LANG === 'ko' ? '나머지 생성 중…' : 'Making more…'), true);
-      render();   // show Q1 immediately with the 10-min timer
+      go(sec);   // switch to the section tab so the quiz card renders
       // ---- background: fetch the remaining 9 ----
       try {
         const bodyN = { level: APP.level, count: 9, section: sec };
@@ -848,7 +848,7 @@ function startSection(sec, lv, type) {
   const all = lsGet(LS.section, {});
   all[sec + ':' + target + ':' + (type || 'all')] = { qids: qs.map(q => q.id), done: {}, level: target, type: type || null };
   lsSet(LS.section, all);
-  render();
+  go(sec);   // switch to the section tab so the quiz card renders
 }
 function sectionLabel(sec) {
   if (APP.sectionType === 'vocab') return LANG === 'en' ? 'Vocabulary' : LANG === 'km' ? 'វាក្យសព្ទ' : '보케블러리';
