@@ -293,7 +293,7 @@ function setLang(l) {
 }
 
 /* ---------- Theme (light / dark / auto) ---------- */
-let THEME = localStorage.getItem(LS.theme) || 'auto';
+let THEME = localStorage.getItem(LS.theme) || 'light';   // pastel light is the default look
 const THEME_ICONS = { dark: '🌙', light: '☀️', auto: '🌗' };
 function applyTheme() {
   const t = THEME === 'auto' ? (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : THEME;

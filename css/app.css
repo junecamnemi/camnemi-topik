@@ -3,49 +3,57 @@
    Glassmorphism · soft gradients · bento cards · dynamic color · bold type
    ========================================================================== */
 
-/* ---------- Modern color tokens ---------- */
-:root {
-  --ios-bg: #F4F3FB;               /* soft lavender-tinted background */
-  --ios-card: rgba(255, 255, 255, .82);
-  --ios-fill: #EDEDF6;
-  --ios-label: #171522;
-  --ios-secondary-label: #8A87A0;
-  --ios-tertiary-label: #C4C1D8;
-  --ios-separator: rgba(23, 21, 34, .08);
-  --ios-blue: #5B5BD6;             /* indigo primary */
-  --ios-blue-2: #8B5CF6;           /* violet */
-  --ios-green: #10B981;
-  --ios-red: #EF4444;
-  --ios-orange: #F59E0B;
-  --ios-teal: #06B6D4;
-  --ios-pink: #EC4899;
-  --ios-gray: #8A87A0;
-  --ios-shadow: rgba(91, 91, 214, .10);
-  --grad-brand: linear-gradient(135deg, #5B5BD6 0%, #8B5CF6 55%, #EC4899 100%);
-  --grad-soft: linear-gradient(135deg, rgba(91,91,214,.08), rgba(139,92,246,.10));
-  --ios-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Pretendard', 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+/* ---------- Cute rounded font (Quicksand, self-hosted for offline) ---------- */
+@font-face {
+  font-family: 'Quicksand';
+  src: url('../assets/fonts/quicksand.woff2') format('woff2');
+  font-weight: 400 800;
+  font-display: swap;
 }
 
-/* ---------- Dark mode ---------- */
+/* ---------- Modern color tokens ---------- */
+:root {
+  --ios-bg: #F7F4FF;               /* cream-lavender pastel background */
+  --ios-card: rgba(255, 255, 255, .9);
+  --ios-fill: #F0EBFB;
+  --ios-label: #3D3561;
+  --ios-secondary-label: #9A92C4;
+  --ios-tertiary-label: #CFC9E8;
+  --ios-separator: rgba(61, 53, 97, .08);
+  --ios-blue: #7B6CF6;             /* soft pastel indigo */
+  --ios-blue-2: #A78BFA;           /* pastel violet */
+  --ios-green: #34D399;
+  --ios-red: #FB7185;
+  --ios-orange: #FB923C;
+  --ios-teal: #2DD4BF;
+  --ios-pink: #F472B6;
+  --ios-gray: #9A92C4;
+  --ios-shadow: rgba(123, 108, 246, .12);
+  --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
+  --grad-soft: linear-gradient(135deg, rgba(167,139,250,.12), rgba(249,168,212,.14));
+  --ios-font: 'Quicksand', 'Nunito', -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+}
+
+/* ---------- Dark mode (pastel-compatible: deep violet-navy, same accents) ---------- */
 [data-theme="dark"] {
-  --ios-bg: #0E0D17;
-  --ios-card: rgba(30, 28, 48, .78);
-  --ios-fill: #201E33;
-  --ios-label: #F5F4FF;
-  --ios-secondary-label: #9B97B8;
-  --ios-tertiary-label: #5E5A7A;
-  --ios-separator: rgba(245, 244, 255, .1);
-  --ios-blue: #7C7CF0;
-  --ios-blue-2: #A78BFA;
+  --ios-bg: #191627;
+  --ios-card: rgba(41, 36, 66, .8);
+  --ios-fill: #2A2542;
+  --ios-label: #F1EEFF;
+  --ios-secondary-label: #B4ADD6;
+  --ios-tertiary-label: #6E6791;
+  --ios-separator: rgba(241, 238, 255, .1);
+  --ios-blue: #A78BFA;
+  --ios-blue-2: #C4B5FD;
   --ios-green: #34D399;
   --ios-red: #F87171;
   --ios-orange: #FBBF24;
   --ios-teal: #22D3EE;
   --ios-pink: #F472B6;
-  --ios-gray: #9B97B8;
+  --ios-gray: #B4ADD6;
   --ios-shadow: rgba(0, 0, 0, .45);
-  --grad-brand: linear-gradient(135deg, #6366F1 0%, #8B5CF6 55%, #D946EF 100%);
-  --grad-soft: linear-gradient(135deg, rgba(99,102,241,.14), rgba(139,92,246,.18));
+  --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
+  --grad-soft: linear-gradient(135deg, rgba(167,139,250,.18), rgba(249,168,212,.16));
 }
 [data-theme="dark"] .app-card { box-shadow: 0 8px 24px rgba(0,0,0,.25); border: 1px solid rgba(245,244,255,.06); }
 [data-theme="dark"] .q-passage { background: var(--ios-fill); color: var(--ios-label); }
@@ -67,11 +75,11 @@
 }
 .app-shell::before {
   width: 300px; height: 300px; top: -80px; right: -100px;
-  background: radial-gradient(circle, rgba(139,92,246,.35), transparent 70%);
+  background: radial-gradient(circle, rgba(167,139,250,.30), transparent 70%);
 }
 .app-shell::after {
   width: 260px; height: 260px; bottom: 20px; left: -90px;
-  background: radial-gradient(circle, rgba(236,72,153,.25), transparent 70%);
+  background: radial-gradient(circle, rgba(249,168,212,.22), transparent 70%);
 }
 [data-theme="dark"] .app-shell::before { opacity: .35; }
 [data-theme="dark"] .app-shell::after { opacity: .3; }
@@ -79,7 +87,7 @@
 /* ---------- Nav bar (modern glass header) ---------- */
 .app-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(244, 243, 251, .7);
+  background: rgba(247, 244, 255, .7);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
   backdrop-filter: saturate(180%) blur(24px);
   border-bottom: 0.5px solid var(--ios-separator);
