@@ -84,6 +84,7 @@ Rules:
 - IMPORTANT: "q" and "passage" MUST be 100% Korean — absolutely zero English words inside them. Korean ONLY.
 - English belongs ONLY in: qGl, options[].gl, passageGl, explain, traps, tip.
 - reading/listening questions have EXACTLY 4 options; correct MUST be the index of the right option (0-3). ALWAYS set correct explicitly and match it to the option text.
+- LISTENING questions: the actual spoken dialogue MUST be the question text itself — write the full dialogue (가: … / 나: …) into "q" in Korean, then add "audioHint" with a shorter 1-2 line condensed script (same dialogue, fewer words) for the TTS preview. The app plays "q" aloud via TTS, so q MUST contain the full dialogue, never just an instruction.
 - Choose question types according to the provided type_weights (weighted random).
 - Use the provided grammar_pool / vocab_guide so difficulty matches the level.
 - writing questions (type writing_short/writing_letter) have NO options; include "writePrompt":true and "answerModel":"a 150-300 char model Korean answer".
