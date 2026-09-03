@@ -768,6 +768,8 @@ function navDaily(d) {
 function bindDaily() {}
 
 /* ================= SECTION PRACTICE (Reading / Listening / Writing) ================= */
+let _secTimer = null, _secRemain = 0;
+const SEC_MINUTES = 10;   // 10 min per 10 questions (fixed pace for all levels)
 function startSection(sec, lv, type) {
   // build a set of 10 for this section + level (fall back to level-agnostic if scarce)
   const target = lv || APP.sectionLevel || myLevel();
@@ -785,6 +787,25 @@ function startSection(sec, lv, type) {
   APP.sectionIdx = 0;
   APP.sectionAnswers = {};
   APP.sectionDone = false;
+  // 10-minute practice timer (reading & listening only — writing has no timer)
+  if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
+  if (sec === 'reading' || sec === 'listening') {
+    _secRemain = SEC_MINUTES * 60;
+    _secTimer = setInterval(() => {
+      _secRemain--;
+      const el = $id('sec-timer');
+      if (el) {
+        el.textContent = fmtTime(_secRemain);
+        el.style.color = _secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)';
+      }
+      if (_secRemain <= 0) {
+        clearInterval(_secTimer); _secTimer = null;
+        finishSection();   // auto-submit when time is up
+      }
+    }, 1000);
+  } else {
+    _secRemain = 0;
+  }
   const all = lsGet(LS.section, {});
   all[sec + ':' + target + ':' + (type || 'all')] = { qids: qs.map(q => q.id), done: {}, level: target, type: type || null };
   lsSet(LS.section, all);
@@ -863,7 +884,8 @@ function viewSectionCard() {
   return `
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
-      <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
+      <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span>
+      ${(sec === 'reading' || sec === 'listening') ? `<span id="sec-timer" class="mock-timer" style="font-weight:800;color:${_secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_secRemain)}</span>` : ''}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
@@ -921,6 +943,7 @@ function navSection(d) {
   render();
 }
 function finishSection() {
+  if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
   const qs = APP.sectionQs;
   const done = APP.sectionAnswers || {};
   let correct = 0, wrong = 0, unanswered = 0;
@@ -956,6 +979,7 @@ function viewSectionResult() {
     </div>`;
 }
 function exitSection() {
+  if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
   APP.section = null; APP.sectionQs = null; APP.sectionDone = false; APP.sectionResult = null; APP.sectionType = null;
   go('home');
 }
