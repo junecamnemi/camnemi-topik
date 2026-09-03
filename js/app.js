@@ -262,6 +262,7 @@ function setLang(l) {
   if (!T[l]) l = 'en';
   LANG = l; localStorage.setItem(LS.lang, l);
   const sel = $id('lang-sel'); if (sel) sel.value = l;
+  document.documentElement.dataset.lang = l;
   // re-render nav labels + current screen
   document.querySelectorAll('[data-nav-label]').forEach(el => { el.textContent = t('nav_' + el.dataset.navLabel); });
   renderDdayStrip();
@@ -415,15 +416,17 @@ function freqBadge(q) {
 /* ---------- Detailed explanation (why each option is right/wrong) ---------- */
 function explainBlock(q) {
   const ko = LANG === 'ko';
+  const en = LANG === 'en';
   const letters = '①②③④';
   const correct = q.correct;
-  const optEx = q.optExplain || [];
+  const optEx = en ? (q.optExplainEn || q.optExplain) : q.optExplain || [];
+  const tipTxt = en ? (q.tipEn || q.tip) : q.tip;
   const optText = (o) => esc(o.t || '');
   let h = '';
   // 정답 상세
   const whyRight = optEx[correct] || q.explain || '';
   h += `<div class="dx dx-right">
-    <div class="dx-head"><b>✅ ${ko ? '정답' : 'Correct'}: ${letters[correct]} ${optText(q.options[correct])}</b></div>
+    <div class="dx-head"><b>✅ ${en ? 'Correct' : ko ? '정답' : 'Correct'}: ${letters[correct]} ${optText(q.options[correct])}</b></div>
     <div class="dx-body">${esc(whyRight)}</div>
   </div>`;
   // 오답 상세 (각 오답 옵션별)
@@ -433,16 +436,16 @@ function explainBlock(q) {
     const why = optEx[i] || (q.traps && q.traps.find(t => t.includes(letters[i]))) || '';
     wrongs.push(`<div class="dx-row">
       <b class="dx-letter">✗ ${letters[i]}</b>
-      <div><div class="dx-opt">${optText(o)}</div>
+      <div><div class="dx-opt">${optText(o)}${o.gl && en ? ` <span class="opt-gloss">· ${esc(o.gl)}</span>` : ''}</div>
       ${why ? `<div class="dx-why">${esc(why)}</div>` : ''}</div>
     </div>`);
   });
   if (wrongs.length) {
-    h += `<div class="dx dx-wrongs"><div class="dx-head"><b>${ko ? '왜 틀렸을까?' : 'Why the others are wrong'}</b></div>${wrongs.join('')}</div>`;
+    h += `<div class="dx dx-wrongs"><div class="dx-head"><b>${en ? 'Why the others are wrong' : ko ? '왜 틀렸을까?' : 'Why the others are wrong'}</b></div>${wrongs.join('')}</div>`;
   }
   // TIP
-  if (q.tip) {
-    h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(q.tip)}</div></div>`;
+  if (tipTxt) {
+    h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(tipTxt)}</div></div>`;
   }
   return h;
 }
@@ -1234,7 +1237,7 @@ function relatedBlock(q) {
             <div class="rel-opt" data-ok="${oi === r.correct ? '1' : '0'}" style="font-size:12.5px;line-height:1.5;padding:3px 0;">${'①②③④'[oi]} ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</div>`).join('')}</div>` : ''}
           <button class="btn btn-ghost btn-sm" style="margin-top:6px;color:var(--ios-green);" onclick="toggleRelAns(this)">${t('related_show_ans')}</button>
           <div class="rel-ans" style="display:none;margin-top:6px;font-size:12.5px;color:var(--ios-label);">
-            <b>✓ ${r.correct !== undefined ? '①②③④'[r.correct] : ''}</b> — ${esc(r.explain || '')}
+            <b>✓ ${r.correct !== undefined ? '①②③④'[r.correct] : ''}</b> — ${esc((LANG === 'en' && r.optExplainEn) ? r.optExplainEn[r.correct] : (r.explain || ''))}
             ${r.options && r.options[r.correct] ? `<div style="margin-top:2px;">${esc(r.options[r.correct].t)}${r.options[r.correct].gl ? ' · ' + esc(r.options[r.correct].gl) : ''}</div>` : ''}
           </div>
         </div>`).join('')}

@@ -149,6 +149,7 @@ for (let n = 1; n <= 6; n++) {
     if (!q.explain || !q.tip) errors.push(`level${n} ${q.id} missing explain/tip`);
     if (!['reading', 'listening'].includes(q.section)) errors.push(`level${n} ${q.id} bad section`);
     if (q.options && q.options.length === 4 && (!q.optExplain || q.optExplain.length !== 4)) errors.push(`level${n} ${q.id} missing optExplain (4 items)`);
+    if (q.options && q.options.length === 4 && (!q.optExplainEn || q.optExplainEn.length !== 4 || !q.tipEn)) errors.push(`level${n} ${q.id} missing optExplainEn/tipEn (EN)`);
     LV_ALL.push(q);
   });
   console.log(`Level${n} bank: ${arr.length} qs (reading ${read} / listening ${listen})`);

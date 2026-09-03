@@ -17,7 +17,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 글쓴이는 아침 운동 후 "기분이 상쾌하다", "몸이 가볍다", "일도 더 잘된다"고 말하며 몸과 기분에 좋은 영향을 강조하고 있어요. 이 글이 가장 전하고 싶은 중심 내용이에요.',
       '③은 글과 반대되는 내용이에요. 글쓴이는 "일도 더 잘된다"고 했지, 일이 많아져서 힘들다고 하지 않았어요.',
       '④는 글에 없는 내용이에요. 조깅이 다른 운동보다 시간이 많이 걸린다는 비교는 글 어디에도 나오지 않아요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 exaggerates the passage, which says the writer jogs every morning except on rainy days, into the claim that he exercises only when the weather is nice. Since he exercises whenever it is not raining, this does not match the passage.",
+      "Option 2 is the correct answer. The writer says that after morning exercise he feels refreshed, his body feels light, and his work goes better, emphasizing the positive effect exercise has on his body and mood. This is exactly the main idea the passage most wants to convey.",
+      "Option 3 is the opposite of the passage. The writer says his work goes better after exercising; he never says that exercise creates so much work that it becomes hard.",
+      "Option 4 is not in the passage. There is no comparison anywhere saying that jogging takes more time than other exercises."
+    ],
+    tipEn: "When choosing the main idea, look for the point that is emphasized the most throughout the whole passage."
+  },
   { id: 'LV3R02', section: 'reading', type: 'main_idea', level: 3, points: 3, qGl: 'Choose the main idea.',
     q: '다음 글의 중심 내용을 고르십시오.',
     passage: '요즘 많은 사람들이 인터넷으로 물건을 산다. 인터넷 쇼핑은 시간과 돈을 아낄 수 있어서 편리하다. 그러나 물건을 직접 보고 살 수 없기 때문에 사고 나서 후회하는 경우도 있다. 그래서 물건을 살 때는 사진과 설명을 꼼꼼히 확인해야 한다.',
@@ -36,7 +44,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 글은 편리하다는 장점(시간·돈 절약)과 직접 볼 수 없다는 단점을 함께 말하면서, 결론적으로 "사진과 설명을 꼼꼼히 확인해야 한다"고 주의를 강조해요.',
       '③은 "항상 싸다"는 지나친 일반화예요. 글에는 가격이 항상 싸다는 내용이 없어요.',
       '④는 글과 반대예요. 글은 오히려 인터넷 쇼핑이 시간을 아낄 수 있다고 해요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is too extreme because it uses the prohibition 'should not do it.' The passage does not forbid online shopping; it tells readers to shop carefully.",
+      "Option 2 is the correct answer. The passage mentions both the advantage of online shopping, saving time and money, and the disadvantage, not being able to see the product in person, then concludes by emphasizing that you must carefully check the photos and descriptions.",
+      "Option 3 is an overgeneralization. The passage never says that products bought online are always cheap.",
+      "Option 4 is the opposite of the passage, which actually says online shopping can save time."
+    ],
+    tipEn: "The last sentence of a passage is often the main idea."
+  },
   { id: 'LV3R03', section: 'reading', type: 'grammar', level: 3, points: 3, qGl: 'Choose the correct word for the blank.',
     q: '다음을 읽고 물음에 답하십시오. ( )에 알맞은 것을 고르십시오.',
     passage: '친구가 결혼식을 한다고 해서 어제 선물을 ( ). 그런데 가게에 사람이 너무 많아서 고르는 데 한 시간이나 걸렸다.',
@@ -55,7 +71,15 @@ window.LEVEL3_BANK = [
       '②는 "살 수 없다"는 불가능 표현인데, 뒤에서 실제로 가게에서 골랐다고 했으므로 모순이에요.',
       '③은 "사고 싶다"는 소망 표현이에요. 하지만 이미 가게에 가서 고르는 데 시간이 걸렸다고 했으므로 과거 행동이 필요해요.',
       '④는 "사지 않는다"는 부정 표현이라, 선물을 샀다는 문맥과 맞지 않아요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. The verb form '-러 가다' expresses the purpose of going somewhere, so '선물을 사러 갔어요' means 'went in order to buy a present.' It connects naturally with the following past-tense detail that choosing took a whole hour.",
+      "Option 2 means 'cannot buy,' an expression of impossibility. It contradicts the fact that he actually went to the store and picked out a present.",
+      "Option 3 means 'want to buy,' a wish expression. However, the speaker already went to the store and spent time choosing, so a past action is needed here.",
+      "Option 4 is the negative expression 'do not buy,' which does not fit a context where a present was bought."
+    ],
+    tipEn: "Use '-러 가다' to express the purpose of a movement: going somewhere in order to do something."
+  },
   { id: 'LV3R04', section: 'reading', type: 'grammar', level: 3, points: 3, qGl: 'Choose the correct word for the blank.',
     q: '다음을 읽고 물음에 답하십시오. ( )에 알맞은 것을 고르십시오.',
     passage: '어제 친구와 같이 영화를 보러 갔다. 영화가 너무 재미있어서 시간이 가는 줄 ( ). 집에 돌아온 뒤에도 계속 영화 이야기를 했다.',
@@ -74,7 +98,15 @@ window.LEVEL3_BANK = [
       '②는 "시간이 가는 것을 알았다"는 뜻이 돼요. 재미있어서 시간 가는 줄 몰랐다는 문맥과 정반대라 모순이에요.',
       '③은 "보고 싶었다"는 소망 표현인데, 이미 영화를 보고 온 상황이라 어울리지 않아요.',
       '④는 "기억했다"는 뜻으로, 시간이 가는 것과 어울리지 않는 어색한 조합이에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. '시간이 가는 줄 몰랐다' means the speaker was so absorbed in the movie that he did not even notice the time passing. This connects perfectly with the earlier statement that the movie was very interesting.",
+      "Option 2 would mean that he knew the time was passing, which is the exact opposite of the context. It creates a contradiction with the statement that the movie was so interesting.",
+      "Option 3 means 'wanted to see,' a wish expression, but he has already watched the movie, so it does not fit the situation.",
+      "Option 4 means 'remembered,' which forms an awkward combination when used with the passage of time."
+    ],
+    tipEn: "Use '-ㄴ 줄 몰랐다' when you realize a fact that you had not expected."
+  },
   { id: 'LV3R05', section: 'reading', type: 'vocab', level: 3, points: 3, qGl: 'Choose the word closest in meaning to the underlined word.',
     q: '다음을 읽고 물음에 답하십시오. 밑줄 친 부분과 의미가 가장 비슷한 것을 고르십시오.',
     passage: '새로 이사한 집은 지하철역에서 가까워서 정말 편리하다. 출근할 때 버스를 타지 않아도 되니까 매일 아침 여유 있게 집을 나설 수 있다.',
@@ -93,7 +125,15 @@ window.LEVEL3_BANK = [
       '②는 "혼자서"라는 뜻으로, 여유로움과는 전혀 다른 의미예요.',
       '③이 정답이에요. "여유 있게"는 조급함 없이 느긋한 모양을 뜻하므로 "느긋하게"와 의미가 가장 비슷해요. 지하철이 가까워 버스에 쫓기지 않으니 여유가 생긴다는 문맥과도 맞아요.',
       '④는 "일찍"이라는 시간 표현이에요. 여유로움과 의미가 같지 않아요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the opposite of '여유 있게.' '급하게' means hurriedly and in a rush, but the passage says he is not rushed because he does not have to take the bus.",
+      "Option 2 means 'alone,' which has nothing to do with the meaning of being relaxed and unhurried.",
+      "Option 3 is the correct answer. '여유 있게' means doing something in a relaxed manner without feeling hurried, so '느긋하게' is closest in meaning. It also fits the context: living near the subway station gives him spare time because he is not chasing a bus.",
+      "Option 4 means 'early,' a time expression, which is different in meaning from being relaxed and unhurried."
+    ],
+    tipEn: "For underlined-word questions, try substituting each option into the sentence to check which one fits the context."
+  },
   { id: 'LV3R06', section: 'reading', type: 'comprehension', level: 3, points: 3, qGl: 'Choose what matches the content of the passage.',
     q: '다음을 읽고 물음에 답하십시오. 글의 내용과 같은 것을 고르십시오.',
     passage: '우리 회사에서는 매달 마지막 금요일에 ‘가족의 날’을 운영한다. 그날은 정시 퇴근을 권장하고, 직원들이 가족과 시간을 보낼 수 있도록 야근을 하지 않는다. 시행한 지 1년이 되면서 직원들의 만족도가 크게 올라갔다.',
@@ -112,7 +152,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 글에서 "야근을 하지 않는다"고 직접 말했어요. 이게 가장 명확하게 글 내용과 일치하는 선택지예요.',
       '③은 글과 반대예요. "만족도가 크게 올라갔다"고 했는데 "변화가 없다"는 것은 틀렸어요.',
       '④는 "시행한 지 1년이 되면서"라는 표현과 달라요. 올해 처음 시작한 게 아니라 1년 전부터 해 왔어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is a trap that changes 'the last Friday of every month' into 'every Friday.' Family Day happens only once a month.",
+      "Option 2 is the correct answer. The passage directly states that there is no overtime on Family Day, so this option matches the content exactly.",
+      "Option 3 is the opposite of the passage, which says employee satisfaction has risen greatly.",
+      "Option 4 is wrong because the passage says the program has been running for a year, not that it started this year."
+    ],
+    tipEn: "For detail questions, compare the information in the passage with each option one by one."
+  },
   { id: 'LV3R07', section: 'reading', type: 'comprehension', level: 3, points: 3, qGl: 'Choose what matches the content of the passage.',
     q: '다음을 읽고 물음에 답하십시오. 글의 내용과 같은 것을 고르십시오.',
     passage: '김치찌개는 한국 사람들이 가장 좋아하는 음식 중 하나이다. 만드는 방법도 간단해서 재료만 있으면 누구나 만들 수 있다. 다만 김치가 익을수록 찌개 맛이 더 좋아지기 때문에, 오래된 김치를 쓰는 것이 중요하다.',
@@ -131,7 +179,15 @@ window.LEVEL3_BANK = [
       '②는 글에 없는 내용이에요. 오히려 글은 "김치가 익을수록 맛이 더 좋아진다"며 오래된 김치가 좋다고 해요.',
       '③은 "재료만 있으면"이라는 표현을 왜곡한 거예요. 재료가 많아야 맛있다는 내용은 없어요.',
       '④가 정답이에요. 글의 마지막에 "오래된 김치를 쓰는 것이 중요하다"고 직접 말했어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the opposite of the passage, which says the recipe is simple enough for anyone to make.",
+      "Option 2 is not in the passage. On the contrary, the passage says the stew tastes better as the kimchi ferments, so aged kimchi is better than fresh kimchi.",
+      "Option 3 distorts the expression 'if you have the ingredients.' There is no statement that the stew is delicious only when there are many ingredients.",
+      "Option 4 is the correct answer. The passage directly says at the end that it is important to use aged kimchi."
+    ],
+    tipEn: "Options that contain negative expressions like 'hard' or 'none' are often the opposite of the passage."
+  },
   { id: 'LV3R08', section: 'reading', type: 'notice', level: 3, points: 3, qGl: 'Choose the correct answer about the notice.',
     q: '다음을 읽고 물음에 답하십시오. 안내문의 내용과 같은 것을 고르십시오.',
     passage: '[도서관 이용 안내] 겨울방학 동안 도서관은 오전 9시부터 오후 6시까지 엽니다. 단, 일요일과 공휴일은 쉽니다. 대출 기간은 2주이며, 한 번에 5권까지 빌릴 수 있습니다. 연체한 책이 있으면 반납할 때까지 새 책을 빌릴 수 없습니다.',
@@ -150,7 +206,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 안내문에 "한 번에 5권까지 빌릴 수 있습니다"라고 직접 나와 있어요.',
       '③은 숫자 함정이에요. 대출 기간은 "2주"인데 "3주"로 바꿔 놓았어요.',
       '④는 안내문과 반대예요. "연체한 책이 있으면 반납할 때까지 새 책을 빌릴 수 없습니다"라고 했어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the opposite of the notice, which says the library is closed on Sundays and holidays, so it cannot be used on Sundays.",
+      "Option 2 is the correct answer. The notice directly states that you can borrow up to five books at a time.",
+      "Option 3 is a number trap. The loan period is two weeks, but it has been changed to three weeks.",
+      "Option 4 is the opposite of the notice, which says you cannot borrow new books until you return overdue books."
+    ],
+    tipEn: "In notice questions, mark the dates, numbers, and conditions as you read."
+  },
   { id: 'LV3R09', section: 'reading', type: 'order', level: 3, points: 3, qGl: 'Arrange the sentences in the correct order.',
     q: '다음을 순서대로 맞게 배열한 것을 고르십시오.',
     passage: '(가) 먼저 쌀을 깨끗이 씻어서 30분 동안 물에 불린다. (나) 그다음 밥솥에 물을 맞추고 취사 버튼을 누른다. (다) 마지막으로 밥이 다 되면 10분 정도 뜸을 들인 뒤에 밥을 푼다. (라) 밥을 맛있게 짓기 위해서는 쌀의 양에 맞는 물의 양이 가장 중요하다.',
@@ -169,7 +233,15 @@ window.LEVEL3_BANK = [
       '②는 (가)부터 시작하지만 소개문(라)이 맨 끝에 와요. "먼저-그다음-마지막으로"의 연결은 자연스럽지만, (라)가 전체 글의 도입부 역할을 하므로 맨 뒤에 오면 어색해요.',
       '③이 정답이에요. 밥짓기의 핵심 포인트를 소개하는 (라) → 쌀 씻기(가) → 밥솥 조작(나) → 완성(다) 순서가 가장 자연스러운 흐름이에요.',
       '④는 완성 단계(다)가 처음에 와서 조리 순서가 완전히 뒤바뀌었어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 has the wrong cooking order and places the introductory sentence (라) in the middle. The sentence introducing how to cook rice, (라), should come first.",
+      "Option 2 starts with (가), but the introductory sentence (라) is placed at the very end. The 'first, next, finally' links are natural, but since (라) serves as the introduction of the whole text, it feels awkward at the end.",
+      "Option 3 is the correct answer. The most natural flow is (라) introducing the key point of cooking rice, then (가) washing the rice, (나) operating the rice cooker, and (다) finishing, which follows the real cooking process.",
+      "Option 4 puts the final stage (다) first, completely reversing the cooking order."
+    ],
+    tipEn: "In ordering questions, first find the connective expressions that indicate 'first, next, finally.'"
+  },
   { id: 'LV3R10', section: 'reading', type: 'detail', level: 3, points: 3, qGl: 'Choose the detail that matches the passage.',
     q: '다음을 읽고 물음에 답하십시오. 글의 내용과 같은 것을 고르십시오.',
     passage: '지난주에 나는 회사 동료들과 제주도로 여행을 갔다. 첫날에는 한라산을 올랐는데, 날씨가 좋아서 전망이 정말 멋졌다. 둘째 날에는 바닷가에서 수영을 하고, 마지막 날에는 흑돼지 구이를 먹었다. 다음에는 가족과 다시 오고 싶다.',
@@ -188,7 +260,15 @@ window.LEVEL3_BANK = [
       '②는 날짜를 바꾼 선택지예요. 수영은 "둘째 날"에 했어요. 첫날에는 한라산을 올랐어요.',
       '③이 정답이에요. 글에서 "첫날에는 한라산을 올랐는데, 날씨가 좋아서 전망이 정말 멋졌다"고 직접 말했어요.',
       '④는 날짜를 바꾼 선택지예요. 한라산은 "첫날"에 올랐고, 마지막 날에는 흑돼지 구이를 먹었어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is a trap. The trip was taken with coworkers; the comment about wanting to come again with the family is only a future plan.",
+      "Option 2 changes the day. They swam on the second day, while on the first day they climbed Hallasan.",
+      "Option 3 is the correct answer. The passage directly says that on the first day they climbed Hallasan and the view was wonderful because the weather was nice.",
+      "Option 4 changes the day. They climbed Hallasan on the first day, and on the last day they ate black pork barbecue."
+    ],
+    tipEn: "For detail questions, mark 'when, with whom, and what' separately as you read."
+  },
   { id: 'LV3L01', section: 'listening', type: 'reply', level: 3, points: 3, qGl: 'Choose the appropriate reply.',
     q: '가: 주말에 같이 등산 갈래요? 날씨도 좋고, 단풍이 정말 예쁘대요.\n나: 그래요? 저는 등산을 자주 안 해 봐서 걱정이 되는데요.',
     qGl: 'A: Do you want to go hiking together this weekend? The weather is nice and I heard the fall foliage is really pretty. B: Really? I have not hiked often, so I am worried.',
@@ -207,7 +287,15 @@ window.LEVEL3_BANK = [
       '②는 "등산을 아예 하지 말자"는 제안이라 상대방의 걱정을 해결해 주지 않고 오히려 약속을 파기하는 태도예요.',
       '③은 단풍에 대한 일반 상식일 뿐, 상대방의 걱정에 답하지 않는 엉뚱한 말이에요.',
       '④는 내 사정(등산복 없음)을 말할 뿐이라 대화의 흐름과 맞지 않아요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. Since the other person says he is worried because he has not hiked much, reassuring him that they can climb up slowly together is the most natural response.",
+      "Option 2 suggests not hiking at all, which does not resolve the other person's worry and instead cancels the plan. It ignores how the other person feels.",
+      "Option 3 is just general knowledge about fall foliage, which does not match the flow of the conversation.",
+      "Option 4 only talks about the speaker's own situation, so it does not fit the flow of the conversation."
+    ],
+    tipEn: "In response questions, first identify the other person's emotion: worry, joy, or a request."
+  },
   { id: 'LV3L02', section: 'listening', type: 'reply', level: 3, points: 3, qGl: 'Choose the appropriate reply.',
     q: '가: 이번 프로젝트가 잘 마무리된 건 모두 당신 덕분이에요. 정말 수고하셨어요.\n나: 별말씀을요. 저는 할 일을 했을 뿐인데요.',
     qGl: 'A: This project finished well all thanks to you. You really worked hard. B: Not at all. I only did what I had to do.',
@@ -225,7 +313,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 칭찬을 받으면 "감사합니다"라고 고마워하고 "앞으로도 열심히 하겠습니다"라고 다짐하는 것이 가장 자연스러운 응답이에요.',
       '③은 "상을 주셔야겠네요"라고 요구하는 것이라 무례하고 오만하게 들려요.',
       '④는 화제와 무관한 말이에요. 칭찬에 대한 응답이 아니라 일을 떠넘기는 느낌이에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 brags by agreeing that he is truly amazing, which does not fit polite and humble Korean speech.",
+      "Option 2 is the correct answer. When someone praises you, the most natural response is to thank the person humbly and promise to keep working hard.",
+      "Option 3 demands that an award be given, which sounds rude and arrogant.",
+      "Option 4 is unrelated to the topic. It sounds like pushing the work onto someone else rather than responding to the compliment."
+    ],
+    tipEn: "When you receive a compliment, it is natural to answer with a humble expression like 'thank you.'"
+  },
   { id: 'LV3L03', section: 'listening', type: 'reply', level: 3, points: 3, qGl: 'Choose the appropriate reply.',
     q: '가: 죄송하지만, 이 근처에 은행이 어디에 있어요?\n나: 저기 큰 빌딩이 보이지요? 은행은 그 빌딩 바로 옆에 있어요.',
     qGl: 'A: Excuse me, where is a bank near here? B: You see that big building over there? The bank is right next to that building.',
@@ -243,7 +339,15 @@ window.LEVEL3_BANK = [
       '②는 안내를 받고 나서 "왜 그렇게 멀리 있어요?"라고 불평하는 것이라 무례해요.',
       '③은 "은행에 갈 돈이 없다"는 엉뚱한 말로, 길 안내 대화와 전혀 관련이 없어요.',
       '④는 "그 빌딩은 언제 지었어요?"라는 무관한 질문이라 안내에 대한 응답이 아니에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. After receiving directions, it is natural to reply with thanks and say that you understand.",
+      "Option 2 complains that the bank is too far away, which is rude and does not fit the flow of the conversation.",
+      "Option 3 says he has no money to go to the bank, which is completely unrelated to the topic.",
+      "Option 4 asks an irrelevant question about when the building was built, so it is not a proper response to the directions."
+    ],
+    tipEn: "In conversations where someone asks for directions, a thank-you expression usually follows the explanation."
+  },
   { id: 'LV3L04', section: 'listening', type: 'place', level: 3, points: 3, qGl: 'Choose where this conversation takes place.',
     q: '가: 손님, 어떤 걸로 도와드릴까요?\n나: 감기 기운이 있어서 약을 좀 사려고요.\n가: 그럼 이 약을 하루 세 번, 식후에 드세요. 그리고 따뜻한 물을 많이 마시는 게 좋아요.',
     qGl: 'A: Customer, how can I help you? B: I have a cold, so I want to buy some medicine. A: Then take this medicine three times a day after meals. And it is good to drink a lot of warm water.',
@@ -262,7 +366,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. "약을 사려고요"라고 했고, "이 약을 하루 세 번, 식후에 드세요"라고 복용법을 안내해 주는 곳은 약국이에요.',
       '③은 병원인데, 병원은 진찰을 받는 곳이에요. 여기서는 약을 사고 복용법을 듣는 상황이라 약국이 더 맞아요.',
       '④는 서점인데, 책을 파는 곳이라 대화 내용과 전혀 관련이 없어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is a restaurant, but the customer says he came to buy medicine, so a restaurant has nothing to do with this conversation.",
+      "Option 2 is the correct answer. The customer wants to buy medicine, and the staff explains how to take it, three times a day after meals, which is exactly what happens at a pharmacy.",
+      "Option 3 is a hospital, where patients receive medical examinations. Here the customer is buying medicine and getting dosage instructions, so a pharmacy fits better.",
+      "Option 4 is a bookstore, a place that sells books, which has nothing to do with the conversation."
+    ],
+    tipEn: "For place questions, listen to who is speaking and what is being bought or done, then infer the place."
+  },
   { id: 'LV3L05', section: 'listening', type: 'topic', level: 3, points: 3, qGl: 'Choose the topic of the conversation.',
     q: '가: 요즘 새로 이사한 집은 어때요?\n나: 집은 넓고 조용해서 좋은데, 문제는 출퇴근이에요. 지하철역까지 버스를 타야 해서 아침마다 40분이나 걸려요.\n가: 그건 좀 힘들겠네요. 차라리 회사 근처로 이사하는 게 어때요?',
     qGl: 'A: How is your newly moved house these days? B: The house is spacious and quiet, so it is good, but the problem is commuting. I have to take a bus to the subway station, so it takes 40 minutes every morning. A: That must be hard. How about moving near the company instead?',
@@ -280,7 +392,15 @@ window.LEVEL3_BANK = [
       '②는 지하철역이 나오지만, 요금 인상 이야기는 전혀 없어요.',
       '③은 회사가 언급되지만 회사 행사 이야기는 아니에요.',
       '④는 버스가 나오지만 버스 안내 방송 이야기는 아니에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. The two speakers talk the most about how the new house is good but the commute takes 40 minutes, and the other person suggests moving near the company. The main topic is the commuting problem of the new house.",
+      "Option 2 mentions a subway station, but there is no talk about fare increases.",
+      "Option 3 mentions a company, but there is no talk about company events.",
+      "Option 4 mentions a bus, but there is no talk about bus announcements."
+    ],
+    tipEn: "For topic questions, figure out what the two speakers talk about the longest."
+  },
   { id: 'LV3L06', section: 'listening', type: 'topic', level: 3, points: 3, qGl: 'Choose the topic of the conversation.',
     q: '가: 주말에 뭐 했어요?\n나: 어린이집에서 하는 자원봉사에 다녀왔어요. 아이들과 같이 그림도 그리고 책도 읽어 줬어요.\n가: 정말 보람 있었겠어요. 저도 다음에는 같이 가고 싶네요.',
     qGl: 'A: What did you do on the weekend? B: I went to volunteer at a daycare center. I drew pictures with the children and read books to them. A: That must have been rewarding. I want to go together next time too.',
@@ -298,7 +418,15 @@ window.LEVEL3_BANK = [
       '②는 어린이집이 나오지만 입학 절차 이야기는 아니에요.',
       '③은 그림이 나오지만 그림 학원 이야기는 아니에요.',
       '④는 "다음에 같이 가고 싶네요"라는 말이 있지만 여행 계획이 아니라 봉사 계획이에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. The person talks about his weekend volunteer experience at a daycare center, drawing pictures and reading books with the children, and the other person reacts with empathy. The topic is the weekend volunteer experience.",
+      "Option 2 mentions a daycare center, but there is no talk about the admission process.",
+      "Option 3 mentions drawing pictures, but there is no talk about an art academy.",
+      "Option 4 is wrong because the comment about going together next time is a volunteer plan, not a travel plan."
+    ],
+    tipEn: "Take notes on the key verb of the conversation, such as volunteer or travel."
+  },
   { id: 'LV3L07', section: 'listening', type: 'intent', level: 3, points: 3, qGl: 'Choose what the man intends to do.',
     q: '가: 이번 주 금요일이 엄마 생신이시잖아요. 선물로 뭘 드릴까요?\n나: 지난번에 엄마가 목이 좀 아프시다고 하셨어요. 그래서 목도리를 하나 사 드리려고요. 같이 골라 주실래요?',
     qGl: 'A: This Friday is Mom’s birthday, right? What should we give her as a present? B: Last time Mom said her neck hurt a little. So I plan to buy her a scarf. Will you help me pick one out?',
@@ -317,7 +445,15 @@ window.LEVEL3_BANK = [
       '②는 생일이 나오지만 파티를 준비한다는 말은 없어요.',
       '③이 정답이에요. 나(남자)는 "목도리를 하나 사 드리려고요"라고 직접 말했어요. 이것이 이 사람의 의도예요.',
       '④는 목이 아프다는 말에서 병원을 떠올렸지만, 병원에 모시고 가겠다는 말은 없어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is not mentioned in the conversation. There is no statement about having a meal with his mother.",
+      "Option 2 is wrong because, although a birthday is mentioned, there is no talk about preparing a birthday party.",
+      "Option 3 is the correct answer. The man directly says he plans to buy a scarf because his mother said her neck hurt, and he asks the other person to help choose it. This is his clear intention.",
+      "Option 4 is wrong because, although the sore neck might make you think of a hospital, there is no statement about taking her to the hospital."
+    ],
+    tipEn: "In intention questions, pay attention to plan expressions like '-려고요' or '-을 거예요.'"
+  },
   { id: 'LV3L08', section: 'listening', type: 'intent', level: 3, points: 3, qGl: 'Choose what the woman intends to do.',
     q: '가: 이번 방학에 뭐 할 거예요?\n나: 그동안 미루었던 운전면허 시험에 도전해 보려고요. 합격하면 아버지 차를 빌려서 바다에 놀러 가고 싶어요.\n가: 운전면허가 있으면 정말 편하겠네요.',
     qGl: 'A: What will you do this vacation? B: I am going to try the driver’s license test that I have been putting off. If I pass, I want to borrow my father’s car and go to the beach. A: It must be really convenient to have a driver’s license.',
@@ -335,7 +471,15 @@ window.LEVEL3_BANK = [
       '②가 정답이에요. 나(여자)는 "운전면허 시험에 도전해 보려고요"라고 직접 말했어요. 방학 동안의 주된 계획이에요.',
       '③은 아르바이트에 대한 언급이 전혀 없어요.',
       '④는 바다에 놀러 가는 것이 나오지만, 그건 합격한 뒤의 계획일 뿐이고 수영을 배우려 한다는 말은 없어요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is wrong because she says she will borrow her father's car, not buy him a new car.",
+      "Option 2 is the correct answer. The woman directly says she is going to try the driving license test, so this is her intention for the vacation.",
+      "Option 3 is wrong because there is no mention of a part-time job at all.",
+      "Option 4 is wrong because going to the beach is only a plan after passing the test, and there is no talk about learning to swim."
+    ],
+    tipEn: "The sentence containing '-려고요' reveals that person's intention."
+  },
   { id: 'LV3L09', section: 'listening', type: 'detail', level: 3, points: 3, qGl: 'Choose the detail that matches the conversation.',
     q: '가: 오늘 점심에 뭐 먹었어요?\n나: 회사 앞에 새로 생긴 일식집에서 초밥을 먹었어요. 가격은 좀 비쌌는데 양이 많고 맛있었어요.\n가: 그럼 저도 다음에 한번 가 봐야겠네요.',
     qGl: 'A: What did you eat for lunch today? B: I ate sushi at a new Japanese restaurant in front of the company. The price was a bit expensive, but the portions were large and it was delicious. A: Then I should go there sometime too.',
@@ -354,7 +498,15 @@ window.LEVEL3_BANK = [
       '②는 내용을 반대로 바꾼 선택지예요. "비쌌는데 맛있었어요"라고 했지, 싸고 맛이 없다고 하지 않았어요.',
       '③은 "회사 앞에"라고 했는데 "회사에서 멀리 떨어진"으로 바꿔 놓았어요.',
       '④가 정답이에요. 가(여자)는 "다음에 한번 가 봐야겠네요"라고 했으므로 아직 그 일식집에 가 보지 않았다는 뜻이에요.'
-    ] },
+    ],
+    optExplainEn: [
+      "Option 1 is factually true, but this question asks for the content that matches the conversation as a whole. Since option 4 captures a more essential point, option 1 is not the best answer even though it is factual.",
+      "Option 2 reverses the content: the man said the sushi was expensive but delicious, not cheap and tasteless.",
+      "Option 3 changes 'in front of the company' to 'far from the company,' which is the opposite location.",
+      "Option 4 is the correct answer. The woman says she should go there sometime too, which means she has not been to that Japanese restaurant yet."
+    ],
+    tipEn: "For detail questions, listen carefully to negative expressions and place expressions."
+  },
   { id: 'LV3L10', section: 'listening', type: 'detail', level: 3, points: 3, qGl: 'Choose the detail that matches the conversation.',
     q: '가: 어제 병원에 다녀왔다면서요? 몸은 좀 어때요?\n나: 크게 다친 곳은 없어요. 다만 운동할 때 무릎이 아파서 병원에 갔는데, 의사 선생님이 당분간 달리기를 쉬라고 하셨어요.\n가: 다행이네요. 무리하지 말고 꼭 쉬세요.',
     qGl: 'A: I heard you went to the hospital yesterday. How is your body? B: There is nothing seriously injured. However, my knee hurt when I exercised, so I went to the hospital, and the doctor told me to rest from running for a while. A: That is a relief. Do not overdo it and make sure you rest.',
@@ -372,5 +524,13 @@ window.LEVEL3_BANK = [
       '②는 의사 말을 반대로 바꾼 선택지예요. 의사는 "달리기를 쉬라고 하셨어요"라고 했지, 계속하라고 하지 않았어요.',
       '③은 "크게 다친 곳은 없어요"라고 했으므로 수술했다는 내용은 틀렸어요.',
       '④는 가(여자)에 대한 내용인데, 가가 무릎 수술을 받은 적이 있다는 말은 대화에 없어요.'
-    ] }
+    ],
+    optExplainEn: [
+      "Option 1 is the correct answer. The man directly says he went to the hospital because his knee hurt when he exercised.",
+      "Option 2 reverses the doctor's advice: the doctor told him to rest from running, not to keep running.",
+      "Option 3 is wrong because he says nothing was seriously injured, so surgery is not mentioned at all.",
+      "Option 4 is about the woman, but there is no statement that she has had knee surgery."
+    ],
+    tipEn: "Listen carefully to the part that reports the doctor's advice, '-라고 하셨어요.'"
+  }
 ];

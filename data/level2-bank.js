@@ -25,6 +25,13 @@ window.LEVEL2_BANK = [
       "③ '볼 거예요'는 미래형이에요. 아직 하지 않은 일을 나타내는 표현이라 이미 지난 '어제'의 일을 말할 때는 어울리지 않아요.",
       "④ '보고 있어요'는 진행형이에요. 지금 보고 있는 중이라는 뜻이므로 어제 끝난 일을 나타낼 수 없어요. 과거에는 '-았/었어요'를 써요.",
     ],
+    optExplainEn: [
+      "① '봅니다' is the present tense. In a sentence with the past time expression '어제' (yesterday), the present tense cannot be used. To talk about the past you need the '-았/었어요' form.",
+      "② '봤어요' is the correct answer. Because the sentence contains '어제', the verb must be in the past tense. '-았어요' is added to '보다', forming '봤어요' (watched).",
+      "③ '볼 거예요' is the future tense. It expresses something that has not happened yet, so it does not fit a sentence about something that already happened yesterday.",
+      "④ '보고 있어요' is the progressive form, meaning the action is happening right now. It cannot describe something that ended yesterday, so the past form '-았/었어요' is required."
+    ],
+    tipEn: "If you see a past time expression like 어제 (yesterday) or 지난주 (last week), choose the -았/었어요 form.",
   },
   { id: "LV2R02", section: "reading", type: "grammar", level: 2, points: 3,
     qGl: "Choose the correct word.",
@@ -44,6 +51,13 @@ window.LEVEL2_BANK = [
       "③ '가요'는 단순 현재형이에요. 지금 가거나 평소에 간다는 뜻이 돼서 희망을 나타내는 문장과 맞지 않아요.",
       "④ '갈 거예요'는 미래 계획을 나타내는 표현이에요. 이 문장은 '가고 싶다'는 바람을 말하는 것이므로 확실한 계획을 나타내는 '-ㄹ 거예요'보다 '-고 싶어요'가 알맞아요.",
     ],
+    optExplainEn: [
+      "① '가고 싶어요' is the correct answer. '-고 싶어요' expresses a wish to do something, so '저는 여름에 바다에 가고 싶어요' naturally states what the speaker wants to do.",
+      "② '갔어요' is the past tense, meaning the person already went to the beach. It does not fit a sentence about what the speaker wants to do now.",
+      "③ '가요' is the simple present tense, used for going now or habitually. It does not match a sentence that expresses a wish.",
+      "④ '갈 거예요' expresses a future plan. This sentence states a desire to go, so '-고 싶어요' fits better than '-ㄹ 거예요', which indicates a definite plan."
+    ],
+    tipEn: "To express a hope or wish, use verb + -고 싶어요.",
   },
   { id: "LV2R03", section: "reading", type: "vocab", level: 2, points: 3,
     qGl: "Choose the correct word.",
@@ -63,6 +77,13 @@ window.LEVEL2_BANK = [
       "③ '만들어요'는 물건을 새로 만든다는 뜻이에요. 도서관에서는 책을 만들지 않아요. 만드는 일은 공장 같은 곳에서 해요.",
       "④ '닫아요'는 문이나 창문을 닫을 때 쓰는 동사예요. '책을 닫아요'는 어색하고 도서관 상황과도 맞지 않아요.",
     ],
+    optExplainEn: [
+      "① '빌려요' is the correct answer. A library is a place where people borrow books, so '도서관에서 책을 빌려요' (I borrow books at the library) is the most natural sentence.",
+      "② '팔아요' means to give something in exchange for money. Books are sold at a bookstore or shop, not at a library.",
+      "③ '만들어요' means to make something new. People do not make books at a library; making things usually happens in a factory.",
+      "④ '닫아요' is the verb used for closing a door or window. '책을 닫아요' sounds unnatural and does not fit the library situation."
+    ],
+    tipEn: "Choose the verb that fits the place (library, market, hospital).",
   },
   { id: "LV2R04", section: "reading", type: "vocab", level: 2, points: 3,
     qGl: "Choose the correct word.",
@@ -82,6 +103,13 @@ window.LEVEL2_BANK = [
       "③ '어두운'은 색이 밝지 않다는 뜻이에요. 가격에 대한 말이 아니기 때문에 '너무 비싸요'라는 문장과 이어지지 않아요.",
       "④ '무거운'은 무게가 많이 나간다는 뜻이에요. 옷의 가격과는 상관없는 표현이에요. 가격의 반대말인 '싼'을 골라야 해요.",
     ],
+    optExplainEn: [
+      "① '싼' is the correct answer. The speaker says the clothes are too expensive and asks to see cheaper ones, and the opposite of '비싸다' (expensive) is '싸다' (cheap).",
+      "② '큰' describes size. The situation is about finding other clothes because of the price, so size has nothing to do with the answer.",
+      "③ '어두운' means not bright in color. It is not a word about price, so it does not connect with the sentence '너무 비싸요' (too expensive).",
+      "④ '무거운' means heavy in weight. It is unrelated to the price of the clothes, so you should choose '싼', the antonym of the price word."
+    ],
+    tipEn: "The opposite of 비싸다 is 싸다. Find the answer through the antonym relationship.",
   },
   { id: "LV2R05", section: "reading", type: "notice", level: 2, points: 3,
     qGl: "Read the notice and choose the correct answer.",
@@ -103,6 +131,13 @@ window.LEVEL2_BANK = [
       "③은 틀렸어요. '공사로 문을 닫습니다'라고 했으므로 도서관이 공사 중이라는 뜻이에요. '공사를 하지 않는다'는 내용과 반대예요.",
       "④는 틀렸어요. 도서관은 5월 4일부터 다시 여는데, '다음 달'이 아니라 이번 달 5월 4일이에요. 날짜를 잘 확인해야 해요.",
     ],
+    optExplainEn: [
+      "① is the correct answer. The notice says '5월 4일부터 정상 운영합니다' (normal operation resumes from May 4), so the library can be used from May 4.",
+      "② is wrong. The notice says the library is closed for construction from May 1 to May 3, so it cannot be used on May 1.",
+      "③ is wrong. '공사로 문을 닫습니다' means the library is closed for construction, so saying it is not under construction is the opposite of the notice.",
+      "④ is wrong. The library reopens on May 4 of this month, not 'next month'. You must check the dates carefully."
+    ],
+    tipEn: "Check the dates and periods in the notice first, then choose the answer.",
   },
   { id: "LV2R06", section: "reading", type: "notice", level: 2, points: 3,
     qGl: "Read the notice and choose the correct answer.",
@@ -124,6 +159,13 @@ window.LEVEL2_BANK = [
       "③ '오후 2시'도 사용 가능한 시간이에요. 오전 9시~오후 9시 범위 안이므로 정답이 될 수 없어요.",
       "④ '오후 8시'도 오후 9시 전이므로 사용할 수 있는 시간이에요. 범위 밖의 시간을 찾아야 하므로 정답이 아니에요.",
     ],
+    optExplainEn: [
+      "① '10 p.m.' is the correct answer. The washing machine can be used from 9 a.m. to 9 p.m., and 10 p.m. is outside this range.",
+      "② '10 a.m.' is within the usable range of 9 a.m. to 9 p.m., so the machine can be used at that time. That is why it is not the answer.",
+      "③ '2 p.m.' is also inside the 9 a.m. to 9 p.m. range, so it cannot be the correct answer.",
+      "④ '8 p.m.' is before 9 p.m., so it is also a usable time. You need the time outside the range, so this is not the answer."
+    ],
+    tipEn: "First find the usable time range, then choose the time outside that range.",
   },
   { id: "LV2R07", section: "reading", type: "comprehension", level: 2, points: 3,
     qGl: "Read the passage and choose the correct answer.",
@@ -145,6 +187,13 @@ window.LEVEL2_BANK = [
       "③ '택시'도 본문에 없어요. 택시를 탄다는 말을 찾을 수 없으므로 답이 될 수 없어요.",
       "④ '자전거'도 본문에 나오지 않아요. 본문에는 지하철만 나오므로 자전거는 정답이 아니에요.",
     ],
+    optExplainEn: [
+      "① '지하철' (subway) is the correct answer. The passage says '지하철을 타고 회사에 갑니다' (he takes the subway to work), and the vehicle right before '타고' is the answer.",
+      "② '버스' (bus) does not appear in the passage. There is no information that Minsu takes the bus to work.",
+      "③ '택시' (taxi) also does not appear. Since there is no mention of taking a taxi, it cannot be the answer.",
+      "④ '자전거' (bicycle) is not in the passage either. Only the subway appears, so the bicycle is not correct."
+    ],
+    tipEn: "If you find the vehicle right before '타고', you can see the answer.",
   },
   { id: "LV2R08", section: "reading", type: "comprehension", level: 2, points: 3,
     qGl: "Read the passage and choose the correct answer.",
@@ -166,6 +215,13 @@ window.LEVEL2_BANK = [
       "③은 틀렸어요. 식당에서 저녁을 '먹었지' 일하지는 않았어요. '식당에서 일했다'는 본문에 없는 내용이에요.",
       "④는 틀렸어요. 어머니께서 옷을 '사 주셨지' 제가 옷을 '판' 것이 아니에요. 사다와 팔다를 바꿔 읽으면 안 돼요.",
     ],
+    optExplainEn: [
+      "① is the correct answer. The first sentence says '어제는 제 생일이었습니다' (yesterday was my birthday), so yesterday was the speaker's birthday.",
+      "② is wrong. The birthday belonged to 'me', not my mother. The mother only bought a pretty dress as a gift.",
+      "③ is wrong. The speaker ate dinner at the restaurant but did not work there, so 'worked at a restaurant' is not in the passage.",
+      "④ is wrong. The mother 'bought' the clothes; the speaker did not 'sell' them. You must not mix up 사다 (buy) and 팔다 (sell)."
+    ],
+    tipEn: "In comprehension questions, the first sentence of the passage is often the main topic.",
   },
   { id: "LV2R09", section: "reading", type: "order", level: 2, points: 3,
     qGl: "Put the sentences in the correct order.",
@@ -187,6 +243,13 @@ window.LEVEL2_BANK = [
       "③은 틀렸어요. (라) 다음에 (가) '그래서...'가 오는 것은 맞지만, 그 뒤에 (나) 원인이 다시 오는 순서는 이상해요. '그래서' 뒤에는 결과만 와야 해요.",
       "④는 틀렸어요. (가) '그래서 도서관에 갔습니다' 다음에 (라) '밖에 나가기가 싫었습니다'가 오면 인과 관계가 뒤집혀요. 나가기 싫었기 때문에 도서관에 간 거예요.",
     ],
+    optExplainEn: [
+      "① '나 - 라 - 가 - 다' (b - d - a - c) is the correct answer. Because it rained a lot (나), the speaker did not want to go outside (라), so he went to the library (가) and read books and drank tea (다). The cause comes before '그래서' and the result after it.",
+      "② is wrong. '가' is a result sentence starting with '그래서', but it is placed first. The cause must come before '그래서'.",
+      "③ is wrong. It is correct that (라) is followed by (가) '그래서...', but putting the cause (나) after it again is strange. Only the result should follow '그래서'.",
+      "④ is wrong. If (라) 'did not want to go outside' comes after (가) 'went to the library', the cause-and-effect order is reversed. He went to the library because he did not want to go outside."
+    ],
+    tipEn: "The cause (나, 라) comes before '그래서' and the result (가, 다) comes after it.",
   },
   { id: "LV2R10", section: "reading", type: "main_idea", level: 2, points: 3,
     qGl: "Choose the main idea of the passage.",
@@ -208,6 +271,13 @@ window.LEVEL2_BANK = [
       "③은 틀렸어요. 회사나 학교에서 '먹는다'고 했지 '먹으면 안 된다'는 말은 없어요. 본문에 없는 내용이에요.",
       "④는 틀렸어요. 김밥을 편의점에서 산다고 했어요. '집에서만 만들어야 한다'는 본문과 반대되는 내용이에요.",
     ],
+    optExplainEn: [
+      "① is the correct answer. The passage is about many people buying and eating simple meals at convenience stores when they have no time, and this is the main idea of the whole passage.",
+      "② is wrong. The passage never says convenience store food is expensive. In fact, it says people eat it a lot because it is convenient, which is the opposite.",
+      "③ is wrong. The passage says people eat at work or school, but it never says they must not eat. This content is not in the passage.",
+      "④ is wrong. The passage says gimbap is bought at convenience stores, so 'should only be made at home' contradicts the passage."
+    ],
+    tipEn: "The sentence that covers the whole passage is the main idea. Detailed facts are wrong answers.",
   },
 
   // ============ LISTENING (10) ============
@@ -230,6 +300,13 @@ window.LEVEL2_BANK = [
       "③ '아니요, 싫어요'는 거절할 때 쓰는 말이에요. '주말에 뭐 했어요?'처럼 무엇을 했는지 묻는 질문에 이렇게 답하지 않아요.",
       "④ '내일 갈 거예요'는 미래 계획이에요. 질문이 과거 시제(했어요)로 묻고 있으므로 미래형으로 답하면 안 돼요.",
     ],
+    optExplainEn: [
+      "① '친구를 만났어요' (I met a friend) is the correct answer. '주말에 뭐 했어요?' asks what you did in the past, so the answer must be in the past tense. The past form of '만나다' is '만났어요'.",
+      "② '네, 좋아요' is used to agree with a suggestion or request. It is not a natural answer to a question about what you did.",
+      "③ '아니요, 싫어요' is a refusal. A question like '주말에 뭐 했어요?' asks what you did, so this kind of reply does not fit.",
+      "④ '내일 갈 거예요' is a future plan. Since the question is in the past tense (했어요), you should not answer in the future tense."
+    ],
+    tipEn: "Match the tense of your answer to the tense of the question (했어요 = past).",
   },
   { id: "LV2L02", section: "listening", type: "reply", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 답하세요.",
@@ -250,6 +327,13 @@ window.LEVEL2_BANK = [
       "③ '저는 학생이에요'는 자기소개 표현이에요. 책을 빌려 주는 상황과 관계없는 내용이에요.",
       "④ '아니요, 맛있어요'는 어색한 답이에요. '맛있어요'는 음식을 평가할 때 쓰는 말인데다 부탁을 거절하는 표현도 아니에요.",
     ],
+    optExplainEn: [
+      "① '네, 여기 있어요' (Yes, here it is) is the correct answer. When someone asks to borrow a book, handing it over and saying '여기 있어요' is the natural response.",
+      "② '책이 재미있어요' is an opinion about the book. It is not a response to a request to borrow it.",
+      "③ '저는 학생이에요' is a self-introduction. It has nothing to do with the situation of lending a book.",
+      "④ '아니요, 맛있어요' is an awkward answer. '맛있어요' is used to describe food, and it does not refuse the request either."
+    ],
+    tipEn: "Answer a request with acceptance (네) or refusal (죄송해요).",
   },
   { id: "LV2L03", section: "listening", type: "reply", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 답하세요.",
@@ -270,6 +354,13 @@ window.LEVEL2_BANK = [
       "③ '저녁을 먹었어요'도 과거에 한 일을 말한 거예요. 영화 보자는 제안과 상관없는 답이에요.",
       "④ '학교에 갔어요'도 과거 행동이에요. 제안에 동의하거나 거절하는 말이 아니므로 답이 될 수 없어요.",
     ],
+    optExplainEn: [
+      "① '네, 좋아요' is the correct answer. '-ㄹ까요?' is used to suggest doing something together, so agreeing with '좋아요' is the natural response.",
+      "② '영화를 봤어요' is about a movie the speaker already watched. It is not a suitable answer to a suggestion to watch one tomorrow.",
+      "③ '저녁을 먹었어요' also describes something done in the past. It is unrelated to the suggestion to watch a movie.",
+      "④ '학교에 갔어요' is also a past action. It neither agrees nor refuses, so it cannot be the answer."
+    ],
+    tipEn: "Answer a suggestion (볼까요?) with '좋아요' or '싫어요'.",
   },
   { id: "LV2L04", section: "listening", type: "reply", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 답하세요.",
@@ -290,6 +381,13 @@ window.LEVEL2_BANK = [
       "③ '저는 배가 안 고파요'는 내 배고픔에 대한 이야기예요. 상대가 아프다고 하는 상황과 관계없는 답이에요.",
       "④ '내일은 월요일이에요'는 날짜 정보일 뿐이에요. 아픈 상대에게 위로나 조언을 해야 하는 상황에 맞지 않아요.",
     ],
+    optExplainEn: [
+      "① '그럼 약을 먹고 쉬어요' (Then take medicine and rest) is the correct answer. When someone says they are sick, advising them to take medicine and rest is the natural response.",
+      "② '네, 고마워요' is an expression of thanks after receiving help. It is not something to say to a person who is sick.",
+      "③ '저는 배가 안 고파요' talks about the speaker's own hunger. It is unrelated to the situation where the other person is sick.",
+      "④ '내일은 월요일이에요' is just a statement about the date. It does not fit a situation where you should comfort or advise a sick person."
+    ],
+    tipEn: "Choose advice that fits the other person's condition (아파요, 피곤해요).",
   },
   { id: "LV2L05", section: "listening", type: "place", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 어디에 가야 하는지 고르세요.",
@@ -310,6 +408,13 @@ window.LEVEL2_BANK = [
       "③ '은행'은 돈을 맡기거나 찾는 곳이에요. 편지와는 상관없는 장소예요.",
       "④ '공항'은 비행기를 타러 가는 곳이에요. 편지를 보내려는 목적과 맞지 않아요.",
     ],
+    optExplainEn: [
+      "① '우체국' (post office) is the correct answer. The place where you send or mail letters is the post office, so when you hear '편지' (letter), you should think of '우체국'.",
+      "② '병원' (hospital) is where you go for a checkup when you are sick. It has nothing to do with sending a letter.",
+      "③ '은행' (bank) is where you deposit or withdraw money. It is not related to letters.",
+      "④ '공항' (airport) is where you go to take a plane, so it does not fit the purpose of sending a letter."
+    ],
+    tipEn: "Choose the place that matches the purpose (letter, medicine, money).",
   },
   { id: "LV2L06", section: "listening", type: "place", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 어디에 가야 하는지 고르세요.",
@@ -330,6 +435,13 @@ window.LEVEL2_BANK = [
       "③ '시장'은 물건을 사고파는 곳이에요. 약을 사러 가는 곳으로는 맞지 않아요.",
       "④ '영화관'은 영화를 보는 곳이에요. 아픈 사람이 약을 사러 갈 곳이 아니에요.",
     ],
+    optExplainEn: [
+      "① '약국' (pharmacy) is the correct answer. The place where you buy medicine is the pharmacy, so if you have a stomachache and need medicine, you should go to a pharmacy.",
+      "② '서점' (bookstore) is where you buy books. It has nothing to do with medicine.",
+      "③ '시장' (market) is where people buy and sell things. It is not the place to go to buy medicine.",
+      "④ '영화관' (movie theater) is where you watch movies. A sick person does not go there to buy medicine."
+    ],
+    tipEn: "When '약' (medicine) appears in the conversation, think of '약국' (pharmacy).",
   },
   { id: "LV2L07", section: "listening", type: "topic", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 무엇에 대한 말인지 고르세요.",
@@ -350,6 +462,13 @@ window.LEVEL2_BANK = [
       "③ '날씨'에 대한 말도 없어요. 덥다, 춥다 같은 날씨 표현이 나오지 않아요.",
       "④ '여행'에 대한 말도 없어요. 여행지나 여행 계획을 이야기하는 대화가 아니에요.",
     ],
+    optExplainEn: [
+      "① '영화' (movie) is the correct answer. The conversation keeps talking about a movie: '어제 본 영화' (the movie I saw yesterday), '재미있었어요' (it was fun), and '보고 싶어요' (I want to see it). The word that appears most often is the topic.",
+      "② There is no word about '음식' (food) in the conversation, so it cannot be the topic.",
+      "③ There is no talk about '날씨' (weather) either. No weather expressions like 덥다 (hot) or 춥다 (cold) appear.",
+      "④ There is no talk about '여행' (trip). It is not a conversation about travel destinations or plans."
+    ],
+    tipEn: "The word repeated most often in the conversation is the topic.",
   },
   { id: "LV2L08", section: "listening", type: "topic", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 무엇에 대한 말인지 고르세요.",
@@ -370,6 +489,13 @@ window.LEVEL2_BANK = [
       "③ '운동'에 대한 말도 없어요. 운동 종목이나 체육관 이야기가 없어요.",
       "④ '회사'에 대한 말도 없어요. 일이나 직장에 대한 이야기가 나오지 않아요.",
     ],
+    optExplainEn: [
+      "① '음식' (food) is the correct answer. Food names like '불고기' (bulgogi) and '김치찌개' (kimchi stew) appear in the conversation, so the topic is food.",
+      "② No words about '옷' (clothes) appear, so it is not a conversation about clothes.",
+      "③ There is no talk about '운동' (exercise). No sports or gym stories appear.",
+      "④ There is no talk about '회사' (company) either. Nothing about work or the workplace is mentioned."
+    ],
+    tipEn: "If food names (불고기, 김치찌개) appear, the topic is food.",
   },
   { id: "LV2L09", section: "listening", type: "intent", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 무엇을 하려고 하는지 고르세요.",
@@ -390,6 +516,13 @@ window.LEVEL2_BANK = [
       "③ '밥을 먹으려고 합니다'도 대화에 없는 계획이에요. 식사에 대한 이야기는 전혀 없어요.",
       "④ '영화를 보려고 합니다'도 대화에 없는 내용이에요. 영화 이야기는 나오지 않아요.",
     ],
+    optExplainEn: [
+      "① '수영하러 가려고 합니다' (She intends to go swimming) is the correct answer. She suggests '수영하러 갈까요?' (Shall we go swimming?) and then asks '오후에 어때요?' (How about the afternoon?) to set the time, so she intends to go swimming.",
+      "② '집에서 쉬려고 합니다' is not in the conversation. No one says anything about resting at home.",
+      "③ '밥을 먹으려고 합니다' is also not a plan in the conversation. There is no talk about eating at all.",
+      "④ '영화를 보려고 합니다' is not in the conversation either. No movie talk appears."
+    ],
+    tipEn: "Connect the '-ㄹ까요?' suggestion with '-려고 하다' (intend to do).",
   },
   { id: "LV2L10", section: "listening", type: "intent", level: 2, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 무엇을 하려고 하는지 고르세요.",
@@ -410,5 +543,12 @@ window.LEVEL2_BANK = [
       "③ '식당에 가려고 합니다'는 대화에 없는 내용이에요. 식당 이야기는 나오지 않아요.",
       "④ '생일 파티를 하려고 합니다'도 대화에 없어요. 선물을 사는 이야기만 나오므로 정답이 될 수 없어요.",
     ],
+    optExplainEn: [
+      "① '어머니 선물을 사려고 합니다' (They intend to buy a gift for their mother) is the correct answer. They ask '생일 선물로 뭘 살까요?' (What should we buy as a birthday gift?) and say '한복을 사 드립시다' (Let's buy her a hanbok), so they intend to buy a gift.",
+      "② is wrong. They intend to 'buy' the hanbok as a gift for their mother, not to 'wear' it. You must distinguish 사다 (buy) from 입다 (wear).",
+      "③ '식당에 가려고 합니다' is not in the conversation. No restaurant talk appears.",
+      "④ '생일 파티를 하려고 합니다' is also not in the conversation. Only buying a gift is discussed, so it cannot be the answer."
+    ],
+    tipEn: "'사 드리다' means 'to buy something for someone as a gift'. The intention is what they plan to buy.",
   }
 ];

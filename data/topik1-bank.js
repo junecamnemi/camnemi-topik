@@ -24,6 +24,13 @@ window.TOPIK1_BANK = [
       '③은 "네"라고 긍정하면서 "우산이 아니에요"라고 부정해요. 네와 아니에요가 서로 어울리지 않아서 모순되는 문장이에요. 그래서 틀렸어요.',
       '④는 "아니요"라고 부정하면서 "우산이에요"라고 긍정해요. 아니요와 이에요가 서로 안 맞아서 모순돼요. 존재 질문에는 있어요/없어요로 답해야 해요.'
     ],
+    optExplainEn: [
+      'Option ① talks about the umbrella being small (size). The question "우산이 있어요?" asks whether an umbrella exists, so the reply should use 있어요/없어요. Answering with a description of the umbrella does not answer the yes/no question, so ① is wrong.',
+      'Option ② is the correct answer. "우산이 있어요?" is a yes/no question asking about existence. Since the umbrella exists, replying "네, 우산이 있어요" (Yes, I have an umbrella) is the natural affirmative answer.',
+      'Option ③ combines "네" (yes) with "우산이 아니에요" (it is not an umbrella). Affirming with 네 while denying identity creates a contradictory sentence, so this option is incorrect.',
+      'Option ④ combines "아니요" (no) with "우산이에요" (it is an umbrella). 아니요 and 이에요 contradict each other. Existence questions should be answered with 있어요/없어요, so this is wrong.',
+    ],
+    tipEn: 'For yes/no existence questions, match 네/아니요 with 있어요/없어요. Do not switch to adjectives.',
  },
   { id: "L002", section: "listening", type: "reply", level: 1, points: 3,
     freq: "3", qGl: "A: What time do you go to school today?  B: ______", freqNote: "듣기 1~3 · 매 회차 3문항",
@@ -43,6 +50,13 @@ window.TOPIK1_BANK = [
       '③은 "네"로 시작하는데 이 질문은 네/아니요로 답하는 질문이 아니에요. 몇 시인지 시간을 직접 말해야 해요. 그래서 틀렸어요.',
       '④는 "아홉 시가 좋아요"라고 선호를 말해요. 좋아요는 기호나 의견을 물을 때 쓰지 시간을 물을 때 쓰지 않아요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. "몇 시에 가요?" asks about both time and action, so the natural reply is time (아홉 시) + 에 + verb (가요), as in "아홉 시에 가요".',
+      'Option ② "학교에 아홉이에요" is grammatically impossible because a school cannot contain the number nine. Therefore it cannot be the answer.',
+      'Option ③ starts with "네", but this question cannot be answered with yes or no. You must state the time directly, so beginning with 네 is wrong.',
+      'Option ④ says "아홉 시가 좋아요" (9 o\'clock is good), which expresses a preference. 좋아요 is used for likes or opinions, not for answering a time question, so this is incorrect.',
+    ],
+    tipEn: '몇 시에? → answer with 시에 + verb (time + 에 + action).',
  },
   { id: "L003", section: "listening", type: "reply", level: 1, points: 4,
     freq: "3", qGl: "A: What did you do last week?  B: ______", freqNote: "듣기 1~3 · 매 회차 3문항",
@@ -62,6 +76,13 @@ window.TOPIK1_BANK = [
       '③은 "만나요"로 현재 시제예요. 지난주에 이미 끝난 일을 말할 때는 현재형을 쓸 수 없어요. 그래서 오답이에요.',
       '④가 정답이에요. "했어요"는 과거형이니까 "만났어요"처럼 과거 시제로 답해야 해요. 지난주에 한 일이라 이미 끝난 일이기 때문에 과거형이 맞아요.'
     ],
+    optExplainEn: [
+      'Option ① uses the future tense "만날 거예요". However, "지난주에" in the question refers to the past, so the future tense does not match and ① is wrong.',
+      'Option ② uses the progressive form "만나고 있어요", which means the action is happening now. The question asks about last week, so the tense does not match and this is incorrect.',
+      'Option ③ uses the present tense "만나요". The present tense cannot describe an event that already finished last week, so this option is wrong.',
+      'Option ④ is the correct answer. "했어요" is the past tense, so the reply should also be past tense, like "만났어요". Because the event happened last week and is finished, the past form is correct.',
+    ],
+    tipEn: 'Match the tense of the question. 지난주 → past, 이번 주말 → future, 지금 → present/progressive.',
  },
   { id: "L004", section: "listening", type: "place", level: 2, points: 3,
     freq: "4", qGl: "Listen to the dialogue and choose where this conversation takes place.", freqNote: "듣기 7~10 · 매 회차 4문항",
@@ -82,6 +103,13 @@ window.TOPIK1_BANK = [
       '③ 도서관은 책을 읽거나 빌리는 곳이에요. 대화에 책이나 공부하는 내용이 전혀 없어요. 그래서 틀렸어요.',
       '④ 약국은 약을 사는 곳이에요. 대화에 약이나 병에 대한 말이 없어요. 머리와 관련된 대화이니까 약국은 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① 식당 (restaurant) is a place for eating meals. The dialogue is about hair, so it has nothing to do with a restaurant and is wrong.',
+      'Option ② is the correct answer. "머리를 짧게 잘라 주세요" means cutting hair short. The place where hair is cut and styled is a 미용실 (hair salon).',
+      'Option ③ 도서관 (library) is where people read or borrow books. The dialogue contains no books or studying, so this is incorrect.',
+      'Option ④ 약국 (pharmacy) is where medicine is bought. There is no talk of medicine or illness in the dialogue, so the pharmacy does not fit.',
+    ],
+    tipEn: 'Place questions are vocabulary checks: 미용실 (haircut), 식당 (eating), 약국 (buying medicine).',
  },
   { id: "L005", section: "listening", type: "place", level: 2, points: 4,
     freq: "4", qGl: "Listen to the dialogue and choose where this conversation takes place.", freqNote: "듣기 7~10 · 매 회차 4문항",
@@ -102,6 +130,13 @@ window.TOPIK1_BANK = [
       '③ 사진관은 사진을 찍는 곳이에요. 대화에 사진에 대한 내용이 없어요. 그래서 틀렸어요.',
       '④ 우체국은 편지나 소포를 보내는 곳이에요. 대화는 표와 영화에 관한 내용이라 우체국과 관계가 없어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① 시장 (market) is a place for buying and selling goods. The dialogue is about tickets and a movie, which does not fit a market, so it is wrong.',
+      'Option ② is the correct answer. "표를 주세요" (give me a ticket) and "영화는 여덟 시에 시작합니다" (the movie starts at 8) tell us this is a theater (극장), where movies are watched.',
+      'Option ③ 사진관 (photo studio) is a place for taking photos. There is no mention of photos in the dialogue, so this is incorrect.',
+      'Option ④ 우체국 (post office) is where letters and packages are sent. The dialogue is about tickets and a movie, so it has no connection to a post office.',
+    ],
+    tipEn: 'Listen for the object (표 = ticket, 약 = medicine) and the verb (시작합니다 = starts) — they point to the place.',
  },
   { id: "L006", section: "listening", type: "topic", level: 2, points: 3,
     freq: "4", qGl: "What is this conversation about?", freqNote: "듣기 11~14 · 매 회차 4문항",
@@ -122,6 +157,13 @@ window.TOPIK1_BANK = [
       '③이 정답이에요. 대화에서 아버지, 어머니, 오빠 같은 가족 구성원을 이야기해요. 그래서 주제는 가족이에요.',
       '④ 약속은 만나기로 한 것을 말해요. 대화에는 약속에 대한 내용이 없어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① 시간 (time) is used when talking about hours or minutes. The dialogue contains no time-related words, so it is wrong.',
+      'Option ② 나라 (country) refers to country names like Korea or Japan. No country names appear in the dialogue, so this is incorrect.',
+      'Option ③ is the correct answer. The dialogue talks about family members such as 아버지, 어머니 and 오빠, so the topic is 가족 (family).',
+      'Option ④ 약속 (appointment) means an agreed meeting. There is no talk of appointments in the dialogue, so this is wrong.',
+    ],
+    tipEn: 'Topic questions = catch the repeated subject word. Family words → 가족.',
  },
   { id: "L007", section: "listening", type: "topic", level: 2, points: 3,
     freq: "4", qGl: "What is this conversation about?", freqNote: "듣기 11~14 · 매 회차 4문항",
@@ -142,6 +184,13 @@ window.TOPIK1_BANK = [
       '③ 이름은 사람의 이름을 말해요. 대화에는 이름을 묻거나 말하는 내용이 없어요. 그래서 오답이에요.',
       '④가 정답이에요. "뭘 하세요?"는 무엇을 하는지, 즉 하는 일을 묻는 질문이에요. 학생들을 가르친다는 말은 직업에 대한 내용이에요.'
     ],
+    optExplainEn: [
+      'Option ① 날씨 (weather) describes climate like hot or cold. There is no weather talk in the dialogue, so it is wrong.',
+      'Option ② 휴일 (holiday) means a day off. The dialogue has no content about days off, so this is incorrect.',
+      'Option ③ 이름 (name) refers to a person\'s name. The dialogue never asks or states a name, so this is wrong.',
+      'Option ④ is the correct answer. "뭘 하세요?" asks what someone does, and teaching students is about one\'s job (직업).',
+    ],
+    tipEn: '"뭘 하세요?" = what does (someone) do → job topic.',
  },
   { id: "L008", section: "listening", type: "intent", level: 3, points: 4,
     freq: "2", qGl: "Listen and choose why the woman called.", freqNote: "듣기 15~16 · 매 회차 2문항",
@@ -162,6 +211,13 @@ window.TOPIK1_BANK = [
       '③은 약속을 취소하려고 전화했다는 뜻이에요. 그런데 여자는 취소가 아니라 내일로 바꾸자고 해요. 그래서 틀렸어요.',
       '④는 민수 씨를 만나려고 전화했다는 뜻인데 전화한 이유는 약속 날짜를 바꾸는 것이에요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. The woman says "오늘 약속이 취소돼서 내일로 바꿀 수 있어요?" — she called to change the appointment to tomorrow.',
+      'Option ② says she called to find Min-ji, but the woman herself is Min-ji. She cannot be looking for herself, so this is wrong.',
+      'Option ③ means she called to cancel the appointment. However, she asks to change it to tomorrow rather than cancel it, so this is incorrect.',
+      'Option ④ says she called to meet Min-su. The actual reason for the call is to change the appointment date, so this is wrong.',
+    ],
+    tipEn: 'Intent questions: the verb after "~려고 / ~고 싶어서" tells the purpose. Listen for the goal verb.',
  },
   { id: "L009", section: "listening", type: "detail", level: 4, points: 3,
     freq: "6", qGl: "Listen and choose the statement that matches the content.", freqNote: "듣기 25~30 · 매 회차 6문항",
@@ -182,6 +238,13 @@ window.TOPIK1_BANK = [
       '③이 정답이에요. "일요일 아홉 시에 만나요"라고 했으니까 두 사람은 일요일에 등산하기로 한 거예요.',
       '④는 여자가 등산을 싫어한다고 말해요. 그런데 여자는 등산 제안에 "좋아요"라고 했으니까 싫어하지 않아요. 그래서 틀렸어요.'
     ],
+    optExplainEn: [
+      'Option ① says they agreed to meet on Saturday. But the woman refuses Saturday with "토요일은 좀 바빠요", so this is incorrect.',
+      'Option ② says the man is busy on Sunday. It is actually the woman who is busy, and the man suggests Sunday, so this is wrong.',
+      'Option ③ is the correct answer. They say "일요일 아홉 시에 만나요", so the two agreed to go hiking on Sunday.',
+      'Option ④ says the woman hates hiking. However, she responds "좋아요" to the hiking suggestion, so she does not dislike it and this is wrong.',
+    ],
+    tipEn: 'Longer listening: note the day/time each person is available, then match. Eliminate the contradicting options.',
  },
   { id: "R001", section: "reading", type: "topic", level: 1, points: 2,
     explainAudio: "assets/audio/namhee_explain_r001.mp3",
@@ -203,6 +266,13 @@ window.TOPIK1_BANK = [
       '③ 시간은 몇 시인지에 대한 내용이에요. 글에는 시간이 없어요. 그래서 오답이에요.',
       '④가 정답이에요. 여동생은 가족 구성원을 뜻하는 말이에요. 여동생에 대해 이야기하고 있으니까 주제는 가족이에요.'
     ],
+    optExplainEn: [
+      'Option ① 음식 (food) is about eating. The passage contains no food-related content, so it is wrong.',
+      'Option ② 날씨 (weather) is about climate like hot or cold. The weather is not mentioned in the passage, so this is incorrect.',
+      'Option ③ 시간 (time) is about what time it is. There is no time in the passage, so this is wrong.',
+      'Option ④ is the correct answer. 여동생 (younger sister) is a family member word. Because the passage talks about a sister, the topic is 가족 (family).',
+    ],
+    tipEn: 'Topic questions (31-33) = find the keyword. Family words → 가족. 2 points — easy win.',
  },
   { id: "R002", section: "reading", type: "topic", level: 1, points: 2,
     freq: "4", qGl: "What is this passage about?", freqNote: "듣기 11~14 · 매 회차 4문항",
@@ -223,6 +293,13 @@ window.TOPIK1_BANK = [
       '③ 운동은 달리기, 축구 같은 활동이에요. 글에는 운동이 나오지 않아요. 그래서 틀렸어요.',
       '④ 계절은 봄, 여름, 가을, 겨울을 말해요. 글에는 계절에 대한 내용이 없어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. 일요일 (Sunday) and 월요일 (Monday) are names of days of the week. Since today is Sunday and tomorrow is Monday, the topic is 요일 (day of the week).',
+      'Option ② 취미 (hobby) refers to activities one enjoys. There is no hobby content in the passage, so it is wrong.',
+      'Option ③ 운동 (exercise) refers to activities like running or soccer. Exercise is not mentioned, so this is incorrect.',
+      'Option ④ 계절 (season) refers to spring, summer, fall and winter. The passage has no seasonal content, so this is wrong.',
+    ],
+    tipEn: 'Days (월/화/수/목/금/토/일) → 요일 topic.',
  },
   { id: "R003", section: "reading", type: "grammar", level: 2, points: 2,
     freq: "6", qGl: "Choose the correct option for the underlined part.", freqNote: "읽기 34~39 · 매 회차 6문항",
@@ -243,6 +320,13 @@ window.TOPIK1_BANK = [
       '③이 정답이에요. 책은 "권"이라는 단위로 세요. "책 두 권"이 자연스러운 표현이에요.',
       '④ "두 명"은 사람을 셀 때 쓰는 말이에요. 책은 사람이 아니니까 명으로 셀 수 없어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① "두 시" is used for counting time. Books cannot be counted in hours, so this is wrong.',
+      'Option ② "두 살" is used for counting age. You cannot count a book\'s age with 살, so this is incorrect.',
+      'Option ③ is the correct answer. Books are counted with the unit 권, so "책 두 권" is the natural expression.',
+      'Option ④ "두 명" is used for counting people. A book is not a person, so it cannot be counted with 명 and this is wrong.',
+    ],
+    tipEn: 'Counters: 책→권, 사람→명, 시간→시간/시, 나이→살. Memorize the counter that pairs with each noun.',
  },
   { id: "R004", section: "reading", type: "grammar", level: 2, points: 2,
     freq: "6", qGl: "Choose the correct option for the underlined part.", freqNote: "읽기 34~39 · 매 회차 6문항",
@@ -263,6 +347,13 @@ window.TOPIK1_BANK = [
       '③ "가요"는 어디로 이동할 때 쓰는 동사예요. "밥을 가요"는 성립하지 않아요. 그래서 틀렸어요.',
       '④ "읽어요"는 책이나 글을 볼 때 쓰는 동사예요. 밥을 읽을 수는 없어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. 밥 (rice/meal) is something you eat, so "밥을 먹어요" is the most natural pairing.',
+      'Option ② "자요" is the verb for sleeping. It cannot be used with 밥, so this is wrong.',
+      'Option ③ "가요" is the verb for moving somewhere. "밥을 가요" does not make sense, so this is incorrect.',
+      'Option ④ "읽어요" is the verb for reading books or text. You cannot read a meal, so this is wrong.',
+    ],
+    tipEn: 'Match the object to the verb: 밥→먹다, 물→마시다, 책→읽다, 노래→부르다.',
  },
   { id: "R005", section: "reading", type: "flow", level: 3, points: 3,
     freq: "6", qGl: "Choose the correct word for the blank.", freqNote: "읽기 34~39 · 매 회차 6문항 (빈칸/문법 그룹)",
@@ -283,6 +374,13 @@ window.TOPIK1_BANK = [
       '③ "그래서"는 앞의 일이 원인이 되어 결과가 이어질 때 써요. 운동하고 학교에 가는 것은 결과가 아니라 다음 동작이에요. 그래서 오답이에요.',
       '④가 정답이에요. 운동을 하고, 그리고 학교에 간다는 것처럼 일이 순서대로 이어질 때 "그리고"를 써요.'
     ],
+    optExplainEn: [
+      'Option ① "그런데" connects content that contrasts with the previous sentence. Exercising and going to school are not opposites, so it is wrong.',
+      'Option ② "하지만" also expresses contrast. The two sentences are not in contrast, so it does not fit and this is incorrect.',
+      'Option ③ "그래서" is used when the previous event is the cause of a following result. Going to school after exercising is the next action, not a result, so this is wrong.',
+      'Option ④ is the correct answer. When events continue in order, as in exercising and then going to school, "그리고" (and then) is used.',
+    ],
+    tipEn: 'Sequence (then) = 그리고. Contrast = 그런데/하지만. Result = 그래서. Read the whole flow.',
  },
   { id: "R006", section: "reading", type: "synonym", level: 3, points: 3,
     freq: "3", qGl: "Choose the word with the same meaning as the underlined part.", freqNote: "읽기 43~45 · 매 회차 3문항",
@@ -303,6 +401,13 @@ window.TOPIK1_BANK = [
       '③이 정답이에요. "싸요"는 가격이 낮다는 뜻이에요. "값이 낮아요"와 의미가 같아요.',
       '④ "값이 비싸요"는 싸요와 반대 뜻이에요. 싸요는 값이 낮은 것인데 비싸다고 하면 안 돼요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① "음식이 없어요" means there is no food. 싸요 is about price, so the meaning is different and this is wrong.',
+      'Option ② "음식이 나빠요" means the food is bad. This has nothing to do with 싸요, so it is incorrect.',
+      'Option ③ is the correct answer. "싸요" means the price is low, which matches "값이 낮아요".',
+      'Option ④ "값이 비싸요" is the opposite of 싸요. Since 싸요 means a low price, saying it is expensive is wrong.',
+    ],
+    tipEn: '싸다 = cheap / 값이 낮다. 비싸다 = expensive / 값이 높다. Know common synonyms.',
  },
   { id: "R007", section: "reading", type: "notice", level: 3, points: 3,
     freq: "3", qGl: "Choose the statement that matches this notice.", freqNote: "읽기 40~42 · 매 회차 3문항 (맞지 않는 것)",
@@ -323,6 +428,13 @@ window.TOPIK1_BANK = [
       '③은 일요일에 쉰다고 해요. 안내문에는 월요일이 쉬는 날이라고만 했어요. 일요일은 쉬는 날이 아니에요. 그래서 오답이에요.',
       '④는 아홉 시에 닫는다고 해요. 그런데 아홉 시는 여는 시간이에요. 여섯 시에 닫으니까 틀렸어요.'
     ],
+    optExplainEn: [
+      'Option ① says the library opens at 6. The notice says it opens at 9 and closes at 6, so the opening and closing times are reversed and this is wrong.',
+      'Option ② is the correct answer. The notice says "월요일은 쉬는 날입니다", so the library is closed on Monday.',
+      'Option ③ says the library is closed on Sunday. The notice only mentions Monday as the closed day, so Sunday is not a closed day and this is incorrect.',
+      'Option ④ says the library closes at 9. But 9 is the opening time and it closes at 6, so this is wrong.',
+    ],
+    tipEn: 'Notice questions: read the hours and the closed day, then match exactly. Watch for reversed times.',
  },
   { id: "R008", section: "reading", type: "notice", level: 3, points: 3,
     freq: "3", qGl: "Choose the statement that matches this notice.", freqNote: "읽기 40~42 · 매 회차 3문항 (맞지 않는 것)",
@@ -343,6 +455,13 @@ window.TOPIK1_BANK = [
       '③은 옷을 모두 판다고 해요. 안내문에는 30% 할인한다고만 했지 다 판다는 내용이 없어요. 그래서 오답이에요.',
       '④는 옷이 다 없어진다고 해요. 안내문에 그런 내용은 없어요. 할인하는 것과 다 없어지는 것은 달라요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. "토요일과 일요일 이틀 동안" tells us the sale lasts through the weekend.',
+      'Option ② says the sale is only one day. The notice says it lasts two days (토요일과 일요일), so this is incorrect.',
+      'Option ③ says they sell all the clothes. The notice only mentions a 30% discount and never says everything is sold, so this is wrong.',
+      'Option ④ says all the clothes disappear. That is not in the notice — a discount is different from everything being gone, so this is wrong.',
+    ],
+    tipEn: 'Look for exact matching facts: duration (이틀 동안), days, and discount % — do not infer beyond the text.',
  },
   { id: "R009", section: "reading", type: "comprehension", level: 4, points: 3,
     freq: "8", qGl: "Read the passage and answer the question.", freqNote: "읽기 49~56 · 매 회차 8문항",
@@ -364,6 +483,13 @@ window.TOPIK1_BANK = [
       '③ 여행도 글에 없어요. 글의 내용과 관계없는 선택지예요. 그래서 오답이에요.',
       '④가 정답이에요. 수진 씨는 주말마다 요리를 해요. 자주 하는 일은 좋아하는 일일 가능성이 높아요. 글에는 요리하는 내용이 반복되니까 요리하는 것을 좋아해요.'
     ],
+    optExplainEn: [
+      'Option ① exercise is not mentioned in the passage at all. The passage only talks about Sujin cooking, so this is wrong.',
+      'Option ② singing also does not appear. There is no content about Sujin liking singing, so this is incorrect.',
+      'Option ③ traveling is also absent from the passage. It is an unrelated option, so this is wrong.',
+      'Option ④ is the correct answer. Sujin cooks every weekend, and the passage repeats her cooking. Something done often is likely something liked, so she likes cooking.',
+    ],
+    tipEn: 'Answer from the passage only. Find the subject\'s repeated action (요리) → liking it.',
  },
   { id: "R010", section: "reading", type: "long", level: 5, points: 3,
     freq: "14", qGl: "Read the passage and answer the question.", freqNote: "읽기 57~70 · 매 회차 14문항",
@@ -385,6 +511,13 @@ window.TOPIK1_BANK = [
       '③ 회사에서 일하는 것은 낮에 하는 일이에요. 저녁에 회사에서 일한다는 내용은 없어요. 그래서 틀렸어요.',
       '④ 운동에 대한 내용은 글에 전혀 없어요. 글에 없는 내용을 고르면 안 돼요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① says he meets a friend, but that is not in the passage. You cannot answer a question about the evening with content that is not in the text, so this is wrong.',
+      'Option ② is the correct answer. The passage says "저녁에는 집에서 한국어를 공부해요" — Minsu studies Korean in the evening.',
+      'Option ③ working at the company is what he does during the day. There is no content about working at the company in the evening, so this is incorrect.',
+      'Option ④ exercise is not mentioned in the passage at all. You should not choose content that is absent from the text, so this is wrong.',
+    ],
+    tipEn: 'Longer passages: underline the time words (매일 아침, 점심, 저녁) and match each activity to its time.',
  },
   { id: "R011", section: "reading", type: "long", level: 5, points: 3,
     freq: "14", qGl: "Read the passage and choose the statement that matches.", freqNote: "읽기 57~70 · 매 회차 14문항",
@@ -405,6 +538,13 @@ window.TOPIK1_BANK = [
       '③은 음악 공연이 운동장에서 한다고 해요. 글에는 공원에서 한다고 했어요. 장소가 다르니까 오답이에요.',
       '④는 오후에 운동회가 있다고 해요. 그런데 운동회는 오전에 하고 오후에는 음악 공연이 있어요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. The passage says "비가 오면 운동회는 쉬어요" — if it rains, the sports day is cancelled, meaning it is not held.',
+      'Option ② says the festival is not tomorrow. However, the first sentence says "내일은 우리 학교 축제예요", so this is incorrect.',
+      'Option ③ says the music performance is at the field. The passage says it is at the park (공원), so the location is different and this is wrong.',
+      'Option ④ says the sports day is in the afternoon. Actually the sports day is in the morning and the music performance is in the afternoon, so this is wrong.',
+    ],
+    tipEn: 'Conditional (오면) → what happens. Match location (공원에서) and time (오전/오후) carefully.',
  },
   { id: "R012", section: "reading", type: "grammar", level: 2, points: 2,
     freq: "6", qGl: "Choose the correct option for the underlined part.", freqNote: "읽기 34~39 · 매 회차 6문항",
@@ -425,6 +565,13 @@ window.TOPIK1_BANK = [
       '③ "바빠요"는 할 일이 많다는 뜻이에요. "가고 바빠요"는 문법적으로도 뜻도 이상해요. 그래서 오답이에요.',
       '④가 정답이에요. "그래서"는 앞 내용이 이유가 돼요. 날씨가 좋으니까 산에 가고 싶어요. "가고 싶어요"가 자연스러워요.'
     ],
+    optExplainEn: [
+      'Option ① "가고 없어요" is grammatically impossible. 없어요 is used to deny existence and cannot be attached to 가고, so this is wrong.',
+      'Option ② "싫어요" means dislike. Since the weather is nice and one would want to go to the mountain, saying dislike does not fit and this is incorrect.',
+      'Option ③ "바빠요" means being busy. "가고 바빠요" is unnatural both grammatically and in meaning, so this is wrong.',
+      'Option ④ is the correct answer. "그래서" means the previous content is the reason. Because the weather is nice, "가고 싶어요" (want to go) is natural.',
+    ],
+    tipEn: '싶어요 = want to (desire). Use after a verb stem: 가다 → 가고 싶어요.',
  },
   { id: "R013", section: "reading", type: "grammar", level: 2, points: 2,
     freq: "6", qGl: "Choose the correct option for the underlined part.", freqNote: "읽기 34~39 · 매 회차 6문항",
@@ -445,5 +592,12 @@ window.TOPIK1_BANK = [
       '③ "아니에요"는 무엇이 아니다라는 뜻이에요. "커피를 아니에요"는 문법적으로 맞지 않아요. 그래서 틀렸어요.',
       '④ "싫어해요"는 싫어한다는 뜻이에요. 싫어하는데 매일 마신다는 건 모순이에요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. Drinking coffee every day shows that he likes it, so "좋아해요" fits. The following sentence explains the reason or result of the first part.',
+      'Option ② "없어요" means not having something. It makes no sense to drink coffee every day if there is no coffee, so this is wrong.',
+      'Option ③ "아니에요" means "is not". "커피를 아니에요" is grammatically incorrect, so this option is wrong.',
+      'Option ④ "싫어해요" means disliking. Disliking coffee while drinking it every day is contradictory, so this is incorrect.',
+    ],
+    tipEn: 'Use the next sentence as a clue: 매일 마셔요 → 좋아해요 (like).',
  },
 ];

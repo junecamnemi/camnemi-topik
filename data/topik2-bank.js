@@ -30,6 +30,13 @@ window.TOPIK2_BANK = [
       '③ "켜지는데"는 "켜지지만"이라는 대조의 뜻이에요. 주어와 연결도 어색하고 "못했어요"와 어울리지 않아요. 그래서 틀렸어요.',
       '④ "켜다니"는 "켠다는 말을 들었다"는 전달·의외의 뜻이에요. 문장의 뜻과 맞지 않아요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① "켜지고" is used when one action is completed and then the next action follows. Here "못했어요" follows, meaning the action was not completed, so this is wrong.',
+      'Option ② is the correct answer. "-다가" is used when an action is interrupted or changes to another action. "켜다가 못했어요" means he tried to turn it on but could not.',
+      'Option ③ "켜지는데" expresses contrast ("but it turns on"). The subject connection is awkward and it does not fit with "못했어요", so this is incorrect.',
+      'Option ④ "켜다니" expresses hearsay or surprise ("I heard that it turns on"). It does not match the meaning of the sentence, so this is wrong.',
+    ],
+    tipEn: '-다가 means an action stops mid-way or switches, e.g. 공부하다가 = while studying (then...).',
     freq: 6, freqNote: 'TOPIK II 읽기 34~39 · 연결어미'
   },
   {
@@ -55,6 +62,13 @@ window.TOPIK2_BANK = [
       '③ "분명히"는 확실하고 뚜렷하다는 뜻이에요. 대충 설명한 것과 반대예요. 그래서 틀렸어요.',
       '④ "정확히"는 틀림없이 맞다는 뜻이에요. 대충과는 반대 의미라서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① "자세히" means doing something in great detail. It is the opposite of 대충. The colleagues asked again because the explanation was insufficient, so this is wrong.',
+      'Option ② is the correct answer. "대충" and "대강" both mean doing something roughly without care, so their meanings are the same.',
+      'Option ③ "분명히" means clearly and distinctly. It is the opposite of explaining roughly, so this is incorrect.',
+      'Option ④ "정확히" means exactly and without error. It is the opposite meaning of 대충, so this is wrong.',
+    ],
+    tipEn: 'TOPIK II vocabulary synonym questions focus on swapping words at the 3rd–5th level.',
     freq: 4, freqNote: 'TOPIK II 읽기 어휘 문항'
   },
   {
@@ -79,6 +93,13 @@ window.TOPIK2_BANK = [
       '③은 사고가 나는 이유가 길이 나쁘기 때문이라고 해요. 글에는 길이 나쁘다는 내용이 없어요. 그래서 틀렸어요.',
       '④는 스마트폰을 보는 사람이 점점 많아진다는 내용이에요. 이것은 글의 도입부에 나오는 현상일 뿐 중심 내용이 아니에요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① says smartphones are essential to daily life. The passage never says smartphones are essential, so this is wrong.',
+      'Option ② is the correct answer. The passage says looking at a smartphone while walking creates a high accident risk and concludes "보지 않는 것이 좋다" (better not to look). The main idea is that using phones while walking is dangerous.',
+      'Option ③ says accidents happen because of bad roads. The passage has no content about bad roads, so this is incorrect.',
+      'Option ④ says more and more people look at phones. That is just the phenomenon described in the introduction, not the main idea, so this is wrong.',
+    ],
+    tipEn: 'For main-idea questions, look at the sentence after 따라서/그래서/그러니까.',
     freq: 3, freqNote: 'TOPIK II 읽기 31~33 · 중심 내용'
   },
   {
@@ -104,6 +125,13 @@ window.TOPIK2_BANK = [
       '③은 운동 시작(가)이 검진(나)보다 앞에 있어요. 검진을 받기 전에 운동을 시작할 수 없어요. 인과가 뒤집혔어요.',
       '④는 운동이 좋다는 걸 아는 것(라)이 제일 먼저 와요. 건강 상태를 모르는데 운동의 좋음을 알았다고 할 수 없어요. 그래서 틀렸어요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. The order is: hearing at the checkup that his body is in bad shape (나) → learning that exercise is good for the body (라) → starting to exercise every morning (가) → now his body feels light (다).',
+      'Option ② starts exercising right after the checkup. The step of learning that exercise is good (라) is missing, so the flow is unnatural and this is wrong.',
+      'Option ③ puts starting exercise (가) before the checkup (나). You cannot start exercising before receiving the checkup result, so the cause and effect are reversed.',
+      'Option ④ puts learning that exercise is good (라) first. You cannot know exercise is good without knowing your health condition first, so this is incorrect.',
+    ],
+    tipEn: 'Find time order + cause-effect (그래서/그러니까) clues first.',
     freq: 2, freqNote: 'TOPIK II 읽기 57~58 · 순서 배열'
   },
   {
@@ -128,6 +156,13 @@ window.TOPIK2_BANK = [
       '③은 회사 근처에 좋은 식당이 많다는 내용이에요. 혼자 먹는 모임과 연결되지 않아요. 그래서 틀렸어요.',
       '④는 점심값이 계속 오른다는 내용이에요. "그런 사람들"과 관계가 없어서 빈칸에 어울리지 않아요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① is the correct answer. "그런 사람들" in the next sentence refers to people who find eating alone more comfortable, so this sentence belongs in the blank.',
+      'Option ② says lunchtime is too short. It cannot serve as the referent for the demonstrative "그런 사람들", so this is wrong.',
+      'Option ③ says there are many good restaurants near the office. It has no connection to groups for eating alone, so this is incorrect.',
+      'Option ④ says lunch prices keep rising. It has no relation to "그런 사람들", so it does not fit the blank and this is wrong.',
+    ],
+    tipEn: 'The demonstrative (그런/이런) before or after the blank is the clue to the answer.',
     freq: 2, freqNote: 'TOPIK II 읽기 59~60 · 문장 위치'
   },
 
@@ -154,6 +189,13 @@ window.TOPIK2_BANK = [
       '③ 버스에 대한 말은 대본에 전혀 없어요. 그래서 오답이에요.',
       '④는 정기권을 살 수 없다고 해요. 그런데 남자는 정기권을 이용하라고 권해요. 내용과 반대예요. 그래서 틀렸어요.'
     ],
+    optExplainEn: [
+      'Option ① says the subway fare went down. The script says the fare went up, so this is the opposite of the content and is wrong.',
+      'Option ② is the correct answer. The man says a commuter pass is 20% cheaper and recommends it to frequent riders. The main point is that using a commuter pass is beneficial.',
+      'Option ③ says taking the bus is better. There is no mention of buses in the script at all, so this is incorrect.',
+      'Option ④ says you cannot buy a pass. The man actually recommends buying a pass, so this is the opposite and is wrong.',
+    ],
+    tipEn: 'For listening main-point questions, pay attention to the recommendation/conclusion after 대신/그래서/그러니까.',
     freq: 4, freqNote: 'TOPIK II 듣기 7~10 · 중심 내용'
   },
   {
@@ -178,6 +220,13 @@ window.TOPIK2_BANK = [
       '③ 회의실 예약에 대한 말은 대본에 없어요. 그래서 틀렸어요.',
       '④ 퇴근한다는 내용도 대본에 없어요. 여자는 퇴근하는 게 아니라 자료를 만들겠다고 해요. 그래서 오답이에요.'
     ],
+    optExplainEn: [
+      'Option ① says she will cancel the meeting, but that is not in the script. The woman never says she will cancel the meeting, so this is wrong.',
+      'Option ② is the correct answer. The woman says "지금 바로 만들게요" — she will make the materials right now.',
+      'Option ③ booking the meeting room is not mentioned in the script, so this is incorrect.',
+      'Option ④ going home is also not in the script. The woman says she will make the materials, not go home, so this is wrong.',
+    ],
+    tipEn: 'For action questions, listen to the final answer (-게요/-ㄹ게요).',
     freq: 3, freqNote: 'TOPIK II 듣기 15~16 · 행동'
   },
 

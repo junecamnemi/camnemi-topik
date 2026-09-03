@@ -33,6 +33,19 @@ window.LEVEL6_BANK = [
         "④는 본문에 없는 내용이에요. 본문은 경제 성장이 멈추면 정신적 피로가 사라진다는 말을 전혀 하지 않았어요. 지문에 없는 인과 관계를 지어낸 오답이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This contradicts the passage. The passage says that although material abundance expanded with economic growth, mental fatigue also increased at the same time, so the claim that abundance and fatigue have no relation at all is wrong.",
+
+        "This also contradicts the passage. The passage says that rather than a life of chasing unlimited desires, an attitude of setting a sufficient level for oneself and finding satisfaction within it is more effective for maintaining happiness. The claim that a life of chasing desires is effective cannot stand.",
+
+        "This is the correct answer. The final sentence of the passage says that knowing what is appropriate, rather than having more, is the condition for creating true leisure in life, so this exactly matches the idea that an attitude of knowing what is appropriate creates leisure in life.",
+
+        "This is not in the passage. The passage never says that mental fatigue will disappear if economic growth stops. It is a wrong answer that invents a cause-and-effect relationship not found in the text.",
+
+      ],
+      tipEn: "In long passages, the main point often appears in the last sentence (the conclusion). Pay attention to the explanation after '즉' (in other words).",
   },
 
   { id: "LV6R02", section: "reading", type: "long", level: 6, points: 3,
@@ -61,6 +74,19 @@ window.LEVEL6_BANK = [
         "④도 본문에 없는 내용이에요. 옥상 정원이 시민들이 이용할 수 없다는 말은 어디에도 없어요. 오히려 옥상 정원은 시민들이 이용하는 녹지 확충 사업의 예로 제시되었어요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The first sentence of the passage directly says that green spaces play a role in lowering the city's temperature, which matches the claim that green spaces help lower the city's temperature.",
+
+        "This is not in the passage. The research only reported that average summer temperatures were 2-3 degrees lower; winter temperatures are never mentioned at all.",
+
+        "This contradicts the passage. Experts emphasized that accessibility for citizens to actually use the space is more important than the quantity of green space. The claim that quantity is more important reverses the content of the passage.",
+
+        "This is also not in the passage. Nowhere does it say that citizens cannot use rooftop gardens. On the contrary, rooftop gardens are presented as an example of a green expansion project that citizens use.",
+
+      ],
+      tipEn: "For content-matching questions, find each option's keyword in the passage and compare. Be careful after '다만' (however), which signals a twist.",
   },
 
   { id: "LV6R03", section: "reading", type: "grammar", level: 6, points: 3,
@@ -89,6 +115,19 @@ window.LEVEL6_BANK = [
         "④ '척이다'는 '거짓으로 꾸민다'는 뜻이에요. '실수를 하게 척이다'는 자연스러운 표현이 아니고, 누구나 실수한다는 당연성을 말하는 문맥과도 전혀 어울리지 않아요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. In '사람은 누구나 실수를 하게 마련이다' (Everyone is bound to make mistakes), '-게 마련이다' is an idiomatic expression meaning that something naturally happens that way. It fits best in a context stating the universal fact that everyone makes mistakes.",
+
+        "'뿐이다' means 'that is all, that is everything,' so '실수를 하게 뿐이다' is unnatural both grammatically and semantically. An expression of totality does not fit this context.",
+
+        "'나름이다' means 'it depends on the case.' '실수를 하게 나름이다' does not hold, and it does not fit a context stating the natural fact that everyone makes mistakes.",
+
+        "'척이다' means 'to pretend falsely.' '실수를 하게 척이다' is not a natural expression and does not suit a context that states the obvious fact that everyone makes mistakes.",
+
+      ],
+      tipEn: "'-기 마련이다' = it naturally happens that way. Memorize expressions of inevitability.",
   },
 
   { id: "LV6R04", section: "reading", type: "grammar", level: 6, points: 3,
@@ -117,6 +156,19 @@ window.LEVEL6_BANK = [
         "④ '않은 채로 있다'는 어떤 상태를 그대로 유지하고 있다는 뜻이에요. '실패하지 않은 채로 있다'는 문장이 어색하고, 강한 확신을 나타내는 이 문맥에는 맞지 않아요.",
 
       ],
+
+      optExplainEn: [
+
+        "'않는다' is a simple negation. To convey the strong conviction that a person who works hard never fails, a double negative expression is needed; a simple negation cannot bring out the feeling of strong conviction.",
+
+        "'않는다는 법이 없다' means 'it is not necessarily the case that he does not fail,' which actually implies that there is a possibility of failure and contradicts the context. '-는 법이 없다' does not mean 'absolutely never does ~' but 'one cannot assert that it does not happen.'",
+
+        "This is the correct answer. '실패하지 않을 수 없다' is a double negative expressing the strong conviction that one will definitely not fail, that is, will succeed. It exactly matches the writer's conviction that a person who works hard never fails.",
+
+        "'않은 채로 있다' means to maintain a certain state as it is. '실패하지 않은 채로 있다' is awkward, and it does not fit this context of expressing strong conviction.",
+
+      ],
+      tipEn: "A double negative with '-을 수 없다' is a strong affirmative. '-는 법이 없다' means 'never does ~.'",
   },
 
   { id: "LV6R05", section: "reading", type: "vocab", level: 6, points: 3,
@@ -145,6 +197,19 @@ window.LEVEL6_BANK = [
         "④ '남에게 의지하는 것'은 관조와 의미가 전혀 달라요. 관조는 스스로 바라보고 생각하는 것이지 다른 사람에게 의지하는 것이 아니에요.",
 
       ],
+
+      optExplainEn: [
+
+        "'Fighting eagerly' is the opposite of '관조' (contemplation). Contemplation is not an attitude of actively fighting but of observing from a distance.",
+
+        "This is the correct answer. '관조(觀照)' means quietly observing and thinking about an object or phenomenon. Since the underlined sentence says he looked at life's problems without being shaken, 'observing quietly and thinking' is the closest in meaning.",
+
+        "'Judging quickly' does not match contemplation. Contemplation is a deep, unhurried reflection, not a quick judgment.",
+
+        "'Relying on others' has a completely different meaning from contemplation. Contemplation means observing and thinking for oneself, not depending on other people.",
+
+      ],
+      tipEn: "For Sino-Korean (hanja) vocabulary, recalling the meaning of each character helps you infer: 觀 (to see) + 照 (to shine).",
   },
 
   { id: "LV6R06", section: "reading", type: "comprehension", level: 6, points: 3,
@@ -173,6 +238,19 @@ window.LEVEL6_BANK = [
         "④는 본문과 반대예요. 필자는 '단 한 번의 실패가 평생의 실패는 아니'라고 분명히 말했어요. 모든 실패가 영원히 계속된다는 주장은 본문 내용과 정면으로 배치돼요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The writer says that what we learn during the process lasts longer than the result, emphasizing the value of the process over the result. 'We should value the process more than the result' matches what the writer implies.",
+
+        "This goes against the premise of the passage. The writer says that a single failure is not a lifelong failure, which only holds on the premise that even successful people can experience failure. Therefore, 'successful people do not experience failure' is wrong.",
+
+        "This is the attitude the writer criticizes. The writer criticizes judging success and failure only by results and stresses the importance of the process. Saying the process does not matter if the result is good is the opposite of the writer's argument.",
+
+        "This contradicts the passage. The writer clearly says that a single failure is not a lifelong failure. The claim that all failures continue forever directly opposes the content of the passage.",
+
+      ],
+      tipEn: "For 'implication' questions, read the writer's argument between the lines. Pay attention to the repeated key topic.",
   },
 
   { id: "LV6R07", section: "reading", type: "order", level: 6, points: 3,
@@ -201,6 +279,19 @@ window.LEVEL6_BANK = [
         "④는 결론인 (라)가 중간에 와서 어색해요. (라)의 '이 때문에'는 앞선 내용 전체를 받아야 하는데, (가) 뒤에 바로 (라)가 오면 원인이 제대로 제시되지 않았어요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The order definition of stress (B) to the body's reaction process (A) to modern people's problem (C) to the result (D) is logically natural. '이때' (at this time) connects naturally only when (A) follows (B), and '이 때문에' (for this reason) connects only when (D) comes last.",
+
+        "Starting with the reaction without the definition is awkward. The situation that '이때' in (A) refers to has not been introduced first, so (A) cannot come at the beginning.",
+
+        "The connection of '이때' breaks. Between (C) and (A), '이때' has no referent, so the flow is broken. Also, (A) followed by (D) does not match the cause-and-effect of '이 때문에.'",
+
+        "Putting the conclusion (D) in the middle is awkward. '이 때문에' in (D) must refer to everything that came before, but when (D) directly follows (A), the cause has not been properly presented.",
+
+      ],
+      tipEn: "For ordering questions, follow the connective words (이때 / at this time, 그러나 / however, 이 때문에 / for this reason) and what the pronouns refer to.",
   },
 
   { id: "LV6R08", section: "reading", type: "long", level: 6, points: 3,
@@ -229,6 +320,19 @@ window.LEVEL6_BANK = [
         "④는 본문과 반대예요. 본문은 언어가 '단순한 의사소통 수단이 아니라' 사고방식을 담는 그릇이라고 강조했어요. 의사소통 수단에 불과하다는 것은 첫 문장의 강조점을 무시한 오답이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The first sentence calls language 'a vessel that holds a society's way of thinking,' and later the passage says that the way of seeing the world is reflected differently by language. This matches the claim that language reflects a society's way of thinking.",
+
+        "This contradicts the passage. The passage says that even for the same object, the way of expressing it differs by language. Saying all languages express the world in the same way denies the content of the passage.",
+
+        "This contradicts the passage. Learning a foreign language does not stop at learning words and grammar; it is a process of understanding the culture and way of thinking of the people who use that language. Saying only grammar needs to be learned is wrong.",
+
+        "This contradicts the passage. The passage emphasizes that language is not simply a means of communication but a vessel that holds a way of thinking. Calling it nothing more than a communication tool ignores the emphasis of the first sentence.",
+
+      ],
+      tipEn: "The construction '단순히 ~이 아니라' (not simply ~ but) is the core of the emphasis. What follows it is the argument.",
   },
 
   { id: "LV6R09", section: "reading", type: "synonym", level: 6, points: 3,
@@ -257,6 +361,19 @@ window.LEVEL6_BANK = [
         "④ '의심하다'도 문맥에 맞지 않아요. 협력을 통해 효과를 노리는 상황에서 의심한다는 말은 의미가 통하지 않아요.",
 
       ],
+
+      optExplainEn: [
+
+        "'To obstruct' is the opposite meaning of '도모하다' (to seek/plan). In the context of trying to achieve synergy effects through cooperation, obstructing does not make sense.",
+
+        "This is the correct answer. '도모(圖謀)하다' means to plan in order to achieve something. In the context of two companies planning to achieve synergy effects through cooperation, '꾀하다' (to seek/plan) is the closest in meaning.",
+
+        "'To compare' does not fit the context of creating synergy effects. '도모' does not have the meaning of comparing.",
+
+        "'To doubt' also does not fit the context. Doubting makes no sense in a situation where one is aiming for an effect through cooperation.",
+
+      ],
+      tipEn: "'도모' is a synonym of '꾀하다.' It appears often in newspaper business articles.",
   },
 
   { id: "LV6R10", section: "reading", type: "comprehension", level: 6, points: 3,
@@ -285,6 +402,19 @@ window.LEVEL6_BANK = [
         "④는 본문을 지나치게 확대한 것이에요. 본문은 '일부 지방자치단체'가 시범 사업을 운영한다고 했지, 모든 지방자치단체가 운영한다고 하지 않았어요. '일부'를 '모든'으로 바꾼 전형적인 함정 보기예요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The passage says that paper cups or plastics with food residue actually lower the quality of the entire recyclables. This exactly matches the claim that recyclables with food residue lower quality.",
+
+        "This contradicts the passage. The passage emphasizes that the accuracy of separate disposal is most important of all. Saying accuracy is not important is the opposite of the passage's central argument.",
+
+        "This contradicts the passage. The pilot project expects to improve residents' awareness by immediately informing them of incorrectly disposed items. Saying the feedback does not affect residents' awareness denies the expected effect.",
+
+        "This overextends the passage. The passage says that some local governments operate the pilot project, not all of them. Changing 'some' to 'all' is a typical trap option.",
+
+      ],
+      tipEn: "Limiting expressions like '일부' (some) and '모든' (all) are often used in wrong options. Compare them with the passage.",
   },
 
   // ============ LISTENING (10) ============
@@ -313,6 +443,19 @@ window.LEVEL6_BANK = [
         "④는 언급되지 않은 내용이에요. 휴게실이 새벽 2시에 문을 닫는다는 말은 대화에 전혀 없어요. 지문에 없는 시간 정보를 지어낸 오답이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The man says that during the final exam period the extended hours increase and the library stays open until 2 a.m. This matches the claim that the library stays open later during finals.",
+
+        "This misses the period condition. The basic rule is 24-hour opening from this semester, and until 2 a.m. is an extension that applies only during the final exam period. Saying the library opens only until 2 a.m. at all times is wrong.",
+
+        "This overinterprets the woman's words. She only expresses concern about whether studying late at night could cause health problems; she never says she opposes the extended hours. Concern and opposition are different.",
+
+        "This is not mentioned. The conversation never says that the lounge closes at 2 a.m. It is a wrong answer that invents time information not found in the text.",
+
+      ],
+      tipEn: "In listening, distinguish the 'basic rule + exception (exam period)' structure. Don't miss the period condition.",
   },
 
   { id: "LV6L02", section: "listening", type: "intent", level: 6, points: 3,
@@ -340,6 +483,19 @@ window.LEVEL6_BANK = [
         "④는 언급되지 않은 내용이에요. 자료를 더 수집한다는 말은 대화에 없어요. 남자가 할 일로 말한 것은 자료 정리 도움뿐이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The man suggests, 'Since I have time this afternoon, shall I help you organize it?' so the action he will take next is helping the woman organize the material.",
+
+        "This misinterprets the suggestion. The man did not say he would write the report alone; he offered to help organize the material. Writing the report is the woman's job.",
+
+        "The giver and receiver are reversed. The woman is the one who buys the coffee - she says 'I'll buy you coffee,' so the man does not buy coffee for her.",
+
+        "This is not mentioned. There is no talk of collecting more material. The only thing the man said he would do is help organize the material.",
+
+      ],
+      tipEn: "'~해 줄까?' is a proposal made for the other person's sake. What is proposed is exactly the next action.",
   },
 
   { id: "LV6L03", section: "listening", type: "main_idea", level: 6, points: 3,
@@ -367,6 +523,19 @@ window.LEVEL6_BANK = [
         "④도 강연에 없는 내용이에요. 낮잠에 대한 언급은 없고, '반드시 높아진다'는 지나친 확대 표현이라 오답이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. At the end of the lecture, the speaker recommends that to improve sleep quality, it is desirable to reduce digital device use starting one hour before bedtime. This is the main idea of the lecture.",
+
+        "This contradicts the lecture. The lecture says that looking at screens for a long time before bed keeps the brain in an aroused state, making it hard to fall asleep. Saying digital devices have no effect on sleep is wrong.",
+
+        "This is not in the lecture. There is no mention of waking up early. The lecture focuses on the quality of sleep, not on sleep duration itself.",
+
+        "This is also not in the lecture. Napping is never mentioned, and 'always improves' is an overgeneralization, so it is a wrong answer.",
+
+      ],
+      tipEn: "The center of a lecture is the recommendation that appears after '따라서' (therefore).",
   },
 
   { id: "LV6L04", section: "listening", type: "topic", level: 6, points: 3,
@@ -394,6 +563,19 @@ window.LEVEL6_BANK = [
         "④는 언급되지 않은 내용이에요. 비닐봉투를 재활용하는 방법에 대한 이야기는 전혀 없어요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The two speakers talk about paid plastic bags and reusable shopping bags and say that small habits create big changes. The topic of the conversation is changes in daily habits for environmental protection.",
+
+        "This was chosen by looking only at the specific material. Although the change of plastic bags to paid ones is mentioned, the focus of the conversation is not the price increase but the change in habits it created. The topic is environmental change, not price.",
+
+        "This does not match the conversation. The two speakers do not compare the types or pros and cons of shopping bags. The shopping bag is only briefly mentioned as an example of a habit change.",
+
+        "This is not mentioned. There is no discussion at all of how to recycle plastic bags.",
+
+      ],
+      tipEn: "For topic questions, choose the larger theme that the specific example (the plastic bag) represents, rather than the example itself.",
   },
 
   { id: "LV6L05", section: "listening", type: "detail", level: 6, points: 3,
@@ -421,6 +603,19 @@ window.LEVEL6_BANK = [
         "④는 기간을 잘못 이해한 것이에요. 축제는 이번 주 '주말부터' 열린다고 했지, 평일에만 열린다고 하지 않았어요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The broadcast clearly says that fireworks are scheduled for Saturday evening at 7 p.m. The time and the day match exactly.",
+
+        "This misremembers the location. The food market is not inside Central Park; it is held in the nearby restaurant streets after the fireworks end.",
+
+        "This contradicts the broadcast. The broadcast says that parking may be insufficient that day, so using public transportation is recommended. Saying that plenty of parking is prepared is wrong.",
+
+        "This misinterprets the period. The festival is held from the weekend of this week; it does not say that it is held only on weekdays.",
+
+      ],
+      tipEn: "For broadcast information questions, the key is to listen while noting numbers, times, and places.",
   },
 
   { id: "LV6L06", section: "listening", type: "intent", level: 6, points: 3,
@@ -448,6 +643,19 @@ window.LEVEL6_BANK = [
         "④는 심정이 반대로 해석된 것이에요. 여자는 친구에게 고마워하고 있지 원망하고 있지 않아요. '힘이 나네, 고마워'라는 표현이 결정적 단서예요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The woman is disappointed about failing the interview, but she says that her friend's support gives her some strength and thanks him, showing that she is comforted by his encouragement. Her complex feelings of disappointment plus comfort are accurately captured.",
+
+        "This does not match the woman's current situation. Right after saying she failed, she cannot be full of confidence in her ability.",
+
+        "This also does not fit. Having prepared for over a year, she is deeply invested in the result, saying she does not know what to do now. Saying she has no interest does not hold.",
+
+        "This reverses her feelings. She is grateful to her friend, not resentful. The expressions 'gives me some strength' and 'thank you' are the decisive clues.",
+
+      ],
+      tipEn: "For feeling questions, don't miss the final emotional expressions (힘이 나네, 고마워 - I feel stronger, thank you).",
   },
 
   { id: "LV6L07", section: "listening", type: "main_idea", level: 6, points: 3,
@@ -475,6 +683,19 @@ window.LEVEL6_BANK = [
         "④도 방향이 반대예요. 정부는 규제를 강화한 것이 아니라 '규제 완화를 검토'하고 있다고 했어요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The first sentence of the news reports that a technology to produce biofuel using waste cooking oil was developed. This is the main idea of the news.",
+
+        "The direction is reversed. This technology can contribute to reducing fossil fuel use; it is not a technology to increase it.",
+
+        "This contradicts the news. The research team has not given up development; they are pursuing cooperation with related companies for commercialization.",
+
+        "The direction is also reversed. The government is reviewing deregulation, not strengthening regulations.",
+
+      ],
+      tipEn: "The center of news is usually in the first sentence (the lead). Don't miss the first sentence.",
   },
 
   { id: "LV6L08", section: "listening", type: "order", level: 6, points: 3,
@@ -502,6 +723,19 @@ window.LEVEL6_BANK = [
         "④는 안내 문자 수신이 첫 단계로 온 것이에요. 안내 문자는 모든 절차가 끝난 '마지막'에 받는 것이지 처음에 받는 것이 아니에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The order is: fill out the application form, transfer the tuition, press the application completion button, then receive the notification text. 'Fill out form to pay tuition to complete application' matches this order.",
+
+        "The first two steps are reversed. You must fill out the application form before paying the tuition. The payment cannot come before the application form.",
+
+        "The order is completely reversed. Application completion cannot come before filling out the form, and the payment cannot be done last.",
+
+        "Receiving the notification text is placed as the first step. The notification text is received last, after all the procedures are finished, not at the beginning.",
+
+      ],
+      tipEn: "For procedure announcements, listen for order expressions like '먼저' (first), '다음으로' (next), and '마지막으로' (finally), and organize them.",
   },
 
   { id: "LV6L09", section: "listening", type: "detail", level: 6, points: 3,
@@ -529,6 +763,19 @@ window.LEVEL6_BANK = [
         "④는 언급되지 않은 내용이에요. 가격에 대한 대화는 전혀 없어요. 남자가 중요하다고 한 것은 배터리 사용 시간이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The man says that because he has a lot of outside work, long battery life is the most important thing for him. This matches the claim that he values battery life because he travels a lot.",
+
+        "This ignores the condition. The 12-hour battery life is based on normal use, and it drops to about 8 hours when running heavy programs. Saying the battery can always be used for 12 hours is wrong.",
+
+        "This misunderstands the woman. She did not say that she mainly uses heavy programs; she was explaining that the battery decreases when this laptop runs heavy programs.",
+
+        "This is not mentioned. There is no talk about price at all. What the man said is most important is battery life.",
+
+      ],
+      tipEn: "Listen carefully to conditional expressions (if you run heavy programs) and compare them with the options.",
   },
 
   { id: "LV6L10", section: "listening", type: "intent", level: 6, points: 3,
@@ -556,6 +803,19 @@ window.LEVEL6_BANK = [
         "④는 언급되지 않은 내용이에요. 휴가 신청에 대한 말은 대화에 전혀 없어요. 지문에 없는 행동을 지어낸 오답이에요.",
 
       ],
+
+      optExplainEn: [
+
+        "This is the correct answer. The woman says, 'I'll contact the department right away and bring the statistics,' so her next action is contacting the department and getting the statistics.",
+
+        "This contradicts the conversation. Tomorrow's presentation proceeds as scheduled. The fact that she is preparing the statistics itself means the presentation is not canceled.",
+
+        "This does not match the woman's words. She said the meeting materials are already fully prepared. There is no need to rewrite them.",
+
+        "This is not mentioned. There is no talk of applying for leave in the conversation. It is a wrong answer that invents an action not found in the text.",
+
+      ],
+      tipEn: "Expressions that state a future action, like '~받아 올게요' (I'll go get it), are exactly the next action.",
   },
 
 ];

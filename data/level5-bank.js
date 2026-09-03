@@ -26,7 +26,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 본문에서 일부 지자체가 일회용 컵 사용 금지 조례를 도입하고 시민 참여 캠페인도 진행되고 있다고 했으니, 일회용 컵 사용을 줄이기 위한 노력이 이루어지고 있다는 내용이 정확히 일치해요.",
       "③은 '1인당 연간 커피 소비량이 꾸준히 늘어난 결과'라는 본문 내용과 반대예요. 소비량이 줄기 시작했다는 언급은 어디에도 없으므로 오답이에요.",
       "④는 '시장 규모가 처음으로 12조 원을 넘어섰다'는 본문과 맞지 않아요. 10조 원을 넘지 못했다는 것은 사실과 정면으로 배치돼요."
-    ]
+    ],
+    optExplainEn: [
+      "① is wrong because it directly contradicts the passage, which says the amount of disposable cups discarded increases every year. The growth in coffee consumption is actually connected to environmental problems, not unrelated to them.",
+      "② is the correct answer. The passage says some local governments introduced ordinances banning disposable cups in stores and that campaigns to encourage citizen participation are being actively carried out, so the statement that efforts are being made to reduce disposable cup use matches the content exactly.",
+      "③ is the opposite of the passage, which states that per-capita annual coffee consumption has steadily increased. There is no mention anywhere of consumption beginning to decrease, so this option is incorrect.",
+      "④ does not match the passage, which says the market size surpassed 12 trillion won for the first time. Claiming that it has not yet surpassed 10 trillion won directly contradicts the facts in the passage."
+    ],
+    tipEn: "In long reading passages, pay attention to numbers and cause-and-effect relationships. '12 trillion won for the first time' signals an upward trend, and what follows 'however' is the opposing problem."
   },
   { id: "LV5R02", section: "reading", type: "long", level: 5, points: 3,
     qGl: "Read the passage and choose what matches its content.",
@@ -47,7 +54,14 @@ window.LEVEL5_BANK = [
       "②는 방향이 반대예요. 본문은 수면 시간이 짧을수록 정보를 오래 기억하지 못한다고 했지, 더 오래 기억한다고 하지 않았어요.",
       "③은 전문가의 조언과 반대예요. 잠들기 전 스마트폰 사용을 피하라고 조언했으므로, 스마트폰 사용이 수면의 질을 높인다는 것은 틀렸어요.",
       "④는 본문에 없는 비교예요. 지문은 수면의 질을 높이는 방법만 언급했을 뿐, 양과 질 중 무엇이 더 중요한지는 비교하지 않았어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The passage says the shorter the sleep time, the more people fail to remember new information for long AND their emotional regulation ability also declines, so the claim that lack of sleep negatively affects emotional regulation matches the content.",
+      "② has the direction reversed. The passage says the shorter the sleep time, the less people remember information for long — it never says they remember it longer.",
+      "③ is the opposite of the experts' advice. Since experts advise avoiding smartphone use before falling asleep, the claim that smartphone use improves sleep quality is wrong.",
+      "④ is a comparison that does not appear in the passage. The text only mentions ways to improve sleep quality; it never compares whether quantity or quality of sleep is more important."
+    ],
+    tipEn: "'-(으)ㄹ 뿐만 아니라' means 'not only A but also B' and shows that both the preceding and following content are true. Choose the option in which both parts are true."
   },
   { id: "LV5R03", section: "reading", type: "comprehension", level: 5, points: 3,
     qGl: "Read the passage and choose the correct answer.",
@@ -68,7 +82,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 회사 측이 업무 효율을 높이기 위한 교육을 도입할 계획이라고 밝혔으므로, 교육을 준비하고 있다는 내용이 일치해요.",
       "③은 본문에 없는 내용이에요. 직원들의 만족도가 올랐다는 언급은 있지만, 근무일이 늘어나기를 원한다는 내용은 어디에도 없어요.",
       "④는 본문과 반대예요. 회사는 시범 운영을 중단하는 것이 아니라 교육 도입을 통해 문제를 해결할 계획이라고 했어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is wrong. The passage mentions both the criticism that the workload has not decreased and the concern that service quality could drop, so the claim that no problems have appeared at all is not true.",
+      "② is the correct answer. The company announced plans to introduce training to raise work efficiency, so the statement that it is preparing such training matches the content.",
+      "③ is content that does not appear in the passage. Employee satisfaction is mentioned as having risen, but nowhere does it say employees want more working days.",
+      "④ is the opposite of the passage. The company is not ending the pilot; it plans to solve the problems by introducing training."
+    ],
+    tipEn: "Pay attention to the verbs in the passage: expressions showing the speaker's attitude such as 'announced' (밝혔다) and 'concerned' (우려한다) are clues to the correct answer."
   },
   { id: "LV5R04", section: "reading", type: "comprehension", level: 5, points: 3,
     qGl: "Read the passage and choose the correct answer.",
@@ -89,7 +110,14 @@ window.LEVEL5_BANK = [
       "②는 비교의 방향이 반대예요. 본문은 라벨을 떼는 것이 아니라 내용물을 씻는 것이 더 중요하다고 했어요.",
       "③은 본문과 반대예요. 음식물 찌꺼기가 묻은 플라스틱은 재활용 과정에서 오염을 일으켜 결국 일반 쓰레기로 처리된다고 했어요.",
       "④는 지나친 일반화예요. 본문은 비닐류가 재질에 따라 재활용 여부가 달라진다고 했으므로, 모든 비닐류를 재활용할 수 있다는 것은 틀렸어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. Experts emphasize that washing the contents cleanly is MORE important than removing the label, so the statement that recyclables should be washed before disposal matches the content.",
+      "② has the comparison direction reversed. The passage says washing the contents is more important than removing the label — not the other way around.",
+      "③ is the opposite of the passage. Plastic with food residue causes contamination during recycling and is eventually treated as general waste, so it is NOT recycled without a problem.",
+      "④ is an overgeneralization. The passage says whether vinyl can be recycled depends on its material, so claiming all vinyl can be recycled is wrong."
+    ],
+    tipEn: "'A보다 B가 더 중요하다' is a comparison expression meaning 'B is more important than A.' You must grasp the direction of the comparison exactly to avoid wrong answers."
   },
   { id: "LV5R05", section: "reading", type: "grammar", level: 5, points: 3,
     qGl: "Choose the correct grammatical form.",
@@ -110,7 +138,14 @@ window.LEVEL5_BANK = [
       "② '-는 한'은 '~하는 동안에는'이라는 조건의 의미인데, '이런 일이 없어지는 한'은 '없어지는 동안에는'이라는 어색한 뜻이 돼요.",
       "③이 정답이에요. '-지 않도록'은 '~하지 않게 하기 위해서'라는 목적을 나타내는데, '이런 일이 없어지지 않도록 약속 시간을 미리 정할 것이다'처럼 뒤의 의지 표현과 자연스럽게 연결돼요.",
       "④ '-았/었더라면'은 과거 사실을 반대로 가정할 때 쓰여요. '없어졌더라면'은 '없어졌었다면'이라는 뜻이라 미래의 다짐을 나타내는 문맥에 맞지 않아요."
-    ]
+    ],
+    optExplainEn: [
+      "① '-더라도' has a concessive meaning of 'even if ~'. '이런 일이 없어지더라도' would mean 'even if this disappears', which does not connect naturally with the resolve to set the appointment time in advance next time.",
+      "② '-는 한' expresses a condition meaning 'as long as ~ / while ~'. '이런 일이 없어지는 한' would awkwardly mean 'as long as this disappears', so it does not fit the context.",
+      "③ is the correct answer. '-지 않도록' expresses purpose ('so as not to ~'). '이런 일이 없어지지 않도록 약속 시간을 미리 정할 것이다' (I will set the appointment time in advance so this doesn't happen again) connects naturally with the following expression of intention.",
+      "④ '-았/었더라면' is used for counterfactual assumptions about the past. '없어졌더라면' means 'if it had disappeared', which does not fit a context expressing a resolve for the future."
+    ],
+    tipEn: "When an expression of intention (것이다) follows the blank, the purpose marker '-도록' fits well right before it."
   },
   { id: "LV5R06", section: "reading", type: "grammar", level: 5, points: 3,
     qGl: "Choose the correct grammatical form.",
@@ -131,7 +166,14 @@ window.LEVEL5_BANK = [
       "② '-는 척하다'는 '~인 체하다'처럼 실제로는 그렇지 않은데 그런 것처럼 행동한다는 뜻이에요. 성공을 위해 각오가 필요하다는 문맥에서 '포기하는 척해야 한다'는 맞지 않아요.",
       "③이 정답이에요. '-지 않는 한'은 '~하지 않는 동안에는'이라는 조건의 의미로, '성공을 꿈꾸는 한 계속 노력해야 한다'는 내용이 자연스럽게 이어져요.",
       "④ '포기할수록 좋은 결과가 온다'는 '~할수록 ~하다'라는 비례 표현인데, 성공하려면 포기하지 말고 노력해야 한다는 글의 논지와 정반대예요."
-    ]
+    ],
+    optExplainEn: [
+      "① '-ㄹ 법도 없다' emphasizes impossibility ('there is no way to ~'). '포기하는 법도 없다' does not connect meaningfully with the preceding condition 'as long as you dream of success'.",
+      "② '-는 척하다' means to pretend/act as if something were true when it is not. In a context about needing determination to succeed, 'you should pretend to give up' does not fit.",
+      "③ is the correct answer. '-지 않는 한' expresses a condition meaning 'as long as ~ / while not ~ing'. The content 'as long as you dream of success, you must keep trying' flows naturally from the passage.",
+      "④ '포기할수록 좋은 결과가 온다' (the more you give up, the better the results) is a proportional expression that runs directly counter to the passage's point that you must keep trying without giving up."
+    ],
+    tipEn: "-는 한 = 'as long as ~ / while ~ (a condition)'. After a conditional expression comes a result that holds true as long as that condition is maintained."
   },
   { id: "LV5R07", section: "reading", type: "vocab", level: 5, points: 3,
     qGl: "Choose the word that best fits the blank.",
@@ -152,7 +194,14 @@ window.LEVEL5_BANK = [
       "② '위임'은 '권한이나 일을 남에게 맡김'이라는 뜻이에요. 예술을 위임하다는 표현은 어색하므로 오답이에요.",
       "③ '단절'은 '관계나 연결이 끊어짐'이라는 뜻이에요. 시민들이 일상에서 예술과 단절한다는 것은 전시회를 기획한 취지와 반대예요.",
       "④ '유보'는 '결정을 미루고 보류함'이라는 뜻이에요. '예술을 유보하다'는 문맥에 맞지 않아요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. '일상에서 예술을 체험할 수 있도록' means 'so that citizens can directly experience art in their daily lives', which fits the exhibition's purpose of using streets and parks as exhibition spaces.",
+      "② '위임' means 'delegation — entrusting authority or work to someone else'. The expression 'delegate art' is unnatural, so it is incorrect.",
+      "③ '단절' means 'severance — a break in a relationship or connection'. Saying citizens are cut off from art in daily life is the opposite of the exhibition's purpose.",
+      "④ '유보' means 'reservation/postponement — putting off a decision'. '유보하다 art' does not fit the context at all."
+    ],
+    tipEn: "For Sino-Korean vocabulary, pay attention to the root characters: 체(體) + 험(驗) = experiencing with the body. Choose the word that connects naturally with 'art in daily life' in the context."
   },
   { id: "LV5R08", section: "reading", type: "order", level: 5, points: 3,
     qGl: "Put the sentences in the correct order.",
@@ -173,7 +222,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 도시화로 물 순환이 깨진다는 원인(나) → 자연 상태의 물 순환(라) → 도시에서는 빗물이 스며들지 못함(가) → 그 결과 침수 피해(다)의 흐름이 자연스러워요.",
       "③은 (다)가 (가)보다 앞에 나와요. '이 때문에'로 시작하는 (다)는 (가)의 결과이므로 반드시 (가) 뒤에 와야 해요.",
       "④는 원인인 (나)가 맨 뒤에 왔어요. (가)와 (다)의 내용이 성립하려면 그 원인인 도시화(나)가 먼저 제시되어야 해요."
-    ]
+    ],
+    optExplainEn: [
+      "① is out of order because (a) comes right after (b) instead of (d). The sentence explaining the natural water cycle (d) should come before (a), which deals with the urban problem.",
+      "② is the correct answer. The flow — the cause of the broken water cycle through urbanization (b) → the natural water cycle (d) → rainwater failing to soak in cities (a) → the resulting flood damage (c) — is natural and logical.",
+      "③ places (c) before (a). Since (c) begins with '이 때문에' (because of this), it is the RESULT of (a) and must come after (a).",
+      "④ puts the cause (b) at the very end. For the contents of (a) and (c) to hold, the cause — urbanization (b) — must be presented first."
+    ],
+    tipEn: "In sentence-ordering problems, conjunctions and demonstratives are the clues. Follow the flow using '그런데' (contrast) and '이 때문에' (result)."
   },
   { id: "LV5R09", section: "reading", type: "main_idea", level: 5, points: 3,
     qGl: "Choose the writer's main point.",
@@ -194,7 +250,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 글쓴이는 '중요한 것은 실패하지 않는 것이 아니라 실패에서 배우는 태도'라고 했으므로, 실패에서 배우는 태도가 중요하다는 것이 핵심 생각이에요.",
       "③은 '언제나 긍정적인 결과'라고 단정해 과장된 표현이에요. 글쓴이는 실패 속에 배울 기회가 숨어 있다고 했지, 항상 좋은 결과가 온다고 하지 않았어요.",
       "④는 조건이 빠져 있어요. 글쓴이는 실패를 통해 돌아보지 않을 때 같은 실수를 반복한다고 했지, 실패 자체가 곧바로 반복으로 이어진다고 하지 않았어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is unrelated to the writer's argument. Nowhere does the passage say to avoid challenges in order to avoid failure; on the contrary, it encourages viewing failure as an opportunity to learn.",
+      "② is the correct answer. The writer states 'what matters is not avoiding failure but the attitude of learning from it', so the attitude of learning from failure is the core idea.",
+      "③ is an overstatement that asserts failure 'always' brings positive results. The writer says failure hides an opportunity to learn, not that it always produces good outcomes.",
+      "④ leaves out the condition. The writer says we repeat the same mistakes when we do NOT reflect on them through failure — failure itself does not directly lead to repetition."
+    ],
+    tipEn: "The writer's argument appears after expressions like '따라서' (therefore) and '중요한 것은 ~이다' (what matters is ~). The final sentence is often the key."
   },
   { id: "LV5R10", section: "reading", type: "synonym", level: 5, points: 3,
     qGl: "Choose the word closest in meaning to the underlined word.",
@@ -215,7 +278,14 @@ window.LEVEL5_BANK = [
       "② '사라졌다'는 '없어졌다'는 뜻이에요. 부담감이 두드러지게 나타났다는 내용이지 사라졌다는 내용이 아니므로 의미가 반대예요.",
       "③ '줄어들었다'는 '감소했다'는 뜻이에요. 생활비 부담이 줄었다는 내용이 아니라 20대와 30대에서 부담감이 특히 컸다는 내용이므로 맞지 않아요.",
       "④ '비슷했다'는 '거의 같았다'는 뜻이에요. 두드러진다는 것은 다른 것과 구별될 만큼 눈에 띈다는 뜻이므로 '비슷했다'와는 반대예요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. '두드러졌다' means 'was especially noticeable/prominent', and '뚜렷했다' means 'was distinct and clear' — the two are closest in meaning.",
+      "② '사라졌다' means 'disappeared'. The passage says the burden stood out prominently, not that it disappeared, so the meaning is the opposite.",
+      "③ '줄어들었다' means 'decreased'. The passage is about the burden being especially large among people in their 20s and 30s — not about it decreasing — so this does not fit.",
+      "④ '비슷했다' means 'was similar/almost the same'. Being prominent (두드러지다) means standing out enough to be distinguished from others, which is the opposite of 'similar'."
+    ],
+    tipEn: "For synonym questions, substitute each verb with its dictionary meaning and test it in the sentence. '두드러지다' = to stand out (눈에 띄다) = distinct (뚜렷하다)."
   },
 
   // ============ LISTENING (10) ============
@@ -238,7 +308,14 @@ window.LEVEL5_BANK = [
       "②는 남자의 말을 오해한 거예요. 남자는 '세 시간 후에 시작하니까'라고 회의가 세 시간 뒤에 시작된다고 했지, 회의 시간을 미룬다고 하지 않았어요.",
       "③은 본문에 없는 내용이에요. 여자는 어제 데이터를 정리하느라 시간이 없었다고 했을 뿐, 정리를 내일로 연기한다고 하지 않았어요.",
       "④는 본문에 없는 내용이에요. 동료에게 자료를 맡기고 퇴근한다는 언급은 대화에 전혀 나오지 않아요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The woman says she still needs to add one more table, and when the man tells her to finish quickly, she answers 'I'll fix it right away and print it'. So her next action is adding the table and printing the materials.",
+      "② misreads the man's words. He says the meeting STARTS in three hours ('세 시간 후에 시작하니까'); he never says the meeting time is being postponed.",
+      "③ is content that does not appear in the dialogue. The woman only says she had no time because she was organizing data late into the night; she never says she is postponing the organizing until tomorrow.",
+      "④ is content that does not appear in the dialogue. There is no mention at all of handing the materials to a colleague and leaving work."
+    ],
+    tipEn: "The last thing said in the dialogue is the clue to the action. Focus on the woman's final utterance ending in '-ㄹ게요' (I will ~)."
   },
   { id: "LV5L02", section: "listening", type: "intent", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 남자가 이렇게 말한 이유를 고르세요.",
@@ -259,7 +336,14 @@ window.LEVEL5_BANK = [
       "②는 틀렸어요. 남자는 거래를 끊으려는 것이 아니라 오히려 조건을 조정해 거래를 성사시키려고 해요. 파기와 관련된 표현은 전혀 없어요.",
       "③은 본문에 없는 내용이에요. 대화에는 배송 날짜에 대한 언급이 전혀 없어요.",
       "④는 방향이 달라요. 남자는 단가 인상을 사과하는 것이 아니라, 수량을 늘리면 단가를 할인해 주겠다고 제안하고 있어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. When the woman worries that the unit price is too high, the man proposes a 10 percent discount if she increases the quantity. This is said to keep the customer and make the contract terms more favorable.",
+      "② is wrong. The man is not trying to break off the deal; on the contrary, he is adjusting the terms to close the deal. There is no expression related to cancellation at all.",
+      "③ is content that does not appear in the dialogue. There is no mention whatsoever of the delivery date.",
+      "④ has the direction wrong. The man is not apologizing for a price increase — he is offering a discount on the unit price if the quantity is increased."
+    ],
+    tipEn: "The speaker's intention is revealed in the content of the suggestion. The benefit that follows a recommendation expression like '~는 게 어떨까요?' (how about ~?) — here, the discount — is the core of the intention."
   },
   { id: "LV5L03", section: "listening", type: "intent", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 여자의 심정으로 알맞은 것을 고르세요.",
@@ -280,7 +364,14 @@ window.LEVEL5_BANK = [
       "②는 틀렸어요. 여자는 남자를 적극적으로 칭찬하고 있어요. 억울함이나 분함을 나타내는 표현은 대화에 없어요.",
       "③은 틀렸어요. 여자는 걱정하거나 불안해하는 태도를 보이지 않고, 오히려 결과에 대해 자신감과 긍지를 드러내요.",
       "④는 틀렸어요. 무관심하거나 시큰둥한 태도와 반대로, 여자는 남자의 성과에 대해 매우 적극적이고 열정적으로 반응해요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The woman says 'I'm really proud' because the results came from the man's efforts. Her positive feelings — praising his hard work and feeling satisfied with the outcome — are clearly revealed.",
+      "② is wrong. The woman is actively praising the man. There are no expressions of feeling wronged or resentful in the dialogue.",
+      "③ is wrong. The woman does not show a worried or anxious attitude; on the contrary, she displays confidence and pride in the result.",
+      "④ is wrong. Contrary to an indifferent or lukewarm attitude, the woman responds to the man's achievement very actively and enthusiastically."
+    ],
+    tipEn: "For feeling questions, pay attention to emotion adjectives (proud, regretful, relieved) and exclamations. In a context of praise and encouragement, a positive emotion is the answer."
   },
   { id: "LV5L04", section: "listening", type: "detail", level: 5, points: 3,
     audioHint: "듣기: 안내 방송을 듣고 내용과 같은 것을 고르세요.",
@@ -301,7 +392,14 @@ window.LEVEL5_BANK = [
       "②는 본문과 반대예요. 공사 시간 동안 해당 구역의 출입이 통제된다고 했으므로 2층 전시실이 정상 운영된다는 것은 틀렸어요.",
       "③은 장소가 달라요. 관람객은 1층에서 대기하는 것이 아니라 3층 임시 전시실을 이용하라고 안내했어요.",
       "④는 기간이 틀려요. '내일부터는 정상 운영됩니다'라고 했으므로 사흘 동안 닫힌다는 것은 사실과 달라요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The announcement says the repair work runs today from 3 to 5 PM and that normal operation resumes tomorrow, so the statement that the work happens only this afternoon matches the content.",
+      "② is the opposite of the announcement. Since access to the area is controlled during the work, the 2nd floor hall is NOT operating normally.",
+      "③ gets the location wrong. Visitors are told to use the temporary exhibition hall on the 3rd floor — not to wait on the 1st floor.",
+      "④ gets the period wrong. The announcement says 'normal operation resumes tomorrow', so the claim that the hall is closed for three days is not true."
+    ],
+    tipEn: "In announcements, time and place are the key. Take notes on 'from what time to what time' and 'which floor' while listening."
   },
   { id: "LV5L05", section: "listening", type: "detail", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 내용과 같은 것을 고르세요.",
@@ -322,7 +420,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 여자는 큰길 옆이라 창문을 닫아도 밤에 차 소리가 들린다며 소음을 문제로 꼽았으므로, 소음 때문에 고민이라는 내용이 일치해요.",
       "③은 틀렸어요. 위치에 대해 불만을 말한 사람은 없어요. 여자는 오히려 위치에 만족하고 있고, 남자는 위치에 대한 의견을 말하지 않아요.",
       "④는 틀렸어요. 여자는 '비용이 부담되지만 건강을 생각하면 바꾸는 게 좋을 것 같아요'라고 말해 방음 창문으로 바꾸기로 결정했어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the opposite of the dialogue. The woman says she is satisfied with the location because the subway station is 5 minutes away, so living far from the station is wrong.",
+      "② is the correct answer. The woman cites noise as a problem — because the house is next to a main road, she can hear car sounds at night even with the windows closed — so the claim that she is troubled by noise matches.",
+      "③ is wrong. No one expresses dissatisfaction with the location. The woman is actually satisfied with it, and the man gives no opinion about the location.",
+      "④ is wrong. The woman says 'the cost is a burden, but considering my health, I think changing them is best', so she HAS decided to change to soundproof windows."
+    ],
+    tipEn: "For 'match the dialogue' questions, compare each option one by one against the passage. The problem mentioned after '그런데' (but/however) is often the test point."
   },
   { id: "LV5L06", section: "listening", type: "main_idea", level: 5, points: 3,
     audioHint: "듣기: 강연의 일부를 듣고 강연자의 생각을 고르세요.",
@@ -343,7 +448,14 @@ window.LEVEL5_BANK = [
       "②는 본문에 없는 내용이에요. 강연자는 법으로 금지하자고 주장하지 않고, 배려와 이어폰 사용 같은 개인의 노력을 강조해요.",
       "③은 방향이 반대예요. 강연자는 이어폰 사용을 반대하는 것이 아니라, 이어폰 하나만으로 모두가 편안한 공간을 만들 수 있다며 이어폰 사용을 권장해요.",
       "④는 본문에 없는 규정이에요. 사적인 공간에서만 영상 시청을 허용한다는 내용은 강연에 전혀 없어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The speaker says the sound you hear can be uncomfortable for someone else, so 'a heart that considers each other' is needed. Considering others in public places is the core idea.",
+      "② is content that does not appear in the talk. The speaker does not argue for a legal ban; instead, he emphasizes individual efforts like consideration and using earphones.",
+      "③ has the direction reversed. The speaker does not oppose earphone use; on the contrary, he recommends it, saying that with just one pair of earphones everyone can enjoy a comfortable space.",
+      "④ is a rule that does not appear in the talk. There is no content at all about allowing video watching only in private spaces."
+    ],
+    tipEn: "The speaker's argument is carried by expressions of obligation or possibility like '~해야 한다' (must) and '~할 수 있습니다' (can). Find the claim sentence before the examples."
   },
   { id: "LV5L07", section: "listening", type: "main_idea", level: 5, points: 3,
     audioHint: "듣기: 뉴스를 듣고 무엇에 대한 내용인지 고르세요.",
@@ -364,7 +476,14 @@ window.LEVEL5_BANK = [
       "②는 본문에 없는 내용이에요. 택배 요금 인상이나 소비자들의 반발은 뉴스에 언급되지 않았어요.",
       "③은 본문과 반대예요. 온라인 쇼핑 매출이 감소했다는 내용은 없고, 오히려 택배 물량이 급증했다고 해요.",
       "④는 포인트 제도의 목적을 오해한 거예요. 포인트 제도는 소비자가 상자를 반납하도록 유도하기 위한 것으로, 매장 방문객 증가에 대한 내용은 없어요."
-    ]
+    ],
+    optExplainEn: [
+      "① is the correct answer. The news covers both the problem of packaging waste growing as parcel volume surges and the responses to it, such as introducing reusable boxes and giving points for box returns.",
+      "② is content that does not appear in the news. There is no mention of parcel fee increases or consumer backlash.",
+      "③ is the opposite of the news. There is no content about online shopping sales declining; on the contrary, the news says parcel volume has surged.",
+      "④ misunderstands the purpose of the point system. The point system is designed to encourage consumers to return boxes — there is no content about an increase in store visitors."
+    ],
+    tipEn: "The topic appears in the first sentence of the news. Grasping the two axes — the cause and the response, like 'the problem and the response to it' — makes the answer visible."
   },
   { id: "LV5L08", section: "listening", type: "topic", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 무엇에 대한 이야기인지 고르세요.",
@@ -385,7 +504,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 두 사람은 아침 운동, 걷기 모임, 꾸준히 운동하는 이야기를 나누고 있어요. '운동, 걷기 모임, 꾸준히'가 반복되므로 주제는 운동 습관 기르기예요.",
       "③은 틀렸어요. 대화에는 날씨나 계절 변화에 대한 언급이 전혀 없어요.",
       "④는 틀렸어요. 지역 봉사 활동에 대한 내용은 대화에 나오지 않아요."
-    ]
+    ],
+    optExplainEn: [
+      "① is wrong. The two are not talking about park facilities. The park is only mentioned as a place to exercise.",
+      "② is the correct answer. The two are talking about morning exercise, a walking group, and exercising consistently. Since 'exercise, walking group, consistently' are repeated, the topic is building exercise habits.",
+      "③ is wrong. There is no mention of weather or seasonal changes in the dialogue.",
+      "④ is wrong. There is no content about local volunteer activities in the dialogue."
+    ],
+    tipEn: "For topic questions, the words repeated in the conversation are the clue. If 'exercise, walking group, consistently' are repeated, the topic is exercise."
   },
   { id: "LV5L09", section: "listening", type: "reply", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 남자의 이어질 말로 알맞은 것을 고르세요.",
@@ -406,7 +532,14 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 팀장님께 보고서 검토를 부탁하는 상황에서 '바쁘신데 죄송하지만 최대한 빨리 부탁드립니다'라고 말하는 것이 가장 자연스럽고 예의 바른 응답이에요.",
       "③은 상하 관계에 어긋나요. 부하가 상사에게 '제가 다른 일을 맡아 드릴 테니 천천히 하십시오'라고 말하는 것은 예의에 맞지 않아요.",
       "④는 비현실적이에요. 검토가 끝난 보고서를 폐기하겠다는 말은 업무 상황에서 전혀 자연스럽지 않아요."
-    ]
+    ],
+    optExplainEn: [
+      "① is awkward. The team leader said she will finish it TODAY, so if the subordinate says 'please make sure to have it done by tomorrow', he is actually pushing the deadline back.",
+      "② is the correct answer. In a situation of asking the team leader to review the report, 'Sorry you're busy, but please do it as soon as possible' is the most natural and polite response.",
+      "③ violates the superior-subordinate relationship. It is not polite for a subordinate to tell a superior 'I'll take on other work, so please take your time'.",
+      "④ is unrealistic. Saying he will discard the report once the review is done is completely unnatural in a work situation."
+    ],
+    tipEn: "For workplace reply questions, check the superior-subordinate relationship. When a subordinate speaks to a superior, a polite request expression is the answer."
   },
   { id: "LV5L10", section: "listening", type: "intent", level: 5, points: 3,
     audioHint: "듣기: 두 사람의 대화를 듣고 여자가 하는 말의 의도를 고르세요.",
@@ -427,6 +560,13 @@ window.LEVEL5_BANK = [
       "②가 정답이에요. 여자는 예약 없이는 평균 두 시간을 기다려야 한다는 정보를 준 뒤 '미리 예약을 해 두면 좋을 것 같아요'라고 제안해요. 이는 미리 예약할 것을 권하는 말이에요.",
       "③은 틀렸어요. 대화에서 음식을 고르는 내용은 전혀 언급되지 않아요.",
       "④는 오해하기 쉬운 선택지예요. 여자가 언급한 것은 금요일의 혼잡이지, 본인의 약속이 아니에요."
-    ]
+    ],
+    optExplainEn: [
+      "① is wrong. The woman is not refusing to go; she says 'It would be good to make a reservation in advance', presenting a direction of going on the condition of reserving.",
+      "② is the correct answer. After giving the information that without a reservation one must wait an average of two hours, the woman suggests 'It would be good to make a reservation in advance'. This is a recommendation to reserve ahead of time.",
+      "③ is wrong. Choosing food is never mentioned anywhere in the dialogue.",
+      "④ is an easy option to misunderstand. What the woman mentions is the crowd on Friday, not her own appointment."
+    ],
+    tipEn: "'~면 좋을 것 같아요' (it would be good if ~) is a soft suggestion expression. The speaker's final suggestion determines the intention."
   }
 ];

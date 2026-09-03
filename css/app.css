@@ -411,6 +411,12 @@
 .app-card.tip-on .passage-gloss { display: block; }
 .app-card.tip-on .q-gloss { display: block; }
 .app-card.tip-on .q-explain { display: block; }
+
+/* English UI mode: show English translations automatically (question stays Korean) */
+html[data-lang="en"] .opt-gloss { display: inline; }
+html[data-lang="en"] .passage-gloss { display: block; }
+html[data-lang="en"] .q-gloss { display: block; }
+html[data-lang="en"] .q-explain { display: block; }
 .tip-btn { width: 100%; margin-top: 10px; }
 
 /* ---------- Writing ---------- */

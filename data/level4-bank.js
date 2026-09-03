@@ -29,8 +29,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 본문 마지막 문장에서 시가 주민 의견을 듣는 자리를 마련하기로 했다고 했기 때문이에요.',
       '②는 틀렸어요. 주민들은 인상을 반긴 것이 아니라 생활비 부담이 커졌다며 반대하고 있기 때문이에요.',
       '③은 틀렸어요. 봉투 가격을 올린 것이 처음인지 아닌지는 본문 어디에도 나오지 않아요.',
-      '④는 틀렸어요. 쓰레기를 줄이기 위해 가격을 올렸지, 쓰레기가 줄어서 가격이 내려갔다는 내용은 없어요.'
+      '④는 틀렸어요. 쓰레기를 줄이기 위해 가격을 올렸지, 쓰레기가 줄어서 가격이 내려갔다는 내용은 없어요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The last sentence of the passage says the city decided to hold a meeting to hear residents\' opinions after they opposed the price increase.',
+      'This is wrong. The residents did not welcome the price increase — they opposed it, saying the cost of living has grown.',
+      'This is wrong. The passage never says whether this is the first time the city raised the garbage bag price.',
+      'This is wrong. The city raised the price to reduce waste, but the passage never says the price went down because waste decreased.'
+    ],
+    tipEn: 'For content-matching questions, pair each person (the city / the residents) with their action to check the statements.',
     freq: 3, freqNote: 'TOPIK II 읽기 31~33 · 내용 일치'
   },
   {
@@ -56,8 +63,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 전시는 다음 주가 아니라 다음 달부터 시작된다고 했기 때문이에요.',
       '②가 정답이에요. 관람료는 무료이지만 사전 예약을 해야 한다고 했기 때문이에요.',
       '③은 틀렸어요. 본문에서 관람료가 무료라고 했으므로 돈을 내야 한다는 내용과 반대예요.',
-      '④는 틀렸어요. 주말에는 인원이 제한되므로 예약하지 않아도 되는 것이 아니라 오히려 일찍 예약하는 것이 좋다고 했어요.'
+      '④는 틀렸어요. 주말에는 인원이 제한되므로 예약하지 않아도 되는 것이 아니라 오히려 일찍 예약하는 것이 좋다고 했어요.',
     ],
+    optExplainEn: [
+      'This is wrong. The exhibition starts next month, not next week.',
+      'This is the correct answer. The passage says admission is free but an advance reservation is required.',
+      'This is wrong. The passage clearly states the admission is free, so paying to enter is the opposite of what it says.',
+      'This is wrong. On weekends the number of visitors is limited, so rather than needing no reservation, it is better to reserve early.'
+    ],
+    tipEn: 'Separate the conditions before and after ~지만 (free / reservation required) to judge matching statements easily.',
     freq: 3, freqNote: 'TOPIK II 읽기 31~33 · 내용 일치'
   },
   {
@@ -82,8 +96,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 본문은 스마트폰으로 뉴스를 보는 것이 위험하다고 하지 않았고, 매체 자체를 비판하지 않았어요.',
       '②는 틀렸어요. 깊이 있는 정보는 신문이나 책을 통해 얻을 때가 많다고 했으므로 신문과 책이 필요 없다는 내용과 반대예요.',
       '③이 정답이에요. 글의 결론인 마지막 문장에서 어떤 매체를 쓰느냐보다 정보를 비판적으로 보는 태도가 중요하다고 했기 때문이에요.',
-      '④는 틀렸어요. 뉴스를 아침에 보는 것이 좋다는 내용은 본문에 전혀 나오지 않아요.'
+      '④는 틀렸어요. 뉴스를 아침에 보는 것이 좋다는 내용은 본문에 전혀 나오지 않아요.',
     ],
+    optExplainEn: [
+      'This is wrong. The passage does not say reading news on a smartphone is dangerous, nor does it criticize any particular medium.',
+      'This is wrong. The passage says in-depth information is often obtained through newspapers or books, which is the opposite of saying they are no longer needed.',
+      'This is the correct answer. In the concluding sentence, the writer says what matters is not which medium you use but having a critical attitude toward information.',
+      'This is wrong. The passage never mentions that it is better to read the news in the morning.'
+    ],
+    tipEn: 'Find the main idea in the sentence that reveals the writer\'s claim, such as 중요한 것은 ~이다 (what matters is...).',
     freq: 3, freqNote: 'TOPIK II 읽기 31~33 · 중심 내용'
   },
   {
@@ -109,8 +130,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. \'따르면\'은 조건을 나타내는 연결어미라서 \'상황에 따르면\'이라고 쓰면 \'상황을 따르면\'이라는 어색한 뜻이 돼요.',
       '②는 틀렸어요. \'따라서\'는 문장과 문장을 이어 주는 접속 부사라서 명사 \'상황\' 뒤에 바로 붙을 수 없어요.',
       '③이 정답이에요. 명사 뒤에 붙어 \'그것에 의존하여\'라는 뜻을 나타내는 \'-에 따라\'가 알맞아요. \'상황에 따라 행동도 달라진다\'처럼 자연스럽게 연결돼요.',
-      '④는 틀렸어요. \'따르고\'는 \'따르다\'에 나열의 뜻을 가진 \'-고\'가 붙은 형태라서 두 행동을 나열하는 문장에 쓰여요. \'상황에 따르고\'는 어색해요.'
+      '④는 틀렸어요. \'따르고\'는 \'따르다\'에 나열의 뜻을 가진 \'-고\'가 붙은 형태라서 두 행동을 나열하는 문장에 쓰여요. \'상황에 따르고\'는 어색해요.',
     ],
+    optExplainEn: [
+      'This is wrong. "따르면" is a connective ending expressing a condition, so "상황에 따르면" would awkwardly mean "if you follow the situation."',
+      'This is wrong. "따라서" is a conjunctive adverb that connects two sentences, so it cannot be attached directly after the noun "상황."',
+      'This is the correct answer. "-에 따라", which attaches to a noun and means "depending on it," fits here, giving the natural sentence "상황에 따라 행동도 달라진다" (behavior changes depending on the situation).',
+      'This is wrong. "따르고" is "따르다" combined with the listing ending "-고", used when enumerating two actions, so "상황에 따르고" sounds unnatural.'
+    ],
+    tipEn: '-에 따라(서) is used with a noun and means "depending on."',
     freq: 4, freqNote: 'TOPIK II 읽기 34~39 · 문법'
   },
   {
@@ -136,8 +164,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. \'때문에\'는 원인이나 이유를 나타내는데, 이 문장은 \'한국어를 배우는 것\'의 목적을 나타내는 문장이에요.',
       '②는 틀렸어요. \'동안에\'는 기간을 나타내는 표현이라 \'배우기 동안에\'라고 쓰면 어색해요.',
       '③은 틀렸어요. \'대신에\'는 \'~을 대신하여\'라는 대체의 뜻이라 \'한국어를 배우기 대신에\'는 의미가 통하지 않아요.',
-      '④가 정답이에요. \'-기 위해서\'는 목적을 나타내는 표현으로 \'배우기 위해서 = in order to learn\'처럼 \'한국어를 배우기 위해서 매일 이야기한다\'가 자연스러워요.'
+      '④가 정답이에요. \'-기 위해서\'는 목적을 나타내는 표현으로 \'배우기 위해서 = in order to learn\'처럼 \'한국어를 배우기 위해서 매일 이야기한다\'가 자연스러워요.',
     ],
+    optExplainEn: [
+      'This is wrong. "때문에" expresses a cause or reason, but this sentence expresses the purpose of learning Korean.',
+      'This is wrong. "동안에" indicates a period of time, so "배우기 동안에" sounds unnatural.',
+      'This is wrong. "대신에" means "instead of," so "한국어를 배우기 대신에" does not make sense.',
+      'This is the correct answer. "-기 위해서" expresses purpose, so "배우기 위해서 = in order to learn" — the sentence "한국어를 배우기 위해서 매일 이야기한다" (he talks every day in order to learn Korean) is natural.'
+    ],
+    tipEn: 'Distinguish them by meaning: purpose uses -기 위해서, while cause/reason uses -기 때문에.',
     freq: 4, freqNote: 'TOPIK II 읽기 34~39 · 문법'
   },
   {
@@ -162,8 +197,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. \'수동적으로\'는 \'스스로 나서지 않고 시키는 대로\'라는 뜻이라 \'적극적으로\'와 반대 의미예요.',
       '②는 틀렸어요. \'형식적으로\'는 \'겉으로만\'이라는 뜻이라 의견을 진심으로 반영한다는 문맥과 맞지 않아요.',
       '③은 틀렸어요. \'일시적으로\'는 \'잠시 동안\'이라는 뜻이라 \'적극적으로\'와 의미가 전혀 달라요.',
-      '④가 정답이에요. \'적극적으로\'는 \'스스로 앞장서서\'라는 뜻이고 \'능동적으로\'도 \'남이 시키지 않아도 스스로\'라는 뜻이라 의미가 가장 비슷해요.'
+      '④가 정답이에요. \'적극적으로\'는 \'스스로 앞장서서\'라는 뜻이고 \'능동적으로\'도 \'남이 시키지 않아도 스스로\'라는 뜻이라 의미가 가장 비슷해요.',
     ],
+    optExplainEn: [
+      'This is wrong. "수동적으로" (passively) means "without taking the initiative, doing only as told," which is the opposite of "적극적으로."',
+      'This is wrong. "형식적으로" (formally) means "only on the surface," which does not fit the context of sincerely reflecting opinions.',
+      'This is wrong. "일시적으로" (temporarily) means "for a short while," which has a completely different meaning from "적극적으로."',
+      'This is the correct answer. "적극적으로" means "taking the lead oneself," and "능동적으로" also means "doing something on one\'s own without being told," so the two are closest in meaning.'
+    ],
+    tipEn: 'For synonym questions, first check the antonym relations of prefixes (수동/능동 passive/active, 일시/영구 temporary/permanent).',
     freq: 3, freqNote: 'TOPIK II 읽기 어휘 문항'
   },
   {
@@ -189,8 +231,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 점검은 일요일이 아니라 이번 주 토요일 오전 9시부터 오후 1시까지라고 했어요.',
       '②는 틀렸어요. 점검 시간 동안에는 엘리베이터를 반만 쓸 수 있는 것이 아니라 이용할 수 없다고 했어요.',
       '③은 틀렸어요. 점검 시간은 오후 2시까지가 아니라 오전 9시부터 오후 1시까지예요.',
-      '④가 정답이에요. 점검 시간 동안 엘리베이터를 이용할 수 없으므로 불편하더라도 계단을 이용해 달라고 했기 때문이에요.'
+      '④가 정답이에요. 점검 시간 동안 엘리베이터를 이용할 수 없으므로 불편하더라도 계단을 이용해 달라고 했기 때문이에요.',
     ],
+    optExplainEn: [
+      'This is wrong. The inspection is not on Sunday — it is this Saturday from 9 a.m. to 1 p.m.',
+      'This is wrong. During the inspection hours, the elevator cannot be used at all, not just for half the time.',
+      'This is wrong. The inspection runs from 9 a.m. to 1 p.m., not until 2 p.m.',
+      'This is the correct answer. Because the elevator cannot be used during the inspection, the notice asks people to use the stairs even if it is inconvenient.'
+    ],
+    tipEn: 'For notice questions, organize the date, time, and restrictions (usage not allowed) into a table.',
     freq: 2, freqNote: 'TOPIK II 읽기 28~30 · 안내문'
   },
   {
@@ -216,8 +265,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 재료를 사는 것(가)이 요리 계획(나)보다 먼저일 수 없어요. 보통 계획을 세운 뒤에 재료를 사요.',
       '②가 정답이에요. \'만들어 보려고 한다\'는 계획(나) → 시장에서 재료 구입(가) → 재료를 썰고 끓임(다) → 간을 맞춘 완성(라)의 순서가 가장 자연스러워요.',
       '③은 틀렸어요. 재료를 사기 전에(가) 재료를 썰 수는 없으므로 (다)가 (가)보다 앞에 올 수 없어요.',
-      '④는 틀렸어요. (다)를 맨 앞에 두면 계획과 재료 구입이 뒤에 나와 흐름이 어색하고, 간을 맞추는 (라)는 마지막 단계여야 해요.'
+      '④는 틀렸어요. (다)를 맨 앞에 두면 계획과 재료 구입이 뒤에 나와 흐름이 어색하고, 간을 맞추는 (라)는 마지막 단계여야 해요.',
     ],
+    optExplainEn: [
+      'This is wrong. Buying the ingredients (A) cannot come before the plan to cook (B) — normally you make a plan first and then buy the ingredients.',
+      'This is the correct answer. The most natural order is: the plan to try making it (B) → buying the ingredients at the market (A) → cutting and boiling the ingredients (C) → the finished dish after seasoning (D).',
+      'This is wrong. You cannot cut the ingredients (C) before buying them (A), so (C) cannot come before (A).',
+      'This is wrong. Putting (C) first makes the plan and the shopping come later, which breaks the flow, and the seasoning step (D) must come last.'
+    ],
+    tipEn: 'For ordering questions, use time expressions (먼저 first / 그다음 next / 마지막 finally) as clues.',
     freq: 2, freqNote: 'TOPIK II 읽기 43~45 · 순서'
   },
   {
@@ -243,8 +299,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 연구 결과에서 아침에 기분이 좋을수록 하루 일을 더 효율적으로 처리한다고 했기 때문이에요.',
       '②는 틀렸어요. 연구팀은 직장인 500명을 한 번만 조사한 것이 아니라 한 달 동안 조사했어요.',
       '③은 틀렸어요. 아침에 산책을 하거나 음악을 듣는 사람들의 기분이 더 좋은 것으로 나타났으므로 산책하는 사람의 효율이 낮다는 내용과 반대예요.',
-      '④는 틀렸어요. 본문은 기분과 업무 효율 사이에 관계가 있다는 내용이므로 관계가 없다는 주장과 반대예요.'
+      '④는 틀렸어요. 본문은 기분과 업무 효율 사이에 관계가 있다는 내용이므로 관계가 없다는 주장과 반대예요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The study found that the better people feel in the morning, the more efficiently they handle the day\'s work.',
+      'This is wrong. The research team did not survey the 500 office workers only once — they surveyed them over the course of one month.',
+      'This is wrong. People who take a walk or listen to music in the morning showed better moods, so the claim that morning walkers had low work efficiency is the opposite of the passage.',
+      'This is wrong. The passage says there IS a relationship between mood and work efficiency, so this statement contradicts it.'
+    ],
+    tipEn: 'For long passages, underline the first sentence of each paragraph (the claim) and the sentence stating the results.',
     freq: 2, freqNote: 'TOPIK II 읽기 46~50 · 긴 지문'
   },
   {
@@ -268,8 +331,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 책에 시장의 역사가 담겨 있다고 했으므로 이 책에서 알 수 있는 내용이에요.',
       '②는 틀렸어요. 책에 유명한 음식점과 물건을 싸게 사는 방법이 담겨 있다고 했으므로 알 수 있는 내용이에요.',
       '③은 틀렸어요. 3장에서 지역별로 다른 시장의 특징을 비교해서 설명한다고 했으므로 알 수 있는 내용이에요.',
-      '④가 정답이에요. 책의 내용으로 역사, 음식점, 싸게 사는 방법, 지역별 비교가 언급됐지만 외국인 관광객의 방문 후기는 전혀 나오지 않아요.'
+      '④가 정답이에요. 책의 내용으로 역사, 음식점, 싸게 사는 방법, 지역별 비교가 언급됐지만 외국인 관광객의 방문 후기는 전혀 나오지 않아요.',
     ],
+    optExplainEn: [
+      'This is wrong. The passage says the book contains the history of markets, so this IS something you can learn from it.',
+      'This is wrong. The passage says the book covers famous restaurants and ways to buy things cheaply, so this is information you can find in it.',
+      'This is wrong. Chapter 3 compares the characteristics of markets by region, so this is also something the book covers.',
+      'This is the correct answer. The book\'s contents — history, restaurants, cheap shopping tips, and regional comparisons — are all mentioned, but reviews from foreign tourists never appear.'
+    ],
+    tipEn: 'For "what you CANNOT learn" questions, cross out all the information that appears in the passage, then choose what remains.',
     freq: 2, freqNote: 'TOPIK II 읽기 46~50 · 세부 정보'
   },
 
@@ -294,8 +364,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 대화에서 전기차 가격에 대한 이야기는 한 번도 나오지 않아요.',
       '②는 틀렸어요. 두 사람은 전기차의 디자인에 대해서도 이야기하지 않았어요.',
       '③이 정답이에요. 두 사람은 충전소가 많이 늘었다는 것과 아직 부족하다는 이야기를 주고받고 있으므로 대화의 주제는 전기차 충전소예요.',
-      '④는 틀렸어요. 전기차 보험에 대한 언급은 대화에 전혀 없어요.'
+      '④는 틀렸어요. 전기차 보험에 대한 언급은 대화에 전혀 없어요.',
     ],
+    optExplainEn: [
+      'This is wrong. The price of electric cars is never mentioned anywhere in the conversation.',
+      'This is wrong. The two speakers do not talk about EV design either.',
+      'This is the correct answer. The speakers discuss how charging stations have increased a lot and that there are still not enough, so the topic of the conversation is EV charging stations.',
+      'This is wrong. There is no mention of EV insurance in the conversation at all.'
+    ],
+    tipEn: 'For topic questions, find the word that both speakers mention in common.',
     freq: 3, freqNote: 'TOPIK II 듣기 7~10 · 주제'
   },
   {
@@ -318,8 +395,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 새 직원을 뽑는다는 내용은 대화에 나오지 않아요.',
       '②가 정답이에요. 남자가 다음 달에 회사가 시청역 근처로 이사한다고 했고, 여자가 이에 대해 이야기했으므로 주제는 회사 이사예요.',
       '③은 틀렸어요. 출장 계획에 대한 이야기는 대화에 없어요.',
-      '④는 틀렸어요. 회식 장소에 대한 언급도 대화에 전혀 없어요.'
+      '④는 틀렸어요. 회식 장소에 대한 언급도 대화에 전혀 없어요.',
     ],
+    optExplainEn: [
+      'This is wrong. There is no mention of hiring new staff in the conversation.',
+      'This is the correct answer. The man says the company will move near City Hall station next month, and the woman responds to this, so the topic is the company move.',
+      'This is wrong. There is no talk about a business trip plan in the conversation.',
+      'This is wrong. A dinner venue is not mentioned in the conversation either.'
+    ],
+    tipEn: 'The first speaker\'s first sentence is often the topic of the conversation.',
     freq: 3, freqNote: 'TOPIK II 듣기 7~10 · 주제'
   },
   {
@@ -342,8 +426,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 남자가 \'시간이 있으면 읽어 보겠습니다\'라고 했으므로 여자의 발표 자료를 읽어 볼 거예요.',
       '②는 틀렸어요. 남자가 자신의 발표를 준비한다는 내용은 대화에 없어요. 발표는 여자의 것이에요.',
       '③은 틀렸어요. 책을 사러 간다는 이야기는 대화에 전혀 나오지 않아요.',
-      '④는 틀렸어요. 발표 날짜를 바꾼다는 내용은 대화에 없어요.'
+      '④는 틀렸어요. 발표 날짜를 바꾼다는 내용은 대화에 없어요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The man says "시간이 있으면 읽어 보겠습니다" (I will read it if I have time), so he will read the woman\'s presentation draft.',
+      'This is wrong. There is nothing in the conversation about the man preparing his own presentation — the presentation belongs to the woman.',
+      'This is wrong. Going to buy a book is never mentioned in the conversation.',
+      'This is wrong. Changing the presentation date does not appear in the conversation.'
+    ],
+    tipEn: 'For action questions, listen for expressions of intention like -ㄹ게요 / -겠습니다.',
     freq: 3, freqNote: 'TOPIK II 듣기 15~16 · 행동'
   },
   {
@@ -366,8 +457,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 남자는 여자의 일을 도와주겠다고 하지 않고 등산 약속을 다른 날로 바꾸자고 해요.',
       '②는 틀렸어요. 남자는 약속을 취소하자고 한 것이 아니라 이번 주말 대신 다음 주말을 제안했어요.',
       '③은 틀렸어요. 등산 장비를 사자는 이야기는 대화에 나오지 않아요.',
-      '④가 정답이에요. 남자는 이번 주말에 등산 가자고 하고, 거절당하자 다음 주말을 다시 제안하며 계속 등산을 권하고 있어요.'
+      '④가 정답이에요. 남자는 이번 주말에 등산 가자고 하고, 거절당하자 다음 주말을 다시 제안하며 계속 등산을 권하고 있어요.',
     ],
+    optExplainEn: [
+      'This is wrong. The man does not offer to help with the woman\'s work; he suggests moving the hiking plan to another day.',
+      'This is wrong. The man does not suggest cancelling the plan — he proposes next weekend instead of this weekend.',
+      'This is wrong. Buying hiking gear is not mentioned in the conversation.',
+      'This is the correct answer. The man invites her to go hiking this weekend, and when she declines, he keeps inviting her by proposing next weekend.'
+    ],
+    tipEn: 'For intention questions, pay attention to invitation expressions like -ㄹ래요? / -는 게 어때요?',
     freq: 3, freqNote: 'TOPIK II 듣기 15~16 · 의도'
   },
   {
@@ -391,8 +489,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 여자는 \'이번 주\'가 아니라 \'다음 주 금요일\'까지라고 말했어요. \'다음 주\'를 \'이번 주\'로 잘못 들으면 이 보기를 고르기 쉬워요.',
       '②가 정답이에요. 여자가 \'다음 주 금요일까지예요\'라고 마감일을 직접 말했기 때문이에요.',
       '③은 틀렸어요. 다음 달 금요일이라는 시기는 대화에 전혀 나오지 않아요.',
-      '④는 틀렸어요. 이번 달 월요일도 대화에 등장하지 않는 시기예요.'
+      '④는 틀렸어요. 이번 달 월요일도 대화에 등장하지 않는 시기예요.',
     ],
+    optExplainEn: [
+      'This is wrong. The woman says the deadline is "next Friday," not "this Friday." If you mishear "다음 주" (next week) as "이번 주" (this week), it is easy to choose this option.',
+      'This is the correct answer. The woman states the deadline directly: "다음 주 금요일까지예요" (by next Friday).',
+      'This is wrong. Next month Friday is never mentioned in the conversation.',
+      'This is wrong. This month Monday is also a time that does not appear in the conversation.'
+    ],
+    tipEn: 'For date questions, write down the expression with ~까지 (by...) accurately.',
     freq: 3, freqNote: 'TOPIK II 듣기 11~14 · 세부 정보'
   },
   {
@@ -416,8 +521,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 남자가 \'냉면 하나 주세요. 그리고 김치전도 하나 주세요\'라고 했으므로 냉면과 김치전을 주문했어요.',
       '②는 틀렸어요. 비빔밥은 주문하지 않았어요. 주문한 음식은 냉면과 김치전 두 가지예요.',
       '③은 틀렸어요. 막걸리는 언급되지 않았고 냉면도 빠져 있어요.',
-      '④는 틀렸어요. 냉면 하나만이 아니라 김치전도 함께 주문했어요.'
+      '④는 틀렸어요. 냉면 하나만이 아니라 김치전도 함께 주문했어요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The man says "냉면 하나 주세요. 그리고 김치전도 하나 주세요" (one cold noodles, please, and one kimchi pancake too), so he ordered both.',
+      'This is wrong. Bibimbap was not ordered — the two dishes ordered were cold noodles and kimchi pancake.',
+      'This is wrong. Makgeolli is not mentioned, and cold noodles are missing from this option.',
+      'This is wrong. He did not order only cold noodles — he also ordered a kimchi pancake.'
+    ],
+    tipEn: 'For ordering questions, check off each menu item as you hear it.',
     freq: 3, freqNote: 'TOPIK II 듣기 11~14 · 세부 정보'
   },
   {
@@ -441,8 +553,15 @@ window.LEVEL4_BANK = [
       '①은 틀렸어요. 여자는 내일 수업에 못 간다고 했으므로 \'내일 봬요\'라고 하는 것은 앞 내용과 맞지 않아요.',
       '②는 틀렸어요. 수업을 취소하라고 명령하는 표현은 상대에게 예의가 없고 상황에도 맞지 않아요.',
       '③이 정답이에요. 남자가 아이부터 잘 돌보라고 조언했으므로 \'네, 그렇게 하겠습니다\'라고 그 조언을 받아들이는 것이 자연스러워요.',
-      '④는 틀렸어요. 아픈 아이를 데리고 나오라고 하는 것은 오히려 남자의 조언과 반대되는 부적절한 응답이에요.'
+      '④는 틀렸어요. 아픈 아이를 데리고 나오라고 하는 것은 오히려 남자의 조언과 반대되는 부적절한 응답이에요.',
     ],
+    optExplainEn: [
+      'This is wrong. The woman says she cannot come to class tomorrow, so saying "see you tomorrow" does not fit what was said.',
+      'This is wrong. Commanding the other person to cancel the class is impolite and does not fit the situation.',
+      'This is the correct answer. The man advises her to take good care of her child first, so accepting the advice with "네, 그렇게 하겠습니다" (OK, I will do that) is the natural response.',
+      'This is wrong. Telling her to bring the sick child along actually goes against the man\'s advice and is an inappropriate response.'
+    ],
+    tipEn: 'For response questions, the answer is often a phrase that accepts the other person\'s advice or request.',
     freq: 3, freqNote: 'TOPIK II 듣기 7~10 · 응답'
   },
   {
@@ -466,8 +585,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 원래 3만 원인 가방을 2만 원에 살 수 있다는 말을 듣고 \'이걸로 주세요\'라고 구매 의사를 밝히는 것이 자연스러워요.',
       '②는 틀렸어요. 이미 세일해서 2만 원으로 싸졌다고 했는데 더 비싼 것을 보여 달라는 것은 상황에 맞지 않아요.',
       '③은 틀렸어요. 남자는 싸진 가격을 들었으므로 \'가격이 너무 비싸다\'고 불평하는 것은 어색해요.',
-      '④는 틀렸어요. \'여기가 어디예요\'는 가게에서 물건을 사는 상황과 전혀 관계없는 응답이에요.'
+      '④는 틀렸어요. \'여기가 어디예요\'는 가게에서 물건을 사는 상황과 전혀 관계없는 응답이에요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. After hearing that the bag, originally 30,000 won, can be bought for 20,000 won, it is natural to say "이걸로 주세요" (I will take this one) to show the intention to buy.',
+      'This is wrong. The price has already been reduced to 20,000 won, so asking to see something more expensive does not fit the situation.',
+      'This is wrong. Since the man just heard the reduced price, complaining that the price is too expensive would be unnatural.',
+      'This is wrong. "여기가 어디예요" (where is this place) has nothing to do with buying something in a store.'
+    ],
+    tipEn: 'In price conversations, the reply usually leads to either buying or refusing.',
     freq: 3, freqNote: 'TOPIK II 듣기 7~10 · 응답'
   },
   {
@@ -491,8 +617,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 남자가 \'퇴근하면서 시장에 들렀다 올게요\'라고 했으므로 이어서 갈 곳은 시장이에요.',
       '②는 틀렸어요. 남자는 퇴근하면서 간다고 했으므로 회사에서 퇴근한 뒤의 이야기예요.',
       '③은 틀렸어요. 병원은 대화에 전혀 언급되지 않아요.',
-      '④는 틀렸어요. 은행도 대화에 나오지 않는 장소예요.'
+      '④는 틀렸어요. 은행도 대화에 나오지 않는 장소예요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The man says "퇴근하면서 시장에 들렀다 올게요" (I will stop by the market on my way home from work), so his next destination is the market.',
+      'This is wrong. The man says he will go on his way home from work, so this happens after he leaves the office.',
+      'This is wrong. The hospital is never mentioned in the conversation.',
+      'This is wrong. The bank is also a place that does not appear in the conversation.'
+    ],
+    tipEn: 'For place questions, listen for the noun that appears with movement verbs (들르다 stop by, 가다 go, 오다 come).',
     freq: 2, freqNote: 'TOPIK II 듣기 11~14 · 장소'
   },
   {
@@ -517,8 +650,15 @@ window.LEVEL4_BANK = [
       '①이 정답이에요. 남자가 \'아이들이 건강하게 자라려면 밖에서 뛰어노는 시간이 꼭 필요하다고 생각해요\'라고 직접 말했기 때문이에요.',
       '②는 틀렸어요. 스마트폰 게임을 하는 시간이 늘었다는 것은 여자의 말일 뿐 남자의 생각이 아니에요.',
       '③은 틀렸어요. 남자는 스마트폰이 해롭다고 직접 말하지 않았고, 밖에서 뛰어노는 시간의 필요성을 강조했어요.',
-      '④는 틀렸어요. 남자는 밖에서 노는 시간이 점점 줄고 있다고 했으므로 늘었다는 내용과 반대예요.'
+      '④는 틀렸어요. 남자는 밖에서 노는 시간이 점점 줄고 있다고 했으므로 늘었다는 내용과 반대예요.',
     ],
+    optExplainEn: [
+      'This is the correct answer. The man says directly, "아이들이 건강하게 자라려면 밖에서 뛰어노는 시간이 꼭 필요하다고 생각해요" (I think children need time to run and play outside to grow up healthy).',
+      'This is wrong. The increase in smartphone game time is the woman\'s statement, not the man\'s opinion.',
+      'This is wrong. The man does not directly say smartphones are harmful; he emphasizes the need for outdoor play time.',
+      'This is wrong. The man says outdoor play time is gradually decreasing, so the claim that it increased is the opposite.'
+    ],
+    tipEn: 'For opinion questions, listen to the speaker\'s words that end with ~다고 생각해요 / ~아야 한다 (I think... / must...).',
     freq: 3, freqNote: 'TOPIK II 듣기 7~10 · 중심 내용'
   }
 ];
