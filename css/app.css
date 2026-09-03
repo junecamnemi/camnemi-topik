@@ -379,6 +379,26 @@
 .q-explain b { color: var(--ios-blue); }
 .q-explain .why-wrong { color: var(--ios-red); }
 
+/* ---------- Detailed explanation blocks (why each option is right/wrong) ---------- */
+.dx { border-radius: 14px; padding: 10px 12px; margin-top: 8px; font-size: 13.5px; line-height: 1.65; }
+.dx-head { margin-bottom: 4px; }
+.dx-head b { font-size: 13px; }
+.dx-body { color: var(--ios-label); }
+.dx-right { background: rgba(16, 185, 129, .10); border: 1px solid rgba(16, 185, 129, .25); }
+.dx-right .dx-head b { color: var(--ios-green); }
+.dx-wrongs { background: rgba(239, 68, 68, .06); border: 1px solid rgba(239, 68, 68, .18); }
+.dx-wrongs .dx-head b { color: var(--ios-red); }
+.dx-row { display: flex; gap: 8px; padding: 5px 0; border-top: 0.5px dashed var(--ios-separator); }
+.dx-row:first-of-type { border-top: none; }
+.dx-letter { flex-shrink: 0; color: var(--ios-red); font-size: 13px; padding-top: 1px; }
+.dx-opt { font-weight: 600; color: var(--ios-label); font-size: 13px; }
+.dx-why { color: var(--ios-secondary-label); font-size: 12.5px; margin-top: 2px; }
+.dx-tip { background: rgba(245, 158, 11, .08); border: 1px solid rgba(245, 158, 11, .22); }
+.dx-tip .dx-head b { color: var(--ios-orange); }
+[data-theme="dark"] .dx-right { background: rgba(52, 211, 153, .10); }
+[data-theme="dark"] .dx-wrongs { background: rgba(248, 113, 113, .07); }
+[data-theme="dark"] .dx-tip { background: rgba(251, 191, 36, .08); }
+
 /* English only when TIP is on — hidden by default */
 .opt-gloss { display: none; font-size: 12px; color: var(--ios-secondary-label); font-weight: 400; }
 .passage-gloss {

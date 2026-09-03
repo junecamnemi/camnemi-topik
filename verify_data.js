@@ -92,6 +92,7 @@ TOPIK1.forEach((q) => {
   if (q.options.length !== 4) errors.push(`topik1 ${q.id} not 4 options`);
   if (!q.explain || !Array.isArray(q.traps) || q.traps.length < 2 || !q.tip) errors.push(`topik1 ${q.id} missing explain/traps/tip`);
   if (!q.freq || !q.freqNote) errors.push(`topik1 ${q.id} missing freq`);
+  if (q.options && q.options.length === 4 && (!q.optExplain || q.optExplain.length !== 4)) errors.push(`topik1 ${q.id} missing optExplain (4 items)`);
   if (q.explainAudio && !fs.existsSync(path.join(base, q.explainAudio))) errors.push(`topik1 ${q.id} explainAudio missing file: ${q.explainAudio}`);
 });
 if (TOPIK1.length < 10) errors.push(`topik1 bank too small (${TOPIK1.length})`);
@@ -123,6 +124,7 @@ TOPIK2.forEach((q) => {
   if (q.section !== 'writing' && !(q.options && q.correct >= 0 && q.correct < q.options.length)) errors.push(`topik2 ${q.id} bad options/correct`);
   if (q.section === 'writing' && !q.writePrompt) errors.push(`topik2 ${q.id} writing missing writePrompt`);
   if (q.level < 3) errors.push(`topik2 ${q.id} level should be 3+`);
+  if (q.options && q.options.length === 4 && (!q.optExplain || q.optExplain.length !== 4)) errors.push(`topik2 ${q.id} missing optExplain (4 items)`);
 });
 MOCK.forEach((m) => {
   if (!m.id || !m.date || !m.name) errors.push(`mock missing fields`);
@@ -146,6 +148,7 @@ for (let n = 1; n <= 6; n++) {
     else if (!(q.correct >= 0 && q.correct < 4)) errors.push(`level${n} ${q.id} bad correct`);
     if (!q.explain || !q.tip) errors.push(`level${n} ${q.id} missing explain/tip`);
     if (!['reading', 'listening'].includes(q.section)) errors.push(`level${n} ${q.id} bad section`);
+    if (q.options && q.options.length === 4 && (!q.optExplain || q.optExplain.length !== 4)) errors.push(`level${n} ${q.id} missing optExplain (4 items)`);
     LV_ALL.push(q);
   });
   console.log(`Level${n} bank: ${arr.length} qs (reading ${read} / listening ${listen})`);

@@ -411,6 +411,41 @@ function freqBadge(q) {
   if (!f) return '';
   return `<span class="q-freq" title="${esc(f.note)}">${ic('schedule', 11)} ${esc(f.note)}</span>`;
 }
+
+/* ---------- Detailed explanation (why each option is right/wrong) ---------- */
+function explainBlock(q) {
+  const ko = LANG === 'ko';
+  const letters = '①②③④';
+  const correct = q.correct;
+  const optEx = q.optExplain || [];
+  const optText = (o) => esc(o.t || '');
+  let h = '';
+  // 정답 상세
+  const whyRight = optEx[correct] || q.explain || '';
+  h += `<div class="dx dx-right">
+    <div class="dx-head"><b>✅ ${ko ? '정답' : 'Correct'}: ${letters[correct]} ${optText(q.options[correct])}</b></div>
+    <div class="dx-body">${esc(whyRight)}</div>
+  </div>`;
+  // 오답 상세 (각 오답 옵션별)
+  const wrongs = [];
+  (q.options || []).forEach((o, i) => {
+    if (i === correct) return;
+    const why = optEx[i] || (q.traps && q.traps.find(t => t.includes(letters[i]))) || '';
+    wrongs.push(`<div class="dx-row">
+      <b class="dx-letter">✗ ${letters[i]}</b>
+      <div><div class="dx-opt">${optText(o)}</div>
+      ${why ? `<div class="dx-why">${esc(why)}</div>` : ''}</div>
+    </div>`);
+  });
+  if (wrongs.length) {
+    h += `<div class="dx dx-wrongs"><div class="dx-head"><b>${ko ? '왜 틀렸을까?' : 'Why the others are wrong'}</b></div>${wrongs.join('')}</div>`;
+  }
+  // TIP
+  if (q.tip) {
+    h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(q.tip)}</div></div>`;
+  }
+  return h;
+}
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
 
@@ -617,11 +652,7 @@ function viewDaily() {
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
           </button>`).join('')}
       <div class="q-explain" id="daily-ex">
-        ${picked !== undefined ? `
-          <b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}
-          ${q.traps && q.traps.length ? `<div class="why-wrong" style="margin-top:6px;"><b>✗ ${LANG==='ko'?'오답 이유':'Why wrong'}:</b> ${q.traps.map(esc).join(' · ')}</div>` : ''}
-          ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
-        ` : ''}
+        ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
@@ -815,11 +846,7 @@ function viewSectionCard() {
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
           </button>`).join('')}
       <div class="q-explain" id="daily-ex">
-        ${picked !== undefined ? `
-          <b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}
-          ${q.traps && q.traps.length ? `<div class="why-wrong" style="margin-top:6px;"><b>✗ ${LANG==='ko'?'오답 이유':'Why wrong'}:</b> ${q.traps.map(esc).join(' · ')}</div>` : ''}
-          ${q.tip ? `<div style="margin-top:6px;"><b>💡 Tip:</b> ${esc(q.tip)}</div>` : ''}
-        ` : ''}
+        ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
@@ -1746,7 +1773,7 @@ function viewMockRun() {
            <div id="mock-grade"></div>`
         : q.options.map((o, i) => `
           <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickMock(${i})"><span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}</button>`).join('')}
-      ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain"><b>✓ ${LANG==='ko'?'정답':'Answer'}: ${'①②③④'[q.correct]}</b> — ${esc(q.explain)}</div>` : ''}
+      ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain">${explainBlock(q)}</div>` : ''}
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
       ${relatedBlock(q)}
