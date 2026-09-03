@@ -15,7 +15,8 @@ const APP = {
   mock: null,               // active mock test
   mockIdx: 0,
   mockAnswers: {},
-  aiMode: false             // true when the current daily set is AI-generated
+  aiMode: false,          // true when the current daily set is AI-generated
+  sectionLoading: false   // true while AI is generating the remaining section questions
 };
 
 /* ---------- AI backend ----------
@@ -692,42 +693,72 @@ function viewDaily() {
     </div>
   `;
 }
-/* ---------- AI question generation ---------- */
+/* ---------- AI question generation (streaming: 1st question fast, rest in background) ---------- */
 async function generateAI(optType) {
   // find the triggering button safely (no reliance on global `event`)
   const btn = document.querySelector('[onclick^="generateAI"]') || null;
-  if (btn) { btn.disabled = true; btn.textContent = '✨ Generating… (AI)'; }
   const status = $id('ai-status');
-  if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
   const SECTIONS = ['reading', 'listening', 'writing'];
   const sec = SECTIONS.includes(optType) ? optType : null;   // section practice call
+  const setBtn = (txt, dis) => { if (btn) { btn.disabled = dis; if (txt !== undefined) btn.textContent = txt; } };
   try {
-    const body = { level: APP.level, count: 10, section: sec || 'all' };
-    if (optType && !sec) body.type = optType;   // smart rec: generate the weak type
-    const res = await fetch(aiUrl('/generate'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-    if (!res.ok || !data.questions) throw new Error(data.error || 'AI server error');
-    const qs = data.questions;
-    if (!qs.length) throw new Error('AI returned no questions');
     if (sec) {
-      // section practice: load AI set into the section quiz flow
+      // ---- section practice: fetch 1 question now, start the quiz, generate the other 9 while you solve ----
+      setBtn('✨ ' + (LANG === 'ko' ? '첫 문제 생성 중…' : 'Making Q1…'), true);
+      if (status) status.textContent = LANG === 'ko' ? '✨ AI가 첫 문제를 만들고 있습니다…' : '✨ AI is writing your first question…';
+      const body1 = { level: APP.level, count: 1, section: sec };
+      const res1 = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body1) });
+      const d1 = await res1.json();
+      if (!res1.ok || !d1.questions || !d1.questions.length) throw new Error(d1.error || 'AI server error');
+      const q1 = d1.questions[0];
       APP.section = sec;
-      APP.sectionQs = qs;
+      APP.sectionQs = [q1];
       APP.sectionIdx = 0;
       APP.sectionAnswers = {};
       APP.sectionDone = false;
       APP.sectionAI = true;
+      APP.sectionLoading = true;   // more questions are on the way
       const all = lsGet(LS.section, {});
-      all[sec] = { qids: qs.map(q => q.id), done: {}, ai: true };
+      all[sec] = { qids: [q1.id], done: {}, ai: true, loading: true };
       lsSet(LS.section, all);
-      render();
       if (status) status.textContent = '';
+      setBtn('✨ ' + (LANG === 'ko' ? '나머지 생성 중…' : 'Making more…'), true);
+      render();   // show Q1 immediately with the 10-min timer
+      // ---- background: fetch the remaining 9 ----
+      try {
+        const bodyN = { level: APP.level, count: 9, section: sec };
+        const resN = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyN) });
+        const dN = await resN.json();
+        if (!resN.ok || !dN.questions || !dN.questions.length) throw new Error(dN.error || 'AI server error');
+        // append only if the user is still on this section quiz
+        if (APP.section === sec && !APP.sectionDone) {
+          const existing = new Set(APP.sectionQs.map(q => q.id));
+          const fresh = dN.questions.filter(q => !existing.has(q.id));
+          APP.sectionQs = APP.sectionQs.concat(fresh).slice(0, 10);
+          APP.sectionLoading = false;
+          const all2 = lsGet(LS.section, {});
+          if (all2[sec]) { all2[sec].qids = APP.sectionQs.map(q => q.id); all2[sec].loading = false; }
+          lsSet(LS.section, all2);
+          toast(LANG === 'ko' ? `✨ 나머지 ${fresh.length}문제가 준비됐어요!` : `✨ ${fresh.length} more questions ready!`);
+          render();
+        }
+      } catch (e2) {
+        APP.sectionLoading = false;
+        toast(LANG === 'ko' ? '⚠ 나머지 문제 생성 실패 — 1문제로 계속하세요.' : '⚠ Could not make the rest — keep going with Q1.');
+      }
+      setBtn(undefined, false);
       return;
     }
+    // ---- daily / smart-rec: fetch all 10 at once (no quiz in progress yet) ----
+    setBtn('✨ Generating… (AI)', true);
+    if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
+    const body = { level: APP.level, count: 10, section: 'all' };
+    if (optType) body.type = optType;   // smart rec: generate the weak type
+    const res = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (!res.ok || !data.questions) throw new Error(data.error || 'AI server error');
+    const qs = data.questions;
+    if (!qs.length) throw new Error('AI returned no questions');
     // store as today's AI set (full question objects so it survives reload)
     const today = todayStr();
     const all = lsGet(LS.daily, {});
@@ -740,6 +771,7 @@ async function generateAI(optType) {
     APP.dailyDone = false;   // fresh set → back to questions
     render();
     if (status) status.textContent = '';
+    setBtn(undefined, false);
   } catch (e) {
     if (status) status.textContent = '⚠ ' + e.message;
     toast('AI generation failed: ' + e.message);
@@ -894,6 +926,7 @@ function viewSectionCard() {
       <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span>
       ${(sec === 'reading' || sec === 'listening') ? `<span id="sec-timer" class="mock-timer" style="font-weight:800;color:${_secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_secRemain)}</span>` : ''}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
+      ${APP.sectionLoading ? `<div style="margin:6px 0;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ios-blue);font-weight:700;">${ic('spark',13)} ${LANG==='ko'?'AI가 나머지 문제를 만들고 있어요…':'AI is making more questions…'}<span class="sub"> (${qs.length}/10)</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
@@ -945,11 +978,19 @@ function submitSectionWriting() {
   render();
 }
 function navSection(d) {
+  if (APP.sectionLoading && d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) {
+    toast(LANG === 'ko' ? '✨ 나머지 문제를 생성하고 있어요 — 잠시만요!' : '✨ Making more questions — one sec!');
+    return;
+  }
   if (d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) { finishSection(); return; }
   APP.sectionIdx = Math.min(APP.sectionQs.length - 1, Math.max(0, APP.sectionIdx + d));
   render();
 }
 function finishSection() {
+  if (APP.sectionLoading) {
+    toast(LANG === 'ko' ? '✨ 나머지 문제를 생성하고 있어요 — 잠시만요!' : '✨ Making more questions — one sec!');
+    return;
+  }
   if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
   const qs = APP.sectionQs;
   const done = APP.sectionAnswers || {};
@@ -987,7 +1028,7 @@ function viewSectionResult() {
 }
 function exitSection() {
   if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
-  APP.section = null; APP.sectionQs = null; APP.sectionDone = false; APP.sectionResult = null; APP.sectionType = null;
+  APP.section = null; APP.sectionQs = null; APP.sectionDone = false; APP.sectionResult = null; APP.sectionType = null; APP.sectionLoading = false;
   go('home');
 }
 function bindMy() {}
