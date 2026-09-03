@@ -665,7 +665,6 @@ function viewDaily() {
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -802,6 +801,8 @@ function navDaily(d) {
   // at last question, moving forward triggers the finish screen
   if (d > 0 && APP.dailyIdx >= APP.daily.length - 1) { finishDaily(); return; }
   APP.dailyIdx = Math.min(APP.daily.length - 1, Math.max(0, APP.dailyIdx + d));
+  // reset passage scroll to top
+  const scr = $id('screen'); if (scr) scr.querySelector('.q-passage')?.scrollTo(0, 0);
   render();
 }
 function bindDaily() {}
@@ -929,7 +930,6 @@ function viewSectionCard() {
       ${APP.sectionLoading ? `<div style="margin:6px 0;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ios-blue);font-weight:700;">${ic('spark',13)} ${LANG==='ko'?'AI가 나머지 문제를 만들고 있어요…':'AI is making more questions…'}<span class="sub"> (${qs.length}/10)</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -984,6 +984,8 @@ function navSection(d) {
   }
   if (d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) { finishSection(); return; }
   APP.sectionIdx = Math.min(APP.sectionQs.length - 1, Math.max(0, APP.sectionIdx + d));
+  // reset passage scroll to top
+  const scr = $id('screen'); if (scr) scr.querySelector('.q-passage')?.scrollTo(0, 0);
   render();
 }
 function finishSection() {
@@ -1578,7 +1580,6 @@ function viewChallenge() {
       <div class="daily-progress"><div style="width:${Math.round((ch.idx + 1) / qs.length * 100)}%;background:var(--ios-orange);"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
@@ -1900,7 +1901,6 @@ function viewMockRun() {
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
-      ${q.passageGl ? `<button class="btn btn-ghost btn-sm passage-toggle" style="margin:2px 0 8px;color:var(--ios-blue);" onclick="togglePassage(this)">${ic('tip',13)} ${t('passage_en')}</button>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -1914,7 +1914,6 @@ function viewMockRun() {
       ${picked !== undefined && q.correct !== undefined ? `<div class="q-explain">${explainBlock(q)}</div>` : ''}
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
       <button class="btn btn-ghost tip-btn" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>
-      ${relatedBlock(q)}
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.mockIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navMock(-1)">${t('prev')}</button>
@@ -1949,6 +1948,8 @@ function navMock(d) {
     if (_mockTimer) { clearInterval(_mockTimer); _mockTimer = null; }
   }
   APP.mockIdx = next;
+  // reset passage scroll to top
+  const scr = $id('screen'); if (scr) scr.querySelector('.q-passage')?.scrollTo(0, 0);
   render();
 }
 function exitMock() {
