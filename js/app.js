@@ -386,6 +386,31 @@ function allQuestions() {
   return t1.concat(t2, lv);
 }
 function qById(id) { return allQuestions().find(q => q.id === id); }
+
+/* ---------- Past-exam frequency info ----------
+   Shows how often this question TYPE appeared in real TOPIK sessions.
+   Uses the question's own freq/freqNote, else maps its type+section to
+   the pattern observed in the topik1/topik2 banks (built from past papers). */
+let _freqMap = null;
+function freqInfo(q) {
+  if (!q) return null;
+  if (q.freq && q.freqNote) return { n: q.freq, note: q.freqNote };
+  if (!_freqMap) {
+    _freqMap = {};
+    [...(window.TOPIK1_BANK || []), ...(window.TOPIK2_BANK || [])].forEach(b => {
+      if (!b.freq || !b.freqNote) return;
+      const k = b.section + ':' + b.type;
+      if (!_freqMap[k]) _freqMap[k] = { n: b.freq, note: b.freqNote };
+    });
+  }
+  const f = _freqMap[q.section + ':' + q.type];
+  return f || null;
+}
+function freqBadge(q) {
+  const f = freqInfo(q);
+  if (!f) return '';
+  return `<span class="q-freq" title="${esc(f.note)}">${ic('schedule', 11)} ${esc(f.note)}</span>`;
+}
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function escAttr(s) { return esc(s).replace(/"/g, '&quot;'); }
 
@@ -573,6 +598,7 @@ function viewDaily() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.dailyIdx + 1} / ${qs.length} · DAILY${isAI ? ' ✨ AI' : ''}</span>
       <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
+      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
@@ -771,6 +797,7 @@ function viewSectionCard() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
       <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
+      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
@@ -1705,6 +1732,7 @@ function viewMockRun() {
       <span id="mock-timer" class="mock-timer" style="font-weight:800;color:${_mockRemain < 300 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_mockRemain)}</span>
       <button class="btn btn-ghost btn-sm" onclick="exitMock()">${t('exit')}</button></div>
       <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}</div>
+      <div class="q-meta">${freqBadge(q)}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}

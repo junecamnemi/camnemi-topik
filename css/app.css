@@ -339,6 +339,19 @@
   font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 6px; margin-left: 6px;
 }
 .q-kr { font-size: 17px; font-weight: 600; line-height: 1.45; margin: 10px 0; color: var(--ios-label); }
+
+/* Past-exam frequency badge */
+.q-meta { display: flex; align-items: center; gap: 6px; margin: 4px 0 2px; flex-wrap: wrap; }
+.q-freq {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700;
+  color: var(--ios-blue);
+  background: rgba(91, 91, 214, .1);
+  border: 1px solid rgba(91, 91, 214, .18);
+  border-radius: 999px; padding: 2px 9px;
+  line-height: 1.5;
+}
+[data-theme="dark"] .q-freq { background: rgba(124, 124, 240, .14); color: var(--ios-blue); }
 .q-passage {
   background: var(--ios-fill); border-radius: 16px;
   padding: 14px 16px; font-size: 15px; margin: 10px 0; line-height: 1.6; color: var(--ios-label);
