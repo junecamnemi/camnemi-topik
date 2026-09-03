@@ -1252,17 +1252,17 @@ function smartRecCard(acc) {
   // find weakest type with >=2 attempts (stable signal)
   const weak = (acc.byType || []).filter(r => r.n >= 2 && r.p < 70)[0];
   if (!weak) {
-    return `<div class="app-card filled" style="background:linear-gradient(135deg,#EAF3FF,#F0F8FF);border:none;">
+    return `<div class="app-card filled smart-card">
       <div class="row">
         <div style="color:var(--ios-blue);margin-right:10px;">${ic('spark', 24)}</div>
-        <div><b style="font-size:14px;color:var(--ios-blue);">🎯 ${t('smart_title')}</b>
+        <div><b style="font-size:14px;color:var(--ios-blue);">${t('smart_title')}</b>
         <div class="sub" style="font-size:12.5px;margin-top:3px;">${t('smart_empty')}</div></div>
       </div></div>`;
   }
   const label = typeLabel(weak.k);
   const icoName = { grammar:'mock', vocab:'notes', main_idea:'tip', order:'progress', sentence_pos:'target', topic:'listen', place:'schedule', intent:'target', comprehension:'notes', writing_short:'mock', writing_letter:'mock' }[weak.k] || 'target';
   const icoColor = { grammar:'var(--ios-red)', vocab:'var(--ios-green)', main_idea:'var(--ios-blue)', order:'var(--ios-orange)', sentence_pos:'var(--ios-blue)', topic:'var(--ios-teal)', place:'var(--ios-orange)', intent:'var(--ios-red)', comprehension:'var(--ios-blue)', writing_short:'var(--ios-green)', writing_letter:'var(--ios-green)' }[weak.k] || 'var(--ios-blue)';
-  return `<div class="app-card" style="border:1.5px solid var(--ios-blue);background:linear-gradient(135deg,#EAF3FF,#F6FAFF);">
+  return `<div class="app-card smart-card" style="border:1.5px solid var(--ios-blue);">
     <div class="row">
       <div style="color:${icoColor};margin-right:10px;">${ic(icoName, 24)}</div>
       <div><b style="font-size:14px;color:var(--ios-label);">${t('smart_weak', { t: label })}</b>
