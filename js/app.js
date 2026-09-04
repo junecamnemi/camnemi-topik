@@ -1239,9 +1239,9 @@ function viewMy() {
   const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
   const head = authed ? `
     <div class="um-head">
-      <span class="um-avatar">${esc(u.initial)}</span>
+      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${myChar().img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
       <div class="um-id">
-        <b>${esc(u.name || t('menu_account'))}</b>
+        <b>${esc(myCharName())}</b>
         <span class="sub">${esc(u.email || t('menu_signed_in'))}</span>
       </div>
       <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="doLogout()">${t('menu_logout')}</button>
@@ -2739,11 +2739,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.onAuthChange) {
     onAuthChange((session) => {
       refreshUserBtn();
-      if (session) loadUserData().then(() => { try { render(); } catch (e) {} });
+      if (session) {
+        syncCharFromAccount();
+        loadUserData().then(() => { try { render(); } catch (e) {} });
+      }
     });
     // in case initAuth already fired before this listener registered
     setTimeout(() => {
-      if (isAuthed()) { refreshUserBtn(); loadUserData().then(() => { try { render(); } catch (e) {} }); }
+      if (isAuthed()) { refreshUserBtn(); syncCharFromAccount(); loadUserData().then(() => { try { render(); } catch (e) {} }); }
     }, 400);
   }
   // apply saved language: selector, nav labels, header, strip

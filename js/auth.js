@@ -130,13 +130,36 @@ function renderAuthChip() {
     return;
   }
   const name = (_profile && (_profile.full_name || _profile.email)) || (_session.user.email || 'Student');
-  const initial = (name[0] || '?').toUpperCase();
-  holder.innerHTML = `
-    <div class="user-chip">
-      <span class="user-avatar">${initial}</span>
-      <span class="user-name">${escapeHtml(name.split(' ')[0])}</span>
-      <button class="btn btn-ghost btn-sm" onclick="logout()" title="Log out">⎋</button>
-    </div>`;
+  // character rides with the account: use the selected character's face + name
+  let chipInner;
+  try {
+    const ch = window.myChar && myChar();
+    const chName = window.myCharName && myCharName();
+    if (ch) {
+      const dispName = (chName && chName.trim()) || name.split(' ')[0];
+      chipInner = `
+        <div class="user-chip" onclick="openCharPicker&&openCharPicker()" style="cursor:pointer;" title="${escapeHtml(name)}">
+          <span class="user-avatar" style="overflow:hidden;"><img src="${ch.img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></span>
+          <span class="user-name">${escapeHtml(dispName)}</span>
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();logout()" title="Log out">⎋</button>
+        </div>`;
+    } else {
+      chipInner = `
+        <div class="user-chip">
+          <span class="user-avatar">${escapeHtml((name[0] || '?').toUpperCase())}</span>
+          <span class="user-name">${escapeHtml(name.split(' ')[0])}</span>
+          <button class="btn btn-ghost btn-sm" onclick="logout()" title="Log out">⎋</button>
+        </div>`;
+    }
+  } catch (e) {
+    chipInner = `
+      <div class="user-chip">
+        <span class="user-avatar">${escapeHtml((name[0] || '?').toUpperCase())}</span>
+        <span class="user-name">${escapeHtml(name.split(' ')[0])}</span>
+        <button class="btn btn-ghost btn-sm" onclick="logout()" title="Log out">⎋</button>
+      </div>`;
+  }
+  holder.innerHTML = chipInner;
 }
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -147,3 +170,24 @@ function getSession() { return _session; }
 function getProfile() { return _profile; }
 function isLoggedIn() { return !!_session; }
 function getSupabase() { return _sb; }   // raw client for page-level DB calls
+
+/* ---------- Character ↔ Account sync (character rides with the account) ----------
+   The selected character (id + custom name) lives in the Supabase user_metadata,
+   so it follows the account across devices. LocalStorage is only a cache.       */
+function charFromAccount() {
+  if (!_session || !_session.user) return null;
+  const md = _session.user.user_metadata || {};
+  if (!md.char_id) return null;
+  return { id: md.char_id, name: md.char_name || '' };
+}
+function pushCharToAccount(id, name) {
+  if (!_sb || !_session) return;
+  _sb.auth.updateUser({ data: { char_id: id, char_name: name || '' } })
+    .then(({ error }) => { if (error) console.warn('char sync:', error.message); })
+    .catch(e => console.warn('char sync failed', e));
+}
+window.AUTH = {
+  user: () => (_session ? { email: _session.user.email, name: (_profile && (_profile.full_name || _profile.email)) || '' } : null),
+  isLoggedIn, getSession, getProfile, getSupabase,
+  charFromAccount, pushCharToAccount
+};

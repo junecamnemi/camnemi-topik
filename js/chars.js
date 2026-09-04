@@ -65,12 +65,14 @@ window.CHAR_LIST = [
   { id: 'm-30', g: 'm', name: 'Luka', img: 'assets/img/chars/m-30.webp' }
 ];
 
-/* current selected character id — persisted */
+/* current selected character id — persisted (localStorage cache + account sync) */
 function myCharId() { return localStorage.getItem('camnemi_topik_char') || 'f-01'; }
 function myChar() { return (window.CHAR_LIST || []).find(c => c.id === myCharId()) || (window.CHAR_LIST || [])[0]; }
 function setMyChar(id) {
   localStorage.setItem('camnemi_topik_char', id);
+  if (window.AUTH && window.AUTH.pushCharToAccount) AUTH.pushCharToAccount(id, myCharName());
   const el = $id('greet-avatar-img'); if (el) el.src = myChar().img;
+  if (typeof renderAuthChip === 'function' && isAuthed && isAuthed()) renderAuthChip();
   applyCharTheme();
   render();
 }
@@ -81,7 +83,28 @@ function myCharName() {
 }
 function setMyCharName(n) {
   localStorage.setItem('camnemi_topik_char_name', (n || '').trim());
+  if (window.AUTH && window.AUTH.pushCharToAccount) AUTH.pushCharToAccount(myCharId(), (n || '').trim());
+  if (typeof renderAuthChip === 'function' && isAuthed && isAuthed()) renderAuthChip();
   render();
+}
+/* restore the character from the signed-in account (account is the source of truth) */
+function syncCharFromAccount() {
+  try {
+    if (!window.AUTH || !AUTH.charFromAccount) return false;
+    const acct = AUTH.charFromAccount();
+    if (!acct || !acct.id) return false;
+    if (!(window.CHAR_LIST || []).some(c => c.id === acct.id)) return false;
+    const changed = acct.id !== myCharId() || (acct.name && acct.name !== myCharName());
+    if (changed) {
+      localStorage.setItem('camnemi_topik_char', acct.id);
+      if (acct.name) localStorage.setItem('camnemi_topik_char_name', acct.name);
+      const el = $id('greet-avatar-img'); if (el) el.src = myChar().img;
+      applyCharTheme();
+      render();
+      return true;
+    }
+  } catch (e) { console.warn('char sync:', e); }
+  return false;
 }
 /* per-character accent theme — each of the 60 chars gets a UNIQUE pastel hue.
    Index 0..59 (females 0-29, males 30-59) × golden angle 47° (coprime with 360)
