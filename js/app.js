@@ -707,25 +707,48 @@ const FX_MOODS = [
   { k: 'game',   file: 'game',   cls: 'fx-game' },    // 게임하는 얼굴
   { k: 'selfie', file: 'selfie', cls: 'fx-selfie' }   // 셀카 찍는 얼굴
 ];
-let _fxTimer = null, _fxIdx = -1;
+let _fxTimer = null, _fxIdx = -1, _fxLastKey = 'smile';
+/* Which moods fit each 3-hour Seoul block — the character only ACTS actions
+   that make sense right now (sleeps late at night, studies in the morning,
+   eats at lunch, cooks/sings in the evening, games before bed). */
+const FX_BY_PART = {
+  midnight:  ['sleep'],
+  predawn:   ['sleep'],
+  sunrise:   ['smile', 'music', 'sing', 'eat'],          // waking up, morning mood
+  morning:   ['study', 'smile', 'music'],                // study time
+  midday:    ['eat', 'study', 'smile', 'phone'],         // lunch break
+  afternoon: ['study', 'phone', 'game', 'music'],        // classes + study
+  sunset:    ['cook', 'eat', 'dance', 'sing', 'music'],  // dinner, hobbies
+  night:     ['game', 'selfie', 'music', 'phone', 'dance'] // evening wind-down
+};
+function fxPoolForPart(part) {
+  const keys = FX_BY_PART[part] || ['smile'];
+  return keys.map(k => FX_MOODS.find(m => m.k === k)).filter(Boolean);
+}
 /* pick the expression portrait path for the current character (falls back to base) */
 function fxImgPath(m) {
   return `assets/img/chars/fx/${myCharId()}-${m.file}.webp`;
 }
-function showFx(i) {
+function fxApply(m) {
   const av = $id('greet-avatar');
   const img = $id('greet-avatar-img');
   if (!av || !img) return;
-  const m = FX_MOODS[i % FX_MOODS.length];
-  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-music','fx-sleep');
+  FX_MOODS.forEach(x => av.classList.remove(x.cls));
   av.classList.add(m.cls);
+  _fxLastKey = m.k;
   const target = fxImgPath(m);
   const probe = new Image();
   probe.onload = () => { img.src = target; };
   probe.onerror = () => { img.src = myChar().img; };   // portrait missing → base face
   probe.src = target;
 }
-function nextFx() { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); }
+function showFx(i) { const m = FX_MOODS[i % FX_MOODS.length]; fxApply(m); }
+function nextFx() {
+  const pool = fxPoolForPart(scenePartOfDay());
+  if (!pool.length) return;
+  _fxIdx = (_fxIdx + 1) % pool.length;
+  fxApply(pool[_fxIdx]);
+}
 function startFxCycle() {
   if (_fxTimer) clearInterval(_fxTimer);
   if ($id('greet-avatar')) {
@@ -735,6 +758,15 @@ function startFxCycle() {
   }
 }
 function stopFxCycle() { if (_fxTimer) { clearInterval(_fxTimer); _fxTimer = null; } }
+/* when the time-of-day scene changes, hop the character to a mood that fits */
+function syncFxWithPart() {
+  const pool = fxPoolForPart(scenePartOfDay());
+  if (!pool.length) return;
+  if (!pool.some(m => m.k === _fxLastKey)) {
+    _fxIdx = -1;
+    nextFx();
+  }
+}
 
 
 /* ================= FOCUS TIMER (Pomodoro, Aiko-style) ================= */
@@ -923,6 +955,8 @@ function updateScenePart() {
     card.classList.remove('scene-midnight','scene-predawn','scene-sunrise','scene-morning','scene-midday','scene-afternoon','scene-sunset','scene-night');
     card.classList.add('scene-' + part);
   }
+  // character hops to an action that fits the new time of day
+  syncFxWithPart();
   img.style.opacity = 0;
   setTimeout(() => {
     const probe = new Image();
