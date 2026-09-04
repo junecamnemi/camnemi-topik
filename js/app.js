@@ -1259,6 +1259,37 @@ const SEC_MINUTES = 10;   // 10 min per 10 questions (fixed pace for all levels)
 async function startSection(sec, lv, type) {
   // build a set of 10 for this section + level (fall back to level-agnostic if scarce)
   const target = lv || APP.sectionLevel || myLevel();
+  // ---- Vocabulary mode: generate 4-option quizzes straight from VOCAB_BANK ----
+  if (type === 'vocab' && window.VOCAB_BANK && window.VOCAB_BANK.length) {
+    const bank = window.VOCAB_BANK;
+    const lvBand = target <= 2 ? 1 : 2;              // TOPIK I (1-2) vs II (3-6)
+    const pool = bank.filter(w => w.l === lvBand);
+    const src = (pool.length >= 20 ? pool : bank).slice();
+    const shuf = src.sort(() => Math.random() - 0.5);
+    const pick = shuf.slice(0, 10);
+    const qs = pick.map((w, i) => {
+      // distractors: 3 other English meanings from the same band
+      const others = (pool.length >= 20 ? pool : bank).filter(x => x.k !== w.k);
+      const dist = others.sort(() => Math.random() - 0.5).slice(0, 3);
+      const opts = [{ t: w.e, gl: w.k }, ...dist.map(d => ({ t: d.e, gl: d.k }))];
+      opts.sort(() => Math.random() - 0.5);
+      return {
+        id: 'VOCAB' + (i + 1), section: 'reading', type: 'vocab', level: target, points: 2,
+        q: LANG === 'ko' ? '다음 단어의 뜻으로 알맞은 것을 고르십시오.' :
+           LANG === 'km' ? 'ជ្រើសរើសអត្ថន័យត្រឹមត្រូវរបស់ពាក្យ។' : 'Choose the correct meaning of the word.',
+        passage: w.k, passageGl: 'TOPIK ' + (lvBand === 1 ? 'I' : 'II') + ' · ' + (target <= 2 ? 'Level ' + target : 'Level ' + target),
+        options: opts, correct: opts.findIndex(o => o.t === w.e),
+        explain: w.k + ' = ' + w.e,
+        freq: 5, freqNote: 'TOPIK 어휘 · 빈출 단어장'
+      };
+    });
+    APP.section = sec; APP.sectionLevel = target; APP.sectionType = 'vocab';
+    APP.sectionQs = qs; APP.sectionIdx = 0; APP.sectionAnswers = {}; APP.sectionDone = false;
+    const all = lsGet(LS.section, {}); all['reading:' + target + ':vocab'] = { qids: qs.map(q => q.id), done: {}, level: target, type: 'vocab' };
+    lsSet(LS.section, all);
+    go(sec);
+    return;
+  }
   const byType = (pool) => (type ? pool.filter(q => q.type === type) : pool);
   let pool = byType(allQuestions().filter(q => q.section === sec && q.level === target));
   if (pool.length < 10) pool = byType(allQuestions().filter(q => q.section === sec && levelOf(q) === APP.level));
