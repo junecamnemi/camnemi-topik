@@ -7,3 +7,4 @@ assets/audio/tts_cache/
 data/daily-bank.json
 data/.daily-seen.json
 data/daily-bank.log
+.ref/
