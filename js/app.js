@@ -739,26 +739,25 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // Quick start — four one-tap test modes (no grouping, jump straight in)
+  // Quick start — four big pretty one-tap test cards (no icons, no title bar)
   const aiQuick = `
-    <div class="app-card ai-quick ai-hero">
-      <div class="aq-glow"></div>
-      <div class="aq-head">
-        <div class="aq-title">${ic('spark',18)} <b>${t('home_ai_quick')}</b></div>
-        <span class="aq-ai-tag">✨ AI</span>
-      </div>
+    <div class="app-card ai-quick ai-hero aq-nohead">
       <div class="aq-4">
         <button class="aq-cell aq-r" onclick="startSection('reading', myLevel())">
-          <span class="aq-ico">${ic('learn',18)}</span><b>${t('nav_reading')}</b>
+          <span class="aq-txt"><b>${t('nav_reading')}</b><span class="aq-sub">${t('home_ai_read')}</span></span>
+          <span class="aq-arr">→</span>
         </button>
         <button class="aq-cell aq-l" onclick="startSection('listening', myLevel())">
-          <span class="aq-ico">${ic('listen',18)}</span><b>${t('nav_listening')}</b>
+          <span class="aq-txt"><b>${t('nav_listening')}</b><span class="aq-sub">${t('home_ai_listen')}</span></span>
+          <span class="aq-arr">→</span>
         </button>
         <button class="aq-cell aq-v" onclick="startSection('reading', myLevel(), 'vocab')">
-          <span class="aq-ico">${ic('notes',18)}</span><b>${t('home_task_vocab')}</b>
+          <span class="aq-txt"><b>${t('home_task_vocab')}</b><span class="aq-sub">${t('home_sch_vocab')}</span></span>
+          <span class="aq-arr">→</span>
         </button>
         <button class="aq-cell aq-m" onclick="go('mock')">
-          <span class="aq-ico">${ic('mock',18)}</span><b>${t('home_task_mock')}</b>
+          <span class="aq-txt"><b>${t('home_task_mock')}</b><span class="aq-sub">${t('home_sch_mock')}</span></span>
+          <span class="aq-arr">→</span>
         </button>
       </div>
     </div>`;
