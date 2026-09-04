@@ -2,10 +2,10 @@
    Face-focused portraits, generated for the app. Select via the avatar on Home. */
 window.CHAR_LIST = [
   // ---- Female (30) ----
-  { id: 'f-01', g: 'f', name: 'Jiwoo', img: 'assets/img/chars/f-01.webp' },
-  { id: 'f-02', g: 'f', name: 'Seoyeon', img: 'assets/img/chars/f-02.webp' },
-  { id: 'f-03', g: 'f', name: 'Haeun', img: 'assets/img/chars/f-03.webp' },
-  { id: 'f-04', g: 'f', name: 'Mina', img: 'assets/img/chars/f-04.webp' },
+  { id: 'f-01', g: 'f', name: 'Aran', img: 'assets/img/chars/f-01.webp' },
+  { id: 'f-02', g: 'f', name: 'Chaea', img: 'assets/img/chars/f-02.webp' },
+  { id: 'f-03', g: 'f', name: 'Dahee', img: 'assets/img/chars/f-03.webp' },
+  { id: 'f-04', g: 'f', name: 'Roy', img: 'assets/img/chars/f-04.webp' },
   { id: 'f-05', g: 'f', name: 'Yuna', img: 'assets/img/chars/f-05.webp' },
   { id: 'f-06', g: 'f', name: 'Sua', img: 'assets/img/chars/f-06.webp' },
   { id: 'f-07', g: 'f', name: 'Jian', img: 'assets/img/chars/f-07.webp' },

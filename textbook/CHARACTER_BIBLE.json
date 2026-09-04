@@ -1,0 +1,75 @@
+{
+  "group": {
+    "name_ko": "글로시스",
+    "name_en": "Glowsis",
+    "concept": "Glow + Sis — 한국어를 가르쳐주는 뉴진스풍 Y2K 4인조 걸그룹",
+    "aesthetic": "NewJeans Y2K: denim, crop tops, cargo pants, hoodies, cream/sky pastels, minimal editorial backgrounds, high-school age (16-17)",
+    "style": "FILM_ANIME (user-picked #4) — high-end theatrical anime, cinematic lighting, rich detailed cel shading, polished clean lineart, realistic fabric texture",
+    "style_clause": "High-end feature film anime style, premium animation production quality, cinematic lighting, rich detailed cel shading, polished clean lineart, professional anime movie still quality like modern theatrical anime films, realistic fabric texture",
+    "background_clause": "soft cream studio background, cinematic lighting",
+    "anchor_dir": "C:/Users/USER/camnemi-topik/textbook/assets/glowsis/"
+  },
+  "members": [
+    {
+      "id": "aran",
+      "name_ko": "아란",
+      "name_en": "Aran",
+      "age": 17,
+      "grade": "고2",
+      "role": "리더 · 메인보컬",
+      "symbol": "🐰",
+      "color": "#4A6FA5 denim blue",
+      "visual": "long straight black hair with bangs, sharp elegant eyes, calm confident expression",
+      "outfit": "light blue denim jacket over white tank top",
+      "background": "soft sky-blue tinted cream studio",
+      "anchor_image": "C:/Users/USER/camnemi-topik/textbook/assets/glowsis/aran.png"
+    },
+    {
+      "id": "chaea",
+      "name_ko": "채아",
+      "name_en": "Chaea",
+      "age": 16,
+      "grade": "고1",
+      "role": "보컬 · 분위기 메이커",
+      "symbol": "🐰",
+      "color": "#FF8A6B coral",
+      "visual": "brown wavy shoulder-length bob, bright sparkling eyes, chubby cheeks, warm genuine smile",
+      "outfit": "cropped white t-shirt with olive green cargo pants and beige baseball cap",
+      "background": "warm cream studio",
+      "anchor_image": "C:/Users/USER/camnemi-topik/textbook/assets/glowsis/chaea.png"
+    },
+    {
+      "id": "dahee",
+      "name_ko": "다희",
+      "name_en": "Dahee",
+      "age": 17,
+      "grade": "고2",
+      "role": "메인댄서 · 리드래퍼",
+      "symbol": "⭐",
+      "color": "#7FB5E8 sky blue",
+      "visual": "short boyish blonde bob haircut, sharp cool eyes, confident subtle smirk, edgy chic vibe",
+      "outfit": "oversized pastel pink hoodie with grey jogger pants",
+      "background": "soft sky-blue tinted studio",
+      "anchor_image": "C:/Users/USER/camnemi-topik/textbook/assets/glowsis/dahee.png"
+    },
+    {
+      "id": "roy",
+      "name_ko": "로이",
+      "name_en": "Roy",
+      "age": 16,
+      "grade": "고1",
+      "role": "비주얼 · 막내",
+      "symbol": "🐇",
+      "color": "#7FD8C5 mint",
+      "visual": "long wavy black hair, pure clear doe eyes, soft gentle smile, delicate features",
+      "outfit": "cream knit vest over white button shirt with black pleated skirt",
+      "background": "soft mint-tinted cream studio",
+      "anchor_image": "C:/Users/USER/camnemi-topik/textbook/assets/glowsis/roy.png"
+    }
+  ],
+  "video_plan": {
+    "engine": "Seedance 2.0 (create_character with 1-3 anchor images → @character:<id>)",
+    "backup": "Kling 3.0 multi-shot; Nano Banana Pro for image-consistent stills",
+    "notes": "No persistent character ID in Seedance — reuse identical anchor set + prompt skeleton for cross-session consistency"
+  }
+}

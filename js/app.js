@@ -804,6 +804,15 @@ function viewLevelTest() {
 function render() {
   const s = $id('screen');
   if (!s) return;
+  // full-bleed hero: home shows the character banner behind a glass header
+  const isHome = APP.tab === 'home' && !APP.lt;
+  document.body.classList.toggle('has-hero', isHome);
+  if (isHome) {
+    const pod = scenePartOfDay();
+    document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
+  } else {
+    document.body.classList.remove('has-hero-dark');
+  }
   // Level test takes over the whole screen while active
   if (APP.lt) { s.innerHTML = viewLevelTest(); renderSchedBanner(); updateBackBtn(); stopFxCycle(); return; }
   switch (APP.tab) {
