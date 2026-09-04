@@ -710,6 +710,7 @@ function updateBackBtn() {
   if (!btn) return;
   const show = APP.navStack.length > 0;
   btn.style.display = show ? 'inline-flex' : 'none';
+  document.body.classList.toggle('has-back', show);
 }
 window.addEventListener('popstate', () => {
   // Android / browser hardware back — mimic the on-screen back button

@@ -176,8 +176,29 @@ function applyCharTheme() {
   root.style.setProperty('--q2', String(q2));
   root.style.setProperty('--q3', String(q3));
   root.style.setProperty('--q4', String(q4));
+  // readable text color on top of the brand gradient (auto contrast — dark text on light hues)
+  root.style.setProperty('--on-brand', brandLuminance(hue) > 0.42 ? '#33294D' : '#FFFFFF');
+  // full-bleed ambient gradient — more visible drifting AI aura
+  root.style.setProperty('--ai-a2', document.documentElement.getAttribute('data-theme') === 'dark' ? '.24' : '.34');
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', `hsl(${hue}, 70%, 62%)`);
+}
+/* relative luminance of the brand gradient's DARKEST stop (S≈70%, L≈62%).
+   Light hues (yellows/greens/cyans) get dark text; deep hues keep white. */
+function brandLuminance(hue) {
+  const h = ((hue % 360) + 360) % 360;
+  const S = 0.70, L = 0.62;
+  const C = (1 - Math.abs(2 * L - 1)) * S;
+  const X = C * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = L - C / 2;
+  let r, g, b;
+  if (h < 60) [r, g, b] = [C, X, 0];
+  else if (h < 120) [r, g, b] = [X, C, 0];
+  else if (h < 180) [r, g, b] = [0, C, X];
+  else if (h < 240) [r, g, b] = [0, X, C];
+  else if (h < 300) [r, g, b] = [X, 0, C];
+  else [r, g, b] = [C, 0, X];
+  return 0.2126 * (r + m) + 0.7152 * (g + m) + 0.0722 * (b + m);
 }
 
 /* ---------- character picker sheet ---------- */

@@ -31,6 +31,7 @@
   --br1: #9B6DF0; --br2: #A78BFA; --br3: #C084FC; --br-deep: #7C3AED;
   --br-soft: rgba(139,92,246,.13); --br-soft2: rgba(167,139,250,.16); --br-line: rgba(139,92,246,.28);
   --q1: 258; --q2: 316; --q3: 14; --q4: 72;
+  --on-brand: #FFFFFF; --ai-a2: .34;
   --ios-gray: #9A92C4;
   --ios-shadow: rgba(123, 108, 246, .12);
   --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
@@ -76,22 +77,25 @@
 /* whole-app ambient AI gradient — tinted by the current character's hue,
    very low opacity so content stays readable, slowly drifting like an AI aura */
 .ai-backdrop {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  position: fixed; inset: -10%; z-index: 0; pointer-events: none;
   background:
-    radial-gradient(48% 60% at 12% 8%, hsla(var(--ai-h1), 85%, 70%, var(--ai-a)), transparent 70%),
-    radial-gradient(42% 55% at 88% 20%, hsla(var(--ai-h2), 88%, 74%, var(--ai-a)), transparent 70%),
-    radial-gradient(55% 65% at 50% 100%, hsla(var(--ai-h3), 90%, 78%, var(--ai-a)), transparent 72%),
-    linear-gradient(125deg, hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a) * .8)), hsla(var(--ai-h2), 85%, 72%, calc(var(--ai-a) * .8)), hsla(var(--ai-h3), 90%, 78%, calc(var(--ai-a) * .8)), hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a) * .8)));
-  background-size: 100% 100%, 100% 100%, 100% 100%, 260% 260%;
-  animation: aiDrift 14s ease-in-out infinite;
+    radial-gradient(52% 64% at 12% 8%, hsla(var(--ai-h1), 85%, 70%, var(--ai-a2)), transparent 68%),
+    radial-gradient(46% 58% at 88% 20%, hsla(var(--ai-h2), 88%, 74%, var(--ai-a2)), transparent 68%),
+    radial-gradient(58% 68% at 50% 104%, hsla(var(--ai-h3), 90%, 78%, var(--ai-a2)), transparent 70%),
+    radial-gradient(30% 40% at 30% 55%, hsla(var(--ai-h1), 90%, 80%, calc(var(--ai-a2) * .9)), transparent 65%),
+    radial-gradient(26% 36% at 72% 68%, hsla(var(--ai-h2), 92%, 82%, calc(var(--ai-a2) * .85)), transparent 65%),
+    linear-gradient(125deg, hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h2), 85%, 72%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h3), 90%, 78%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a2) * .85)));
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 280% 280%;
+  animation: aiDrift 13s ease-in-out infinite;
   transition: opacity .6s;
 }
 @keyframes aiDrift {
-  0%   { background-position: 12% 8%, 88% 20%, 50% 100%, 0% 50%; }
-  25%  { background-position: 20% 12%, 78% 30%, 58% 92%, 25% 60%; }
-  50%  { background-position: 30% 16%, 70% 12%, 66% 84%, 100% 50%; }
-  75%  { background-position: 18% 20%, 80% 26%, 54% 96%, 60% 40%; }
-  100% { background-position: 12% 8%, 88% 20%, 50% 100%, 0% 50%; }
+  0%   { background-position: 12% 8%, 88% 20%, 50% 104%, 30% 55%, 72% 68%, 0% 50%; }
+  20%  { background-position: 22% 14%, 74% 32%, 60% 90%, 42% 46%, 60% 74%, 22% 62%; }
+  40%  { background-position: 34% 18%, 64% 10%, 70% 80%, 56% 38%, 48% 82%, 55% 20%; }
+  60%  { background-position: 24% 24%, 70% 26%, 62% 92%, 40% 52%, 64% 66%, 82% 38%; }
+  80%  { background-position: 16% 16%, 80% 34%, 56% 100%, 26% 60%, 78% 58%, 38% 78%; }
+  100% { background-position: 12% 8%, 88% 20%, 50% 104%, 30% 55%, 72% 68%, 0% 50%; }
 }
 /* soft ambient color blobs behind content */
 .app-shell::before, .app-shell::after {
@@ -121,8 +125,11 @@
   display: flex; align-items: center; gap: 10px;
   min-height: 52px;
 }
-/* Back button (header, appears when there's navigation history) */
+/* Back button (header, appears when there's navigation history).
+   Absolutely positioned so it never pushes the brand title — the brand
+   instead gets a left indent while the back button is visible. */
 .back-btn {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
   width: 34px; height: 34px; border-radius: 50%;
   border: none; cursor: pointer; flex-shrink: 0;
   background: var(--ios-fill); color: var(--ios-label);
@@ -131,7 +138,9 @@
   box-shadow: 0 2px 8px rgba(0,0,0,.08);
   transition: transform .12s;
 }
-.back-btn:active { transform: scale(.92); }
+.back-btn:active { transform: translateY(-50%) scale(.92); }
+.app-header .brand { transition: margin-left .2s; }
+body.has-back .app-header .brand { margin-left: 34px; }
 [data-theme="dark"] .back-btn { background: var(--ios-fill); color: var(--ios-label); }
 [data-theme="dark"] .app-header { background: rgba(14, 13, 23, .72); }
 .app-header .brand { font-size: 16px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ios-label); }
@@ -319,13 +328,13 @@
 /* ---------- Header schedule banner (오른쪽 토픽일정 배너) ---------- */
 .sched-banner {
   display: inline-flex; align-items: center; gap: 5px;
-  background: var(--grad-brand); color: #fff !important;
+  background: var(--grad-brand); color: var(--on-brand, #fff) !important;
   border-radius: 10px; padding: 4px 10px; height: auto;
   font-size: 11px; font-weight: 700;
-  box-shadow: 0 3px 10px rgba(91, 91, 214, .35);
+  box-shadow: 0 3px 10px hsla(var(--ai-h1), 75%, 55%, .35);
 }
-[data-theme="dark"] .sched-banner { color: #fff !important; background: var(--grad-brand); box-shadow: 0 3px 12px rgba(99, 102, 241, .45); }
-.sched-banner b { color: #fff; }
+[data-theme="dark"] .sched-banner { color: var(--on-brand, #fff) !important; background: var(--grad-brand); box-shadow: 0 3px 12px rgba(99, 102, 241, .45); }
+.sched-banner b { color: inherit; }
 
 /* ---------- Tab bar (floating glass pill) ---------- */
 .tab-bar {
@@ -505,7 +514,7 @@
   border: none; cursor: pointer; text-align: left;
   padding: 19px 16px; border-radius: 20px;
   font-family: var(--font);
-  color: #fff;
+  color: var(--on-brand, #fff);
   box-shadow: 0 8px 20px rgba(20,16,50,.25), inset 0 1px 0 rgba(255,255,255,.25);
   transition: transform .13s, box-shadow .15s, filter .15s;
 }
