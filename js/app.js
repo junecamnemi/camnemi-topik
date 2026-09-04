@@ -848,31 +848,6 @@ function greetWxText(wx) {
   const city = LANG === 'ko' ? '서울' : 'Seoul';
   return `${city} · ${wxIcon(wx.code)} ${wx.temp}°`;
 }
-/* Build the subtle animated backdrop elements for the current weather */
-function weatherAnimHTML(type) {
-  const rnd = (a, b) => (Math.random() * (b - a) + a).toFixed(1);
-  switch (type) {
-    case 'sun':
-      return `<span class="wb-sun"></span><span class="wb-ray r1"></span><span class="wb-ray r2"></span><span class="wb-ray r3"></span>`;
-    case 'suncloud':
-      return `<span class="wb-sun small"></span><span class="wb-cloud c1"></span>`;
-    case 'cloud':
-      return `<span class="wb-cloud c1"></span><span class="wb-cloud c2"></span>`;
-    case 'fog':
-      return `<span class="wb-fog f1"></span><span class="wb-fog f2"></span><span class="wb-fog f3"></span>`;
-    case 'rain':
-      return `<span class="wb-cloud c1"></span>` + Array.from({ length: 7 }, (_, i) =>
-        `<span class="wb-drop" style="left:${6 + i * 13}%;animation-delay:${(i * 0.22).toFixed(2)}s;animation-duration:${rnd(0.7, 1.1)}s"></span>`).join('');
-    case 'snow':
-      return Array.from({ length: 9 }, (_, i) =>
-        `<span class="wb-flake" style="left:${4 + i * 11}%;animation-delay:${(i * 0.7).toFixed(2)}s;animation-duration:${rnd(3.5, 6)}s"></span>`).join('');
-    case 'thunder':
-      return `<span class="wb-cloud c1"></span><span class="wb-bolt"></span>` + Array.from({ length: 4 }, (_, i) =>
-        `<span class="wb-drop" style="left:${15 + i * 22}%;animation-delay:${(i * 0.3).toFixed(2)}s"></span>`).join('');
-    default:
-      return `<span class="wb-cloud c1"></span>`;
-  }
-}
 function streakCardHTML() {
   const streak = lsGet(LS.streak, { last: null, count: 0 });
   return `
