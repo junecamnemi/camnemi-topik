@@ -568,17 +568,26 @@ function viewHome() {
   // Greeting — Hi, {character name}! 👋 (character is the unified identity)
   const nm = myCharName();
   const mc = myChar();
+  const wxc = wxCached();
   const greet = `
     <div class="home-greet">
-      <div style="flex:1;min-width:0;">
+      <div class="weather-bg" id="weather-bg">${wxc ? weatherAnimHTML(weatherType(wxc.code)) : ''}</div>
+      <div style="flex:1;min-width:0;position:relative;z-index:1;">
         <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
         <p class="greet-s">${t('home_greet_sub')}</p>
+        <p class="greet-wx" id="greet-wx">${wxc ? greetWxText(wxc) : ''}</p>
       </div>
       <div class="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
         <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
         <span class="avatar-edit">✎</span>
       </div>
     </div>`;
+  // fetch Seoul weather in the background (only when cache is missing) and patch in place
+  if (!wxc) fetchSeoulWeather().then(wx => {
+    if (!wx) return;
+    const bg = $id('weather-bg'); if (bg) bg.innerHTML = weatherAnimHTML(weatherType(wx.code));
+    const wl = $id('greet-wx'); if (wl) wl.textContent = greetWxText(wx);
+  });
   // Daily Goal — compact single-line bar (clean) with the helper cat
   const dailyGoal = `
     <div class="dg-mini">
@@ -771,6 +780,70 @@ function toggleHomeTask(k) {
   const d = lsGet('camnemi_topik_home_tasks', {});
   d[k] = !d[k]; localStorage.setItem('camnemi_topik_home_tasks', JSON.stringify(d));
   render();
+}
+/* ================= Seoul weather (subtle animated backdrop behind the greeting) ================= */
+const WX_LS = 'camnemi_topik_weather';
+const WX_CACHE_MS = 10 * 60 * 1000;      // 10-minute cache
+function wxCached() {
+  try {
+    const c = JSON.parse(localStorage.getItem(WX_LS) || 'null');
+    if (c && c.ts && Date.now() - c.ts < WX_CACHE_MS && typeof c.code === 'number') return c;
+  } catch (e) {}
+  return null;
+}
+async function fetchSeoulWeather() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,weather_code&timezone=Asia%2FSeoul', { signal: AbortSignal.timeout(8000) });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const wx = { ts: Date.now(), code: j.current.weather_code, temp: Math.round(j.current.temperature_2m) };
+    try { localStorage.setItem(WX_LS, JSON.stringify(wx)); } catch (e) {}
+    return wx;
+  } catch (e) { return null; }
+}
+/* WMO weather code → animation type */
+function weatherType(code) {
+  if (code === 0) return 'sun';
+  if (code === 1 || code === 2) return 'suncloud';
+  if (code === 3) return 'cloud';
+  if (code === 45 || code === 48) return 'fog';
+  if ([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) return 'rain';
+  if ([71,73,75,77,85,86].includes(code)) return 'snow';
+  if ([95,96,99].includes(code)) return 'thunder';
+  return 'cloud';
+}
+function wxIcon(code) {
+  const t = weatherType(code);
+  return { sun: '☀️', suncloud: '⛅', cloud: '☁️', fog: '🌫️', rain: '🌧️', snow: '🌨️', thunder: '⛈️' }[t] || '☁️';
+}
+function greetWxText(wx) {
+  const city = LANG === 'ko' ? '서울' : 'Seoul';
+  return `${city} · ${wxIcon(wx.code)} ${wx.temp}°`;
+}
+/* Build the subtle animated backdrop elements for the current weather */
+function weatherAnimHTML(type) {
+  const rnd = (a, b) => (Math.random() * (b - a) + a).toFixed(1);
+  switch (type) {
+    case 'sun':
+      return `<span class="wb-sun"></span><span class="wb-ray r1"></span><span class="wb-ray r2"></span><span class="wb-ray r3"></span>`;
+    case 'suncloud':
+      return `<span class="wb-sun small"></span><span class="wb-cloud c1"></span>`;
+    case 'cloud':
+      return `<span class="wb-cloud c1"></span><span class="wb-cloud c2"></span>`;
+    case 'fog':
+      return `<span class="wb-fog f1"></span><span class="wb-fog f2"></span><span class="wb-fog f3"></span>`;
+    case 'rain':
+      return `<span class="wb-cloud c1"></span>` + Array.from({ length: 7 }, (_, i) =>
+        `<span class="wb-drop" style="left:${6 + i * 13}%;animation-delay:${(i * 0.22).toFixed(2)}s;animation-duration:${rnd(0.7, 1.1)}s"></span>`).join('');
+    case 'snow':
+      return Array.from({ length: 9 }, (_, i) =>
+        `<span class="wb-flake" style="left:${4 + i * 11}%;animation-delay:${(i * 0.7).toFixed(2)}s;animation-duration:${rnd(3.5, 6)}s"></span>`).join('');
+    case 'thunder':
+      return `<span class="wb-cloud c1"></span><span class="wb-bolt"></span>` + Array.from({ length: 4 }, (_, i) =>
+        `<span class="wb-drop" style="left:${15 + i * 22}%;animation-delay:${(i * 0.3).toFixed(2)}s"></span>`).join('');
+    default:
+      return `<span class="wb-cloud c1"></span>`;
+  }
 }
 function streakCardHTML() {
   const streak = lsGet(LS.streak, { last: null, count: 0 });
@@ -1293,24 +1366,10 @@ function viewMy() {
       </div>
       ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
     </div>`;
-  const charCard = `
-    <div class="sec-h"><h2>${ic('user',14)} ${t('my_char')}</h2></div>
-    <div class="app-card my-char-card">
-      <div class="my-char-face" onclick="openCharPicker()"><img src="${myChar().img}" alt="char"></div>
-      <div class="my-char-info">
-        <b class="my-char-name">${esc(myCharName())}</b>
-        <span class="sub">${myChar().g === 'f' ? '👧 Female' : '👦 Male'} · ${esc(myChar().name)}</span>
-        <div class="my-char-actions">
-          <button class="btn btn-primary btn-sm" onclick="openCharPicker()">${ic('user',13)} ${t('my_char_change')}</button>
-          <button class="btn btn-ghost btn-sm" onclick="renameChar()">${ic('edit',13)} ${t('my_char_rename')}</button>
-        </div>
-      </div>
-    </div>`;
   return `
     <div class="sec-h"><h2>${t('menu_account')}</h2></div>
     <div class="app-card" style="padding:14px 16px;">${head}${stats}</div>
     ${rows}
-    ${charCard}
     ${settings}
   `;
 }
