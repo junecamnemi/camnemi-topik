@@ -94,7 +94,7 @@ const T = {
     home_task_reading: 'Complete Reading', home_task_listening: 'Revise Listening Notes', home_task_vocab: 'Vocabulary Practice', home_task_mock: 'Mock Test Round',
     prog_week: 'This Week', prog_study_time: 'Study Time', prog_tasks_done: 'Tasks Done', prog_focus_sess: 'Focus Sessions', prog_subjects: 'Subjects',
     goal_reading: 'Reading', goal_listening: 'Listening', goal_vocab: 'Vocabulary',
-    goal_start: 'Start', goal_done: 'Done', my_level: 'My level', my_level_sub: 'Default level for practice & AI questions',
+    goal_start: 'Start', goal_done: 'Done', my_level: 'My level', my_level_sub: 'Default level for practice & AI questions', my_char: 'My Character', my_char_change: 'Change', my_char_rename: 'Rename',
     listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →',
     submit: 'Submit answer', save: 'Save',
     sec_reading: '📖 Reading', sec_listening: '🎧 Listening', sec_writing: '✍️ Writing',
@@ -171,7 +171,7 @@ const T = {
     home_task_reading: '리딩 문제 풀기', home_task_listening: '리스닝 복습', home_task_vocab: '보케블러리 연습', home_task_mock: '모의고사 1회',
     prog_week: '이번 주', prog_study_time: '학습 시간', prog_tasks_done: '완료한 할 일', prog_focus_sess: '집중 세션', prog_subjects: '영역별 진도',
     goal_reading: '리딩', goal_listening: '리스닝', goal_vocab: '보케블러리',
-    goal_start: '시작', goal_done: '완료', my_level: '나의 레벨', my_level_sub: '연습·AI 문제의 기본 레벨',
+    goal_start: '시작', goal_done: '완료', my_level: '나의 레벨', my_level_sub: '연습·AI 문제의 기본 레벨', my_char: '내 캐릭터', my_char_change: '바꾸기', my_char_rename: '이름 변경',
     listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →',
     submit: '답 제출', save: '저장',
     sec_reading: '📖 읽기', sec_listening: '🎧 듣기', sec_writing: '✍️ 쓰기',
@@ -248,7 +248,7 @@ const T = {
     home_task_reading: 'ធ្វើលំហាត់អាន', home_task_listening: 'ពិនិត្យការស្តាប់', home_task_vocab: 'អនុវត្តវាក្យសព្ទ', home_task_mock: 'ប្រឡងសាកល្បង',
     prog_week: 'សប្តាហ៍នេះ', prog_study_time: 'ពេលសិក្សា', prog_tasks_done: 'កិច្ចការរួច', prog_focus_sess: 'វគ្គផ្តោត', prog_subjects: 'មុខវិជ្ជា',
     goal_reading: 'អាន', goal_listening: 'ស្តាប់', goal_vocab: 'វាក្យសព្ទ',
-    goal_start: 'ចាប់ផ្តើម', goal_done: 'រួចរាល់', my_level: 'កម្រិតរបស់ខ្ញុំ', my_level_sub: 'កម្រិតលំនាំដើមសម្រាប់ការអនុវត្ត និងសំណួរ AI',
+    goal_start: 'ចាប់ផ្តើម', goal_done: 'រួចរាល់', my_level: 'កម្រិតរបស់ខ្ញុំ', my_level_sub: 'កម្រិតលំនាំដើមសម្រាប់ការអនុវត្ត និងសំណួរ AI', my_char: 'តួអង្គរបស់ខ្ញុំ', my_char_change: 'ផ្លាស់ប្តូរ', my_char_rename: 'ប្តូរឈ្មោះ',
     listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →',
     submit: 'ដាក់ស្នើចម្លើយ', save: 'រក្សាទុក',
     sec_reading: '📖 អាន', sec_listening: '🎧 ស្តាប់', sec_writing: '✍️ សរសេរ',
@@ -325,6 +325,8 @@ function applyTheme() {
   // theme-color meta
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', t === 'dark' ? '#000000' : '#007AFF');
+  // re-apply the character accent theme (overrides meta + accent vars)
+  if (typeof applyCharTheme === 'function') applyCharTheme();
 }
 function cycleTheme() {
   const order = ['light', 'dark', 'auto'];
@@ -390,7 +392,9 @@ const ICONS = {
   spark: '<path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2L12 2z"/>',
   flame: '<path d="M12 2s5 4.5 5 9.5a5 5 0 0 1-10 0C7 9 9 7 12 2z"/><path d="M12 22a6 6 0 0 0 6-6c0-2-1-3.5-2-5-1 1.5-2.5 2-3 2 1-2 .5-4-1-6-2 2-4 4.5-4 9a6 6 0 0 0 4 6z"/>',
   chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
-  pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
+  pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/>',
+  edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/>'
 };
 function ic(name, size = 24) {
   const body = ICONS[name] || '';
@@ -1289,12 +1293,31 @@ function viewMy() {
       </div>
       ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
     </div>`;
+  const charCard = `
+    <div class="sec-h"><h2>${ic('user',14)} ${t('my_char')}</h2></div>
+    <div class="app-card my-char-card">
+      <div class="my-char-face" onclick="openCharPicker()"><img src="${myChar().img}" alt="char"></div>
+      <div class="my-char-info">
+        <b class="my-char-name">${esc(myCharName())}</b>
+        <span class="sub">${myChar().g === 'f' ? '👧 Female' : '👦 Male'} · ${esc(myChar().name)}</span>
+        <div class="my-char-actions">
+          <button class="btn btn-primary btn-sm" onclick="openCharPicker()">${ic('user',13)} ${t('my_char_change')}</button>
+          <button class="btn btn-ghost btn-sm" onclick="renameChar()">${ic('edit',13)} ${t('my_char_rename')}</button>
+        </div>
+      </div>
+    </div>`;
   return `
     <div class="sec-h"><h2>${t('menu_account')}</h2></div>
     <div class="app-card" style="padding:14px 16px;">${head}${stats}</div>
     ${rows}
+    ${charCard}
     ${settings}
   `;
+}
+function renameChar() {
+  openCharPicker();
+  const inp = $id('cp-name-input');
+  if (inp) { inp.focus(); inp.select(); }
 }
 function umRow(ico, label, act) {
   return `<div class="um-item" onclick="${act}">${ic(ico, 19)}<span>${label}</span><em>→</em></div>`;
@@ -2710,6 +2733,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // init header selectors (country first so the D-day strip renders)
   initCountrySel();
   applyTheme();
+  applyCharTheme();
   refreshUserBtn();
   // auth → refresh user button + pull synced data when signed in
   if (window.onAuthChange) {

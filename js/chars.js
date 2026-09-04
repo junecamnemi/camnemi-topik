@@ -71,7 +71,38 @@ function myChar() { return (window.CHAR_LIST || []).find(c => c.id === myCharId(
 function setMyChar(id) {
   localStorage.setItem('camnemi_topik_char', id);
   const el = $id('greet-avatar-img'); if (el) el.src = myChar().img;
+  applyCharTheme();
   render();
+}
+/* character display name — custom name persisted, falls back to the default */
+function myCharName() {
+  const custom = localStorage.getItem('camnemi_topik_char_name');
+  return (custom && custom.trim()) || myChar().name;
+}
+function setMyCharName(n) {
+  localStorage.setItem('camnemi_topik_char_name', (n || '').trim());
+  render();
+}
+/* per-character accent theme — each of the 60 chars gets a UNIQUE pastel hue.
+   Index 0..59 (females 0-29, males 30-59) × golden angle 47° (coprime with 360)
+   → 60 distinct hues. Char f-01 (index 0) keeps the brand violet 258°. */
+function charHue(id) {
+  const m = /^m-/.test(id || '');
+  const n = parseInt((id || 'f-01').replace(/^[fm]-/, ''), 10) || 1;
+  const idx = m ? 30 + (n - 1) : (n - 1);
+  return (258 + idx * 47) % 360;
+}
+function applyCharTheme() {
+  const hue = charHue(myCharId());
+  const h2 = (hue + 38) % 360, h3 = (hue + 72) % 360;
+  const root = document.documentElement;
+  root.style.setProperty('--ios-blue', `hsl(${hue}, 72%, 66%)`);
+  root.style.setProperty('--ios-blue-2', `hsl(${h2}, 80%, 72%)`);
+  root.style.setProperty('--ios-pink', `hsl(${h3}, 82%, 72%)`);
+  root.style.setProperty('--grad-brand', `linear-gradient(135deg, hsl(${hue}, 70%, 62%) 0%, hsl(${h2}, 82%, 70%) 55%, hsl(${h3}, 85%, 76%) 100%)`);
+  root.style.setProperty('--grad-soft', `linear-gradient(135deg, hsla(${hue}, 80%, 65%, .12), hsla(${h3}, 85%, 75%, .16))`);
+  const mc = document.querySelector('meta[name="theme-color"]');
+  if (mc) mc.setAttribute('content', `hsl(${hue}, 70%, 62%)`);
 }
 
 /* ---------- character picker sheet ---------- */
@@ -125,9 +156,22 @@ function renderCharPicker() {
       <b>${LANG === 'ko' ? '캐릭터 선택' : LANG === 'km' ? 'ជ្រើសរើសតួអង្គ' : 'Choose character'}</b>
       <span class="cp-x" onclick="closeCharPicker()">✕</span>
     </div>
+    <div class="cp-rename">
+      <input id="cp-name-input" class="cp-name-input" maxlength="20" placeholder="${LANG === 'ko' ? '이름 입력…' : LANG === 'km' ? 'បញ្ចូលឈ្មោះ…' : 'Enter name…'}" value="${esc(myCharName())}">
+      <button class="btn btn-primary btn-sm" onclick="saveCharName()">${LANG === 'ko' ? '저장' : LANG === 'km' ? 'រក្សាទុក' : 'Save'}</button>
+    </div>
     <div class="cp-tabs">
       <button class="ctab ${g === 'f' ? 'on' : ''}" data-g="f" onclick="setCharTab('f')">👧 ${LANG === 'ko' ? '여자' : 'Female'}</button>
       <button class="ctab ${g === 'm' ? 'on' : ''}" data-g="m" onclick="setCharTab('m')">👦 ${LANG === 'ko' ? '남자' : 'Male'}</button>
     </div>
     <div class="cp-grid" id="char-grid">${charGridHTML(g)}</div>`;
+  const inp = $id('cp-name-input');
+  if (inp) { inp.focus(); inp.select(); }
+}
+function saveCharName() {
+  const inp = $id('cp-name-input');
+  if (!inp) return;
+  setMyCharName(inp.value);
+  toast(LANG === 'ko' ? '💖 이름이 저장됐어요!' : LANG === 'km' ? '💖 ឈ្មោះត្រូវបានរក្សាទុក!' : '💖 Name saved!');
+  closeCharPicker();
 }

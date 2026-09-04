@@ -187,6 +187,29 @@
 }
 .char-name { display: block; font-size: 10.5px; font-weight: 700; color: var(--ios-label); margin-top: 4px; }
 
+/* ---------- Rename input in the picker ---------- */
+.cp-rename { display: flex; gap: 8px; margin-bottom: 12px; }
+.cp-name-input {
+  flex: 1; min-width: 0; padding: 10px 14px; border-radius: 12px;
+  border: 1.5px solid var(--ios-separator); background: var(--ios-card);
+  color: var(--ios-label); font-size: 14px; font-weight: 700;
+  font-family: var(--ios-font); outline: none; transition: border-color .15s;
+}
+.cp-name-input:focus { border-color: var(--ios-blue); }
+
+/* ---------- My tab character card ---------- */
+.my-char-card { display: flex; align-items: center; gap: 14px; }
+.my-char-face {
+  width: 64px; height: 64px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+  border: 2.5px solid var(--ios-blue); background: var(--ios-fill);
+  box-shadow: 0 4px 14px rgba(123,108,246,.25); cursor: pointer;
+}
+.my-char-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.my-char-info { flex: 1; min-width: 0; }
+.my-char-name { display: block; font-size: 17px; font-weight: 800; color: var(--ios-label); letter-spacing: -.3px; }
+.my-char-info .sub { font-size: 11px; margin-top: 1px; }
+.my-char-actions { display: flex; gap: 8px; margin-top: 8px; }
+
 /* ---------- User menu sheet ---------- */
 .menu-overlay {
   position: fixed; inset: 0; z-index: 90;
