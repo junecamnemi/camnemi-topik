@@ -445,9 +445,48 @@
 .greet-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .greet-avatar { cursor: pointer; position: relative; }
 /* ---------- Expression animations — the character portrait ITSELF changes (real face-image swap) ---------- */
-/* Each mood swaps #greet-avatar-img to a real AI-generated expression face of the same character.
-   (No emoji, no overlays, no CSS-filter emulation — the actual face image changes.)
-   Tap the avatar → random expression; ✎ badge → character picker. Auto-cycle every 4.2s. */
+/* Each mood swaps #greet-avatar-img to a real AI-generated expression face of the same character,
+   then the portrait keeps a SUBTLE per-mood motion (no emoji, no overlays — the face itself moves). */
+/* --- smile: stays still, gentle happy hover --- */
+.fx-smile #greet-avatar-img { animation: fxSmileIdle 2.6s ease-in-out infinite; }
+/* --- angry: little angry shake --- */
+.fx-angry #greet-avatar-img { animation: fxAngryShake .55s ease-in-out infinite; }
+/* --- cry: sniffling tremble --- */
+.fx-cry #greet-avatar-img { animation: fxCryTremble 1.4s ease-in-out infinite; }
+/* --- phone: tilts head while talking --- */
+.fx-phone #greet-avatar-img { animation: fxPhoneTilt 1.6s ease-in-out infinite; }
+/* --- eat: chewing motion --- */
+.fx-eat #greet-avatar-img { animation: fxEatChew .7s ease-in-out infinite; }
+/* --- music: head bobbing to the beat --- */
+.fx-music #greet-avatar-img { animation: fxMusicBob 1.1s ease-in-out infinite; }
+/* --- sleep: slow breathing on the desk --- */
+.fx-sleep #greet-avatar-img { animation: fxSleepBreathe 3.2s ease-in-out infinite; }
+/* --- study: focused gentle sway --- */
+.fx-study #greet-avatar-img { animation: fxStudySway 3s ease-in-out infinite; }
+/* --- sing: lively bounce --- */
+.fx-sing #greet-avatar-img { animation: fxSingBounce .9s ease-in-out infinite; }
+/* --- dance: little dancing bounces --- */
+.fx-dance #greet-avatar-img { animation: fxDanceStep .6s ease-in-out infinite; }
+/* --- cook: stirring sway --- */
+.fx-cook #greet-avatar-img { animation: fxCookStir 1.8s ease-in-out infinite; }
+/* --- game: excited wiggle --- */
+.fx-game #greet-avatar-img { animation: fxGameWiggle 1.2s ease-in-out infinite; }
+/* --- selfie: cute pose tilt --- */
+.fx-selfie #greet-avatar-img { animation: fxSelfieTilt 2s ease-in-out infinite; }
+/* --- keyframes: subtle portrait motion per mood --- */
+@keyframes fxSmileIdle { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-2px) rotate(.8deg); } }
+@keyframes fxAngryShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+@keyframes fxCryTremble { 0%,100% { transform: translateY(0); } 50% { transform: translateY(1.5px) rotate(-1deg); } }
+@keyframes fxPhoneTilt { 0%,100% { transform: rotate(0) translateY(0); } 50% { transform: rotate(-5deg) translateY(-1.5px); } }
+@keyframes fxEatChew { 0%,100% { transform: scale(1,1); } 40% { transform: scale(.98,1.04); } }
+@keyframes fxMusicBob { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(-2deg); } }
+@keyframes fxSleepBreathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+@keyframes fxStudySway { 0%,100% { transform: rotate(0); } 50% { transform: rotate(1.5deg); } }
+@keyframes fxSingBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes fxDanceStep { 0%,100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-4px) rotate(-2deg); } 50% { transform: translateY(0) rotate(2deg); } 75% { transform: translateY(-2px) rotate(-1deg); } }
+@keyframes fxCookStir { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-3deg); } }
+@keyframes fxGameWiggle { 0%,100% { transform: translateX(0) rotate(0); } 50% { transform: translateX(3px) rotate(2deg); } }
+@keyframes fxSelfieTilt { 0%,100% { transform: rotate(0) translateY(0); } 50% { transform: rotate(-3deg) translateY(-2px); } }
 .avatar-edit {
   position: absolute; bottom: -2px; right: -2px;
   width: 21px; height: 21px; border-radius: 50%;
