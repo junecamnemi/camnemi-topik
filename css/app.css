@@ -70,6 +70,26 @@
   position: relative; overflow-x: hidden;
 }
 @supports (min-height: 100dvh) { .app-shell { min-height: 100dvh; } }
+/* whole-app ambient AI gradient — tinted by the current character's hue,
+   very low opacity so content stays readable, slowly drifting like an AI aura */
+.ai-backdrop {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(48% 60% at 12% 8%, hsla(var(--ai-h1), 85%, 70%, var(--ai-a)), transparent 70%),
+    radial-gradient(42% 55% at 88% 20%, hsla(var(--ai-h2), 88%, 74%, var(--ai-a)), transparent 70%),
+    radial-gradient(55% 65% at 50% 100%, hsla(var(--ai-h3), 90%, 78%, var(--ai-a)), transparent 72%),
+    linear-gradient(125deg, hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a) * .8)), hsla(var(--ai-h2), 85%, 72%, calc(var(--ai-a) * .8)), hsla(var(--ai-h3), 90%, 78%, calc(var(--ai-a) * .8)), hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a) * .8)));
+  background-size: 100% 100%, 100% 100%, 100% 100%, 260% 260%;
+  animation: aiDrift 14s ease-in-out infinite;
+  transition: opacity .6s;
+}
+@keyframes aiDrift {
+  0%   { background-position: 12% 8%, 88% 20%, 50% 100%, 0% 50%; }
+  25%  { background-position: 20% 12%, 78% 30%, 58% 92%, 25% 60%; }
+  50%  { background-position: 30% 16%, 70% 12%, 66% 84%, 100% 50%; }
+  75%  { background-position: 18% 20%, 80% 26%, 54% 96%, 60% 40%; }
+  100% { background-position: 12% 8%, 88% 20%, 50% 100%, 0% 50%; }
+}
 /* soft ambient color blobs behind content */
 .app-shell::before, .app-shell::after {
   content: ''; position: fixed; z-index: 0; pointer-events: none;

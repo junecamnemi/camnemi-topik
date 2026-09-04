@@ -124,6 +124,11 @@ function applyCharTheme() {
   root.style.setProperty('--ios-pink', `hsl(${h3}, 82%, 72%)`);
   root.style.setProperty('--grad-brand', `linear-gradient(135deg, hsl(${hue}, 70%, 62%) 0%, hsl(${h2}, 82%, 70%) 55%, hsl(${h3}, 85%, 76%) 100%)`);
   root.style.setProperty('--grad-soft', `linear-gradient(135deg, hsla(${hue}, 80%, 65%, .12), hsla(${h3}, 85%, 75%, .16))`);
+  // whole-app ambient AI backdrop — very low opacity, tinted by this character's hues
+  root.style.setProperty('--ai-h1', String(hue));
+  root.style.setProperty('--ai-h2', String(h2));
+  root.style.setProperty('--ai-h3', String(h3));
+  root.style.setProperty('--ai-a', document.documentElement.getAttribute('data-theme') === 'dark' ? '.16' : '.22');
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', `hsl(${hue}, 70%, 62%)`);
 }
