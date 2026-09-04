@@ -32,6 +32,10 @@
   --br-soft: rgba(139,92,246,.13); --br-soft2: rgba(167,139,250,.16); --br-line: rgba(139,92,246,.28);
   --q1: 258; --q2: 316; --q3: 14; --q4: 72;
   --on-brand: #FFFFFF; --ai-a2: .34;
+  --grad-a: linear-gradient(135deg, #7C5CD6 0%, #9B7BEA 55%, #B99CF5 100%);
+  --grad-b: linear-gradient(45deg, #7C5CD6 0%, #9B7BEA 55%, #B99CF5 100%);
+  --grad-c: linear-gradient(225deg, #7C5CD6 0%, #9B7BEA 55%, #B99CF5 100%);
+  --grad-d: linear-gradient(315deg, #7C5CD6 0%, #9B7BEA 55%, #B99CF5 100%);
   --ios-gray: #9A92C4;
   --ios-shadow: rgba(123, 108, 246, .12);
   --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
@@ -515,30 +519,33 @@ body.has-back .app-header .brand { margin-left: 34px; }
   padding: 19px 16px; border-radius: 20px;
   font-family: var(--font);
   color: var(--on-brand, #fff);
-  box-shadow: 0 8px 20px rgba(20,16,50,.25), inset 0 1px 0 rgba(255,255,255,.25);
+  box-shadow: 0 8px 20px rgba(20,16,50,.25), inset 0 1px 0 rgba(255,255,255,.18);
   transition: transform .13s, box-shadow .15s, filter .15s;
 }
 .aq-cell:active { transform: scale(.95); filter: brightness(.93); }
 /* soft corner shine — keeps the card pretty without icons */
 .aq-cell::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(70% 90% at 88% 8%, rgba(255,255,255,.32), transparent 55%);
+  background: radial-gradient(70% 90% at 88% 8%, rgba(255,255,255,.16), transparent 55%);
 }
 .aq-cell .aq-txt { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.aq-cell b { font-size: 16.5px; font-weight: 800; line-height: 1.15; text-shadow: 0 1px 6px rgba(0,0,0,.22); }
-.aq-cell .aq-sub { font-size: 11px; font-weight: 600; opacity: .94; line-height: 1.25; text-shadow: 0 1px 4px rgba(0,0,0,.18); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.aq-cell b { font-size: 16.5px; font-weight: 800; line-height: 1.15; }
+.aq-cell .aq-sub { font-size: 11px; font-weight: 600; opacity: .92; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .aq-cell .aq-arr {
   position: relative; z-index: 1; flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-  background: rgba(255,255,255,.30); border: 1.5px solid rgba(255,255,255,.45);
+  background: color-mix(in srgb, var(--on-brand, #fff) 22%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--on-brand, #fff) 45%, transparent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: #fff;
+  font-size: 14px; font-weight: 800; color: var(--on-brand, #fff);
   transition: transform .13s;
 }
 .aq-cell:active .aq-arr { transform: translateX(2px); }
-.aq-r { background: linear-gradient(135deg, hsl(var(--q1), 68%, 50%) 0%, hsl(var(--q1), 78%, 62%) 60%, hsl(var(--q1), 85%, 72%) 100%); }
-.aq-l { background: linear-gradient(135deg, hsl(var(--q2), 62%, 48%) 0%, hsl(var(--q2), 74%, 60%) 60%, hsl(var(--q2), 84%, 70%) 100%); }
-.aq-v { background: linear-gradient(135deg, hsl(var(--q3), 70%, 48%) 0%, hsl(var(--q3), 80%, 60%) 60%, hsl(var(--q3), 88%, 70%) 100%); }
-.aq-m { background: linear-gradient(135deg, hsl(var(--q4), 70%, 50%) 0%, hsl(var(--q4), 80%, 62%) 60%, hsl(var(--q4), 88%, 72%) 100%); }
+/* quick cards share the SAME brand gradient as the TOPIK-session badge (--grad-brand),
+   only the angle differs so the four stay distinguishable */
+.aq-r { background: var(--grad-a, var(--grad-brand)); }
+.aq-l { background: var(--grad-b, var(--grad-brand)); }
+.aq-v { background: var(--grad-c, var(--grad-brand)); }
+.aq-m { background: var(--grad-d, var(--grad-brand)); }
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }

@@ -155,7 +155,12 @@ function applyCharTheme() {
   root.style.setProperty('--ios-blue', `hsl(${hue}, 72%, 66%)`);
   root.style.setProperty('--ios-blue-2', `hsl(${h2}, 80%, 72%)`);
   root.style.setProperty('--ios-pink', `hsl(${h3}, 82%, 72%)`);
-  root.style.setProperty('--grad-brand', `linear-gradient(135deg, hsl(${hue}, 70%, 62%) 0%, hsl(${h2}, 82%, 70%) 55%, hsl(${h3}, 85%, 76%) 100%)`);
+  root.style.setProperty('--grad-brand', `linear-gradient(135deg, hsl(${hue}, 72%, 54%) 0%, hsl(${h2}, 80%, 62%) 55%, hsl(${h3}, 82%, 70%) 100%)`);
+  // quick cards reuse the SAME brand gradient as the session badge, angle only differs
+  root.style.setProperty('--grad-a', `linear-gradient(135deg, hsl(${hue}, 72%, 54%) 0%, hsl(${h2}, 80%, 62%) 55%, hsl(${h3}, 82%, 70%) 100%)`);
+  root.style.setProperty('--grad-b', `linear-gradient(45deg,  hsl(${hue}, 72%, 54%) 0%, hsl(${h2}, 80%, 62%) 55%, hsl(${h3}, 82%, 70%) 100%)`);
+  root.style.setProperty('--grad-c', `linear-gradient(225deg, hsl(${hue}, 72%, 54%) 0%, hsl(${h2}, 80%, 62%) 55%, hsl(${h3}, 82%, 70%) 100%)`);
+  root.style.setProperty('--grad-d', `linear-gradient(315deg, hsl(${hue}, 72%, 54%) 0%, hsl(${h2}, 80%, 62%) 55%, hsl(${h3}, 82%, 70%) 100%)`);
   root.style.setProperty('--grad-soft', `linear-gradient(135deg, hsla(${hue}, 80%, 65%, .12), hsla(${h3}, 85%, 75%, .16))`);
   // character-tinted palette for every component (cards, badges, progress…)
   root.style.setProperty('--br1', `hsl(${hue}, 72%, 60%)`);
@@ -183,11 +188,11 @@ function applyCharTheme() {
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', `hsl(${hue}, 70%, 62%)`);
 }
-/* relative luminance of the brand gradient's DARKEST stop (S≈70%, L≈62%).
+/* relative luminance of the brand gradient's DARKEST stop (S≈72%, L≈54%).
    Light hues (yellows/greens/cyans) get dark text; deep hues keep white. */
 function brandLuminance(hue) {
   const h = ((hue % 360) + 360) % 360;
-  const S = 0.70, L = 0.62;
+  const S = 0.72, L = 0.54;
   const C = (1 - Math.abs(2 * L - 1)) * S;
   const X = C * (1 - Math.abs((h / 60) % 2 - 1));
   const m = L - C / 2;
