@@ -16,7 +16,8 @@ const APP = {
   mockIdx: 0,
   mockAnswers: {},
   aiMode: false,          // true when the current daily set is AI-generated
-  sectionLoading: false   // true while AI is generating the remaining section questions
+  sectionLoading: false,   // true while AI is generating the remaining section questions
+  navStack: []            // tab history for the back button
 };
 
 /* ---------- AI backend ----------
@@ -488,11 +489,44 @@ function playListening(btn, text) {
 function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
-function go(tab) {
+function go(tab, noPush) {
+  if (tab !== APP.tab) {
+    if (!noPush) {
+      APP.navStack.push(APP.tab);
+      if (APP.navStack.length > 20) APP.navStack.shift();
+      try { history.pushState({ t: tab }, ''); } catch (e) {}
+    }
+  }
   APP.tab = tab;
   document.querySelectorAll('.tab-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   render();
 }
+/* Back navigation — pops the tab stack (used by the header back button AND the Android hardware back via popstate) */
+function goBack() {
+  // if we're mid-section (solving questions), back exits the flow first
+  if (APP.sectionQs || APP.sectionLoading) { exitSection(); return; }
+  // mid mock test → exit to the mock list first (stack survives so a second back leaves the tab)
+  if (APP.mock) { exitMock(); return; }
+  // mid daily set → clear it and return to where we came from
+  if (APP.daily && APP.daily.length && (APP.tab === 'daily' || APP.dailyDone)) {
+    APP.daily = []; APP.dailyIdx = 0; APP.dailyAnswers = {}; APP.dailyDone = false; APP.dailyResult = null;
+    const prev = APP.navStack.pop();
+    go(prev || 'home', true);
+    return;
+  }
+  const prev = APP.navStack.pop();
+  go(prev || 'home', true);
+}
+function updateBackBtn() {
+  const btn = $id('back-btn');
+  if (!btn) return;
+  const show = APP.navStack.length > 0;
+  btn.style.display = show ? 'inline-flex' : 'none';
+}
+window.addEventListener('popstate', () => {
+  // Android / browser hardware back — mimic the on-screen back button
+  goBack();
+});
 function render() {
   const s = $id('screen');
   if (!s) return;
@@ -511,6 +545,7 @@ function render() {
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
   }
   renderSchedBanner();
+  updateBackBtn();
 }
 
 /* ================= HOME ================= */
@@ -1182,7 +1217,8 @@ function viewSectionResult() {
 function exitSection() {
   if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
   APP.section = null; APP.sectionQs = null; APP.sectionDone = false; APP.sectionResult = null; APP.sectionType = null; APP.sectionLoading = false;
-  go('home');
+  APP.navStack = [];
+  go('home', true);
 }
 function bindMy() {}
 

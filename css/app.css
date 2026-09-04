@@ -95,6 +95,18 @@
   display: flex; align-items: center; gap: 10px;
   min-height: 52px;
 }
+/* Back button (header, appears when there's navigation history) */
+.back-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: none; cursor: pointer; flex-shrink: 0;
+  background: var(--ios-fill); color: var(--ios-label);
+  font-size: 17px; font-weight: 800; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transition: transform .12s;
+}
+.back-btn:active { transform: scale(.92); }
+[data-theme="dark"] .back-btn { background: var(--ios-fill); color: var(--ios-label); }
 [data-theme="dark"] .app-header { background: rgba(14, 13, 23, .72); }
 .app-header .brand { font-size: 16px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ios-label); }
 .app-header .brand .logo {
