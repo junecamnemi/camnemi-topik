@@ -106,6 +106,39 @@ function syncCharFromAccount() {
   } catch (e) { console.warn('char sync:', e); }
   return false;
 }
+/* ---------- Level-based character unlocks ----------
+   · Level 1–10: 3 new characters per level (L1→3, L2→6, … L10→30)
+   · Level 11–40: 1 new character per level (L40 → all 60 unlocked)
+   · Name can always be changed (even at L1)
+   · Level 10+  : character action animations (flip-book FX) unlock
+   · Level 50+  : glowing ring around the avatar
+   · Level 80+  : 👑 crown on the avatar            */
+function myAppLevel() {
+  try { return (typeof xpLevel === 'function' && typeof xpTotal === 'function') ? xpLevel(xpTotal()) : 1; }
+  catch (e) { return 1; }
+}
+function unlockedCharCount() {
+  const lv = myAppLevel();
+  if (lv <= 10) return Math.min(30, lv * 3);        // 3/level up to 30
+  return Math.min(60, 30 + (lv - 10));              // +1/level → 60 at L40
+}
+function charUnlockLevel(id) {
+  const idx = (window.CHAR_LIST || []).findIndex(c => c.id === id);
+  if (idx < 0) return 1;
+  return idx < 30 ? Math.ceil((idx + 1) / 3) : 10 + (idx - 29);   // f/m ordering → level needed
+}
+function isCharUnlocked(id) {
+  const lv = myAppLevel();
+  if (lv >= 40) return true;
+  if (id === myCharId()) return true;               // current avatar is never locked
+  const idx = (window.CHAR_LIST || []).findIndex(c => c.id === id);
+  return idx >= 0 && idx < unlockedCharCount();
+}
+/* level gates for avatar FX */
+function fxUnlocked() { return myAppLevel() >= 10; }   // action animations
+function glowUnlocked() { return myAppLevel() >= 50; } // glowing ring
+function crownUnlocked() { return myAppLevel() >= 80; } // 👑 crown
+
 /* per-character accent theme — each of the 60 chars gets a UNIQUE pastel hue.
    Index 0..59 (females 0-29, males 30-59) × golden angle 47° (coprime with 360)
    → 60 distinct hues. Char f-01 (index 0) keeps the brand violet 258°. */
@@ -177,13 +210,26 @@ function setCharTab(g) {
 function charGridHTML(g) {
   const cur = myCharId();
   const list = (window.CHAR_LIST || []).filter(c => c.g === g);
-  return list.map(c => `
-    <div class="char-cell ${c.id === cur ? 'sel' : ''}" onclick="selectChar('${c.id}')">
-      <div class="char-face"><img src="${c.img}" alt="${esc(c.name)}" loading="lazy"></div>
+  const lv = myAppLevel();
+  return list.map(c => {
+    const locked = !isCharUnlocked(c.id);
+    const needLv = charUnlockLevel(c.id);
+    return `
+    <div class="char-cell ${c.id === cur ? 'sel' : ''} ${locked ? 'locked' : ''}" ${locked ? '' : `onclick="selectChar('${c.id}')"`} title="${locked ? (LANG === 'ko' ? `Lv ${needLv}에 해제` : LANG === 'km' ? `ដោះសោនៅ Lv ${needLv}` : `Unlocks at Lv ${needLv}`) : ''}">
+      <div class="char-face"><img src="${c.img}" alt="${esc(c.name)}" loading="lazy" ${locked ? 'style="filter:grayscale(1) brightness(.55);"' : ''}>
+        ${locked ? `<span class="char-lock">🔒<em>Lv ${needLv}</em></span>` : ''}
+        ${crownUnlocked() && c.id === cur ? '<span class="char-crown">👑</span>' : ''}
+      </div>
       <span class="char-name">${esc(c.name)}</span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function selectChar(id) {
+  if (typeof isCharUnlocked === 'function' && !isCharUnlocked(id)) {
+    const needLv = charUnlockLevel(id);
+    toast(LANG === 'ko' ? `🔒 Lv ${needLv}에 해제돼요!` : LANG === 'km' ? `🔒 ដោះសោនៅ Lv ${needLv}!` : `🔒 Unlocks at Lv ${needLv}!`);
+    return;
+  }
   // selecting a character applies its default name (custom name resets to the char's own name)
   localStorage.removeItem('camnemi_topik_char_name');
   setMyChar(id);
@@ -220,11 +266,23 @@ function renderCharPicker() {
   const ov = $id('char-picker');
   if (!ov) return;
   const g = _charTab || myChar().g || 'f';
+  const lv = myAppLevel();
+  const unlocked = unlockedCharCount();
+  const nextLv = unlocked < 60 ? (lv <= 10 ? lv + 1 : Math.min(40, lv + 1)) : null;
+  const progPct = Math.min(100, Math.round(unlocked / 60 * 100));
+  const statusLine = `
+    <div class="cp-status">
+      <span>🎮 ${LANG === 'ko' ? `내 레벨` : LANG === 'km' ? 'កម្រិតរបស់ខ្ញុំ' : 'My level'} <b>Lv ${lv}</b></span>
+      <span class="cp-status-bar"><i style="width:${progPct}%"></i></span>
+      <span class="cp-status-n">${unlocked}/60</span>
+    </div>
+    ${unlocked < 60 ? `<div class="cp-status-sub">${LANG === 'ko' ? `다음 캐릭터는 Lv ${nextLv}에 해제돼요` : LANG === 'km' ? `តួអង្គបន្ទាប់ ដោះសោនៅ Lv ${nextLv}` : `Next character unlocks at Lv ${nextLv}`}</div>` : ''}`;
   ov.innerHTML = `
     <div class="cp-head">
       <b>${LANG === 'ko' ? '캐릭터 선택' : LANG === 'km' ? 'ជ្រើសរើសតួអង្គ' : 'Choose character'}</b>
       <span class="cp-x" onclick="closeCharPicker()">✕</span>
     </div>
+    ${statusLine}
     ${nameRowHTML()}
     <div class="cp-rename">
       <input id="cp-name-input" class="cp-name-input" maxlength="20" placeholder="${LANG === 'ko' ? '이름 입력…' : LANG === 'km' ? 'បញ្ចូលឈ្មោះ…' : 'Enter name…'}" value="${esc(myCharName())}">

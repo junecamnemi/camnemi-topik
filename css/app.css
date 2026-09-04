@@ -195,13 +195,13 @@
 .cp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 .char-cell { text-align: center; cursor: pointer; }
 .char-face {
-  width: 100%; padding-top: 100%; border-radius: 50%; overflow: hidden;
+  width: 100%; padding-top: 100%; border-radius: 50%;
   border: 2.5px solid var(--ios-separator); background: var(--ios-fill);
-  transition: all .15s; position: relative;
+  transition: all .15s; position: relative; overflow: visible;
 }
 .char-face img {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; display: block;
+  object-fit: cover; display: block; border-radius: 50%;
 }
 .char-cell.sel .char-face { border-color: var(--ios-blue); box-shadow: 0 0 0 2.5px rgba(123,108,246,.55), 0 4px 12px rgba(123,108,246,.3); }
 .char-cell.sel .char-face::after {
@@ -212,6 +212,21 @@
   border: 1.5px solid #fff;
 }
 .char-name { display: block; font-size: 10.5px; font-weight: 700; color: var(--ios-label); margin-top: 4px; }
+/* locked character cells (level-gated unlocks) */
+.char-cell.locked { cursor: not-allowed; opacity: .85; }
+.char-lock {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2px;
+  font-size: 22px; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+.char-lock em { font-style: normal; font-size: 9px; font-weight: 800; color: #fff; background: rgba(0,0,0,.45); border-radius: 999px; padding: 1px 7px; }
+.char-crown { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-size: 17px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.25)); z-index: 2; }
+/* picker unlock progress status */
+.cp-status { display: flex; align-items: center; gap: 8px; padding: 2px 4px 10px; font-size: 12px; font-weight: 700; color: var(--ios-label); }
+.cp-status-bar { flex: 1; height: 6px; border-radius: 999px; background: var(--ios-fill); overflow: hidden; }
+.cp-status-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--br-deep), var(--br3)); }
+.cp-status-n { font-size: 11px; color: var(--ios-secondary-label); white-space: nowrap; }
+.cp-status-sub { font-size: 11px; font-weight: 600; color: var(--ios-secondary-label); padding: 0 4px 8px; }
 
 /* ---------- Rename row + input in the picker (hidden until ✏️ tapped) ---------- */
 .cp-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 4px 10px; }
@@ -571,10 +586,19 @@
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, var(--br2), var(--br3));
   box-shadow: 0 6px 20px hsla(var(--ai-h2), 80%, 65%, .4);
-  border: 2.5px solid #fff; overflow: hidden;
+  border: 2.5px solid #fff; overflow: visible; position: relative;
 }
-.greet-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.greet-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 .greet-avatar { cursor: pointer; position: relative; }
+/* Lv 50+ — glowing ring pulsing around the avatar */
+.greet-avatar.glow-ring { animation: avGlowRing 2.6s ease-in-out infinite; }
+@keyframes avGlowRing {
+  0%, 100% { box-shadow: 0 0 0 3px hsla(var(--ai-h1), 85%, 68%, .55), 0 6px 20px hsla(var(--ai-h2), 80%, 65%, .4); }
+  50%      { box-shadow: 0 0 0 8px hsla(var(--ai-h1), 85%, 68%, .18), 0 0 26px 6px hsla(var(--ai-h2), 90%, 70%, .55), 0 6px 20px hsla(var(--ai-h2), 80%, 65%, .4); }
+}
+/* Lv 80+ — crown on the avatar */
+.avatar-crown { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); font-size: 22px; line-height: 1; z-index: 5; filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); animation: crownBob 2.4s ease-in-out infinite; }
+@keyframes crownBob { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-2.5px); } }
 /* ---------- Expression animations — the character portrait ITSELF changes (real face-image swap) ---------- */
 /* Each mood swaps #greet-avatar-img to a real AI-generated expression face of the same character,
    then the portrait keeps a SUBTLE per-mood motion (no emoji, no overlays — the face itself moves). */

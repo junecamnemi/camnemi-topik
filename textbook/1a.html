@@ -217,6 +217,41 @@ body {
 .grammar .g-ex .ex .ko { font-weight:800; font-size:15px; }
 .grammar .g-ex .ex .gl { font-size:12.5px; color:var(--ink2); font-weight:600; }
 
+/* ---------- hangul science tables ---------- */
+.hangul-grid {
+  display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap:8px; margin:14px 0;
+}
+.h-cell {
+  background:var(--card2); border-radius:14px; padding:12px 10px;
+  text-align:center; border:1px solid var(--line);
+}
+.h-cell .h-jamo { font-size:30px; font-weight:800; color:var(--violet); line-height:1.2; }
+.h-cell .h-rom { font-size:10.5px; color:var(--ink2); font-weight:700; }
+.h-cell .h-name { font-size:11.5px; font-weight:800; margin-top:2px; }
+.h-cell .h-desc { font-size:11px; color:var(--ink2); font-weight:600; margin-top:2px; }
+.h-cell.highlight { background: linear-gradient(135deg, #E9E2FF, #FFE9F3); border-color: var(--violet2); }
+.h-cell.highlight .h-jamo { color:#6D5BD0; }
+/* syllable block demo */
+.h-block-demo {
+  display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+  margin:16px 0 4px;
+}
+.h-block {
+  background:var(--card2); border:1.5px solid var(--violet2); border-radius:16px;
+  padding:10px 16px; text-align:center; min-width:72px;
+}
+.h-block .hb-main { font-size:34px; font-weight:800; color:var(--ink); line-height:1.1; }
+.h-block .hb-sub { font-size:10.5px; color:var(--ink2); font-weight:700; }
+.h-block-op { font-size:22px; font-weight:800; color:var(--violet2); }
+.h-timeline { display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+.h-timeline .ht-item { display:flex; gap:12px; align-items:flex-start; }
+.h-timeline .ht-year {
+  flex-shrink:0; background:var(--grad); color:#fff; font-weight:800; font-size:12px;
+  padding:4px 10px; border-radius:999px; min-width:64px; text-align:center;
+}
+.h-timeline .ht-text { font-size:13.5px; font-weight:600; color:#5B5285; }
+
 /* ---------- TOPIK practice ---------- */
 .practice {
   background: var(--card); border:1px solid var(--line); border-radius:24px;
@@ -421,14 +456,72 @@ body {
   <div class="unit-flag">UNIT 0 · 예비편</div>
   <div class="sec-title"><div class="no">0</div><div><h2>한글 첫걸음</h2><div class="en">Hangul — the ABC of Korean</div></div></div>
 
+  <!-- 한글의 비밀 — 상세 시리즈 -->
   <div class="grammar">
-    <span class="g-label">💡 한글의 비밀</span>
-    <div class="g-point">한글은 과학적이고 쉬운 글자예요!</div>
-    <div class="g-rule">Hangul was made by King Sejong (세종대왕). 14 consonants + 10 vowels = every sound in Korean. One block = one syllable.</div>
+    <span class="g-label">📜 한글의 비밀 ① — 훈민정음 창제 이야기</span>
+    <div class="g-point">세종대왕이 만든, 백성을 위한 글자</div>
+    <div class="g-rule">옛날 한국 사람들은 중국 글자(한자)를 썼어요. 그런데 한자는 배우기 너무 어려워서 <b>백성들은 글을 읽지도 쓰지도 못했어요.</b> 세종대왕은 "백성이 말하고 싶은 것을 글로 쓸 수 없어 괴로워한다"며 <b>누구나 쉽게 배울 수 있는 새 글자</b>를 만들었어요. 그 이름이 바로 <b>훈민정음(訓民正音)</b> — "백성을 가르치는 바른 소리"라는 뜻이에요.</div>
+    <div class="h-timeline">
+      <div class="ht-item"><span class="ht-year">1443</span><span class="ht-text">세종대왕이 훈민정음을 <b>창제</b>했어요 (28자).</span></div>
+      <div class="ht-item"><span class="ht-year">1446</span><span class="ht-text"><b>훈민정음 해례본</b>으로 반포 — 원리 설명서와 함께 세상에 나왔어요.</span></div>
+      <div class="ht-item"><span class="ht-year">1910s</span><span class="ht-text">주시경 선생이 이름을 <b>'한글'</b>로 지었어요 — "크고 바른 글"이라는 뜻.</span></div>
+      <div class="ht-item"><span class="ht-year">오늘</span><span class="ht-text">24자(자음 14 + 모음 10)로 <b>세계에서 가장 과학적인 문자</b>로 인정받아요.</span></div>
+    </div>
+  </div>
+
+  <div class="grammar">
+    <span class="g-label">🔤 한글의 비밀 ② — 자음은 '입의 모양'!</span>
+    <div class="g-point">소리 내는 기관의 모양을 본떠 만든 자음</div>
+    <div class="g-rule">기본 자음 5개는 <b>발음할 때 움직이는 입·혀·목의 모양</b>을 그대로 본떠서 만들었어요. 글자를 보면 발음하는 법이 보여요!</div>
+    <div class="hangul-grid">
+      <div class="h-cell highlight"><div class="h-jamo">ㄱ</div><div class="h-rom">g/k</div><div class="h-name">기역</div><div class="h-desc">혀뿌리가 목구멍을 막는 모양</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㄴ</div><div class="h-rom">n</div><div class="h-name">니은</div><div class="h-desc">혀끝이 윗잇몸에 닿는 모양</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅁ</div><div class="h-rom">m</div><div class="h-name">미음</div><div class="h-desc">입술을 오므린 모양</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅅ</div><div class="h-rom">s</div><div class="h-name">시옷</div><div class="h-desc">이빨 모양</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅇ</div><div class="h-rom">ng</div><div class="h-name">이응</div><div class="h-desc">목구멍 모양</div></div>
+    </div>
+    <div class="g-rule">거기에 획을 더하면 <b>거센소리</b>가 돼요: ㄱ→ㅋ, ㄴ→ㄷ→ㅌ, ㅁ→ㅂ→ㅍ, ㅅ→ㅈ→ㅊ. <b>획 하나 = 소리 하나 더 센 소리!</b></div>
+  </div>
+
+  <div class="grammar">
+    <span class="g-label">🌌 한글의 비밀 ③ — 모음은 '하늘·땅·사람'!</span>
+    <div class="g-point">천지인(天地人) — 우주를 그린 모음</div>
+    <div class="g-rule">모음은 단 <b>세 가지 부호</b>로 만들어졌어요: <b>ㆍ(하늘, 점)</b> · <b>ㅡ(땅, 평평한 것)</b> · <b>ㅣ(사람, 서 있는 모습)</b>. 이 셋을 어떻게 배치하느냐에 따라 모든 모음이 탄생해요!</div>
+    <div class="hangul-grid">
+      <div class="h-cell"><div class="h-jamo">ㆍ</div><div class="h-rom">(arae-a)</div><div class="h-name">하늘</div><div class="h-desc">둥근 점 = 하늘</div></div>
+      <div class="h-cell"><div class="h-jamo">ㅡ</div><div class="h-rom">eu</div><div class="h-name">땅</div><div class="h-desc">평평한 땅</div></div>
+      <div class="h-cell"><div class="h-jamo">ㅣ</div><div class="h-rom">i</div><div class="h-name">사람</div><div class="h-desc">서 있는 사람</div></div>
+    </div>
+    <div class="g-rule">조합 원리:</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">자음 Consonants</span><span class="gl">ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅅ ㅇ ㅈ ㅊ ㅋ ㅌ ㅍ ㅎ</span></div>
-      <div class="ex"><span class="ko">모음 Vowels</span><span class="gl">ㅏ ㅑ ㅓ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ</span></div>
-      <div class="ex"><span class="ko">합성 모음</span><span class="gl">ㅐ ㅔ ㅒ ㅖ ㅘ ㅙ ㅚ ㅝ ㅞ ㅟ ㅢ</span></div>
+      <div class="ex"><span class="ko">ㅣ + ㆍ = ㅏ / ㅓ</span><span class="gl">사람(ㅣ) 오른쪽에 하늘(ㆍ) → ㅏ · 왼쪽 → ㅓ</span></div>
+      <div class="ex"><span class="ko">ㅡ + ㆍ = ㅗ / ㅜ</span><span class="gl">땅(ㅡ) 위에 하늘 → ㅗ · 아래 → ㅜ</span></div>
+      <div class="ex"><span class="ko">ㅏ + ㅣ = ㅐ / ㅔ</span><span class="gl">모음끼리 합쳐지면 새로운 모음!</span></div>
+    </div>
+  </div>
+
+  <div class="grammar">
+    <span class="g-label">🧱 한글의 비밀 ④ — 글자 하나 = 음절 블록</span>
+    <div class="g-point">자음 + 모음이 모여 '한 글자'가 돼요</div>
+    <div class="g-rule">한글은 알파벳처럼 줄줄이 쓰지 않고, <b>자음과 모음을 한 칸(블록)에 모아</b> 한 음절을 만들어요. 아래에 받침도 쌓을 수 있어요!</div>
+    <div class="h-block-demo">
+      <div class="h-block"><div class="hb-main">가</div><div class="hb-sub">ㄱ + ㅏ</div></div>
+      <div class="h-block-op">→</div>
+      <div class="h-block"><div class="hb-main">간</div><div class="hb-sub">ㄱ + ㅏ + ㄴ</div></div>
+      <div class="h-block-op">→</div>
+      <div class="h-block"><div class="hb-main">사랑</div><div class="hb-sub">사 + 랑 · 2 blocks</div></div>
+    </div>
+    <div class="g-rule">이렇게 블록이 쌓이면 단어가 되고, 문장이 돼요! 예: <b>사랑해요</b> = 사 + 랑 + 해 + 요 (4블록)</div>
+  </div>
+
+  <div class="grammar">
+    <span class="g-label">🏆 한글의 비밀 ⑤ — 세계가 인정한 문자</span>
+    <div class="g-point">"지구상에서 가장 훌륭한 문자" — 세계 언어학자들</div>
+    <div class="g-rule">훈민정음은 <b>유네스코 세계기록유산</b>에 등재됐어요. 미국의 언어학자 에드윈 라이샤워는 <b>"세계에서 가장 우수한 문자 체계"</b>라고 극찬했어요. 소리 → 글자로 1:1 대응되는 과학적 문자라서 배우기 쉬워요!</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">한글날 — 10월 9일</span><span class="gl">한국 공휴일! 한글을 기념하는 날</span></div>
+      <div class="ex"><span class="ko">유네스코 세계기록유산 (1997)</span><span class="gl">훈민정음 해례본 등재</span></div>
+      <div class="ex"><span class="ko">훈민정음 → 한글</span><span class="gl">오늘날 이름은 주시경 선생이 지었어요</span></div>
     </div>
   </div>
 
@@ -450,11 +543,10 @@ body {
     <div class="p-dir">Read the Hangul word and choose the correct pronunciation. 🔊 버튼을 누르면 소리를 들을 수 있어요.</div>
     <div class="p-q">다음을 읽고, 맞는 것을 고르십시오. — <span class="blank">뉴진스</span></div>
     <div class="opts" data-q="u0q1">
-      <button class="opt" onclick="checkQ('u0q1',0,this)"><span class="o-idx">1</span> nu-jin-seu<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">1</span> nu-jin-seu<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">2</span> nyu-jin-seu<span class="o-gl">✅ 뉴 = nyu</span></button>
-      <button class="opt" onclick="checkQ('u0q1',2,this)"><span class="o-idx">3</span> niu-jin-seu<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u0q1',3,this)"><span class="o-idx">4</span> nu-jin-ssu<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">3</span> niu-jin-seu<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">4</span> nu-jin-ssu<span class="o-gl">❌</span></button></div>
     <div class="p-feedback" id="fb-u0q1"></div>
   </div>
 
@@ -463,11 +555,10 @@ body {
     <div class="p-dir">Choose the correct Hangul spelling.</div>
     <div class="p-q">다음을 읽고, 맞는 것을 고르십시오. — <b>“TWICE”를 한글로 쓰면?</b></div>
     <div class="opts" data-q="u0q2">
-      <button class="opt" onclick="checkQ('u0q2',0,this)"><span class="o-idx">1</span> 트바이스<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">1</span> 트바이스<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">2</span> 트와이스<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u0q2',2,this)"><span class="o-idx">3</span> 트웨이스<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u0q2',3,this)"><span class="o-idx">4</span> 트아이스<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">3</span> 트웨이스<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">4</span> 트아이스<span class="o-gl">❌</span></button></div>
     <div class="p-feedback" id="fb-u0q2"></div>
   </div>
 
@@ -549,10 +640,10 @@ body {
     <button class="p-audio" onclick="tts('안녕하세요! 만나서 반가워요.')">🔊 안녕하세요! 만나서 반가워요.</button>
     <div class="opts" data-q="u1q3">
       <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">1</span> 안녕하세요!<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u1q3',1,this)"><span class="o-idx">2</span> 잘 가!<span class="o-gl">❌ informal</span></button>
-      <button class="opt" onclick="checkQ('u1q3',2,this)"><span class="o-idx">3</span> 감사합니다.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u1q3',3,this)"><span class="o-idx">4</span> 뭐 해요?<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">2</span> 잘 가!<span class="o-gl">❌ informal</span></button>
+      <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">3</span> 감사합니다.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">4</span> 뭐 해요?<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u1q3"></div>
   </div>
 
@@ -562,10 +653,10 @@ body {
     <div class="p-q">저는 아이돌(    ).</div>
     <div class="opts" data-q="u1q4">
       <button class="opt" onclick="checkQ('u1q4',0,this)"><span class="o-idx">1</span> 이에요<span class="o-gl">✅ 아이돌 ends with ㄹ → 이에요</span></button>
-      <button class="opt" onclick="checkQ('u1q4',1,this)"><span class="o-idx">2</span> 예요<span class="o-gl">❌ needs no 받침</span></button>
-      <button class="opt" onclick="checkQ('u1q4',2,this)"><span class="o-idx">3</span> 이어요<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u1q4',3,this)"><span class="o-idx">4</span> 있어요<span class="o-gl">❌ = have/exist</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u1q4',0,this)"><span class="o-idx">2</span> 예요<span class="o-gl">❌ needs no 받침</span></button>
+      <button class="opt" onclick="checkQ('u1q4',0,this)"><span class="o-idx">3</span> 이어요<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u1q4',0,this)"><span class="o-idx">4</span> 있어요<span class="o-gl">❌ = have/exist</span></button></div>
+    
     <div class="p-feedback" id="fb-u1q4"></div>
   </div>
 
@@ -652,10 +743,10 @@ body {
     <div class="p-q">저(    ) 가수예요.</div>
     <div class="opts" data-q="u2q1">
       <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">1</span> 는<span class="o-gl">✅ 저 has no 받침 → 는</span></button>
-      <button class="opt" onclick="checkQ('u2q1',1,this)"><span class="o-idx">2</span> 은<span class="o-gl">❌ 은 is for 받침</span></button>
-      <button class="opt" onclick="checkQ('u2q1',2,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌ object particle</span></button>
-      <button class="opt" onclick="checkQ('u2q1',3,this)"><span class="o-idx">4</span> 이<span class="o-gl">❌ subject particle</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">2</span> 은<span class="o-gl">❌ 은 is for 받침</span></button>
+      <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌ object particle</span></button>
+      <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">4</span> 이<span class="o-gl">❌ subject particle</span></button></div>
+    
     <div class="p-feedback" id="fb-u2q1"></div>
   </div>
 
@@ -664,11 +755,11 @@ body {
     <div class="p-dir">🔊 들으면서, 이 사람은 누구인지 고르세요.</div>
     <button class="p-audio" onclick="tts('저는 일본 사람이에요. 샛별의 래퍼예요.')">🔊 Listen</button>
     <div class="opts" data-q="u2q2">
-      <button class="opt" onclick="checkQ('u2q2',0,this)"><span class="o-idx">1</span> 유나<span class="o-gl">❌ Yuna is from Vietnam</span></button>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">1</span> 유나<span class="o-gl">❌ Yuna is from Vietnam</span></button>
       <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">2</span> 지훈<span class="o-gl">✅ Japanese rapper</span></button>
-      <button class="opt" onclick="checkQ('u2q2',2,this)"><span class="o-idx">3</span> 지우<span class="o-gl">❌ Korean leader</span></button>
-      <button class="opt" onclick="checkQ('u2q2',3,this)"><span class="o-idx">4</span> 하준<span class="o-gl">❌ Korean maknae</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">3</span> 지우<span class="o-gl">❌ Korean leader</span></button>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">4</span> 하준<span class="o-gl">❌ Korean maknae</span></button></div>
+    
     <div class="p-feedback" id="fb-u2q2"></div>
   </div>
 
@@ -756,10 +847,10 @@ body {
     <div class="p-q">다음을 읽고, 맞는 것을 고르십시오.</div>
     <div class="opts" data-q="u3q1">
       <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">1</span> 기타가 있어요.<span class="o-gl">✅ There is a guitar.</span></button>
-      <button class="opt" onclick="checkQ('u3q1',1,this)"><span class="o-idx">2</span> 기타가 없어요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u3q1',2,this)"><span class="o-idx">3</span> 기타가 좋아요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u3q1',3,this)"><span class="o-idx">4</span> 기타가 커요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">2</span> 기타가 없어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">3</span> 기타가 좋아요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">4</span> 기타가 커요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u3q1"></div>
   </div>
 
@@ -769,10 +860,10 @@ body {
     <button class="p-audio" onclick="tts('가방에 책이 있어요.')">🔊 Listen</button>
     <div class="opts" data-q="u3q2">
       <button class="opt" onclick="checkQ('u3q2',0,this)"><span class="o-idx">1</span> 가방에 책이 있어요.<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u3q2',1,this)"><span class="o-idx">2</span> 가방에 책이 없어요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u3q2',2,this)"><span class="o-idx">3</span> 가방이 책이에요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u3q2',3,this)"><span class="o-idx">4</span> 책이 가방이에요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u3q2',0,this)"><span class="o-idx">2</span> 가방에 책이 없어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u3q2',0,this)"><span class="o-idx">3</span> 가방이 책이에요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u3q2',0,this)"><span class="o-idx">4</span> 책이 가방이에요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u3q2"></div>
   </div>
 
@@ -857,11 +948,11 @@ body {
     <div class="p-passage">샛별 데뷔 무대 — 5월 20일 (금)</div>
     <div class="p-q">데뷔 무대는 무슨 요일이에요?</div>
     <div class="opts" data-q="u4q1">
-      <button class="opt" onclick="checkQ('u4q1',0,this)"><span class="o-idx">1</span> 수요일<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u4q1',1,this)"><span class="o-idx">2</span> 목요일<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">1</span> 수요일<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">2</span> 목요일<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">3</span> 금요일<span class="o-gl">✅ 金 = 금</span></button>
-      <button class="opt" onclick="checkQ('u4q1',3,this)"><span class="o-idx">4</span> 토요일<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">4</span> 토요일<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u4q1"></div>
   </div>
 
@@ -871,10 +962,10 @@ body {
     <button class="p-audio" onclick="tts('생일이 언제예요?')">🔊 Listen</button>
     <div class="opts" data-q="u4q2">
       <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">1</span> 5월 17일이에요.<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u4q2',1,this)"><span class="o-idx">2</span> 금요일이에요.<span class="o-gl">❌ that answers 요일</span></button>
-      <button class="opt" onclick="checkQ('u4q2',2,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u4q2',3,this)"><span class="o-idx">4</span> 네, 좋아요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">2</span> 금요일이에요.<span class="o-gl">❌ that answers 요일</span></button>
+      <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">4</span> 네, 좋아요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u4q2"></div>
   </div>
 
@@ -959,10 +1050,10 @@ body {
     <div class="p-q">저는 케이팝 음악(    ) 좋아해요.</div>
     <div class="opts" data-q="u5q1">
       <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">1</span> 을<span class="o-gl">✅ 음악 = 음악, 악 has 받침 ㄱ → 을</span></button>
-      <button class="opt" onclick="checkQ('u5q1',1,this)"><span class="o-idx">2</span> 를<span class="o-gl">❌ 를 is for no 받침 (e.g. 노래를)</span></button>
-      <button class="opt" onclick="checkQ('u5q1',2,this)"><span class="o-idx">3</span> 은<span class="o-gl">❌ topic particle</span></button>
-      <button class="opt" onclick="checkQ('u5q1',3,this)"><span class="o-idx">4</span> 에<span class="o-gl">❌ place/time particle</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">2</span> 를<span class="o-gl">❌ 를 is for no 받침 (e.g. 노래를)</span></button>
+      <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">3</span> 은<span class="o-gl">❌ topic particle</span></button>
+      <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">4</span> 에<span class="o-gl">❌ place/time particle</span></button></div>
+    
     <div class="p-feedback" id="fb-u5q1"></div>
   </div>
 
@@ -971,11 +1062,11 @@ body {
     <div class="p-dir">🔊 듣고 알맞은 답을 고르세요.</div>
     <button class="p-audio" onclick="tts('뭐를 좋아해요?')">🔊 Listen</button>
     <div class="opts" data-q="u5q2">
-      <button class="opt" onclick="checkQ('u5q2',0,this)"><span class="o-idx">1</span> 네, 좋아해요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">1</span> 네, 좋아해요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">2</span> 저는 춤을 좋아해요.<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u5q2',2,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u5q2',3,this)"><span class="o-idx">4</span> 네, 감사합니다.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">4</span> 네, 감사합니다.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u5q2"></div>
   </div>
 
@@ -1060,11 +1151,11 @@ body {
     <div class="p-passage">🍽️ 샛별 식당 메뉴<br>김밥 3,000원 · 떡볶이 4,000원 · 치킨 15,000원 · 콜라 2,000원</div>
     <div class="p-q">가장 비싼 음식은 뭐예요?</div>
     <div class="opts" data-q="u6q1">
-      <button class="opt" onclick="checkQ('u6q1',0,this)"><span class="o-idx">1</span> 김밥<span class="o-gl">❌ 3,000원</span></button>
-      <button class="opt" onclick="checkQ('u6q1',1,this)"><span class="o-idx">2</span> 떡볶이<span class="o-gl">❌ 4,000원</span></button>
+      <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">1</span> 김밥<span class="o-gl">❌ 3,000원</span></button>
+      <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">2</span> 떡볶이<span class="o-gl">❌ 4,000원</span></button>
       <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">3</span> 치킨<span class="o-gl">✅ 15,000원 — most expensive</span></button>
-      <button class="opt" onclick="checkQ('u6q1',3,this)"><span class="o-idx">4</span> 콜라<span class="o-gl">❌ 2,000원 — cheapest</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">4</span> 콜라<span class="o-gl">❌ 2,000원 — cheapest</span></button></div>
+    
     <div class="p-feedback" id="fb-u6q1"></div>
   </div>
 
@@ -1073,11 +1164,11 @@ body {
     <div class="p-dir">🔊 듣고 맞는 것을 고르세요.</div>
     <button class="p-audio" onclick="tts('저는 매운 음식을 안 먹어요.')">🔊 Listen</button>
     <div class="opts" data-q="u6q2">
-      <button class="opt" onclick="checkQ('u6q2',0,this)"><span class="o-idx">1</span> 이 사람은 매운 음식을 먹어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u6q2',1,this)"><span class="o-idx">1</span> 이 사람은 매운 음식을 먹어요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u6q2',1,this)"><span class="o-idx">2</span> 이 사람은 매운 음식을 안 먹어요.<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u6q2',2,this)"><span class="o-idx">3</span> 이 사람은 음식을 좋아해요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u6q2',3,this)"><span class="o-idx">4</span> 이 사람은 매운 음식을 만들어요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u6q2',1,this)"><span class="o-idx">3</span> 이 사람은 음식을 좋아해요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u6q2',1,this)"><span class="o-idx">4</span> 이 사람은 매운 음식을 만들어요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u6q2"></div>
   </div>
 
@@ -1160,11 +1251,11 @@ body {
     <div class="p-dir">Choose the correct particle.</div>
     <div class="p-q">지우 씨는 연습실(    ) 있어요.</div>
     <div class="opts" data-q="u7q1">
-      <button class="opt" onclick="checkQ('u7q1',0,this)"><span class="o-idx">1</span> 에서<span class="o-gl">❌ 에서 = action place</span></button>
+      <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">1</span> 에서<span class="o-gl">❌ 에서 = action place</span></button>
       <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">2</span> 에<span class="o-gl">✅ 에 = existence place</span></button>
-      <button class="opt" onclick="checkQ('u7q1',2,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u7q1',3,this)"><span class="o-idx">4</span> 가<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">4</span> 가<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u7q1"></div>
   </div>
 
@@ -1173,11 +1264,11 @@ body {
     <div class="p-dir">🔊 듣고 맞는 것을 고르세요.</div>
     <button class="p-audio" onclick="tts('저는 도서관에서 책을 읽어요.')">🔊 Listen</button>
     <div class="opts" data-q="u7q2">
-      <button class="opt" onclick="checkQ('u7q2',0,this)"><span class="o-idx">1</span> 집에서 책을 읽어요.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u7q2',1,this)"><span class="o-idx">2</span> 카페에서 책을 읽어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u7q2',2,this)"><span class="o-idx">1</span> 집에서 책을 읽어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u7q2',2,this)"><span class="o-idx">2</span> 카페에서 책을 읽어요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u7q2',2,this)"><span class="o-idx">3</span> 도서관에서 책을 읽어요.<span class="o-gl">✅ 도서관 = library</span></button>
-      <button class="opt" onclick="checkQ('u7q2',3,this)"><span class="o-idx">4</span> 학교에서 책을 읽어요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u7q2',2,this)"><span class="o-idx">4</span> 학교에서 책을 읽어요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u7q2"></div>
   </div>
 
@@ -1261,11 +1352,11 @@ body {
     <div class="p-dir">Choose the correct past tense.</div>
     <div class="p-q">어제 친구를(    ).</div>
     <div class="opts" data-q="u8q1">
-      <button class="opt" onclick="checkQ('u8q1',0,this)"><span class="o-idx">1</span> 만나요<span class="o-gl">❌ present</span></button>
+      <button class="opt" onclick="checkQ('u8q1',1,this)"><span class="o-idx">1</span> 만나요<span class="o-gl">❌ present</span></button>
       <button class="opt" onclick="checkQ('u8q1',1,this)"><span class="o-idx">2</span> 만났어요<span class="o-gl">✅ met (past)</span></button>
-      <button class="opt" onclick="checkQ('u8q1',2,this)"><span class="o-idx">3</span> 만날 거예요<span class="o-gl">❌ future</span></button>
-      <button class="opt" onclick="checkQ('u8q1',3,this)"><span class="o-idx">4</span> 만나고 있어요<span class="o-gl">❌ progressive</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u8q1',1,this)"><span class="o-idx">3</span> 만날 거예요<span class="o-gl">❌ future</span></button>
+      <button class="opt" onclick="checkQ('u8q1',1,this)"><span class="o-idx">4</span> 만나고 있어요<span class="o-gl">❌ progressive</span></button></div>
+    
     <div class="p-feedback" id="fb-u8q1"></div>
   </div>
 
@@ -1274,11 +1365,11 @@ body {
     <div class="p-dir">🔊 듣고 알맞은 답을 고르세요.</div>
     <button class="p-audio" onclick="tts('어제 뭐 했어요?')">🔊 Listen</button>
     <div class="opts" data-q="u8q2">
-      <button class="opt" onclick="checkQ('u8q2',0,this)"><span class="o-idx">1</span> 네, 좋아요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u8q2',1,this)"><span class="o-idx">1</span> 네, 좋아요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u8q2',1,this)"><span class="o-idx">2</span> 어제 영화를 봤어요.<span class="o-gl">✅ watched a movie</span></button>
-      <button class="opt" onclick="checkQ('u8q2',2,this)"><span class="o-idx">3</span> 내일 영화를 봐요.<span class="o-gl">❌ tomorrow</span></button>
-      <button class="opt" onclick="checkQ('u8q2',3,this)"><span class="o-idx">4</span> 저는 학생이에요.<span class="o-gl">❌</span></button>
-    </div>
+      <button class="opt" onclick="checkQ('u8q2',1,this)"><span class="o-idx">3</span> 내일 영화를 봐요.<span class="o-gl">❌ tomorrow</span></button>
+      <button class="opt" onclick="checkQ('u8q2',1,this)"><span class="o-idx">4</span> 저는 학생이에요.<span class="o-gl">❌</span></button></div>
+    
     <div class="p-feedback" id="fb-u8q2"></div>
   </div>
 
@@ -1322,6 +1413,19 @@ function closeToc(){ document.getElementById('toc-sheet').classList.remove('show
 function goto(sel){ closeToc(); document.querySelector(sel).scrollIntoView({behavior:'smooth'}); }
 
 /* ---------- answer checking ---------- */
+// Hide all answer hints (✅/❌ markers in option glosses) until the learner clicks.
+function stripHints() {
+  document.querySelectorAll('.opt .o-gl').forEach(el => {
+    const t = (el.textContent || '');
+    if (t.includes('✅') || t.includes('❌')) {
+      el.dataset.hint = t.replace(/[✅❌]\s*/g, '').trim();
+      el.textContent = '';
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', stripHints);
+if (document.readyState !== 'loading') stripHints();
+
 function checkQ(qid, correctIdx, btn) {
   const group = btn.parentElement;
   const fb = document.getElementById('fb-' + qid);
@@ -1332,18 +1436,26 @@ function checkQ(qid, correctIdx, btn) {
   opts.forEach((o, i) => {
     o.disabled = true;
     o.classList.remove('correct','wrong');
-    if (i === correctIdx) o.classList.add('correct');
-    else if (i === picked) o.classList.add('wrong');
+    if (i === correctIdx) {
+      o.classList.add('correct');
+      const gl = o.querySelector('.o-gl');
+      if (gl && gl.dataset.hint) gl.textContent = gl.dataset.hint;
+    } else if (i === picked) {
+      o.classList.add('wrong');
+    }
   });
   fb.classList.add('show');
   if (picked === correctIdx) {
     fb.className = 'p-feedback show ok';
-    fb.innerHTML = '✅ 정답이에요! ' + (btn.querySelector('.o-gl') ? btn.querySelector('.o-gl').textContent.replace('✅','').trim() : '');
+    const gl = opts[correctIdx].querySelector('.o-gl');
+    fb.innerHTML = '✅ 정답이에요!' + (gl && gl.dataset.hint ? ' ' + gl.dataset.hint : '');
   } else {
     fb.className = 'p-feedback show no';
     const correctOpt = opts[correctIdx];
-    const gl = correctOpt.querySelector('.o-gl') ? correctOpt.querySelector('.o-gl').textContent.replace('✅','').trim() : '';
-    fb.innerHTML = '❌ 다시 생각해 봐요! 정답은 ' + (correctIdx+1) + '번: "' + correctOpt.childNodes[2].textContent.trim() + '" ' + gl;
+    const hint = correctOpt.querySelector('.o-gl');
+    const hintText = hint && hint.dataset.hint ? hint.dataset.hint : '';
+    const label = (correctOpt.childNodes[1] || {}).textContent ? correctOpt.childNodes[1].textContent.trim() : '';
+    fb.innerHTML = '❌ 다시 생각해 봐요! 정답은 ' + (correctIdx+1) + '번 "' + label + '" ' + (hintText ? '→ ' + hintText : '');
   }
 }
 </script>

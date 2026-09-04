@@ -813,7 +813,8 @@ function viewHome() {
           <p class="greet-s">${t('home_greet_sub')}</p>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:2;">
-          <div class="greet-avatar" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
+          <div class="greet-avatar ${glowUnlocked() ? 'glow-ring' : ''}" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
+            ${crownUnlocked() ? '<span class="avatar-crown">👑</span>' : ''}
             <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
             <span class="avatar-edit">✎</span>
           </div>
@@ -1034,7 +1035,7 @@ function fxApply(m) {
   _fxLastKey = m.k;
   const target = fxImgPath(m);
   const probe = new Image();
-  probe.onload = () => { img.src = target; fxStartFrames(m); };
+  probe.onload = () => { img.src = target; if (typeof fxUnlocked === 'function' && fxUnlocked()) fxStartFrames(m); }; // L10+ action animations
   probe.onerror = () => { img.src = myChar().img; };   // portrait missing → base face
   probe.src = target;
 }
@@ -2267,10 +2268,15 @@ function accBar(label, p, sub) {
 }
 /* ================= XP / LEVELS / DAILY QUESTS ================= */
 // level thresholds: L1→L2→L3→L4→L5→L6 (TOPIK ladder)
-const XP_LEVELS = [
-  { lv: 1, need: 0 }, { lv: 2, need: 200 }, { lv: 3, need: 500 },
-  { lv: 4, need: 900 }, { lv: 5, need: 1500 }, { lv: 6, need: 2500 }
-];
+/* 100-level XP curve — cumulative need(lv) = round(8 × (lv-1)²).
+   Early levels fly by (L1→L2 ≈ 8 XP ≈ 1 correct answer), later levels
+   become a long-term goal (L99→L100 ≈ 1,576 XP). Total ≈ 78K XP (a year of
+   daily practice: daily 10 + flash + mock ≈ 250 XP/day). */
+const XP_LEVELS = (() => {
+  const arr = [];
+  for (let lv = 1; lv <= 100; lv++) arr.push({ lv, need: Math.round(8 * (lv - 1) * (lv - 1)) });
+  return arr;
+})();
 const XP_RULES = { correct: 10, wrong: 3, daily_finish: 50, mock_finish: 100, flash: 5 };
 function xpTotal() { return (lsGet(LS.xp, {})).total || 0; }
 function xpLevel(xp) {
@@ -2366,7 +2372,7 @@ function levelBadgeHTML(size = 40) {
 }
 function levelCardHTML() {
   const p = xpProgress();
-  const nextLbl = p.maxed ? t('xp_level') + ' 6 · MAX' : t('xp_to_next', { n: p.need - p.into, l: p.lv + 1 });
+  const nextLbl = p.maxed ? t('xp_level') + ' 100 · MAX' : t('xp_to_next', { n: p.need - p.into, l: p.lv + 1 });
   return `<div class="app-card elevated level-card">
     <div class="row">
       ${levelBadgeHTML(46)}
