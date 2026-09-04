@@ -741,25 +741,23 @@ function viewHome() {
   tickClock();
   // Quick start — four big pretty one-tap test cards (no icons, no title bar)
   const aiQuick = `
-    <div class="app-card ai-quick ai-hero aq-nohead">
-      <div class="aq-4">
-        <button class="aq-cell aq-r" onclick="startSection('reading', myLevel())">
-          <span class="aq-txt"><b>${t('nav_reading')}</b><span class="aq-sub">${t('home_ai_read')}</span></span>
-          <span class="aq-arr">→</span>
-        </button>
-        <button class="aq-cell aq-l" onclick="startSection('listening', myLevel())">
-          <span class="aq-txt"><b>${t('nav_listening')}</b><span class="aq-sub">${t('home_ai_listen')}</span></span>
-          <span class="aq-arr">→</span>
-        </button>
-        <button class="aq-cell aq-v" onclick="startSection('reading', myLevel(), 'vocab')">
-          <span class="aq-txt"><b>${t('home_task_vocab')}</b><span class="aq-sub">${t('home_sch_vocab')}</span></span>
-          <span class="aq-arr">→</span>
-        </button>
-        <button class="aq-cell aq-m" onclick="go('mock')">
-          <span class="aq-txt"><b>${t('home_task_mock')}</b><span class="aq-sub">${t('home_sch_mock')}</span></span>
-          <span class="aq-arr">→</span>
-        </button>
-      </div>
+    <div class="aq-4">
+      <button class="aq-cell aq-r" onclick="startSection('reading', myLevel())">
+        <span class="aq-txt"><b>${t('nav_reading')}</b><span class="aq-sub">${t('home_ai_read')}</span></span>
+        <span class="aq-arr">→</span>
+      </button>
+      <button class="aq-cell aq-l" onclick="startSection('listening', myLevel())">
+        <span class="aq-txt"><b>${t('nav_listening')}</b><span class="aq-sub">${t('home_ai_listen')}</span></span>
+        <span class="aq-arr">→</span>
+      </button>
+      <button class="aq-cell aq-v" onclick="startSection('reading', myLevel(), 'vocab')">
+        <span class="aq-txt"><b>${t('home_task_vocab')}</b><span class="aq-sub">${t('home_sch_vocab')}</span></span>
+        <span class="aq-arr">→</span>
+      </button>
+      <button class="aq-cell aq-m" onclick="go('mock')">
+        <span class="aq-txt"><b>${t('home_task_mock')}</b><span class="aq-sub">${t('home_sch_mock')}</span></span>
+        <span class="aq-arr">→</span>
+      </button>
     </div>`;
   // Today's Schedule — compact 2×2 grid (clean)
   const schedRows = [

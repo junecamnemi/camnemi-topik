@@ -368,20 +368,8 @@
 .goal-card:active { transform: scale(.98); }
 .goal-card .sub { color: var(--ios-secondary-label); font-weight: 600; }
 
-/* ---------- AI quick-start (animated AI gradient hero, tall) ---------- */
-.ai-quick {
-  position: relative; overflow: hidden; border: none;
-  padding: 26px 20px 22px; margin-bottom: 12px;
-}
-.ai-quick::before {
-  content: ''; position: absolute; inset: -45%;
-  background: linear-gradient(115deg, #6D5AE6, #A78BFA, #F9A8D4, #5BC8E8, #8B7CF6, #6D5AE6);
-  background-size: 220% 220%;
-  animation: aiGrad 7s ease-in-out infinite;
-  z-index: 0;
-}
-.aq-nohead .aq-4 { margin-top: 0; }
-.aq-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; position: relative; z-index: 1; }
+/* ---------- Quick-start 4-card grid (no wrapper) ---------- */
+.aq-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
 .aq-cell {
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -413,13 +401,6 @@
 .aq-l { background: linear-gradient(135deg, #0B8078 0%, #1FB5A6 60%, #3ADBCB 100%); }
 .aq-v { background: linear-gradient(135deg, #D97706 0%, #F59E0B 60%, #FBBF24 100%); }
 .aq-m { background: linear-gradient(135deg, #BE185D 0%, #DB2777 60%, #F472B6 100%); }
-@keyframes aiGrad {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-@keyframes aqGlow { from { opacity: .65; } to { opacity: 1; } }
-@keyframes aqTag { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
