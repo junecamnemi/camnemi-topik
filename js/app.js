@@ -800,7 +800,6 @@ function viewHome() {
   const streak = lsGet(LS.streak, { last: null, count: 0 });
   const acc = accuracyStats();
   const isNew = answered === 0;
-  const lvl = xpProgress();
   // Greeting — Hi, {character name}! 👋 inside a Seoul-scene card
   const nm = myCharName();
   const mc = myChar();
@@ -889,7 +888,9 @@ function viewHome() {
   const ltDone = localStorage.getItem(LS.mylevel) != null;
   return `
     ${scene}
-    ${ltDone ? recommendCard(acc, lvl.lv)
+    ${ltDone
+      ? `${levelCardHTML()}
+    ${recommendCard(acc)}`
       : `
     <div class="app-card lt-home-card">
       <div class="lt-home-ico">🎓</div>
@@ -904,7 +905,6 @@ function viewHome() {
     ${schedule}
     <div class="sec-h"><h2>${ic('target',15)} ${t('goal_title')}</h2><span class="sub">${t('goal_sub')}</span></div>
     ${goalCards}
-    ${levelCardHTML()}
     ${smartRecCard(acc)}
     ${questHTML()}
     ${isNew ? '' : `
@@ -2069,15 +2069,12 @@ function typeAction(k) {
 function recBar(p, col) {
   return `<div class="rec-bar"><div class="rec-bar-fill" style="width:${p}%;background:${col}"></div></div>`;
 }
-function recommendCard(acc, lvNum) {
+function recommendCard(acc) {
   const ko = LANG === 'ko';
   const answered = Object.keys(lsGet(LS.progress, {})).length;
   const rows = (acc.byType || []).filter(r => r.n >= 2).sort((a, b) => a.p - b.p);
   const weak = rows[0] || null;                     // lowest accuracy (>=2 attempts)
   const strong = rows.length ? rows[rows.length - 1] : null;
-  const lvl = xpProgress();                          // { lv, pct, ... } for the XP bar
-  // grade label for the level
-  const grade = lvNum <= 2 ? (ko ? '초급' : 'Beginner') : lvNum <= 4 ? (ko ? '중급' : 'Intermediate') : (ko ? '고급' : 'Advanced');
   const pct = (s) => s ? Math.round(s.c / s.n * 100) : 0;
   // type chips (up to 5, worst first) — colored by accuracy
   const chip = (r) => {
@@ -2100,13 +2097,6 @@ function recommendCard(acc, lvNum) {
     pick = `<div class="rec-pick rec-empty"><span class="sub">${t('rec_none')}</span></div>`;
   }
   return `<div class="app-card rec-card">
-    <div class="rec-head">
-      <div class="rec-lv">
-        <span class="rec-lv-badge">${t('rec_my')} · <b>${t('rec_level', { l: lvNum })}</b> <span class="rec-grade">${grade}</span></span>
-        <span class="rec-solved">${t('rec_solved', { n: answered })}</span>
-      </div>
-      <div class="rec-xp"><div class="rec-xp-bar"><div style="width:${lvl.pct}%"></div></div><span class="sub">${lvl.pct}% ${ko ? '다음 레벨까지' : LANG === 'km' ? 'ទៅកម្រិតបន្ទាប់' : 'to next level'}</span></div>
-    </div>
     ${answered >= 10 ? `<div class="rec-chips">
       <div class="rec-chips-label"><span>💪 ${t('rec_strength')}${strong ? ` · <b>${esc(typeLabel(strong.k))} ${pct(strong)}%</b>` : ''}</span><span>⚠️ ${t('rec_weak')}</span></div>
       ${recBar(pct(strong), 'var(--ios-green)')}

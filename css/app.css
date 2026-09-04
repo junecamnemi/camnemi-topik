@@ -383,23 +383,7 @@
   background: linear-gradient(150deg, rgba(139, 92, 246, .16), rgba(59, 130, 246, .10));
   border-color: var(--br-line);
 }
-.rec-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
-.rec-lv { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.rec-lv-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 13px; font-weight: 700; color: #fff;
-  background: linear-gradient(135deg, var(--br-deep), var(--br2));
-  border-radius: 999px; padding: 5px 12px;
-  box-shadow: 0 3px 10px hsla(var(--ai-h1), 70%, 50%, .35);
-}
-.rec-lv-badge b { font-size: 14px; }
-.rec-grade { font-size: 10.5px; font-weight: 700; background: rgba(255,255,255,.25); border-radius: 999px; padding: 2px 8px; }
-.rec-solved { font-size: 11px; font-weight: 700; color: var(--ios-secondary-label); background: var(--ios-card); border: 1px solid var(--ios-separator); border-radius: 999px; padding: 4px 10px; }
-.rec-xp { flex: 1 1 100%; display: flex; align-items: center; gap: 8px; margin-top: 9px; }
-.rec-xp-bar { flex: 1; height: 6px; border-radius: 999px; background: var(--br-soft); overflow: hidden; }
-.rec-xp-bar div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--br-deep), var(--br3)); }
-.rec-xp .sub { font-size: 10.5px; font-weight: 700; white-space: nowrap; }
-.rec-chips { margin-top: 12px; }
+.rec-chips { margin-top: 0; }
 .rec-chips-label { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: var(--ios-secondary-label); margin-bottom: 6px; }
 .rec-chips-label b { color: var(--ios-label); }
 .rec-chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
