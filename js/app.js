@@ -72,6 +72,7 @@ const T = {
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
     btn_today: 'Daily 10', btn_mock: 'Mock Test', btn_read: 'Start reading',
     smart_title: 'Smart recommendation', smart_empty: 'Solve a few questions and we\u2019ll find your weak type to focus on.',
+    rec_my: 'My level', rec_level: 'Level {l}', rec_strength: 'Strengths', rec_weak: 'Weak points', rec_today: 'Today\u2019s pick', rec_go: 'Start now', rec_none: 'Solve ~10 questions to unlock your analysis', rec_solved: '{n} solved',
     smart_weak: 'Weak type: {t}', smart_weak_pct: 'Accuracy {p}% ({c}/{n} q) — focus on this?', smart_btn: 'Generate 10 {t} questions with AI',
     avg_acc: 'Average accuracy', overall: 'overall', by_type: 'By type', by_level: 'By difficulty',
     type_empty: 'Accuracy by type will appear here once you solve questions.',
@@ -150,6 +151,7 @@ const T = {
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
     btn_today: '데일리 10', btn_mock: '모의고사', btn_read: '리딩 시작',
     smart_title: '스마트 추천', smart_empty: '문제를 풀면 약한 유형을 찾아 집중 연습을 추천해 드려요.',
+    rec_my: '나의 레벨', rec_level: 'Lv {l}', rec_strength: '장점', rec_weak: '보완할 점', rec_today: '오늘의 추천', rec_go: '바로 시작', rec_none: '10문제 정도 풀면 분석이 열려요', rec_solved: '{n}문제 풀이 완료',
     smart_weak: '약한 유형: {t}', smart_weak_pct: '정답률 {p}% ({c}/{n}문항) — 집중 공략?', smart_btn: '{t} 문제 10개 AI 생성',
     avg_acc: '평균 정답률', overall: '전체', by_type: '유형별', by_level: '난이도별',
     type_empty: '문제를 풀면 유형별 정답률이 표시돼요!',
@@ -228,6 +230,7 @@ const T = {
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
     btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក', btn_read: 'ចាប់ផ្តើមអាន',
     smart_title: 'ការណែនាំឆ្លាតវៃ', smart_empty: 'ដោះស្រាយសំណួរខ្លះ យើងនឹងរកចំណុចខ្សោយរបស់អ្នក។',
+    rec_my: 'កម្រិតរបស់ខ្ញុំ', rec_level: 'កម្រិត {l}', rec_strength: 'ចំណុចខ្លាំង', rec_weak: 'ចំណុចខ្សោយ', rec_today: 'អនុសាសន៍ថ្ងៃនេះ', rec_go: 'ចាប់ផ្តើមឥឡូវ', rec_none: 'ដោះស្រាយ ~១០ សំណួរ ដើម្បីបើកការវិភាគ', rec_solved: 'បានដោះស្រាយ {n}',
     smart_weak: 'ចំណុចខ្សោយ: {t}', smart_weak_pct: 'ភាពត្រឹមត្រូវ {p}% ({c}/{n}) — ផ្តោតលើនេះ?', smart_btn: 'បង្កើត {t} ១០ សំណួរជាមួយ AI',
     avg_acc: 'ភាពត្រឹមត្រូវ', overall: 'សរុប', by_type: 'តាមប្រភេទ', by_level: 'តាមកម្រិត',
     type_empty: 'ភាពត្រឹមត្រូវតាមប្រភេទនឹងបង្ហាញនៅពេលអ្នកដោះស្រាយសំណួរ។',
@@ -795,6 +798,7 @@ function viewHome() {
     ${streakCardHTML()}`;
   return `
     ${scene}
+    ${recommendCard(acc, lvl.lv)}
     ${aiQuick}
     ${weekBlock}
     ${schedule}
@@ -1936,6 +1940,82 @@ const TYPE_LABELS_EN = {
 function typeLabel(t) {
   const map = LANG === 'en' ? TYPE_LABELS_EN : TYPE_LABELS;
   return map[t] || t;
+}
+
+/* ---------- Today's pick — level + strengths/weakness + recommended study ---------- */
+function typeAction(k) {
+  const map = {
+    vocab: `startSection('reading', myLevel(), 'vocab')`,
+    grammar: `startSection('reading', myLevel(), 'grammar')`,
+    blank_fill: `startSection('reading', myLevel(), 'blank_fill')`,
+    main_idea: `startSection('reading', myLevel(), 'main_idea')`,
+    same_content: `startSection('reading', myLevel(), 'same_content')`,
+    insert_sentence: `startSection('reading', myLevel(), 'insert_sentence')`,
+    attitude: `startSection('reading', myLevel(), 'attitude')`,
+    headline_desc: `startSection('reading', myLevel(), 'headline_desc')`,
+    topic: `startSection('reading', myLevel(), 'topic')`,
+    comprehension: `startSection('reading', myLevel(), 'comprehension')`,
+    order: `startSection('reading', myLevel(), 'order')`,
+    sentence_pos: `startSection('reading', myLevel(), 'sentence_pos')`,
+    listening: `startSection('listening', myLevel())`,
+    reading: `startSection('reading', myLevel())`,
+    writing_short: `startSection('writing', myLevel(), 'writing_short')`,
+    writing_letter: `startSection('writing', myLevel(), 'writing_letter')`
+  };
+  return map[k] || `startSection('reading', myLevel())`;
+}
+/* render a mini strength gauge (filled share = accuracy, bar tinted by level) */
+function recBar(p, col) {
+  return `<div class="rec-bar"><div class="rec-bar-fill" style="width:${p}%;background:${col}"></div></div>`;
+}
+function recommendCard(acc, lvNum) {
+  const ko = LANG === 'ko';
+  const answered = Object.keys(lsGet(LS.progress, {})).length;
+  const rows = (acc.byType || []).filter(r => r.n >= 2).sort((a, b) => a.p - b.p);
+  const weak = rows[0] || null;                     // lowest accuracy (>=2 attempts)
+  const strong = rows.length ? rows[rows.length - 1] : null;
+  const lvl = xpProgress();                          // { lv, pct, ... } for the XP bar
+  // grade label for the level
+  const grade = lvNum <= 2 ? (ko ? '초급' : 'Beginner') : lvNum <= 4 ? (ko ? '중급' : 'Intermediate') : (ko ? '고급' : 'Advanced');
+  const pct = (s) => s ? Math.round(s.c / s.n * 100) : 0;
+  // type chips (up to 5, worst first) — colored by accuracy
+  const chip = (r) => {
+    const p = r.p;
+    const col = p < 50 ? 'var(--ios-red)' : p < 70 ? 'var(--ios-orange)' : p < 85 ? 'var(--ios-teal)' : 'var(--ios-green)';
+    return `<span class="rec-chip" style="--chip:${col}">${esc(typeLabel(r.k))} <b>${p}%</b></span>`;
+  };
+  const chips = rows.slice(0, 5).map(chip).join('');
+  let pick;
+  if (weak) {
+    const label = typeLabel(weak.k);
+    const go = typeAction(weak.k);
+    const pickIco = weak.k === 'vocab' ? 'notes' : weak.k === 'listening' || weak.k === 'topic' ? 'listen' : 'spark';
+    pick = `<div class="rec-pick">
+      <div class="rec-pick-ico">${ic(pickIco, 20)}</div>
+      <div class="rec-pick-txt"><b>${esc(label)}</b><span class="sub">${ko ? '가장 보완이 필요한 유형이에요' : LANG === 'km' ? 'ជាប្រភេទដែលត្រូវកែលម្អបំផុត' : 'your weakest type'}</span></div>
+      <button class="btn btn-primary rec-pick-btn" onclick="${go}">${t('rec_go')} →</button>
+    </div>`;
+  } else {
+    pick = `<div class="rec-pick rec-empty"><span class="sub">${t('rec_none')}</span></div>`;
+  }
+  return `<div class="app-card rec-card">
+    <div class="rec-head">
+      <div class="rec-lv">
+        <span class="rec-lv-badge">${t('rec_my')} · <b>${t('rec_level', { l: lvNum })}</b> <span class="rec-grade">${grade}</span></span>
+        <span class="rec-solved">${t('rec_solved', { n: answered })}</span>
+      </div>
+      <div class="rec-xp"><div class="rec-xp-bar"><div style="width:${lvl.pct}%"></div></div><span class="sub">${lvl.pct}% ${ko ? '다음 레벨까지' : LANG === 'km' ? 'ទៅកម្រិតបន្ទាប់' : 'to next level'}</span></div>
+    </div>
+    ${answered >= 10 ? `<div class="rec-chips">
+      <div class="rec-chips-label"><span>💪 ${t('rec_strength')}${strong ? ` · <b>${esc(typeLabel(strong.k))} ${pct(strong)}%</b>` : ''}</span><span>⚠️ ${t('rec_weak')}</span></div>
+      ${recBar(pct(strong), 'var(--ios-green)')}
+      <div class="rec-chips-row">${chips}</div>
+    </div>` : ''}
+    <div class="rec-today">
+      <div class="rec-today-label">🎯 ${t('rec_today')}</div>
+      ${pick}
+    </div>
+  </div>`;
 }
 
 /* ---------- Smart recommendation card (weakest type → AI practice) ---------- */
