@@ -699,7 +699,8 @@ const FX_MOODS = [
   { k: 'cry',    file: 'cry',    cls: 'fx-cry' },     // 우는 얼굴
   { k: 'phone',  file: 'phone',  cls: 'fx-phone' },   // 전화하는 얼굴
   { k: 'eat',    file: 'eat',    cls: 'fx-eat' },     // 밥 먹는 얼굴
-  { k: 'sleepy', file: 'sleepy', cls: 'fx-sleepy' }   // 졸린 얼굴
+  { k: 'music',  file: 'music',  cls: 'fx-music' },   // 음악 듣는 얼굴 (헤드폰)
+  { k: 'sleep',  file: 'sleep',  cls: 'fx-sleep' }    // 책상에 엎드려 자는 얼굴
 ];
 let _fxTimer = null, _fxIdx = -1, _fxPaused = false;
 /* pick the expression portrait path for the current character (falls back to base) */
@@ -711,7 +712,7 @@ function showFx(i) {
   const img = $id('greet-avatar-img');
   if (!av || !img) return;
   const m = FX_MOODS[i % FX_MOODS.length];
-  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-sleepy');
+  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-music','fx-sleep');
   av.classList.add(m.cls);
   const target = fxImgPath(m);
   const probe = new Image();
