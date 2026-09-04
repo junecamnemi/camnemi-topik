@@ -849,7 +849,7 @@ function viewHome() {
   const wxc = wxCached();
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-${scenePartOfDay()}.svg" alt="Namsan Seoul Tower" draggable="false">
+      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-ai.jpg" alt="Namsan Seoul Tower" draggable="false">
       <div class="scene-top">
         <div class="scene-txt">
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
@@ -1279,7 +1279,8 @@ function scenePartOfDay() {
   if (h >= 18 && h < 21) return 'sunset';
   return 'night';
 }
-/* cross-fade the scene landmark to the time-of-day art */
+/* time-of-day: the AI Namsan art stays constant — only the card mood class
+   and the character's action change with the hour (filter tints via CSS) */
 let _scenePart = null;
 function updateScenePart() {
   const img = $id('scene-landmark');
@@ -1287,9 +1288,7 @@ function updateScenePart() {
   const part = scenePartOfDay();
   if (part === _scenePart) return;
   _scenePart = part;
-  const next = 'assets/img/namsan-' + part + '.svg';
-  if (img.src && img.src.indexOf('namsan-' + part) !== -1) return;
-  // switch the card mood class too
+  // switch the card mood class (CSS applies the per-scene filter tint)
   const card = $id('seoul-scene');
   if (card) {
     card.classList.remove('scene-midnight','scene-predawn','scene-sunrise','scene-morning','scene-midday','scene-afternoon','scene-sunset','scene-night');
@@ -1297,13 +1296,6 @@ function updateScenePart() {
   }
   // character hops to an action that fits the new time of day
   syncFxWithPart();
-  img.style.opacity = 0;
-  setTimeout(() => {
-    const probe = new Image();
-    probe.onload = () => { img.src = next; img.style.opacity = .92; };
-    probe.onerror = () => { img.style.opacity = .92; };  // keep current art if missing
-    probe.src = next;
-  }, 450);
 }
 /* refresh #seoul-clock every 20s while visible */
 let _wxClockTimer = null;

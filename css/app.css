@@ -607,13 +607,22 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .seoul-scene.scene-afternoon{ background: linear-gradient(180deg, #A9D4FF, #E0ECFF 55%, #FFEDC8); border-color: rgba(110,160,220,.25); }
 .seoul-scene.scene-sunset   { background: linear-gradient(180deg, #B9A8D8, #E3B4C6 50%, #FFC9A3); border-color: rgba(170,120,160,.28); }
 .seoul-scene.scene-night    { background: linear-gradient(180deg, #1B2340, #3A3E70 60%, #4A4E8C); border-color: rgba(90,100,170,.4); }
-/* Namsan landmark fills the card, vertically centered, larger */
+/* AI Namsan art fills the whole banner, centered */
 .seoul-scene .scene-landmark {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: 122%; height: auto; max-height: 110%;
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 40%;
   opacity: .92; pointer-events: none; user-select: none;
-  transition: opacity .5s ease;
+  transition: filter .6s ease, opacity .5s ease;
 }
+/* time-of-day tint over the constant AI art (8 scenes, 3h blocks) */
+.seoul-scene.scene-midnight .scene-landmark { filter: brightness(.82) saturate(1.15) hue-rotate(-8deg); }
+.seoul-scene.scene-predawn  .scene-landmark { filter: brightness(.9) saturate(1.1) hue-rotate(6deg); }
+.seoul-scene.scene-sunrise  .scene-landmark { filter: brightness(1.05) saturate(1.25) hue-rotate(18deg); }
+.seoul-scene.scene-morning  .scene-landmark { filter: brightness(1.18) saturate(1.05) hue-rotate(24deg); }
+.seoul-scene.scene-midday   .scene-landmark { filter: brightness(1.28) saturate(.95) hue-rotate(30deg); }
+.seoul-scene.scene-afternoon .scene-landmark { filter: brightness(1.2) saturate(1.1) hue-rotate(20deg); }
+.seoul-scene.scene-sunset   .scene-landmark { filter: brightness(1.02) saturate(1.35) hue-rotate(8deg); }
+.seoul-scene.scene-night    .scene-landmark { filter: brightness(.86) saturate(1.2) hue-rotate(-4deg); }
 /* dark cards → light text so it reads on the dark sky */
 .seoul-scene.scene-midnight .greet-h, .seoul-scene.scene-midnight .greet-s,
 .seoul-scene.scene-predawn  .greet-h, .seoul-scene.scene-predawn  .greet-s,
