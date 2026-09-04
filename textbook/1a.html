@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>샛별 한국어 1A — K-POP 아이돌처럼 배우는 TOPIK 한국어</title>
+<title>Kkumbyeol Korean 1A — Learn TOPIK Korean like your favorite idol!</title>
 <style>
 /* ============================================================
-   샛별 한국어 1A — Camnemi TOPIK 교재
-   K-POP 아이돌 그룹 '샛별'과 함께 배우는 초급 한국어
+   꿈별 한국어 1A — Camnemi TOPIK 교재
+   K-POP 아이돌 그룹 '꿈별'과 함께 배우는 초급 한국어
    Design: camnemi-topik 앱 디자인 시스템 (pastel violet + Quicksand)
    ============================================================ */
 @font-face {
@@ -252,6 +252,54 @@ body {
 }
 .h-timeline .ht-text { font-size:13.5px; font-weight:600; color:#5B5285; }
 
+/* ---------- story cards (worldview) ---------- */
+.story {
+  display:flex; gap:18px; align-items:center;
+  background: linear-gradient(135deg, #F3EEFF, #FFEDF5);
+  border:1px solid #E3DBFB; border-radius:24px;
+  padding:20px 22px; margin:18px 0; box-shadow: var(--shadow);
+}
+.story img.story-art {
+  width:120px; height:170px; object-fit:cover; border-radius:18px; flex-shrink:0;
+  border:3px solid #fff; box-shadow: 0 8px 20px rgba(139,92,246,.25);
+}
+.story .story-body { flex:1; }
+.story .story-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:10.5px; font-weight:800; letter-spacing:1.2px;
+  background:var(--grad); color:#fff; padding:4px 11px; border-radius:999px; margin-bottom:8px;
+}
+.story h3 { font-size:16.5px; font-weight:800; margin-bottom:4px; }
+.story p { font-size:13.5px; font-weight:600; color:#5B5285; }
+.story .story-piece {
+  display:inline-block; margin-top:10px; font-size:12px; font-weight:800;
+  color:#9A6A00; background:#FFE9A8; padding:5px 12px; border-radius:999px;
+}
+
+/* ---------- cover with illustration ---------- */
+.cover-img { position:relative; padding:0; overflow:hidden; }
+.cover-img .cover-art {
+  width:100%; height:auto; display:block;
+  border-radius:28px 28px 0 0; object-fit:cover;
+}
+.cover-img .cover-overlay {
+  position:relative; z-index:2; padding:26px 36px 10px;
+  background: linear-gradient(180deg, rgba(61,53,97,0) 0%, rgba(61,53,97,.08) 100%);
+}
+.cover-img .cover-cast {
+  position:relative; z-index:2; display:flex; justify-content:center; gap:20px; flex-wrap:wrap;
+  padding: 0 20px 28px;
+}
+.cover-img .cover-cast .member { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.cover-img .cover-cast img {
+  width:76px; height:76px; border-radius:50%; object-fit:cover;
+  border:3px solid rgba(255,255,255,.9); box-shadow: 0 8px 18px rgba(0,0,0,.18);
+}
+.cover-img .cover-cast .m-name { font-size:12.5px; font-weight:800; color:#fff; text-shadow:0 1px 6px rgba(61,53,97,.5); }
+.cover-img .cover-cast .m-role { font-size:10.5px; font-weight:700; color:#fff; opacity:.92; text-shadow:0 1px 4px rgba(61,53,97,.5); }
+.cover-img .cover-overlay .c-top, .cover-img .cover-overlay h1, .cover-img .cover-overlay .sub { color:#fff; text-shadow:0 2px 10px rgba(61,53,97,.4); }
+.cover-img .cover-overlay .chip { background:rgba(255,255,255,.25); border-color:rgba(255,255,255,.45); }
+
 /* ---------- TOPIK practice ---------- */
 .practice {
   background: var(--card); border:1px solid var(--line); border-radius:24px;
@@ -401,109 +449,122 @@ body {
   <div class="topnav-inner">
     <div class="brand-mark">샛</div>
     <div>
-      <div class="brand-name">샛별 한국어 1A</div>
+      <div class="brand-name">Kkumbyeol Korean 1A</div>
       <div class="brand-sub">SAETBYEOL KOREAN · Camnemi TOPIK</div>
     </div>
     <div class="spacer"></div>
-    <button class="toc-btn" onclick="openToc()">📖 목차</button>
+    <button class="toc-btn" onclick="openToc()">📖 Contents</button>
   </div>
 </div>
 
 <div class="wrap">
 
   <!-- ============ COVER ============ -->
-  <div class="cover">
-    <div class="c-top">🎤 CAMNEMI TOPIK TEXTBOOK · VOL.1</div>
-    <h1>샛별 한국어 <span class="star">★</span> 1A</h1>
-    <div class="sub">K-POP 아이돌처럼 배우는 첫걸음 한국어 — Learn Korean like your favorite idol!</div>
-    <div class="meta">
-      <span class="chip">🎧 TOPIK I · Level 1 기반</span>
-      <span class="chip">📖 한글 + 8과</span>
-      <span class="chip">✨ 캐릭터 스토리</span>
-      <span class="chip">🇰🇷 by Camnemi Korea</span>
+  <div class="cover cover-img">
+    <img class="cover-art" src="assets/cover.png" alt="Kkumbyeol cover art">
+    <div class="cover-overlay">
+      <div class="c-top">🎀 CAMNEMI TOPIK TEXTBOOK · VOL.1</div>
+      <h1>Kkumbyeol Korean <span class="star">★</span> 1A</h1>
+      <div class="sub">꿈별 한국어 — Learn Korean with the dreamy girl group of your dreams!</div>
+      <div class="meta">
+        <span class="chip">🎧 TOPIK I · Level 1 based</span>
+        <span class="chip">📖 Hangul + 8 Units</span>
+        <span class="chip">💭 Dreamworld Story</span>
+        <span class="chip">🇰🇷 by Camnemi Korea</span>
+      </div>
     </div>
-    <div class="cast">
-      <div class="member"><img src="../assets/img/chars/f-01.webp" alt="지우"><div class="m-name">지우</div><div class="m-role">리더 · 선생님</div></div>
-      <div class="member"><img src="../assets/img/chars/f-05.webp" alt="유나"><div class="m-name">유나</div><div class="m-role">메인댄서</div></div>
-      <div class="member"><img src="../assets/img/chars/m-01.webp" alt="지훈"><div class="m-name">지훈</div><div class="m-role">래퍼</div></div>
-      <div class="member"><img src="../assets/img/chars/m-05.webp" alt="하준"><div class="m-name">하준</div><div class="m-role">막내</div></div>
-      <div class="member"><img src="../assets/img/chars/f-02.webp" alt="서연"><div class="m-name">서연</div><div class="m-role">보컬</div></div>
+    <div class="cover-cast">
+      <div class="member"><img src="assets/members/byeori.png" alt="별이"><div class="m-name">별이 Byeori</div><div class="m-role">⭐ Leader · Star</div></div>
+      <div class="member"><img src="assets/members/dari.png" alt="달이"><div class="m-name">달이 Dari</div><div class="m-role">🌙 Vocal · Moon</div></div>
+      <div class="member"><img src="assets/members/sori.png" alt="소리"><div class="m-name">소리 Sori</div><div class="m-role">🎵 Dancer · Sound</div></div>
+      <div class="member"><img src="assets/members/kkochi.png" alt="꽃이"><div class="m-name">꽃이 Kkochi</div><div class="m-role">🌸 Maknae · Flower</div></div>
+    </div>
+  </div>
+  <!-- ============ INTRO / CAST ============ -->
+  <div class="sec-title"><div class="no">★</div><div><h2>Meet Our Group, Kkumbyeol!</h2><div class="en">꿈별 멤버를 만나요 — Meet the members</div></div></div>
+  <p style="font-size:15px;font-weight:600;color:#5B5285;margin-top:10px;">
+    Idol group <b>Kkumbyeol (SAETBYEOL)</b> — a 5-member group that wants to shine like the morning star!<br>
+    The members learn Korean while preparing for their debut. You can learn Korean together with the Kkumbyeol members too!<br>
+    <b style="color:var(--violet)">This textbook is a beginner course based on TOPIK I (Level 1) question types.</b> The practice questions in each unit follow the real TOPIK test format (listening & reading).
+  </p>
+
+  <div class="grammar" style="margin-top:18px;">
+    <span class="g-label">🎀 MEMBER NAMES = KOREAN WORDS</span>
+    <div class="g-point">Our names are real Korean words — memorize us, memorize Korean!</div>
+    <div class="g-rule">Every member name is a beautiful Korean noun. Say it with us! 🔊</div>
+    <div class="vocab-grid" style="margin-top:12px;">
+      <div class="v-item"><span class="v-emoji">⭐</span><div><div class="v-ko">별</div><div class="v-rom">byeol</div><div class="v-en">star — 별이 (Byeori)</div></div><button class="v-btn" onclick="tts('별')">🔊</button></div>
+      <div class="v-item"><span class="v-emoji">🌙</span><div><div class="v-ko">달</div><div class="v-rom">dal</div><div class="v-en">moon — 달이 (Dari)</div></div><button class="v-btn" onclick="tts('달')">🔊</button></div>
+      <div class="v-item"><span class="v-emoji">🎵</span><div><div class="v-ko">소리</div><div class="v-rom">sori</div><div class="v-en">sound — 소리 (Sori)</div></div><button class="v-btn" onclick="tts('소리')">🔊</button></div>
+      <div class="v-item"><span class="v-emoji">🌸</span><div><div class="v-ko">꽃</div><div class="v-rom">kkot</div><div class="v-en">flower — 꽃이 (Kkochi)</div></div><button class="v-btn" onclick="tts('꽃')">🔊</button></div>
     </div>
   </div>
 
-  <!-- ============ INTRO / CAST ============ -->
-  <div class="sec-title"><div class="no">★</div><div><h2>우리 그룹, 샛별!</h2><div class="en">Meet the members of SAETBYEOL</div></div></div>
-  <p style="font-size:15px;font-weight:600;color:#5B5285;margin-top:10px;">
-    아이돌 그룹 <b>샛별(SAETBYEOL)</b> — 새벽의 별처럼 반짝이고 싶은 5인조!<br>
-    멤버들은 데뷔를 준비하면서 한국어를 배워요. 여러분도 샛별 멤버들과 함께 한국어를 배워요!<br>
-    <b style="color:var(--violet)">이 교재는 TOPIK I(1급) 기출 유형을 바탕으로 만든 초급 교재예요.</b> 각 과의 연습 문제는 실제 TOPIK 시험 형식(듣기·읽기)과 같아요.
-  </p>
-
   <div class="goals">
-    <div class="goal"><span class="g-ico">🎯</span> 한글 읽기 · 쓰기</div>
-    <div class="goal"><span class="g-ico">💬</span> 인사 · 자기소개</div>
-    <div class="goal"><span class="g-ico">🔢</span> 숫자 · 날짜 · 요일</div>
-    <div class="goal"><span class="g-ico">🍜</span> 음식 · 쇼핑 표현</div>
-    <div class="goal"><span class="g-ico">📍</span> 위치 말하기</div>
-    <div class="goal"><span class="g-ico">⏪</span> 과거 시제</div>
-    <div class="goal"><span class="g-ico">📝</span> TOPIK I 실전 유형</div>
+    <div class="goal"><span class="g-ico">🎯</span> Read & Write Hangul</div>
+    <div class="goal"><span class="g-ico">💬</span> Greetings & Self-intro</div>
+    <div class="goal"><span class="g-ico">🔢</span> Numbers · Dates · Days</div>
+    <div class="goal"><span class="g-ico">🍜</span> Food & Shopping</div>
+    <div class="goal"><span class="g-ico">📍</span> Talking about Places</div>
+    <div class="goal"><span class="g-ico">⏪</span> Past Tense</div>
+    <div class="goal"><span class="g-ico">📝</span> TOPIK I Practice Types</div>
   </div>
 
   <!-- ============================================================
        UNIT 0 — HANGUL
        ============================================================ -->
   <div class="unit-divider" id="unit0"></div>
-  <div class="unit-flag">UNIT 0 · 예비편</div>
-  <div class="sec-title"><div class="no">0</div><div><h2>한글 첫걸음</h2><div class="en">Hangul — the ABC of Korean</div></div></div>
+  <div class="unit-flag">UNIT 0 · PREPARATION</div>
+  <div class="sec-title"><div class="no">0</div><div><h2>Hangul First Steps</h2><div class="en">한글 — the ABC of Korean</div></div></div>
 
   <!-- 한글의 비밀 — 상세 시리즈 -->
   <div class="grammar">
-    <span class="g-label">📜 한글의 비밀 ① — 훈민정음 창제 이야기</span>
-    <div class="g-point">세종대왕이 만든, 백성을 위한 글자</div>
-    <div class="g-rule">옛날 한국 사람들은 중국 글자(한자)를 썼어요. 그런데 한자는 배우기 너무 어려워서 <b>백성들은 글을 읽지도 쓰지도 못했어요.</b> 세종대왕은 "백성이 말하고 싶은 것을 글로 쓸 수 없어 괴로워한다"며 <b>누구나 쉽게 배울 수 있는 새 글자</b>를 만들었어요. 그 이름이 바로 <b>훈민정음(訓民正音)</b> — "백성을 가르치는 바른 소리"라는 뜻이에요.</div>
+    <span class="g-label">📜 The Secret of Hangul ① — The Story of Hunminjeongeum</span>
+    <div class="g-point">A letter created by King Sejong for the people</div>
+    <div class="g-rule">Long ago, Koreans used Chinese characters (한자). But hanja was so hard that <b>common people could neither read nor write.</b> King Sejong said, "The people suffer because they cannot write down what they want to say," and created <b>a new alphabet anyone could learn easily.</b> Its name is <b>Hunminjeongeum (훈민정음)</b> — meaning "the correct sounds for teaching the people."</div>
     <div class="h-timeline">
-      <div class="ht-item"><span class="ht-year">1443</span><span class="ht-text">세종대왕이 훈민정음을 <b>창제</b>했어요 (28자).</span></div>
-      <div class="ht-item"><span class="ht-year">1446</span><span class="ht-text"><b>훈민정음 해례본</b>으로 반포 — 원리 설명서와 함께 세상에 나왔어요.</span></div>
-      <div class="ht-item"><span class="ht-year">1910s</span><span class="ht-text">주시경 선생이 이름을 <b>'한글'</b>로 지었어요 — "크고 바른 글"이라는 뜻.</span></div>
-      <div class="ht-item"><span class="ht-year">오늘</span><span class="ht-text">24자(자음 14 + 모음 10)로 <b>세계에서 가장 과학적인 문자</b>로 인정받아요.</span></div>
+      <div class="ht-item"><span class="ht-year">1443</span><span class="ht-text">King Sejong <b>created</b> Hunminjeongeum (28 letters).</span></div>
+      <div class="ht-item"><span class="ht-year">1446</span><span class="ht-text">Published as the <b>Hunminjeongeum Haerye</b> — released to the world with its principle manual.</span></div>
+      <div class="ht-item"><span class="ht-year">1910s</span><span class="ht-text">Scholar Ju Si-gyeong named it <b>Hangul</b> — meaning "the great and correct script."</span></div>
+      <div class="ht-item"><span class="ht-year">오늘</span><span class="ht-text">With 24 letters (14 consonants + 10 vowels), it is recognized as <b>the world's most scientific writing system.</b></span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">🔤 한글의 비밀 ② — 자음은 '입의 모양'!</span>
-    <div class="g-point">소리 내는 기관의 모양을 본떠 만든 자음</div>
-    <div class="g-rule">기본 자음 5개는 <b>발음할 때 움직이는 입·혀·목의 모양</b>을 그대로 본떠서 만들었어요. 글자를 보면 발음하는 법이 보여요!</div>
+    <span class="g-label">🔤 The Secret of Hangul ② — Consonants are "Shapes of the Mouth"!</span>
+    <div class="g-point">Consonants made by imitating the shape of the speech organs</div>
+    <div class="g-rule">The 5 basic consonants were made by copying the <b>shape of the mouth, tongue, and throat as they move when you speak.</b> Just looking at the letter shows you how to pronounce it!</div>
     <div class="hangul-grid">
-      <div class="h-cell highlight"><div class="h-jamo">ㄱ</div><div class="h-rom">g/k</div><div class="h-name">기역</div><div class="h-desc">혀뿌리가 목구멍을 막는 모양</div></div>
-      <div class="h-cell highlight"><div class="h-jamo">ㄴ</div><div class="h-rom">n</div><div class="h-name">니은</div><div class="h-desc">혀끝이 윗잇몸에 닿는 모양</div></div>
-      <div class="h-cell highlight"><div class="h-jamo">ㅁ</div><div class="h-rom">m</div><div class="h-name">미음</div><div class="h-desc">입술을 오므린 모양</div></div>
-      <div class="h-cell highlight"><div class="h-jamo">ㅅ</div><div class="h-rom">s</div><div class="h-name">시옷</div><div class="h-desc">이빨 모양</div></div>
-      <div class="h-cell highlight"><div class="h-jamo">ㅇ</div><div class="h-rom">ng</div><div class="h-name">이응</div><div class="h-desc">목구멍 모양</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㄱ</div><div class="h-rom">g/k</div><div class="h-name">기역</div><div class="h-desc">Shape of the tongue root blocking the throat</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㄴ</div><div class="h-rom">n</div><div class="h-name">니은</div><div class="h-desc">Shape of the tongue tip touching the upper gum</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅁ</div><div class="h-rom">m</div><div class="h-name">미음</div><div class="h-desc">Shape of pursed lips</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅅ</div><div class="h-rom">s</div><div class="h-name">시옷</div><div class="h-desc">Shape of the teeth</div></div>
+      <div class="h-cell highlight"><div class="h-jamo">ㅇ</div><div class="h-rom">ng</div><div class="h-name">이응</div><div class="h-desc">Shape of the throat</div></div>
     </div>
-    <div class="g-rule">거기에 획을 더하면 <b>거센소리</b>가 돼요: ㄱ→ㅋ, ㄴ→ㄷ→ㅌ, ㅁ→ㅂ→ㅍ, ㅅ→ㅈ→ㅊ. <b>획 하나 = 소리 하나 더 센 소리!</b></div>
+    <div class="g-rule">Add a stroke and it becomes a <b>stronger sound</b>: ㄱ→ㅋ, ㄴ→ㄷ→ㅌ, ㅁ→ㅂ→ㅍ, ㅅ→ㅈ→ㅊ. <b>One extra stroke = one stronger sound!</b></div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">🌌 한글의 비밀 ③ — 모음은 '하늘·땅·사람'!</span>
-    <div class="g-point">천지인(天地人) — 우주를 그린 모음</div>
-    <div class="g-rule">모음은 단 <b>세 가지 부호</b>로 만들어졌어요: <b>ㆍ(하늘, 점)</b> · <b>ㅡ(땅, 평평한 것)</b> · <b>ㅣ(사람, 서 있는 모습)</b>. 이 셋을 어떻게 배치하느냐에 따라 모든 모음이 탄생해요!</div>
+    <span class="g-label">🌌 The Secret of Hangul ③ — Vowels are "Heaven, Earth, Human"!</span>
+    <div class="g-point">Cheonji-in (天地人) — vowels that draw the universe</div>
+    <div class="g-rule">Vowels are made from just <b>three symbols</b>: <b>ㆍ (heaven, a dot)</b> · <b>ㅡ (earth, something flat)</b> · <b>ㅣ (human, a standing figure)</b>. Every vowel is born from how these three are arranged!</div>
     <div class="hangul-grid">
-      <div class="h-cell"><div class="h-jamo">ㆍ</div><div class="h-rom">(arae-a)</div><div class="h-name">하늘</div><div class="h-desc">둥근 점 = 하늘</div></div>
-      <div class="h-cell"><div class="h-jamo">ㅡ</div><div class="h-rom">eu</div><div class="h-name">땅</div><div class="h-desc">평평한 땅</div></div>
-      <div class="h-cell"><div class="h-jamo">ㅣ</div><div class="h-rom">i</div><div class="h-name">사람</div><div class="h-desc">서 있는 사람</div></div>
+      <div class="h-cell"><div class="h-jamo">ㆍ</div><div class="h-rom">(arae-a)</div><div class="h-name">하늘</div><div class="h-desc">Round dot = heaven</div></div>
+      <div class="h-cell"><div class="h-jamo">ㅡ</div><div class="h-rom">eu</div><div class="h-name">땅</div><div class="h-desc">Flat earth</div></div>
+      <div class="h-cell"><div class="h-jamo">ㅣ</div><div class="h-rom">i</div><div class="h-name">사람</div><div class="h-desc">Standing person</div></div>
     </div>
-    <div class="g-rule">조합 원리:</div>
+    <div class="g-rule">The combination rule:</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">ㅣ + ㆍ = ㅏ / ㅓ</span><span class="gl">사람(ㅣ) 오른쪽에 하늘(ㆍ) → ㅏ · 왼쪽 → ㅓ</span></div>
-      <div class="ex"><span class="ko">ㅡ + ㆍ = ㅗ / ㅜ</span><span class="gl">땅(ㅡ) 위에 하늘 → ㅗ · 아래 → ㅜ</span></div>
-      <div class="ex"><span class="ko">ㅏ + ㅣ = ㅐ / ㅔ</span><span class="gl">모음끼리 합쳐지면 새로운 모음!</span></div>
+      <div class="ex"><span class="ko">ㅣ + ㆍ = ㅏ / ㅓ</span><span class="gl">Heaven (ㆍ) to the right of human (ㅣ) → ㅏ · to the left → ㅓ</span></div>
+      <div class="ex"><span class="ko">ㅡ + ㆍ = ㅗ / ㅜ</span><span class="gl">Heaven above earth (ㅡ) → ㅗ · below → ㅜ</span></div>
+      <div class="ex"><span class="ko">ㅏ + ㅣ = ㅐ / ㅔ</span><span class="gl">When vowels combine, a new vowel is born!</span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">🧱 한글의 비밀 ④ — 글자 하나 = 음절 블록</span>
-    <div class="g-point">자음 + 모음이 모여 '한 글자'가 돼요</div>
-    <div class="g-rule">한글은 알파벳처럼 줄줄이 쓰지 않고, <b>자음과 모음을 한 칸(블록)에 모아</b> 한 음절을 만들어요. 아래에 받침도 쌓을 수 있어요!</div>
+    <span class="g-label">🧱 The Secret of Hangul ④ — One letter = one syllable block</span>
+    <div class="g-point">Consonant + vowel come together to form "one letter"</div>
+    <div class="g-rule">Hangul is not written in a row like the alphabet. Instead, <b>consonants and vowels are stacked in one block</b> to form one syllable. You can even add a final consonant (받침) below!</div>
     <div class="h-block-demo">
       <div class="h-block"><div class="hb-main">가</div><div class="hb-sub">ㄱ + ㅏ</div></div>
       <div class="h-block-op">→</div>
@@ -511,37 +572,37 @@ body {
       <div class="h-block-op">→</div>
       <div class="h-block"><div class="hb-main">사랑</div><div class="hb-sub">사 + 랑 · 2 blocks</div></div>
     </div>
-    <div class="g-rule">이렇게 블록이 쌓이면 단어가 되고, 문장이 돼요! 예: <b>사랑해요</b> = 사 + 랑 + 해 + 요 (4블록)</div>
+    <div class="g-rule">Stack blocks to make words, then sentences! Example: <b>사랑해요</b> = 사 + 랑 + 해 + 요 (4 blocks)</div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">🏆 한글의 비밀 ⑤ — 세계가 인정한 문자</span>
-    <div class="g-point">"지구상에서 가장 훌륭한 문자" — 세계 언어학자들</div>
-    <div class="g-rule">훈민정음은 <b>유네스코 세계기록유산</b>에 등재됐어요. 미국의 언어학자 에드윈 라이샤워는 <b>"세계에서 가장 우수한 문자 체계"</b>라고 극찬했어요. 소리 → 글자로 1:1 대응되는 과학적 문자라서 배우기 쉬워요!</div>
+    <span class="g-label">🏆 The Secret of Hangul ⑤ — A Script Recognized by the World</span>
+    <div class="g-point">"The most remarkable writing system on Earth" — world linguists</div>
+    <div class="g-rule">Hunminjeongeum is registered as a <b>UNESCO Memory of the World</b>. American linguist Edwin Reischauer praised it as <b>"the finest writing system in the world."</b> Because sound and letter map 1:1, it is easy to learn!</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">한글날 — 10월 9일</span><span class="gl">한국 공휴일! 한글을 기념하는 날</span></div>
-      <div class="ex"><span class="ko">유네스코 세계기록유산 (1997)</span><span class="gl">훈민정음 해례본 등재</span></div>
-      <div class="ex"><span class="ko">훈민정음 → 한글</span><span class="gl">오늘날 이름은 주시경 선생이 지었어요</span></div>
+      <div class="ex"><span class="ko">한글날 — 10월 9일</span><span class="gl">A Korean national holiday celebrating Hangul!</span></div>
+      <div class="ex"><span class="ko">유네스코 세계기록유산 (1997)</span><span class="gl">Hunminjeongeum Haerye registered</span></div>
+      <div class="ex"><span class="ko">훈민정음 → 한글</span><span class="gl">Today's name was given by Ju Si-gyeong</span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">🎵 아이돌 그룹 이름으로 읽는 한글</span>
-    <div class="g-point">너희가 좋아하는 그룹 이름, 한국어로 이렇게 써요!</div>
+    <span class="g-label">🎵 Reading Hangul through K-pop Group Names</span>
+    <div class="g-point">The group names you love — this is how they are written in Korean!</div>
     <div class="g-rule">Foreign words are written in Hangul by their sound. Let's read K-pop group names together!</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">BTS → 비티에스</span><span class="gl">bi-ti-e-seu · 방탄소년단 (Bulletproof Boy Scouts)</span></div>
       <div class="ex"><span class="ko">BLACKPINK → 블랙핑크</span><span class="gl">beul-laek-ping-keu</span></div>
       <div class="ex"><span class="ko">TWICE → 트와이스</span><span class="gl">teu-wa-i-seu</span></div>
       <div class="ex"><span class="ko">NEWJEANS → 뉴진스</span><span class="gl">nyu-jin-seu</span></div>
-      <div class="ex"><span class="ko">샛별 → SAETBYEOL</span><span class="gl">우리 그룹 이름! 새벽별 = morning star ⭐</span></div>
+      <div class="ex"><span class="ko">꿈별 → SAETBYEOL</span><span class="gl">Our group's name! 새벽별 = morning star ⭐</span></div>
     </div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[1-1] 한글 소리 맞히기</span></div>
-    <div class="p-dir">Read the Hangul word and choose the correct pronunciation. 🔊 버튼을 누르면 소리를 들을 수 있어요.</div>
-    <div class="p-q">다음을 읽고, 맞는 것을 고르십시오. — <span class="blank">뉴진스</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[1-1] Hangul Sound Match</span></div>
+    <div class="p-dir">Read the Hangul word and choose the correct pronunciation. 🔊 Press the button to hear the sound.</div>
+    <div class="p-q">Read and choose the correct answer. — <span class="blank">뉴진스</span></div>
     <div class="opts" data-q="u0q1">
       <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">1</span> nu-jin-seu<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u0q1',1,this)"><span class="o-idx">2</span> nyu-jin-seu<span class="o-gl">✅ 뉴 = nyu</span></button>
@@ -551,9 +612,9 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[1-2] 그룹 이름 한글로</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[1-2] Group Names in Hangul</span></div>
     <div class="p-dir">Choose the correct Hangul spelling.</div>
-    <div class="p-q">다음을 읽고, 맞는 것을 고르십시오. — <b>“TWICE”를 한글로 쓰면?</b></div>
+    <div class="p-q">Read and choose the correct answer. — <b>How do you write "TWICE" in Hangul?</b></div>
     <div class="opts" data-q="u0q2">
       <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">1</span> 트바이스<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u0q2',1,this)"><span class="o-idx">2</span> 트와이스<span class="o-gl">✅</span></button>
@@ -563,59 +624,69 @@ body {
   </div>
 
   <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>아이돌 이름 부르기</h3>
-    <p>한국에서는 가수를 부를 때 이름 뒤에 <b>씨</b>를 붙여요. 팬들은 <b>오빠/언니/누나/형</b>이라고 부르기도 해요!</p>
-    <div class="c-tip">💜 지우 씨, 사랑해요! (Jiwoo, I love you!) — 응원 문구는 1과에서 배워요.</div>
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>How to Call an Idol</h3>
+    <p>In Korea, you add <b>씨</b> after an idol's name. Fans also call them <b>오빠/언니/누나/형</b>!</p>
+    <div class="c-tip">💜 별이 씨, 사랑해요! (Byeori, I love you!) — You'll learn cheering phrases in Unit 1.</div>
   </div>
 
 <!-- ============================================================
      UNIT 1 — GREETINGS
      ============================================================ -->
   <div class="unit-divider" id="unit1"></div>
-  <div class="unit-flag">UNIT 1 · 인사</div>
-  <div class="sec-title"><div class="no">1</div><div><h2>안녕하세요!</h2><div class="en">Hello! — Greetings & 이에요/예요</div></div></div>
+  <div class="unit-flag">UNIT 1 · GREETINGS</div>
+  <div class="sec-title"><div class="no">1</div><div><h2>Hello!</h2><div class="en">안녕하세요! — Greetings & 이에요/예요</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/byeori.png" alt="별이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 1/8</span>
+      <h3>별이, 첫 번째 별을 찾다 — "안녕하세요!"</h3>
+      <p>네 명의 요정은 꿈나라의 문이 닫힌 채 현실 세계에 떨어졌어요. 리더 <b>별이</b>는 마법의 문을 여는 비밀을 발견했어요 — <b>한국어로 인사하기!</b> "안녕하세요"라는 말에 반짝이는 별 조각이 하나 나타났어요. ⭐</p>
+      <span class="story-piece">⭐ 꿈의 조각 1/8 획득 — Greetings!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">👋</span> 인사 표현 배우기</div>
+    <div class="goal"><span class="g-ico">👋</span> Learn greeting expressions</div>
     <div class="goal"><span class="g-ico">🔤</span> N은/는 N이에요/예요</div>
-    <div class="goal"><span class="g-ico">🎤</span> 아이돌 인사 멘트</div>
+    <div class="goal"><span class="g-ico">🎤</span> Idol greeting phrases</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 1 — 첫 만남</span>
-      <span class="d-scene">🏢 연습실 첫 출근</span>
+      <span class="d-title">💬 Dialogue 1 — First Meeting</span>
+      <span class="d-scene">🏢 First day at the practice room</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">안녕하세요! 저는 지우예요.</div><div class="gl">Hello! I'm Jiwoo.</div></div>
+    <div class="d-line"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">안녕하세요! 저는 별이예요.</div><div class="gl">Hello! I'm Byeori.</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">안녕하세요! 저는 유나예요.</div><div class="gl">Hello! I'm Yuna.</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">안녕하세요! 저는 소리예요.</div><div class="gl">Hello! I'm Sori.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">안녕하세요? 저는 지훈이에요.</div><div class="gl">Hello? I'm Jihoon.</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">안녕하세요? 저는 꽃이이에요.</div><div class="gl">Hello? I'm Kkochi.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">만나서 반가워요! 저는 하준이에요.</div><div class="gl">Nice to meet you! I'm Hajun.</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">만나서 반가워요! 저는 꽃이이에요.</div><div class="gl">Nice to meet you! I'm Kkochi.</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
+    <span class="g-label">GRAMMAR 1</span>
     <div class="g-point">N은/는 N이에요/예요</div>
-    <div class="g-rule">"A is B" — 자기소개할 때 써요. 받침이 있으면 <b>이에요</b>, 받침이 없으면 <b>예요</b>.</div>
+    <div class="g-rule">"A is B" — use it to introduce yourself. If the noun ends with a final consonant (받침), use <b>이에요</b>; otherwise use <b>예요</b>.</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">저는 지훈<b>이에요</b>.</span><span class="gl">지훈 ends with ㄴ (받침) → 이에요</span></div>
-      <div class="ex"><span class="ko">저는 유나<b>예요</b>.</span><span class="gl">유나 ends with ㅏ (no 받침) → 예요</span></div>
+      <div class="ex"><span class="ko">저는 꽃이<b>이에요</b>.</span><span class="gl">꽃이 ends with ㄴ (final consonant) → 이에요</span></div>
+      <div class="ex"><span class="ko">저는 소리<b>예요</b>.</span><span class="gl">소리 ends with ㅏ (no final consonant) → 예요</span></div>
       <div class="ex"><span class="ko">저는 가수<b>예요</b>.</span><span class="gl">I am a singer.</span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">인사 표현 Greetings</div>
-    <div class="g-rule">TOPIK I 듣기에서 꼭 나오는 인사 표현들이에요.</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">Greetings</div>
+    <div class="g-rule">These greetings always appear in the TOPIK I listening section.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">안녕하세요!</span><span class="gl">Hello! / Good morning!</span></div>
       <div class="ex"><span class="ko">만나서 반가워요.</span><span class="gl">Nice to meet you.</span></div>
@@ -625,30 +696,46 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">N입니다 / N입니까? — Formal polite form</div>
+    <div class="g-rule">More formal than 이에요/예요 — used in news, announcements, and stage greetings. <b>입니다</b> = statement, <b>입니까?</b> = question.</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">안녕하세요, 꿈별입니다!</span><span class="gl">Hello, we are Kkumbyeol! (stage greeting)</span></div>
+      <div class="ex"><span class="ko">학생입니까?</span><span class="gl">Are you a student?</span></div>
+      <div class="ex"><span class="ko">네, 학생입니다.</span><span class="gl">Yes, I am a student.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">🙋</span><div><div class="v-ko">저</div><div class="v-rom">jeo</div><div class="v-en">I (polite)</div></div><button class="v-btn" onclick="tts('저')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">📛</span><div><div class="v-ko">이름</div><div class="v-rom">ireum</div><div class="v-en">name</div></div><button class="v-btn" onclick="tts('이름')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🧑‍🎤</span><div><div class="v-ko">가수</div><div class="v-rom">gasu</div><div class="v-en">singer</div></div><button class="v-btn" onclick="tts('가수')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">👯</span><div><div class="v-ko">친구</div><div class="v-rom">chingu</div><div class="v-en">friend</div></div><button class="v-btn" onclick="tts('친구')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💜</span><div><div class="v-ko">팬</div><div class="v-rom">paen</div><div class="v-en">fan</div></div><button class="v-btn" onclick="tts('팬')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🎧</span><div><div class="v-ko">노래</div><div class="v-rom">norae</div><div class="v-en">song</div></div><button class="v-btn" onclick="tts('노래')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">👋</span><div><div class="v-ko">안녕</div><div class="v-rom">annyeong</div><div class="v-en">hi / bye (informal)</div></div><button class="v-btn" onclick="tts('안녕')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🙏</span><div><div class="v-ko">감사합니다</div><div class="v-rom">gamsahamnida</div><div class="v-en">thank you</div></div><button class="v-btn" onclick="tts('감사합니다')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🎤</span><div><div class="v-ko">무대</div><div class="v-rom">mudae</div><div class="v-en">stage</div></div><button class="v-btn" onclick="tts('무대')">🔊</button></div>
   </div>
 
+  
+
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[1-3] 듣기 — 인사 고르기</span></div>
-    <div class="p-dir">🔊 들으면서, 가장 알맞은 인사를 고르세요. (Listen and choose the best greeting.)</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[1-3] Listening — Choose the Greeting</span></div>
+    <div class="p-dir">🔊 Listen and choose the most appropriate greeting.</div>
     <button class="p-audio" onclick="tts('안녕하세요! 만나서 반가워요.')">🔊 안녕하세요! 만나서 반가워요.</button>
     <div class="opts" data-q="u1q3">
       <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">1</span> 안녕하세요!<span class="o-gl">✅</span></button>
       <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">2</span> 잘 가!<span class="o-gl">❌ informal</span></button>
       <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">3</span> 감사합니다.<span class="o-gl">❌</span></button>
-      <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">4</span> 뭐 해요?<span class="o-gl">❌</span></button></div>
-    
+      <button class="opt" onclick="checkQ('u1q3',0,this)"><span class="o-idx">4</span> 뭐 해요?<span class="o-gl">❌</span></button>
+    </div>
     <div class="p-feedback" id="fb-u1q3"></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[1-4] 읽기 — 빈칸 채우기</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[1-4] Reading — Fill in the Blank</span></div>
     <div class="p-dir">Choose the correct word for the blank.</div>
     <div class="p-q">저는 아이돌(    ).</div>
     <div class="opts" data-q="u1q4">
@@ -660,63 +747,89 @@ body {
     <div class="p-feedback" id="fb-u1q4"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>아이돌 인사 멘트, 이렇게 해요!</h3>
-    <p>음악방송에서 아이돌은 이렇게 인사해요: <b>“안녕하세요, 샛별입니다!”</b> — 멤버가 이름을 말할 때 팬들은 <b>함성</b>을 질러요!</p>
-    <div class="c-tip">🎵 자기소개: "안녕하세요! 저는 지우예요. 샛별의 리더예요." — 유나처럼 해볼까요?</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[1-5] Reading — Stage Greeting</span></div>
+    <div class="p-dir">Read the stage greeting and choose the correct meaning.</div>
+    <div class="p-passage">"안녕하세요! 꿈별입니다!"<br><span class="gl">(at a music show)</span></div>
+    <div class="p-q">What does "꿈별입니다" mean?</div>
+    <div class="opts" data-q="u1q5">
+      <button class="opt" onclick="checkQ('u1q5',1,this)"><span class="o-idx">1</span> I am a star.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u1q5',1,this)"><span class="o-idx">2</span> We are Kkumbyeol.<span class="o-gl">✅ 입니다 = formal "is/are"</span></button>
+      <button class="opt" onclick="checkQ('u1q5',1,this)"><span class="o-idx">3</span> Good night.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u1q5',1,this)"><span class="o-idx">4</span> See you again.<span class="o-gl">❌</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u1q5"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Idol Greeting Phrases, Like This!</h3>
+    <p>On music shows, idols greet like this: <b>"안녕하세요, 꿈별입니다!"</b> — when a member says their name, fans <b>scream</b>!</p>
+    <div class="c-tip">🎵 Self-intro: "안녕하세요! 저는 별이예요. 꿈별의 리더예요." — Can you do it like Sori?</div>
   </div>
 
 <!-- ============================================================
      UNIT 2 — SELF-INTRODUCTION
      ============================================================ -->
   <div class="unit-divider" id="unit2"></div>
-  <div class="unit-flag">UNIT 2 · 자기소개</div>
-  <div class="sec-title"><div class="no">2</div><div><h2>저는 가수예요</h2><div class="en">Self-introduction — N은/는 + 직업</div></div></div>
+  <div class="unit-flag">UNIT 2 · SELF-INTRODUCTION</div>
+  <div class="sec-title"><div class="no">2</div><div><h2>I'm a Singer</h2><div class="en">저는 가수예요 — Self-introduction · N은/는</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/dari.png" alt="달이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 2/8</span>
+      <h3>달이의 자기소개 — "저는 달이예요!"</h3>
+      <p>조용한 달빛 요정 <b>달이</b>는 꿈나라의 별들을 만나려면 <b>자신을 소개하는 법</b>을 알아야 한다고 말해요. "저는 ○○예요!" — 자기소개를 할 때마다 달빛 조각이 모여요. 🌙</p>
+      <span class="story-piece">🌙 꿈의 조각 2/8 획득 — Self-introduction!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">🗣️</span> 자기소개하기</div>
-    <div class="goal"><span class="g-ico">🔤</span> 은/는 주제 조사</div>
-    <div class="goal"><span class="g-ico">🌍</span> 나라·직업 어휘</div>
+    <div class="goal"><span class="g-ico">🗣️</span> Introduce yourself</div>
+    <div class="goal"><span class="g-ico">🔤</span> 은/는 topic particle</div>
+    <div class="goal"><span class="g-ico">🌍</span> Country & job vocabulary</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 2 — 데뷔 인터뷰</span>
-      <span class="d-scene">📺 데뷔 쇼케이스</span>
+      <span class="d-title">💬 Dialogue 2 — Debut Interview</span>
+      <span class="d-scene">📺 Debut showcase</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">안녕하세요! 저는 유나예요. 저는 베트남 사람이에요.</div><div class="gl">Hello! I'm Yuna. I'm Vietnamese.</div></div>
+    <div class="d-line"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">안녕하세요! 저는 소리예요. 저는 베트남 사람이에요.</div><div class="gl">Hello! I'm Sori. I'm Vietnamese.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">저는 지훈이에요. 저는 일본 사람이에요. 래퍼예요.</div><div class="gl">I'm Jihoon. I'm Japanese. I'm a rapper.</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 꽃이이에요. 저는 일본 사람이에요. 래퍼예요.</div><div class="gl">I'm Kkochi. I'm Japanese. I'm a rapper.</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">저는 지우예요. 한국 사람이에요. 샛별의 리더예요!</div><div class="gl">I'm Jiwoo. I'm Korean. I'm Saetbyeol's leader!</div></div>
+    <div class="d-line me"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">저는 별이예요. 한국 사람이에요. 꿈별의 리더예요!</div><div class="gl">I'm Byeori. I'm Korean. I'm Kkumbyeol's leader!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-02.webp" alt="서연">
-      <div class="d-bubble"><div class="who">서연</div><div class="ko">저는 서연이에요. 한국 사람이에요. 보컬이에요.</div><div class="gl">I'm Seoyeon. I'm Korean. I'm a vocalist.</div></div>
+    <div class="d-line"><img src="assets/members/dari.png" alt="달이">
+      <div class="d-bubble"><div class="who">달이</div><div class="ko">저는 달이이에요. 한국 사람이에요. 보컬이에요.</div><div class="gl">I'm Dari. I'm Korean. I'm a vocalist.</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">저는 하준이에요. 샛별의 막내예요!</div><div class="gl">I'm Hajun. I'm Saetbyeol's maknae (youngest)!</div></div>
+    <div class="d-line me"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 꽃이이에요. 꿈별의 막내예요!</div><div class="gl">I'm Kkochi. I'm Kkumbyeol's maknae (youngest)!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">은/는 — 주제 조사 (Topic particle)</div>
-    <div class="g-rule">주제를 소개할 때 써요. 받침 있으면 <b>은</b>, 받침 없으면 <b>는</b>. "~에 대해서 말하면"의 느낌!</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">은/는 — Topic particle</div>
+    <div class="g-rule">Use it to introduce the topic of the sentence. After a final consonant use <b>은</b>, after a vowel use <b>는</b>. It feels like "as for ~"!</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">저<b>는</b> 유나예요.</span><span class="gl">저 has no 받침 → 는</span></div>
-      <div class="ex"><span class="ko">지훈<b>은</b> 일본 사람이에요.</span><span class="gl">지훈 has 받침 ㄴ → 은</span></div>
+      <div class="ex"><span class="ko">저<b>는</b> 소리예요.</span><span class="gl">저 has no final consonant → 는</span></div>
+      <div class="ex"><span class="ko">꽃이<b>은</b> 일본 사람이에요.</span><span class="gl">꽃이 has final consonant ㄴ → 은</span></div>
       <div class="ex"><span class="ko">이 노래<b>는</b> 좋아요.</span><span class="gl">As for this song, I like it.</span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">N이에요/예요 — 직업·국적 말하기</div>
-    <div class="g-rule">자기소개 = 이름 + 국적 + 직업 + 역할! 다 <b>이에요/예요</b>로 연결해요.</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">N이에요/예요 — Talking about Jobs & Nationalities</div>
+    <div class="g-rule">Self-introduction = name + nationality + job + role! Connect them all with <b>이에요/예요</b>.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">저는 가수예요.</span><span class="gl">I am a singer.</span></div>
       <div class="ex"><span class="ko">저는 학생이에요.</span><span class="gl">I am a student.</span></div>
@@ -724,7 +837,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">N도 — "also / too"</div>
+    <div class="g-rule">Add <b>도</b> after a noun to say "also, too". It replaces 은/는 and 이/가. A favorite in TOPIK I!</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">저는 가수<b>도</b>예요.</span><span class="gl">I am also a singer.</span></div>
+      <div class="ex"><span class="ko">소리<b>도</b> 베트남 사람이에요.</span><span class="gl">Sori is also Vietnamese.</span></div>
+      <div class="ex"><span class="ko">노래<b>도</b> 좋아해요.</span><span class="gl">I like singing too.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">🌍</span><div><div class="v-ko">한국 사람</div><div class="v-rom">hanguk saram</div><div class="v-en">Korean person</div></div><button class="v-btn" onclick="tts('한국 사람')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🌏</span><div><div class="v-ko">베트남</div><div class="v-rom">betnam</div><div class="v-en">Vietnam</div></div><button class="v-btn" onclick="tts('베트남')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🗾</span><div><div class="v-ko">일본</div><div class="v-rom">ilbon</div><div class="v-en">Japan</div></div><button class="v-btn" onclick="tts('일본')">🔊</button></div>
@@ -735,14 +859,18 @@ body {
     <div class="v-item"><span class="v-emoji">🕺</span><div><div class="v-ko">댄서</div><div class="v-rom">daenseo</div><div class="v-en">dancer</div></div><button class="v-btn" onclick="tts('댄서')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🏫</span><div><div class="v-ko">학생</div><div class="v-rom">haksaeng</div><div class="v-en">student</div></div><button class="v-btn" onclick="tts('학생')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💼</span><div><div class="v-ko">회사원</div><div class="v-rom">hoesawon</div><div class="v-en">office worker</div></div><button class="v-btn" onclick="tts('회사원')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">👩‍🏫</span><div><div class="v-ko">선생님</div><div class="v-rom">seonsaengnim</div><div class="v-en">teacher</div></div><button class="v-btn" onclick="tts('선생님')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🩺</span><div><div class="v-ko">의사</div><div class="v-rom">uisa</div><div class="v-en">doctor</div></div><button class="v-btn" onclick="tts('의사')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">👮</span><div><div class="v-ko">경찰</div><div class="v-rom">gyeongchal</div><div class="v-en">police officer</div></div><button class="v-btn" onclick="tts('경찰')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🌏</span><div><div class="v-ko">캄보디아</div><div class="v-rom">kambodia</div><div class="v-en">Cambodia</div></div><button class="v-btn" onclick="tts('캄보디아')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[2-1] 읽기 — 자기소개 빈칸</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[2-1] Reading — Self-intro Blank</span></div>
     <div class="p-dir">Choose the correct particle.</div>
     <div class="p-q">저(    ) 가수예요.</div>
     <div class="opts" data-q="u2q1">
-      <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">1</span> 는<span class="o-gl">✅ 저 has no 받침 → 는</span></button>
+      <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">1</span> 는<span class="o-gl">✅ 저 has no final consonant → 는</span></button>
       <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">2</span> 은<span class="o-gl">❌ 은 is for 받침</span></button>
       <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌ object particle</span></button>
       <button class="opt" onclick="checkQ('u2q1',0,this)"><span class="o-idx">4</span> 이<span class="o-gl">❌ subject particle</span></button></div>
@@ -751,64 +879,89 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[2-2] 듣기 — 누구예요?</span></div>
-    <div class="p-dir">🔊 들으면서, 이 사람은 누구인지 고르세요.</div>
-    <button class="p-audio" onclick="tts('저는 일본 사람이에요. 샛별의 래퍼예요.')">🔊 Listen</button>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[2-2] Listening — Who is it?</span></div>
+    <div class="p-dir">🔊 Listen and choose who this person is.</div>
+    <button class="p-audio" onclick="tts('저는 일본 사람이에요. 꿈별의 래퍼예요.')">🔊 Listen</button>
     <div class="opts" data-q="u2q2">
-      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">1</span> 유나<span class="o-gl">❌ Yuna is from Vietnam</span></button>
-      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">2</span> 지훈<span class="o-gl">✅ Japanese rapper</span></button>
-      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">3</span> 지우<span class="o-gl">❌ Korean leader</span></button>
-      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">4</span> 하준<span class="o-gl">❌ Korean maknae</span></button></div>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">1</span> 소리<span class="o-gl">❌ Sori is from Vietnam</span></button>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">2</span> 꽃이<span class="o-gl">✅ Japanese rapper</span></button>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">3</span> 별이<span class="o-gl">❌ Korean leader</span></button>
+      <button class="opt" onclick="checkQ('u2q2',1,this)"><span class="o-idx">4</span> 꽃이<span class="o-gl">❌ Korean maknae</span></button></div>
     
     <div class="p-feedback" id="fb-u2q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>자기소개 챌린지!</h3>
-    <p>아이돌은 데뷔 때 <b>자기소개 멘트</b>를 만들어요. 여러분도 만들어볼까요?</p>
-    <div class="c-tip">✍️ "안녕하세요! 저는 ○○예요. ○○ 사람이에요. ○○이에요!" — 이름, 나라, 직업을 넣어서 말해보세요!</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[2-3] Reading — 도 particle</span></div>
+    <div class="p-dir">Choose the correct sentence with 도.</div>
+    <div class="p-q">소리 씨는 베트남 사람이에요. 별이 씨(    ) 베트남 사람이에요?</div>
+    <div class="opts" data-q="u2q3">
+      <button class="opt" onclick="checkQ('u2q3',0,this)"><span class="o-idx">1</span> 도<span class="o-gl">✅ 별이 씨도 = "Byeori also"</span></button>
+      <button class="opt" onclick="checkQ('u2q3',0,this)"><span class="o-idx">2</span> 는<span class="o-gl">❌ topic particle</span></button>
+      <button class="opt" onclick="checkQ('u2q3',0,this)"><span class="o-idx">3</span> 을<span class="o-gl">❌ object particle</span></button>
+      <button class="opt" onclick="checkQ('u2q3',0,this)"><span class="o-idx">4</span> 에<span class="o-gl">❌ place particle</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u2q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Self-Introduction Challenge!</h3>
+    <p>Idols make a <b>self-introduction phrase</b> when they debut. Shall we make one too?</p>
+    <div class="c-tip">✍️ "안녕하세요! 저는 ○○예요. ○○ 사람이에요. ○○이에요!" — Fill in your name, country, and job!</div>
   </div>
 
 <!-- ============================================================
      UNIT 3 — THINGS
      ============================================================ -->
   <div class="unit-divider" id="unit3"></div>
-  <div class="unit-flag">UNIT 3 · 사물</div>
-  <div class="sec-title"><div class="no">3</div><div><h2>이거 뭐예요?</h2><div class="en">Things — 이/그/저 + 있어요/없어요</div></div></div>
+  <div class="unit-flag">UNIT 3 · THINGS</div>
+  <div class="sec-title"><div class="no">3</div><div><h2>What is This?</h2><div class="en">이거 뭐예요? — Things · 이/그/저</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/sori.png" alt="소리">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 3/8</span>
+      <h3>소리의 보물 상자 — "이거 뭐예요?"</h3>
+      <p>장난꾸러기 <b>소리</b>는 현실 세계에서 신기한 물건들을 발견해요 — 응원봉, 포토카드, 앨범! 물건의 이름을 알면 그 물건에 꿈의 힘이 깃들어요. "이거 뭐예요?"라고 물어보세요! 🎵</p>
+      <span class="story-piece">🎵 꿈의 조각 3/8 획득 — Things!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">👉</span> 이/그/저 지시어</div>
-    <div class="goal"><span class="g-ico">🎒</span> 물건 어휘</div>
+    <div class="goal"><span class="g-ico">👉</span> 이/그/저 demonstratives</div>
+    <div class="goal"><span class="g-ico">🎒</span> Object vocabulary</div>
     <div class="goal"><span class="g-ico">✅</span> 있어요/없어요</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 3 — 굿즈 만들기</span>
-      <span class="d-scene">🎁 굿즈 회의</span>
+      <span class="d-title">💬 Dialogue 3 — Making Merch</span>
+      <span class="d-scene">🎁 Merch meeting</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">이거 뭐예요?</div><div class="gl">What is this?</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">이거 뭐예요?</div><div class="gl">What is this?</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">이거는 응원봉이에요. 팬들이 콘서트에서 써요.</div><div class="gl">This is a light stick. Fans use it at concerts.</div></div>
+    <div class="d-line"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">이거는 응원봉이에요. 팬들이 콘서트에서 써요.</div><div class="gl">This is a light stick. Fans use it at concerts.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">그거는 뭐예요?</div><div class="gl">What is that?</div></div>
+    <div class="d-line"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">그거는 뭐예요?</div><div class="gl">What is that?</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-02.webp" alt="서연">
-      <div class="d-bubble"><div class="who">서연</div><div class="ko">그거는 앨범이에요. 사진하고 포토카드가 있어요.</div><div class="gl">That is an album. It has photos and photocards.</div></div>
+    <div class="d-line"><img src="assets/members/dari.png" alt="달이">
+      <div class="d-bubble"><div class="who">달이</div><div class="ko">그거는 앨범이에요. 사진하고 포토카드가 있어요.</div><div class="gl">That is an album. It has photos and photocards.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">포토카드 있어요? 저거 주세요!</div><div class="gl">Is there a photocard? Give me that one!</div></div>
+    <div class="d-line"><img src="assets/members/sori.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">포토카드 있어요? 저거 주세요!</div><div class="gl">Is there a photocard? Give me that one!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
+    <span class="g-label">GRAMMAR 1</span>
     <div class="g-point">이/그/저 — This / That / That over there</div>
-    <div class="g-rule">이 = 가까이 있는 것 (near me), 그 = 저쪽 것 (near you), 저 = 먼 것 (far from both).</div>
+    <div class="g-rule">이 = something near me, 그 = something near you, 저 = something far from both.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">이거는 응원봉이에요.</span><span class="gl">This (near me) is a light stick.</span></div>
       <div class="ex"><span class="ko">그거는 앨범이에요.</span><span class="gl">That (near you) is an album.</span></div>
@@ -817,9 +970,9 @@ body {
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
+    <span class="g-label">GRAMMAR 2</span>
     <div class="g-point">N이/가 있어요 · 없어요 — There is / There isn't</div>
-    <div class="g-rule">TOPIK I 필수! <b>있어요</b> = 있다 (exist/have), <b>없어요</b> = 없다 (not exist).</div>
+    <div class="g-rule">Essential for TOPIK I! <b>있어요</b> = 있다 (to exist / to have), <b>없어요</b> = 없다 (to not exist).</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">포토카드가 있어요.</span><span class="gl">There is a photocard.</span></div>
       <div class="ex"><span class="ko">시간이 없어요.</span><span class="gl">I don't have time.</span></div>
@@ -827,7 +980,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">N 주세요 — "Please give me N"</div>
+    <div class="g-rule">Ask for something politely. Essential for shopping, ordering, and merch booths!</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">포토카드 주세요.</span><span class="gl">Please give me the photocard.</span></div>
+      <div class="ex"><span class="ko">물 주세요.</span><span class="gl">Please give me water.</span></div>
+      <div class="ex"><span class="ko">저거 주세요.</span><span class="gl">Please give me that one (over there).</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">💡</span><div><div class="v-ko">응원봉</div><div class="v-rom">eungwonbong</div><div class="v-en">light stick</div></div><button class="v-btn" onclick="tts('응원봉')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💿</span><div><div class="v-ko">앨범</div><div class="v-rom">aelbeom</div><div class="v-en">album</div></div><button class="v-btn" onclick="tts('앨범')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🖼️</span><div><div class="v-ko">포토카드</div><div class="v-rom">potokadeu</div><div class="v-en">photocard</div></div><button class="v-btn" onclick="tts('포토카드')">🔊</button></div>
@@ -838,13 +1002,16 @@ body {
     <div class="v-item"><span class="v-emoji">📖</span><div><div class="v-ko">책</div><div class="v-rom">chaek</div><div class="v-en">book</div></div><button class="v-btn" onclick="tts('책')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">⏰</span><div><div class="v-ko">시계</div><div class="v-rom">sigye</div><div class="v-en">watch, clock</div></div><button class="v-btn" onclick="tts('시계')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🪞</span><div><div class="v-ko">거울</div><div class="v-rom">geoul</div><div class="v-en">mirror</div></div><button class="v-btn" onclick="tts('거울')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🎒</span><div><div class="v-ko">가방</div><div class="v-rom">gabang</div><div class="v-en">bag</div></div><button class="v-btn" onclick="tts('가방')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🌂</span><div><div class="v-ko">우산</div><div class="v-rom">usan</div><div class="v-en">umbrella</div></div><button class="v-btn" onclick="tts('우산')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🔑</span><div><div class="v-ko">열쇠</div><div class="v-rom">yeolsoe</div><div class="v-en">key</div></div><button class="v-btn" onclick="tts('열쇠')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[3-1] 읽기 — 그림 보고 고르기</span></div>
-    <div class="p-dir">Read and choose the correct sentence for the picture. (🎸 기타 = guitar)</div>
-    <div class="p-passage">[그림: 기타 하나]</div>
-    <div class="p-q">다음을 읽고, 맞는 것을 고르십시오.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[3-1] Reading — Look at the Picture</span></div>
+    <div class="p-dir">Look at the picture and choose the correct sentence. (🎸 기타 = guitar)</div>
+    <div class="p-passage">[Picture: one guitar]</div>
+    <div class="p-q">Read and choose the correct answer.</div>
     <div class="opts" data-q="u3q1">
       <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">1</span> 기타가 있어요.<span class="o-gl">✅ There is a guitar.</span></button>
       <button class="opt" onclick="checkQ('u3q1',0,this)"><span class="o-idx">2</span> 기타가 없어요.<span class="o-gl">❌</span></button>
@@ -855,8 +1022,8 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[3-2] 듣기 — 뭐가 있어요?</span></div>
-    <div class="p-dir">🔊 들으면서 맞는 것을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[3-2] Listening — What is there?</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('가방에 책이 있어요.')">🔊 Listen</button>
     <div class="opts" data-q="u3q2">
       <button class="opt" onclick="checkQ('u3q2',0,this)"><span class="o-idx">1</span> 가방에 책이 있어요.<span class="o-gl">✅</span></button>
@@ -867,49 +1034,74 @@ body {
     <div class="p-feedback" id="fb-u3q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>굿즈 용어 사전</h3>
-    <p>응원봉(light stick)은 아이돌마다 색깔과 모양이 달라요! 팬들은 <b>포토카드</b>를 모으고 <b>앨범</b>을 사요.</p>
-    <div class="c-tip">🛍️ 쇼핑할 때: "이거 얼마예요?" (How much is this?) — 9과에서 배워요!</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[3-3] Listening — At the Merch Booth</span></div>
+    <div class="p-dir">🔊 Listen and choose what the fan says.</div>
+    <button class="p-audio" onclick="tts('포토카드 주세요.')">🔊 Listen</button>
+    <div class="opts" data-q="u3q3">
+      <button class="opt" onclick="checkQ('u3q3',0,this)"><span class="o-idx">1</span> 포토카드 주세요.<span class="o-gl">✅ Please give me the photocard.</span></button>
+      <button class="opt" onclick="checkQ('u3q3',0,this)"><span class="o-idx">2</span> 포토카드 있어요.<span class="o-gl">❌ There is a photocard.</span></button>
+      <button class="opt" onclick="checkQ('u3q3',0,this)"><span class="o-idx">3</span> 포토카드 없어요.<span class="o-gl">❌ There is no photocard.</span></button>
+      <button class="opt" onclick="checkQ('u3q3',0,this)"><span class="o-idx">4</span> 포토카드 좋아요.<span class="o-gl">❌ The photocard is good.</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u3q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Merch Vocabulary Dictionary</h3>
+    <p>Every idol group has a different light stick color and shape! Fans collect <b>photocards</b> and buy <b>albums</b>.</p>
+    <div class="c-tip">🛍️ When shopping: "이거 얼마예요?" (How much is this?) — you'll learn it in Unit 9!</div>
   </div>
 
 <!-- ============================================================
      UNIT 4 — NUMBERS & DATES
      ============================================================ -->
   <div class="unit-divider" id="unit4"></div>
-  <div class="unit-flag">UNIT 4 · 숫자와 날짜</div>
-  <div class="sec-title"><div class="no">4</div><div><h2>데뷔는 5월이에요</h2><div class="en">Numbers · Dates · Days of the week</div></div></div>
+  <div class="unit-flag">UNIT 4 · NUMBERS & DATES</div>
+  <div class="sec-title"><div class="no">4</div><div><h2>Debut is in May</h2><div class="en">데뷔는 5월이에요 — Numbers · Dates · Days</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/kkochi.png" alt="꽃이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 4/8</span>
+      <h3>꽃이의 꿈 캘린더 — "5월 20일!"</h3>
+      <p>막내 <b>꽃이</b>는 꿈나라로 돌아가는 날짜를 찾고 있어요. 별자리 달력을 읽으려면 <b>숫자와 날짜, 요일</b>이 필요해요! "언제예요?" — 날짜를 말할수록 꿈의 문이 가까워져요. 🌸</p>
+      <span class="story-piece">🌸 꿈의 조각 4/8 획득 — Numbers & Dates!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">🔢</span> 고유어 숫자 (하나~열)</div>
-    <div class="goal"><span class="g-ico">📅</span> 한자어 숫자 · 날짜</div>
-    <div class="goal"><span class="g-ico">🗓️</span> 요일</div>
+    <div class="goal"><span class="g-ico">🔢</span> Native Korean numbers (하나~열)</div>
+    <div class="goal"><span class="g-ico">📅</span> Sino-Korean numbers & dates</div>
+    <div class="goal"><span class="g-ico">🗓️</span> Days of the week</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 4 — 데뷔 날짜 정하기</span>
-      <span class="d-scene">📆 매니저 회의</span>
+      <span class="d-title">💬 Dialogue 4 — Setting the Debut Date</span>
+      <span class="d-scene">📆 Manager meeting</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">데뷔는 5월 17일이에요. 무슨 요일이에요?</div><div class="gl">Debut is May 17th. What day of the week is it?</div></div>
+    <div class="d-line"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">데뷔는 5월 17일이에요. 무슨 요일이에요?</div><div class="gl">Debut is May 17th. What day of the week is it?</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">일요일이에요!</div><div class="gl">It's Sunday!</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">일요일이에요!</div><div class="gl">It's Sunday!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">음악방송은 금요일이에요. 데뷔 무대는 5월 20일이에요!</div><div class="gl">The music show is on Friday. The debut stage is May 20th!</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">음악방송은 금요일이에요. 데뷔 무대는 5월 20일이에요!</div><div class="gl">The music show is on Friday. The debut stage is May 20th!</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">좋아요! 5월 20일, 금요일이에요!</div><div class="gl">Great! May 20th, Friday!</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">좋아요! 5월 20일, 금요일이에요!</div><div class="gl">Great! May 20th, Friday!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">숫자 — 고유어 vs 한자어</div>
-    <div class="g-rule">하나, 둘, 셋 = <b>고유어</b> (개수 셀 때: 명사+개). 일, 이, 삼 = <b>한자어</b> (날짜·시간·가격).</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">Numbers — Native vs Sino-Korean</div>
+    <div class="g-rule">하나, 둘, 셋 = <b>native Korean</b> (for counting: noun + 개). 일, 이, 삼 = <b>Sino-Korean</b> (dates, time, prices).</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">하나, 둘, 셋, 넷, 다섯, 여섯, 일곱, 여덟, 아홉, 열</span><span class="gl">1-10 native Korean</span></div>
       <div class="ex"><span class="ko">일, 이, 삼, 사, 오, 육, 칠, 팔, 구, 십</span><span class="gl">1-10 Sino-Korean</span></div>
@@ -918,18 +1110,29 @@ body {
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">날짜와 요일</div>
-    <div class="g-rule">날짜는 한자어: <b>N월 N일</b>. 요일: 월·화·수·목·금·토·일 + 요일.</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">Dates and Days of the Week</div>
+    <div class="g-rule">Dates use Sino-Korean: <b>N월 N일</b>. Days: 월·화·수·목·금·토·일 + 요일.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">5월 17일</span><span class="gl">May 17th (오월 십칠일)</span></div>
       <div class="ex"><span class="ko">월요일, 화요일, 수요일, 목요일, 금요일, 토요일, 일요일</span><span class="gl">Mon–Sun</span></div>
       <div class="ex"><span class="ko">오늘은 금요일이에요.</span><span class="gl">Today is Friday.</span></div>
-      <div class="ex"><span class="ko">생일이 언제예요? — 5월 17일이에요.</span><span class="gl">When is your birthday? — May 17th. (TOPIK 필수!)</span></div>
+      <div class="ex"><span class="ko">When is your birthday? — May 17th. (TOPIK 필수!)</span><span class="gl">When is your birthday? — May 17th. (TOPIK 필수!)</span></div>
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">시간 — N시 N분 (telling time)</div>
+    <div class="g-rule">Time uses Sino-Korean numbers: <b>N시 N분</b>. "What time is it?" = <b>몇 시예요?</b></div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">지금 몇 시예요? — 5시예요.</span><span class="gl">What time is it now? — It's 5 o'clock.</span></div>
+      <div class="ex"><span class="ko">9시 30분이에요.</span><span class="gl">It's 9:30.</span></div>
+      <div class="ex"><span class="ko">데뷔 무대는 6시에 시작해요.</span><span class="gl">The debut stage starts at 6 o'clock.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">🗓️</span><div><div class="v-ko">월요일</div><div class="v-rom">woryoil</div><div class="v-en">Monday</div></div><button class="v-btn" onclick="tts('월요일')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🗓️</span><div><div class="v-ko">화요일</div><div class="v-rom">hwayoil</div><div class="v-en">Tuesday</div></div><button class="v-btn" onclick="tts('화요일')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🗓️</span><div><div class="v-ko">수요일</div><div class="v-rom">suyoil</div><div class="v-en">Wednesday</div></div><button class="v-btn" onclick="tts('수요일')">🔊</button></div>
@@ -940,13 +1143,16 @@ body {
     <div class="v-item"><span class="v-emoji">🎂</span><div><div class="v-ko">생일</div><div class="v-rom">saengil</div><div class="v-en">birthday</div></div><button class="v-btn" onclick="tts('생일')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">📅</span><div><div class="v-ko">오늘</div><div class="v-rom">oneul</div><div class="v-en">today</div></div><button class="v-btn" onclick="tts('오늘')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">⏳</span><div><div class="v-ko">언제</div><div class="v-rom">eonje</div><div class="v-en">when</div></div><button class="v-btn" onclick="tts('언제')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🕐</span><div><div class="v-ko">몇 시</div><div class="v-rom">myeot si</div><div class="v-en">what time</div></div><button class="v-btn" onclick="tts('몇 시')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🌅</span><div><div class="v-ko">아침</div><div class="v-rom">achim</div><div class="v-en">morning</div></div><button class="v-btn" onclick="tts('아침')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🌙</span><div><div class="v-ko">밤</div><div class="v-rom">bam</div><div class="v-en">night</div></div><button class="v-btn" onclick="tts('밤')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[4-1] 읽기 — 요일 맞히기</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[4-1] Reading — Find the Day</span></div>
     <div class="p-dir">Read the calendar note and answer.</div>
-    <div class="p-passage">샛별 데뷔 무대 — 5월 20일 (금)</div>
-    <div class="p-q">데뷔 무대는 무슨 요일이에요?</div>
+    <div class="p-passage">Kkumbyeol debut stage — May 20 (Fri)</div>
+    <div class="p-q">What day of the week is the debut stage?</div>
     <div class="opts" data-q="u4q1">
       <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">1</span> 수요일<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u4q1',2,this)"><span class="o-idx">2</span> 목요일<span class="o-gl">❌</span></button>
@@ -957,72 +1163,98 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[4-2] 듣기 — 생일 물어보기</span></div>
-    <div class="p-dir">🔊 듣고 알맞은 답을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[4-2] Listening — Asking About Birthdays</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('생일이 언제예요?')">🔊 Listen</button>
     <div class="opts" data-q="u4q2">
       <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">1</span> 5월 17일이에요.<span class="o-gl">✅</span></button>
       <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">2</span> 금요일이에요.<span class="o-gl">❌ that answers 요일</span></button>
-      <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">3</span> 저는 소리예요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u4q2',0,this)"><span class="o-idx">4</span> 네, 좋아요.<span class="o-gl">❌</span></button></div>
     
     <div class="p-feedback" id="fb-u4q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>데뷔일 = 축제일!</h3>
-    <p>아이돌의 <b>데뷔일(데뷔 기념일)</b>은 팬들에게 가장 특별한 날! 팬들은 <b>생일 축하</b>처럼 기념일을 축하해요.</p>
-    <div class="c-tip">🎂 팬이 좋아하는 아이돌 생일에 쓰는 말: "생일 축하해요!" (Happy birthday!)</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[4-3] Reading — What time?</span></div>
+    <div class="p-dir">Read the schedule and choose the correct answer.</div>
+    <div class="p-passage">꿈별 콘서트 — 7시 30분 시작<br><span class="gl">Kkumbyeol concert — starts at 7:30</span></div>
+    <div class="p-q">콘서트는 몇 시에 시작해요?</div>
+    <div class="opts" data-q="u4q3">
+      <button class="opt" onclick="checkQ('u4q3',1,this)"><span class="o-idx">1</span> 6시 30분<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q3',1,this)"><span class="o-idx">2</span> 7시 30분<span class="o-gl">✅ 7:30</span></button>
+      <button class="opt" onclick="checkQ('u4q3',1,this)"><span class="o-idx">3</span> 8시<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u4q3',1,this)"><span class="o-idx">4</span> 5시<span class="o-gl">❌</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u4q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Debut Day = Festival Day!</h3>
+    <p>An idol's <b>debut day (anniversary)</b> is the most special day for fans! They celebrate it like a <b>birthday</b>.</p>
+    <div class="c-tip">🎂 On your favorite idol's birthday, fans say: "생일 축하해요!" (Happy birthday!)</div>
   </div>
 
 <!-- ============================================================
      UNIT 5 — LIKES & DAILY ACTIONS
      ============================================================ -->
   <div class="unit-divider" id="unit5"></div>
-  <div class="unit-flag">UNIT 5 · 좋아요와 일상 동작</div>
-  <div class="sec-title"><div class="no">5</div><div><h2>노래를 좋아해요</h2><div class="en">Likes — 을/를 · -아요/어요</div></div></div>
+  <div class="unit-flag">UNIT 5 · LIKES & DAILY ACTIONS</div>
+  <div class="sec-title"><div class="no">5</div><div><h2>I Like Singing</h2><div class="en">노래를 좋아해요 — Likes · 을/를 · -아요/어요</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/sori.png" alt="소리">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 5/8</span>
+      <h3>소리의 꿈의 노래 — "노래를 좋아해요!"</h3>
+      <p>꿈나라의 문은 <b>노래</b>로 열려요! 소리는 한국어로 좋아하는 것을 말하는 법을 배워요. "저는 ○○을 좋아해요!" — 좋아하는 것을 말할 때마다 음표가 별이 돼요. 🎶</p>
+      <span class="story-piece">🎶 꿈의 조각 5/8 획득 — Likes!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">❤️</span> 좋아해요/싫어해요</div>
-    <div class="goal"><span class="g-ico">🔤</span> 을/를 목적격 조사</div>
-    <div class="goal"><span class="g-ico">🎵</span> -아요/어요 현재 시제</div>
+    <div class="goal"><span class="g-ico">❤️</span> 좋아해요 (like) / 싫어해요 (dislike)</div>
+    <div class="goal"><span class="g-ico">🔤</span> 을/를 object particle</div>
+    <div class="goal"><span class="g-ico">🎵</span> -아요/어요 present tense</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 5 — 좋아하는 것</span>
-      <span class="d-scene">🎶 대기실 인터뷰</span>
+      <span class="d-title">💬 Dialogue 5 — Things We Like</span>
+      <span class="d-scene">🎶 Waiting room interview</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">저는 춤을 좋아해요. 그리고 노래도 좋아해요.</div><div class="gl">I like dancing. And I like singing too.</div></div>
+    <div class="d-line"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">저는 춤을 좋아해요. 그리고 노래도 좋아해요.</div><div class="gl">I like dancing. And I like singing too.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">저는 랩을 좋아해요. 하지만 매운 음식은 싫어해요.</div><div class="gl">I like rap. But I don't like spicy food.</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 랩을 좋아해요. 하지만 매운 음식은 싫어해요.</div><div class="gl">I like rap. But I don't like spicy food.</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">저는 팬들을 좋아해요! 팬들이 제일 좋아요!</div><div class="gl">I like our fans! Fans are the best!</div></div>
+    <div class="d-line me"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">저는 팬들을 좋아해요! 팬들이 제일 좋아요!</div><div class="gl">I like our fans! Fans are the best!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">저는 게임을 좋아해요. 매일 밤 게임을 해요!</div><div class="gl">I like games. I play games every night!</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 게임을 좋아해요. 매일 밤 게임을 해요!</div><div class="gl">I like games. I play games every night!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">을/를 — 목적격 조사 (Object particle)</div>
-    <div class="g-rule">동작의 대상을 나타내요. 받침 있으면 <b>을</b>, 받침 없으면 <b>를</b>.</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">을/를 — Object particle</div>
+    <div class="g-rule">It marks the object of an action. After a final consonant use <b>을</b>, after a vowel use <b>를</b>.</div>
     <div class="g-ex">
-      <div class="ex"><span class="ko">노래<b>를</b> 좋아해요.</span><span class="gl">노래 has no 받침 → 를</span></div>
-      <div class="ex"><span class="ko">랩<b>을</b> 좋아해요.</span><span class="gl">랩 has 받침 ㅂ → 을</span></div>
+      <div class="ex"><span class="ko">노래<b>를</b> 좋아해요.</span><span class="gl">노래 has no final consonant → 를</span></div>
+      <div class="ex"><span class="ko">랩<b>을</b> 좋아해요.</span><span class="gl">랩 has final consonant ㅂ → 을</span></div>
       <div class="ex"><span class="ko">물을 마셔요.</span><span class="gl">I drink water.</span></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">-아요/어요 — 현재 시제</div>
-    <div class="g-rule">동사·형용사의 반말 존댓말형. ㅏ/ㅗ 모음이면 <b>-아요</b>, 그 외는 <b>-어요</b>, 하다 동사는 <b>-해요</b>!</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">-아요/어요 — Present Tense</div>
+    <div class="g-rule">The polite present form of verbs & adjectives. After vowels ㅏ/ㅗ use <b>-아요</b>, otherwise <b>-어요</b>, and 하다 verbs become <b>-해요</b>!</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">좋아하<b>다</b> → 좋아<b>해요</b></span><span class="gl">하다 → 해요 (like)</span></div>
       <div class="ex"><span class="ko">가<b>다</b> → 가<b>요</b></span><span class="gl">ㅏ + 아요 = 아요 (go)</span></div>
@@ -1031,7 +1263,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">-고 싶어요 — "I want to ~"</div>
+    <div class="g-rule">Drop 다 from a verb and add <b>-고 싶어요</b> to say what you want to do. A TOPIK I favorite!</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">노래하<b>고 싶어요</b>.</span><span class="gl">I want to sing.</span></div>
+      <div class="ex"><span class="ko">춤추<b>고 싶어요</b>.</span><span class="gl">I want to dance.</span></div>
+      <div class="ex"><span class="ko">팬들을 만나<b>고 싶어요</b>.</span><span class="gl">I want to meet the fans.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">❤️</span><div><div class="v-ko">좋아하다</div><div class="v-rom">joahada</div><div class="v-en">to like</div></div><button class="v-btn" onclick="tts('좋아해요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💔</span><div><div class="v-ko">싫어하다</div><div class="v-rom">sireohada</div><div class="v-en">to dislike</div></div><button class="v-btn" onclick="tts('싫어해요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💃</span><div><div class="v-ko">춤</div><div class="v-rom">chum</div><div class="v-en">dance</div></div><button class="v-btn" onclick="tts('춤')">🔊</button></div>
@@ -1042,14 +1285,18 @@ body {
     <div class="v-item"><span class="v-emoji">📖</span><div><div class="v-ko">공부하다</div><div class="v-rom">gongbuhada</div><div class="v-en">to study</div></div><button class="v-btn" onclick="tts('공부해요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">😴</span><div><div class="v-ko">자다</div><div class="v-rom">jada</div><div class="v-en">to sleep</div></div><button class="v-btn" onclick="tts('자요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🍚</span><div><div class="v-ko">먹다</div><div class="v-rom">meokda</div><div class="v-en">to eat</div></div><button class="v-btn" onclick="tts('먹어요')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🎤</span><div><div class="v-ko">노래방</div><div class="v-rom">noraebang</div><div class="v-en">karaoke room</div></div><button class="v-btn" onclick="tts('노래방')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🏃</span><div><div class="v-ko">운동</div><div class="v-rom">undong</div><div class="v-en">exercise</div></div><button class="v-btn" onclick="tts('운동')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">✈️</span><div><div class="v-ko">여행</div><div class="v-rom">yeohaeng</div><div class="v-en">travel</div></div><button class="v-btn" onclick="tts('여행')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">☕</span><div><div class="v-ko">커피</div><div class="v-rom">keopi</div><div class="v-en">coffee</div></div><button class="v-btn" onclick="tts('커피')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[5-1] 읽기 — 빈칸 채우기</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[5-1] Reading — Fill in the Blank</span></div>
     <div class="p-dir">Choose the correct particle.</div>
     <div class="p-q">저는 케이팝 음악(    ) 좋아해요.</div>
     <div class="opts" data-q="u5q1">
-      <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">1</span> 을<span class="o-gl">✅ 음악 = 음악, 악 has 받침 ㄱ → 을</span></button>
+      <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">1</span> 을<span class="o-gl">✅ 음악 ends with final consonant ㄱ → 을</span></button>
       <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">2</span> 를<span class="o-gl">❌ 를 is for no 받침 (e.g. 노래를)</span></button>
       <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">3</span> 은<span class="o-gl">❌ topic particle</span></button>
       <button class="opt" onclick="checkQ('u5q1',0,this)"><span class="o-idx">4</span> 에<span class="o-gl">❌ place/time particle</span></button></div>
@@ -1058,61 +1305,86 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[5-2] 듣기 — 뭐를 좋아해요?</span></div>
-    <div class="p-dir">🔊 듣고 알맞은 답을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[5-2] Listening — What do you like?</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('뭐를 좋아해요?')">🔊 Listen</button>
     <div class="opts" data-q="u5q2">
       <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">1</span> 네, 좋아해요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">2</span> 저는 춤을 좋아해요.<span class="o-gl">✅</span></button>
-      <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">3</span> 저는 유나예요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">3</span> 저는 소리예요.<span class="o-gl">❌</span></button>
       <button class="opt" onclick="checkQ('u5q2',1,this)"><span class="o-idx">4</span> 네, 감사합니다.<span class="o-gl">❌</span></button></div>
     
     <div class="p-feedback" id="fb-u5q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>아이돌 인터뷰 필수 질문</h3>
-    <p>인터뷰에서 자주 듣는 질문: <b>"뭐를 좋아해요?"</b> (What do you like?) — 여러분의 최애(최고로 좋아하는) 아이돌을 소개해보세요!</p>
-    <div class="c-tip">💖 최애 = 최고로 좋아하는 것/사람. "제 최애는 샛별이에요!" — fan language!</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[5-3] Reading — What do you want?</span></div>
+    <div class="p-dir">Choose the correct -고 싶어요 sentence.</div>
+    <div class="p-q">저는 한국에(    ).</div>
+    <div class="opts" data-q="u5q3">
+      <button class="opt" onclick="checkQ('u5q3',1,this)"><span class="o-idx">1</span> 가고 있어요<span class="o-gl">❌ progressive</span></button>
+      <button class="opt" onclick="checkQ('u5q3',1,this)"><span class="o-idx">2</span> 가고 싶어요<span class="o-gl">✅ I want to go to Korea.</span></button>
+      <button class="opt" onclick="checkQ('u5q3',1,this)"><span class="o-idx">3</span> 갔어요<span class="o-gl">❌ past</span></button>
+      <button class="opt" onclick="checkQ('u5q3',1,this)"><span class="o-idx">4</span> 가요<span class="o-gl">❌ present</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u5q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Essential Idol Interview Question</h3>
+    <p>A question you hear often in interviews: <b>"뭐를 좋아해요?"</b> (What do you like?) — Introduce your 최애 (ultimate favorite) idol!</p>
+    <div class="c-tip">💖 최애 = your absolute favorite thing/person. "제 최애는 꿈별이에요!" — fan language!</div>
   </div>
 
 <!-- ============================================================
      UNIT 6 — FOOD
      ============================================================ -->
   <div class="unit-divider" id="unit6"></div>
-  <div class="unit-flag">UNIT 6 · 음식</div>
-  <div class="sec-title"><div class="no">6</div><div><h2>떡볶이는 매워요</h2><div class="en">Food — 형용사 · 안/못 부정</div></div></div>
+  <div class="unit-flag">UNIT 6 · FOOD</div>
+  <div class="sec-title"><div class="no">6</div><div><h2>Tteokbokki is Spicy</h2><div class="en">떡볶이는 매워요 — Food · 안/못</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/byeori.png" alt="별이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 6/8</span>
+      <h3>별이의 꿈의 식탁 — "떡볶이는 매워요!"</h3>
+      <p>별이는 현실 세계의 음식에 푹 빠졌어요 — 떡볶이, 김밥, 치킨! <b>맛을 말하는 법</b>을 알면 그 음식에 꿈의 향신료가 들어가요. "맛있어요!" 🍜</p>
+      <span class="story-piece">🍜 꿈의 조각 6/8 획득 — Food & Taste!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">🍜</span> 음식 어휘</div>
-    <div class="goal"><span class="g-ico">😋</span> 맛 형용사</div>
-    <div class="goal"><span class="g-ico">🚫</span> 안 + 동사 (부정)</div>
+    <div class="goal"><span class="g-ico">🍜</span> Food vocabulary</div>
+    <div class="goal"><span class="g-ico">😋</span> Taste adjectives</div>
+    <div class="goal"><span class="g-ico">🚫</span> 안 + verb (negation)</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 6 — 매운 음식</span>
-      <span class="d-scene">🍽️ 휴게소 식사</span>
+      <span class="d-title">💬 Dialogue 6 — Spicy Food</span>
+      <span class="d-scene">🍽️ Eating at the rest stop</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">떡볶이 먹어요? 맛있어요!</div><div class="gl">Want to eat tteokbokki? It's delicious!</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">떡볶이 먹어요? 맛있어요!</div><div class="gl">Want to eat tteokbokki? It's delicious!</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">떡볶이는 매워요. 저는 매운 음식을 안 먹어요.</div><div class="gl">Tteokbokki is spicy. I don't eat spicy food.</div></div>
+    <div class="d-line me"><img src="assets/members/dari.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">달이</div><div class="ko">떡볶이는 매워요. 저는 매운 음식을 안 먹어요.</div><div class="gl">Tteokbokki is spicy. I don't eat spicy food.</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">김밥은 안 매워요. 김밥 먹어요!</div><div class="gl">Gimbap isn't spicy. Let's eat gimbap!</div></div>
+    <div class="d-line"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">김밥은 안 매워요. 김밥 먹어요!</div><div class="gl">Gimbap isn't spicy. Let's eat gimbap!</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">좋아요! 저는 김밥을 좋아해요. 맛있어요!</div><div class="gl">Great! I like gimbap. It's delicious!</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">좋아요! 저는 김밥을 좋아해요. 맛있어요!</div><div class="gl">Great! I like gimbap. It's delicious!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">맛 표현 — 형용사</div>
-    <div class="g-rule">TOPIK I 음식 문제 단골! 맛을 말할 때 형용사를 써요.</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">Taste Expressions — Adjectives</div>
+    <div class="g-rule">A TOPIK I food-question favorite! Use adjectives to describe taste.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">맛있어요 / 맛없어요</span><span class="gl">delicious / not tasty</span></div>
       <div class="ex"><span class="ko">매워요 / 안 매워요</span><span class="gl">spicy / not spicy</span></div>
@@ -1122,9 +1394,9 @@ body {
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">안 + 동사 — 부정 (Negation)</div>
-    <div class="g-rule">동사·형용사 앞에 <b>안</b>을 붙이면 "~하지 않아요". <b>못</b>은 "할 수 없어요" (능력 부족).</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">안 + Verb — Negation</div>
+    <div class="g-rule">Put <b>안</b> before a verb/adjective to say "don't ~". <b>못</b> means "can't" (lack of ability).</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">매운 음식을 <b>안</b> 먹어요.</span><span class="gl">I don't eat spicy food.</span></div>
       <div class="ex"><span class="ko">저는 노래를 <b>못</b> 해요.</span><span class="gl">I can't sing.</span></div>
@@ -1132,7 +1404,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">못 + verb — "can't ~"</div>
+    <div class="g-rule"><b>안</b> = "don't" (choice), <b>못</b> = "can't" (no ability). Both go before the verb. Compare: 안 먹어요 vs 못 먹어요!</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">저는 매운 음식을 <b>못</b> 먹어요.</span><span class="gl">I can't eat spicy food.</span></div>
+      <div class="ex"><span class="ko">오늘은 운동을 <b>못</b> 해요.</span><span class="gl">I can't exercise today.</span></div>
+      <div class="ex"><span class="ko">노래를 <b>못</b> 해요.</span><span class="gl">I can't sing.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">🍢</span><div><div class="v-ko">떡볶이</div><div class="v-rom">tteokbokki</div><div class="v-en">spicy rice cakes</div></div><button class="v-btn" onclick="tts('떡볶이')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🍙</span><div><div class="v-ko">김밥</div><div class="v-rom">gimbap</div><div class="v-en">seaweed rice roll</div></div><button class="v-btn" onclick="tts('김밥')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🍗</span><div><div class="v-ko">치킨</div><div class="v-rom">chikin</div><div class="v-en">fried chicken</div></div><button class="v-btn" onclick="tts('치킨')">🔊</button></div>
@@ -1143,13 +1426,16 @@ body {
     <div class="v-item"><span class="v-emoji">🍬</span><div><div class="v-ko">달다</div><div class="v-rom">dalda</div><div class="v-en">sweet</div></div><button class="v-btn" onclick="tts('달아요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🧂</span><div><div class="v-ko">짜다</div><div class="v-rom">jjada</div><div class="v-en">salty</div></div><button class="v-btn" onclick="tts('짜요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🥤</span><div><div class="v-ko">콜라</div><div class="v-rom">kolla</div><div class="v-en">cola</div></div><button class="v-btn" onclick="tts('콜라')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🍞</span><div><div class="v-ko">빵</div><div class="v-rom">ppang</div><div class="v-en">bread</div></div><button class="v-btn" onclick="tts('빵')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🍎</span><div><div class="v-ko">과일</div><div class="v-rom">gwail</div><div class="v-en">fruit</div></div><button class="v-btn" onclick="tts('과일')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🍰</span><div><div class="v-ko">케이크</div><div class="v-rom">keikeu</div><div class="v-en">cake</div></div><button class="v-btn" onclick="tts('케이크')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[6-1] 읽기 — 음식 광고</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[6-1] Reading — Food Ad</span></div>
     <div class="p-dir">Read the menu and choose the correct answer.</div>
-    <div class="p-passage">🍽️ 샛별 식당 메뉴<br>김밥 3,000원 · 떡볶이 4,000원 · 치킨 15,000원 · 콜라 2,000원</div>
-    <div class="p-q">가장 비싼 음식은 뭐예요?</div>
+    <div class="p-passage">🍽️ Kkumbyeol Restaurant Menu<br>Gimbap 3,000 won · Tteokbokki 4,000 won · Chicken 15,000 won · Cola 2,000 won</div>
+    <div class="p-q">Which food is the most expensive?</div>
     <div class="opts" data-q="u6q1">
       <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">1</span> 김밥<span class="o-gl">❌ 3,000원</span></button>
       <button class="opt" onclick="checkQ('u6q1',2,this)"><span class="o-idx">2</span> 떡볶이<span class="o-gl">❌ 4,000원</span></button>
@@ -1160,8 +1446,8 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[6-2] 듣기 — 뭐를 먹어요?</span></div>
-    <div class="p-dir">🔊 듣고 맞는 것을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[6-2] Listening — What do you eat?</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('저는 매운 음식을 안 먹어요.')">🔊 Listen</button>
     <div class="opts" data-q="u6q2">
       <button class="opt" onclick="checkQ('u6q2',1,this)"><span class="o-idx">1</span> 이 사람은 매운 음식을 먹어요.<span class="o-gl">❌</span></button>
@@ -1172,49 +1458,74 @@ body {
     <div class="p-feedback" id="fb-u6q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>아이돌 브이앱 먹방</h3>
-    <p>아이돌들은 <b>브이앱(V LIVE)</b>에서 먹방을 해요! 팬들은 "맛있게 먹어요!"라고 댓글을 달아요.</p>
-    <div class="c-tip">🍗 치킨+콜라 = 치맥 문화! "치킨 먹고 싶어요" — 원할 때는 -고 싶어요 (1B에서 배워요)</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[6-3] Reading — 안 vs 못</span></div>
+    <div class="p-dir">Read and choose the correct meaning.</div>
+    <div class="p-q">"저는 술을 못 마셔요." What does this mean?</div>
+    <div class="opts" data-q="u6q3">
+      <button class="opt" onclick="checkQ('u6q3',1,this)"><span class="o-idx">1</span> I don't drink alcohol (choice).<span class="o-gl">❌ that's 안 마셔요</span></button>
+      <button class="opt" onclick="checkQ('u6q3',1,this)"><span class="o-idx">2</span> I can't drink alcohol (ability).<span class="o-gl">✅ 못 = can't</span></button>
+      <button class="opt" onclick="checkQ('u6q3',1,this)"><span class="o-idx">3</span> I drink a lot.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u6q3',1,this)"><span class="o-idx">4</span> I want to drink.<span class="o-gl">❌</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u6q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Idol V-Live Mukbang</h3>
+    <p>Idols do <b>mukbang (eating shows)</b> on V LIVE! Fans comment "맛있게 먹어요!" (Enjoy your meal!).</p>
+    <div class="c-tip">🍗 Chicken + cola = the chimaek culture! To say what you want: "치킨 먹고 싶어요" — you'll learn -고 싶어요 in 1B.</div>
   </div>
 
 <!-- ============================================================
      UNIT 7 — LOCATION
      ============================================================ -->
   <div class="unit-divider" id="unit7"></div>
-  <div class="unit-flag">UNIT 7 · 위치</div>
-  <div class="sec-title"><div class="no">7</div><div><h2>연습실에 있어요</h2><div class="en">Location — 에/에서 · 위치 표현</div></div></div>
+  <div class="unit-flag">UNIT 7 · LOCATION</div>
+  <div class="sec-title"><div class="no">7</div><div><h2>I'm in the Practice Room</h2><div class="en">연습실에 있어요 — Location · 에/에서</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/dari.png" alt="달이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 7/8</span>
+      <h3>달이의 별 지도 — "연습실에 있어요!"</h3>
+      <p>꿈나라의 문은 <b>특별한 장소</b>에 있어요. 달이는 위치를 말하는 법을 배워요 — "어디에 있어요?" 장소를 찾을수록 별 지도에 빛이 나요. 🌌</p>
+      <span class="story-piece">🌌 꿈의 조각 7/8 획득 — Locations!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">📍</span> 어디에 있어요?</div>
-    <div class="goal"><span class="g-ico">🔤</span> 에 / 에서</div>
-    <div class="goal"><span class="g-ico">🏠</span> 장소 어휘</div>
+    <div class="goal"><span class="g-ico">📍</span> Where are you?</div>
+    <div class="goal"><span class="g-ico">🔤</span> 에 / 에서 particles particles</div>
+    <div class="goal"><span class="g-ico">🏠</span> Place vocabulary</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 7 — 멤버는 어디에?</span>
-      <span class="d-scene">📱 단체 채팅</span>
+      <span class="d-title">💬 Dialogue 7 — Where Are the Members?</span>
+      <span class="d-scene">📱 Group chat</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">지금 어디에 있어요? 연습이에요!</div><div class="gl">Where are you now? It's practice time!</div></div>
+    <div class="d-line"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">지금 Where are you? 연습이에요!</div><div class="gl">Where are you now? It's practice time!</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">저는 연습실에 있어요!</div><div class="gl">I'm in the practice room!</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">저는 연습실에 있어요!</div><div class="gl">I'm in the practice room!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">저는 집에 있어요. 조금 있어요!</div><div class="gl">I'm at home. Wait a bit!</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 집에 있어요. 조금 있어요!</div><div class="gl">I'm at home. Wait a bit!</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">저는 카페에서 커피를 마셔요. 곧 갈게요!</div><div class="gl">I'm drinking coffee at the cafe. I'll come soon!</div></div>
+    <div class="d-line me"><img src="assets/members/sori.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">저는 카페에서 커피를 마셔요. 곧 갈게요!</div><div class="gl">I'm drinking coffee at the cafe. I'll come soon!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">에 — 위치 · 시간</div>
-    <div class="g-rule">N에 = "~에 (있다/없다)" — 존재의 장소, 그리고 시간에도 써요.</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">에 — Location & Time</div>
+    <div class="g-rule">N에 = "at/in ~ (있다/없다)" — the place where something exists, and also time.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">연습실<b>에</b> 있어요.</span><span class="gl">I'm in the practice room.</span></div>
       <div class="ex"><span class="ko">집<b>에</b> 있어요.</span><span class="gl">I'm at home.</span></div>
@@ -1223,9 +1534,9 @@ body {
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">에서 — 행동의 장소</div>
-    <div class="g-rule">N에서 = "~에서 (동작하다)" — 행동이 일어나는 장소.</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">에서 — Place of Action</div>
+    <div class="g-rule">N에서 = "at ~ (do an action)" — the place where an action happens.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">카페<b>에서</b> 커피를 마셔요.</span><span class="gl">I drink coffee at the cafe.</span></div>
       <div class="ex"><span class="ko">연습실에서 춤을 춰요.</span><span class="gl">We dance in the practice room.</span></div>
@@ -1233,7 +1544,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">위 / 아래 / 옆 / 앞 / 뒤 — position words</div>
+    <div class="g-rule">Say where things are: <b>N 위에</b> (above), <b>N 아래에</b> (below), <b>N 옆에</b> (next to), <b>N 앞에</b> (in front), <b>N 뒤에</b> (behind).</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">책상 <b>위에</b> 있어요.</span><span class="gl">It's on top of the desk.</span></div>
+      <div class="ex"><span class="ko">연습실 <b>옆에</b> 카페가 있어요.</span><span class="gl">There's a cafe next to the practice room.</span></div>
+      <div class="ex"><span class="ko">학교 <b>앞에</b> 가게가 있어요.</span><span class="gl">There's a store in front of the school.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">🩰</span><div><div class="v-ko">연습실</div><div class="v-rom">yeonseupsil</div><div class="v-en">practice room</div></div><button class="v-btn" onclick="tts('연습실')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🏠</span><div><div class="v-ko">집</div><div class="v-rom">jip</div><div class="v-en">home</div></div><button class="v-btn" onclick="tts('집')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">☕</span><div><div class="v-ko">카페</div><div class="v-rom">kape</div><div class="v-en">cafe</div></div><button class="v-btn" onclick="tts('카페')">🔊</button></div>
@@ -1244,12 +1566,16 @@ body {
     <div class="v-item"><span class="v-emoji">🚌</span><div><div class="v-ko">버스</div><div class="v-rom">beoseu</div><div class="v-en">bus</div></div><button class="v-btn" onclick="tts('버스')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🛒</span><div><div class="v-ko">가게</div><div class="v-rom">gage</div><div class="v-en">store, shop</div></div><button class="v-btn" onclick="tts('가게')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">❓</span><div><div class="v-ko">어디</div><div class="v-rom">eodi</div><div class="v-en">where</div></div><button class="v-btn" onclick="tts('어디')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">⬆️</span><div><div class="v-ko">위</div><div class="v-rom">wi</div><div class="v-en">above, top</div></div><button class="v-btn" onclick="tts('위')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">⬇️</span><div><div class="v-ko">아래</div><div class="v-rom">arae</div><div class="v-en">below, bottom</div></div><button class="v-btn" onclick="tts('아래')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">↔️</span><div><div class="v-ko">옆</div><div class="v-rom">yeop</div><div class="v-en">next to, side</div></div><button class="v-btn" onclick="tts('옆')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🏥</span><div><div class="v-ko">병원</div><div class="v-rom">byeongwon</div><div class="v-en">hospital</div></div><button class="v-btn" onclick="tts('병원')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[7-1] 읽기 — 위치 빈칸</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[7-1] Reading — Location Blank</span></div>
     <div class="p-dir">Choose the correct particle.</div>
-    <div class="p-q">지우 씨는 연습실(    ) 있어요.</div>
+    <div class="p-q">별이 씨는 연습실(    ) 있어요. <span style="font-weight:600;color:var(--ink2);font-size:12.5px;">(Byeori is in the practice room.)</span></div>
     <div class="opts" data-q="u7q1">
       <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">1</span> 에서<span class="o-gl">❌ 에서 = action place</span></button>
       <button class="opt" onclick="checkQ('u7q1',1,this)"><span class="o-idx">2</span> 에<span class="o-gl">✅ 에 = existence place</span></button>
@@ -1260,8 +1586,8 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[7-2] 듣기 — 어디에서 해요?</span></div>
-    <div class="p-dir">🔊 듣고 맞는 것을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[7-2] Listening — Where do you do it?</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('저는 도서관에서 책을 읽어요.')">🔊 Listen</button>
     <div class="opts" data-q="u7q2">
       <button class="opt" onclick="checkQ('u7q2',2,this)"><span class="o-idx">1</span> 집에서 책을 읽어요.<span class="o-gl">❌</span></button>
@@ -1272,49 +1598,75 @@ body {
     <div class="p-feedback" id="fb-u7q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>아이돌이 가는 장소</h3>
-    <p><b>음악방송</b> (뮤직뱅크, 인기가요, 엠카운트다운!), <b>콘서트장</b>, <b>팬사인회</b> — 아이돌의 하루는 장소 이동이에요!</p>
-    <div class="c-tip">🚇 "음악방송에 어떻게 가요?" — 지하철로 가요! 교통 표현은 1B에서 계속!</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[7-3] Reading — Where is it?</span></div>
+    <div class="p-dir">Read and choose the correct sentence.</div>
+    <div class="p-passage">[그림: 책상 위에 책]<br><span class="gl">[Picture: a book on top of the desk]</span></div>
+    <div class="p-q">다음을 읽고, 맞는 것을 고르십시오.</div>
+    <div class="opts" data-q="u7q3">
+      <button class="opt" onclick="checkQ('u7q3',0,this)"><span class="o-idx">1</span> 책이 책상 위에 있어요.<span class="o-gl">✅ The book is on the desk.</span></button>
+      <button class="opt" onclick="checkQ('u7q3',0,this)"><span class="o-idx">2</span> 책이 책상 아래에 있어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u7q3',0,this)"><span class="o-idx">3</span> 책이 책상 옆에 있어요.<span class="o-gl">❌</span></button>
+      <button class="opt" onclick="checkQ('u7q3',0,this)"><span class="o-idx">4</span> 책이 책상 뒤에 있어요.<span class="o-gl">❌</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u7q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Places Idols Go</h3>
+    <p><b>Music shows</b> (Music Bank, Inkigayo, M Countdown!), <b>concert halls</b>, <b>fan sign events</b> — an idol's day is all about moving between places!</p>
+    <div class="c-tip">🚇 "음악방송에 어떻게 가요?" (How do you get to the music show?) — By subway! Transportation comes in 1B!</div>
   </div>
 
 <!-- ============================================================
      UNIT 8 — PAST TENSE
      ============================================================ -->
   <div class="unit-divider" id="unit8"></div>
-  <div class="unit-flag">UNIT 8 · 과거</div>
-  <div class="sec-title"><div class="no">8</div><div><h2>어제 뭐 했어요?</h2><div class="en">Past tense — -았/었어요</div></div></div>
+  <div class="unit-flag">UNIT 8 · PAST TENSE</div>
+  <div class="sec-title"><div class="no">8</div><div><h2>What Did You Do Yesterday?</h2><div class="en">어제 뭐 했어요? — Past tense · -았/었어요</div></div>  <div class="story">
+    <img class="story-art" src="assets/members/kkochi.png" alt="꽃이">
+    <div class="story-body">
+      <span class="story-tag">💭 DREAMWORLD STORY · 8/8</span>
+      <h3>마지막 조각 — "어제 뭐 했어요?"</h3>
+      <p>드디어 마지막 조각! 네 명의 요정은 <b>과거 시제</b>로 그동안의 꿈 여행을 이야기해요. "어제 노래를 불렀어요!" — 여덟 번째 조각이 모이면... 꿈나라의 문이 열려요! ✨</p>
+      <span class="story-piece">✨ 꿈의 조각 8/8 — THE MAGIC DOOR OPENS! → 1B로 계속!</span>
+    </div>
+  </div>
+
+</div>
 
   <div class="goals">
-    <div class="goal"><span class="g-ico">⏪</span> -았/었어요 과거 시제</div>
-    <div class="goal"><span class="g-ico">📝</span> 일기 쓰기</div>
-    <div class="goal"><span class="g-ico">🎤</span> 데뷔 후 이야기</div>
+    <div class="goal"><span class="g-ico">⏪</span> -았/었어요 past tense</div>
+    <div class="goal"><span class="g-ico">📝</span> Writing a diary</div>
+    <div class="goal"><span class="g-ico">🎤</span> Life after debut</div>
   </div>
 
   <div class="dialog">
     <div class="d-head">
-      <span class="d-title">💬 대화 8 — 데뷔 다음 날</span>
-      <span class="d-scene">🌅 숙소 아침</span>
+      <span class="d-title">💬 Dialogue 8 — The Day After Debut</span>
+      <span class="d-scene">🌅 Morning at the dorm</span>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/f-05.webp" alt="유나">
-      <div class="d-bubble"><div class="who">유나</div><div class="ko">어제 정말 재미있었어요! 데뷔 무대, 최고였어요!</div><div class="gl">Yesterday was really fun! The debut stage was the best!</div></div>
+    <div class="d-line"><img src="assets/members/sori.png" alt="소리">
+      <div class="d-bubble"><div class="who">소리</div><div class="ko">어제 정말 재미있었어요! 데뷔 무대, 최고였어요!</div><div class="gl">Yesterday was really fun! The debut stage was the best!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-01.webp" alt="지훈">
-      <div class="d-bubble"><div class="who">지훈</div><div class="ko">팬들이 많았어요. 저는 정말 감동했어요.</div><div class="gl">There were so many fans. I was really touched.</div></div>
+    <div class="d-line"><img src="assets/members/dari.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">달이</div><div class="ko">팬들이 많았어요. 저는 정말 감동했어요.</div><div class="gl">There were so many fans. I was really touched.</div></div>
     </div>
-    <div class="d-line me"><img src="../assets/img/chars/f-01.webp" alt="지우">
-      <div class="d-bubble"><div class="who">지우</div><div class="ko">우리 노래를 다 같이 불렀어요! 오늘도 힘내요!</div><div class="gl">We all sang our song together! Let's do our best today too!</div></div>
+    <div class="d-line me"><img src="assets/members/byeori.png" alt="별이">
+      <div class="d-bubble"><div class="who">별이</div><div class="ko">우리 노래를 다 같이 불렀어요! 오늘도 힘내요!</div><div class="gl">We all sang our song together! Let's do our best today too!</div></div>
     </div>
-    <div class="d-line"><img src="../assets/img/chars/m-05.webp" alt="하준">
-      <div class="d-bubble"><div class="who">하준</div><div class="ko">저는 어제 치킨을 먹었어요. 맛있었어요!</div><div class="gl">I ate fried chicken yesterday. It was delicious!</div></div>
+    <div class="d-line"><img src="assets/members/kkochi.png" alt="꽃이">
+      <div class="d-bubble"><div class="who">꽃이</div><div class="ko">저는 어제 치킨을 먹었어요. 맛있었어요!</div><div class="gl">I ate fried chicken yesterday. It was delicious!</div></div>
     </div>
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 1</span>
-    <div class="g-point">-았/었어요 — 과거 시제</div>
-    <div class="g-rule">현재형의 <b>-아요/어요</b>를 <b>-았어요/었어요</b>로! ㅏ/ㅗ → 았어요, 그 외 → 었어요, 하다 → 했어요.</div>
+    <span class="g-label">GRAMMAR 1</span>
+    <div class="g-point">-았/었어요 — Past Tense</div>
+    <div class="g-rule">Change present <b>-아요/어요</b> to <b>-았어요/었어요</b>! After ㅏ/ㅗ → 았어요, otherwise → 었어요, 하다 → 했어요.</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">먹<b>다</b> → 먹<b>었어요</b></span><span class="gl">ate</span></div>
       <div class="ex"><span class="ko">하<b>다</b> → <b>했어요</b></span><span class="gl">did</span></div>
@@ -1324,9 +1676,9 @@ body {
   </div>
 
   <div class="grammar">
-    <span class="g-label">GRAMMAR · 문법 2</span>
-    <div class="g-point">시간 표현 — 어제/오늘/내일</div>
-    <div class="g-rule">TOPIK I 듣기에서 "언제?"를 꼭 물어봐요. 시간 표현 + 과거 시제 조합!</div>
+    <span class="g-label">GRAMMAR 2</span>
+    <div class="g-point">Time Expressions — 어제/오늘/내일</div>
+    <div class="g-rule">TOPIK I listening always asks "when?" Combine time expressions with the past tense!</div>
     <div class="g-ex">
       <div class="ex"><span class="ko">어제 뭐 했어요?</span><span class="gl">What did you do yesterday?</span></div>
       <div class="ex"><span class="ko">어제 쇼핑했어요.</span><span class="gl">I went shopping yesterday.</span></div>
@@ -1334,7 +1686,18 @@ body {
     </div>
   </div>
 
-  <div class="vocab-grid">
+    <div class="grammar">
+    <span class="g-label">GRAMMAR 3</span>
+    <div class="g-point">안 + past — "didn't ~"</div>
+    <div class="g-rule">Negate the past tense: <b>안</b> + verb (past form). Compare: 했어요 (did) vs 안 했어요 (didn't do).</div>
+    <div class="g-ex">
+      <div class="ex"><span class="ko">어제 공부를 <b>안 했어요</b>.</span><span class="gl">I didn't study yesterday.</span></div>
+      <div class="ex"><span class="ko">아침을 <b>안 먹었어요</b>.</span><span class="gl">I didn't eat breakfast.</span></div>
+      <div class="ex"><span class="ko">음악방송에 <b>안 갔어요</b>.</span><span class="gl">I didn't go to the music show.</span></div>
+    </div>
+  </div>
+
+<div class="vocab-grid">
     <div class="v-item"><span class="v-emoji">⏪</span><div><div class="v-ko">어제</div><div class="v-rom">eoje</div><div class="v-en">yesterday</div></div><button class="v-btn" onclick="tts('어제')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">📅</span><div><div class="v-ko">오늘</div><div class="v-rom">oneul</div><div class="v-en">today</div></div><button class="v-btn" onclick="tts('오늘')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">⏩</span><div><div class="v-ko">내일</div><div class="v-rom">naeil</div><div class="v-en">tomorrow</div></div><button class="v-btn" onclick="tts('내일')">🔊</button></div>
@@ -1345,10 +1708,13 @@ body {
     <div class="v-item"><span class="v-emoji">💕</span><div><div class="v-ko">감동하다</div><div class="v-rom">gamdonghada</div><div class="v-en">to be moved</div></div><button class="v-btn" onclick="tts('감동했어요')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">🎂</span><div><div class="v-ko">파티</div><div class="v-rom">pati</div><div class="v-en">party</div></div><button class="v-btn" onclick="tts('파티')">🔊</button></div>
     <div class="v-item"><span class="v-emoji">💪</span><div><div class="v-ko">힘내다</div><div class="v-rom">himnaeda</div><div class="v-en">cheer up</div></div><button class="v-btn" onclick="tts('힘내요')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🌳</span><div><div class="v-ko">공원</div><div class="v-rom">gongwon</div><div class="v-en">park</div></div><button class="v-btn" onclick="tts('공원')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🏪</span><div><div class="v-ko">시장</div><div class="v-rom">sijang</div><div class="v-en">market</div></div><button class="v-btn" onclick="tts('시장')">🔊</button></div>
+    <div class="v-item"><span class="v-emoji">🏦</span><div><div class="v-ko">은행</div><div class="v-rom">eunhaeng</div><div class="v-en">bank</div></div><button class="v-btn" onclick="tts('은행')">🔊</button></div>
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[8-1] 읽기 — 빈칸 채우기</span></div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[8-1] Reading — Fill in the Blank</span></div>
     <div class="p-dir">Choose the correct past tense.</div>
     <div class="p-q">어제 친구를(    ).</div>
     <div class="opts" data-q="u8q1">
@@ -1361,8 +1727,8 @@ body {
   </div>
 
   <div class="practice">
-    <div class="p-head"><span class="p-badge">TOPIK 유형</span><span class="p-title">[8-2] 듣기 — 어제 뭐 했어요?</span></div>
-    <div class="p-dir">🔊 듣고 알맞은 답을 고르세요.</div>
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[8-2] Listening — What did you do yesterday?</span></div>
+    <div class="p-dir">🔊 Listen and choose the correct answer.</div>
     <button class="p-audio" onclick="tts('어제 뭐 했어요?')">🔊 Listen</button>
     <div class="opts" data-q="u8q2">
       <button class="opt" onclick="checkQ('u8q2',1,this)"><span class="o-idx">1</span> 네, 좋아요.<span class="o-gl">❌</span></button>
@@ -1373,11 +1739,26 @@ body {
     <div class="p-feedback" id="fb-u8q2"></div>
   </div>
 
-  <div class="culture">
-    <span class="c-label">🎤 K-POP 꿀팁</span>
-    <h3>일기 쓰기 챌린지</h3>
-    <p>아이돌도 일기를 써요! 오늘 있었던 일을 <b>과거 시제</b>로 써보세요.</p>
-    <div class="c-tip">✍️ "오늘 한국어를 공부했어요. 노래를 들었어요. 정말 재미있었어요!" — 3문장 일기 완성!</div>
+    
+
+  <div class="practice">
+    <div class="p-head"><span class="p-badge">TOPIK TYPE</span><span class="p-title">[8-3] Reading — Didn't do</span></div>
+    <div class="p-dir">Choose the correct negative past tense.</div>
+    <div class="p-q">어제 숙제를(    ).</div>
+    <div class="opts" data-q="u8q3">
+      <button class="opt" onclick="checkQ('u8q3',0,this)"><span class="o-idx">1</span> 안 했어요<span class="o-gl">✅ didn't do (homework)</span></button>
+      <button class="opt" onclick="checkQ('u8q3',0,this)"><span class="o-idx">2</span> 안 해요<span class="o-gl">❌ present</span></button>
+      <button class="opt" onclick="checkQ('u8q3',0,this)"><span class="o-idx">3</span> 했어요<span class="o-gl">❌ positive</span></button>
+      <button class="opt" onclick="checkQ('u8q3',0,this)"><span class="o-idx">4</span> 할 거예요<span class="o-gl">❌ future</span></button>
+    </div>
+    <div class="p-feedback" id="fb-u8q3"></div>
+  </div>
+
+<div class="culture">
+    <span class="c-label">🎤 K-POP TIP</span>
+    <h3>Diary Writing Challenge</h3>
+    <p>Idols write diaries too! Write about your day using the <b>past tense</b>.</p>
+    <div class="c-tip">✍️ "오늘 한국어를 공부했어요. 노래를 들었어요. 정말 재미있었어요!" — Complete a 3-sentence diary!</div>
   </div>
 
 </div>
@@ -1385,16 +1766,16 @@ body {
 <!-- ============ TOC SHEET ============ -->
 <div class="toc-sheet" id="toc-sheet" onclick="if(event.target===this)closeToc()">
   <div class="sheet">
-    <h3>📖 목차</h3>
-    <button class="toc-item" onclick="goto('#unit0')"><span class="t-no">0</span><div><div class="t-title">한글 첫걸음</div><div class="t-en">Hangul basics</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit1')"><span class="t-no">1</span><div><div class="t-title">안녕하세요!</div><div class="t-en">Greetings · 이에요/예요</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit2')"><span class="t-no">2</span><div><div class="t-title">저는 가수예요</div><div class="t-en">Self-introduction · 은/는</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit3')"><span class="t-no">3</span><div><div class="t-title">이거 뭐예요?</div><div class="t-en">Things · 이/그/저</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit4')"><span class="t-no">4</span><div><div class="t-title">데뷔는 5월이에요</div><div class="t-en">Numbers · Dates · Days</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit5')"><span class="t-no">5</span><div><div class="t-title">노래를 좋아해요</div><div class="t-en">Likes · 을/를 · -아요/어요</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit6')"><span class="t-no">6</span><div><div class="t-title">떡볶이는 매워요</div><div class="t-en">Food · 안/못 + adjectives</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit7')"><span class="t-no">7</span><div><div class="t-title">연습실에 있어요</div><div class="t-en">Location · 에/에서</div></div><span class="t-arr">→</span></button>
-    <button class="toc-item" onclick="goto('#unit8')"><span class="t-no">8</span><div><div class="t-title">어제 뭐 했어요?</div><div class="t-en">Past tense · -았/었어요</div></div><span class="t-arr">→</span></button>
+    <h3>📖 Contents</h3>
+    <button class="toc-item" onclick="goto('#unit0')"><span class="t-no">0</span><div><div class="t-title">Hangul First Steps</div><div class="t-en">한글 기초</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit1')"><span class="t-no">1</span><div><div class="t-title">Hello!</div><div class="t-en">인사 · 이에요/예요</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit2')"><span class="t-no">2</span><div><div class="t-title">I'm a Singer</div><div class="t-en">자기소개 · 은/는</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit3')"><span class="t-no">3</span><div><div class="t-title">What is This?</div><div class="t-en">사물 · 이/그/저</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit4')"><span class="t-no">4</span><div><div class="t-title">Debut is in May</div><div class="t-en">숫자 · 날짜 · 요일</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit5')"><span class="t-no">5</span><div><div class="t-title">I Like Singing</div><div class="t-en">좋아요 · 을/를 · -아요/어요</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit6')"><span class="t-no">6</span><div><div class="t-title">Tteokbokki is Spicy</div><div class="t-en">음식 · 안/못 + 형용사</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit7')"><span class="t-no">7</span><div><div class="t-title">I'm in the Practice Room</div><div class="t-en">위치 · 에/에서</div></div><span class="t-arr">→</span></button>
+    <button class="toc-item" onclick="goto('#unit8')"><span class="t-no">8</span><div><div class="t-title">What Did You Do Yesterday?</div><div class="t-en">과거 시제 · -았/었어요</div></div><span class="t-arr">→</span></button>
   </div>
 </div>
 
@@ -1448,22 +1829,22 @@ function checkQ(qid, correctIdx, btn) {
   if (picked === correctIdx) {
     fb.className = 'p-feedback show ok';
     const gl = opts[correctIdx].querySelector('.o-gl');
-    fb.innerHTML = '✅ 정답이에요!' + (gl && gl.dataset.hint ? ' ' + gl.dataset.hint : '');
+    fb.innerHTML = '✅ Correct!' + (gl && gl.dataset.hint ? ' ' + gl.dataset.hint : '');
   } else {
     fb.className = 'p-feedback show no';
     const correctOpt = opts[correctIdx];
     const hint = correctOpt.querySelector('.o-gl');
     const hintText = hint && hint.dataset.hint ? hint.dataset.hint : '';
     const label = (correctOpt.childNodes[1] || {}).textContent ? correctOpt.childNodes[1].textContent.trim() : '';
-    fb.innerHTML = '❌ 다시 생각해 봐요! 정답은 ' + (correctIdx+1) + '번 "' + label + '" ' + (hintText ? '→ ' + hintText : '');
+    fb.innerHTML = '❌ Try again! The answer is #' + (correctIdx+1) + ' "' + label + '" ' + (hintText ? '→ ' + hintText : '');
   }
 }
 </script>
 
 <div class="footer">
   <div class="f-logo">샛</div>
-  샛별 한국어 1A · Camnemi TOPIK 교재 시리즈 Vol.1<br>
-  TOPIK I 기출 유형 기반 · K-POP 캐릭터 스토리텔링 · by Camnemi Korea 🇰🇷
+  Kkumbyeol Korean 1A · Camnemi TOPIK Textbook Series Vol.1<br>
+  Based on TOPIK I question types · K-POP character storytelling · by Camnemi Korea 🇰🇷
 </div>
 
 </body>

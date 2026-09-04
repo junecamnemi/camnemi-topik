@@ -110,7 +110,7 @@ const T = {
     wrong_no_data: 'No questions solved yet — try Daily 10 or a Mock Test!',
     wrong_level_no_data: 'No data yet.', weak_spots: 'Type-wise weak spots', no_weak: 'No weak types yet — answer some questions first!',
     wrong_notes: 'Wrong answer notes', recent: '{n} recent',
-    result_done: 'Daily 10 complete!', result_answered: '{a} of {n} questions answered',
+    result_done: 'Daily 10 complete!', result_answered: '{a} of {n} questions answered', q_unit: 'questions',
     result_my_score: 'My estimated score', result_pass: 'Pass probability', result_switch: 'If switching to TOPIK {x}: {p}%',
     result_correct: '✓ correct', result_wrong: '✗ wrong', result_unanswered: '⏳ unanswered',
     result_note: '* Estimate based on 10 questions — real exam may differ.',
@@ -190,7 +190,7 @@ const T = {
     wrong_no_data: '아직 푼 문제가 없어요. 데일리 10이나 모의고사를 풀어보세요!',
     wrong_level_no_data: '아직 데이터가 없어요.', weak_spots: '유형별 취약점', no_weak: '아직 약한 유형이 없어요 — 문제를 먼저 풀어보세요!',
     wrong_notes: '오답노트', recent: '최근 {n}개',
-    result_done: '데일리 10 완료!', result_answered: '{n}문항 중 {a}문항 답변',
+    result_done: '데일리 10 완료!', result_answered: '{n}문항 중 {a}문항 답변', q_unit: '문항',
     result_my_score: '나의 예상 점수', result_pass: '합격 확률', result_switch: 'TOPIK {x} 전환 시 {p}%',
     result_correct: '✓ 정답', result_wrong: '✗ 오답', result_unanswered: '⏳ 미응답',
     result_note: '※ 10문제 기준 예상치입니다. 실제 시험과 다를 수 있어요.',
@@ -270,7 +270,7 @@ const T = {
     wrong_no_data: 'មិនទាន់មានសំណួរទេ — សាកល្បង Daily 10 ឬ Mock Test!',
     wrong_level_no_data: 'មិនទាន់មានទិន្នន័យទេ។', weak_spots: 'ចំណុចខ្សោយតាមប្រភេទ', no_weak: 'មិនទាន់មានចំណុចខ្សោយទេ — ឆ្លើយសំណួរខ្លះមុន!',
     wrong_notes: 'កំណត់ចំណាំកំហុស', recent: '{n} ថ្មីៗ',
-    result_done: 'បញ្ចប់ Daily 10!', result_answered: 'ឆ្លើយ {a} ក្នុងចំណោម {n} សំណួរ',
+    result_done: 'បញ្ចប់ Daily 10!', result_answered: 'ឆ្លើយ {a} ក្នុងចំណោម {n} សំណួរ', q_unit: 'សំណួរ',
     result_my_score: 'ពិន្ទុប៉ាន់ស្មានរបស់ខ្ញុំ', result_pass: 'ប្រូបាបឆ្លង', result_switch: 'ប្រសិនបើប្តូរទៅ TOPIK {x}: {p}%',
     result_correct: '✓ ត្រឹមត្រូវ', result_wrong: '✗ ខុស', result_unanswered: '⏳ មិនឆ្លើយ',
     result_note: '* ការប៉ាន់ស្មានពី ១០ សំណួរ — ប្រឡងពិតប្រាកដអាចខុសគ្នា។',
@@ -449,10 +449,43 @@ function freqInfo(q) {
   const f = _freqMap[q.section + ':' + q.type];
   return f || null;
 }
+/* freqNote strings are stored in Korean (data-side). Localize for en/km so the
+   UI never leaks Hangul when the app language is English/Khmer. */
+const FRQ_NOTE_L10N = {
+  ko: {},
+  en: {
+    'TOPIK I': 'TOPIK I', 'TOPIK II': 'TOPIK II', 'TOPIK 어휘': 'TOPIK Vocabulary',
+    '읽기': 'Reading', '듣기': 'Listening', '쓰기': 'Writing',
+    '어휘 문항': 'Vocabulary item', '빈출 단어장': 'Frequent words',
+    '제목': 'Title', '주제': 'Topic', '빈칸': 'Blank', '내용 일치': 'Content match', '내용일치': 'Content match',
+    '문법': 'Grammar', '연결어미': 'Connective ending', '문장 넣기': 'Insert sentence',
+    '태도': 'Attitude', '순서': 'Order', '순서 배열': 'Order arrangement', '문장 위치': 'Sentence position',
+    '긴 지문': 'Long passage', '세부 정보': 'Details', '안내문': 'Notice', '중심 내용': 'Main idea',
+    '의도': 'Intent', '행동': 'Action', '응답': 'Response', '장소': 'Place', '내용': 'Content'
+  },
+  km: {
+    'TOPIK I': 'TOPIK I', 'TOPIK II': 'TOPIK II', 'TOPIK 어휘': 'TOPIK វាក្យសព្ទ',
+    '읽기': 'អាន', '듣기': 'ស្តាប់', '쓰기': 'សរសេរ',
+    '어휘 문항': 'វាក្យសព្ទ', '빈출 단어장': 'ពាក្យញឹកញាប់',
+    '제목': 'ចំណងជើង', '주제': 'ប្រធានបទ', '빈칸': 'ចន្លោះ', '내용 일치': 'ផ្គូផ្គងខ្លឹមសារ', '내용일치': 'ផ្គូផ្គងខ្លឹមសារ',
+    '문법': 'វេយ្យាករណ៍', '연결어미': 'បច្ច័យភ្ជាប់', '문장 넣기': 'បញ្ចូលប្រយោគ',
+    '태도': 'អាកប្បកិរិយា', '순서': 'លំដាប់', '순서 배열': 'តម្រៀប', '문장 위치': 'ទីតាំងប្រយោគ',
+    '긴 지문': 'អត្ថបទវែង', '세부 정보': 'ព័ត៌មានលម្អិត', '안내문': 'សេចក្តីជូនដំណឹង', '중심 내용': 'គំនិតសំខាន់',
+    '의도': 'ចេតនា', '행동': 'សកម្មភាព', '응답': 'ការឆ្លើយតប', '장소': 'ទីកន្លែង', '내용': 'ខ្លឹមសារ'
+  }
+};
+function freqNoteLocalized(note) {
+  if (LANG === 'ko' || !note) return note;
+  const dict = FRQ_NOTE_L10N[LANG] || FRQ_NOTE_L10N.en;
+  let out = note;
+  for (const k in dict) out = out.split(k).join(dict[k]);
+  return out;
+}
 function freqBadge(q) {
   const f = freqInfo(q);
   if (!f) return '';
-  return `<span class="q-freq" title="${esc(f.note)}">${ic('schedule', 11)} ${esc(f.note)}</span>`;
+  const note = freqNoteLocalized(f.note);
+  return `<span class="q-freq" title="${esc(note)}">${ic('schedule', 11)} ${esc(note)}</span>`;
 }
 
 /* ---------- Grammar point → Sejong textbook mapping ----------
@@ -526,16 +559,16 @@ function refsFor(q) {
     refs.push({ src: ko ? '국립국어원 우리말샘' : 'NIKL Open Dictionary',
       label: ko ? `'${p}' 뜻과 용례 검색` : `Search '${p}' — meaning & usage`,
       url: 'https://opendict.korean.go.kr/search/searchResult?searchType=all&query=' + enc });
-    refs.push({ src: '표준국어대사전',
+    refs.push({ src: ko ? '표준국어대사전' : 'NIKL Standard Dictionary',
       label: ko ? `'${p}' 표준어 뜻풀이 보기` : `'${p}' in the Standard Korean Dictionary`,
       url: 'https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&searchKeyword=' + enc });
   } else {
-    refs.push({ src: '표준국어대사전',
+    refs.push({ src: ko ? '표준국어대사전' : 'NIKL Standard Dictionary',
       label: ko ? '국립국어원 표준국어대사전 — 어휘 뜻 확인' : 'Standard Korean Dictionary (NIKL) — word meanings',
       url: 'https://stdict.korean.go.kr/' });
   }
   // 2) Sejong textbook matching this question's level band
-  refs.push({ src: '세종학당재단',
+  refs.push({ src: ko ? '세종학당재단' : 'Nuri Sejong Institute',
     label: ko ? `누리 세종학당 — 세종한국어 ${band} 교재(E-book·PDF)에서 같은 문법·표현 복습` : `Nuri Sejong Institute — review the same grammar/expression in Sejong Korean ${band}`,
     url: 'https://nuri.iksi.or.kr/front/main/main.do?language=' + (ko ? 'ko' : 'en') });
   // 3) official TOPIK site
@@ -913,14 +946,14 @@ function viewHome() {
     <div class="app-card filled">
       <b style="font-size:13px;color:var(--ios-blue);">${t('by_type')}</b>
       ${acc.byType.length
-        ? acc.byType.slice(0, 5).map(r => accBar(typeLabel(r.k), r.p, `${r.c}/${r.n}문항`)).join('')
+        ? acc.byType.slice(0, 5).map(r => accBar(typeLabel(r.k), r.p, qSub(r.c, r.n))).join('')
         : `<p class="sub" style="margin-top:6px;">${t('type_empty')}</p>`}
       ${acc.byType.length > 5 ? `<div class="sub" style="font-size:11px;margin-top:6px;">+ ${acc.byType.length - 5} ${t('by_type')} → ${ic('notes',12)} ${t('wrong_link')}</div>` : ''}
     </div>
     <div class="app-card filled">
       <b style="font-size:13px;color:var(--ios-blue);">${t('by_level')}</b>
       ${acc.byLevel.length
-        ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, `${r.c}/${r.n}문항`)).join('')
+        ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, qSub(r.c, r.n))).join('')
         : `<p class="sub" style="margin-top:6px;">${t('level_empty')}</p>`}
     </div>`}
 
@@ -2254,6 +2287,8 @@ function toggleRelAns(btn) {
     }
   });
 }
+/* "{c}/{n} 문항/questions" — localized count label for accuracy bars */
+function qSub(c, n) { return `${c}/${n} ${t('q_unit')}`; }
 function accBar(label, p, sub) {
   const color = p >= 70 ? 'var(--ios-green)' : p >= 40 ? 'var(--ios-orange)' : 'var(--ios-red)';
   return `
@@ -3019,11 +3054,11 @@ function viewWrong() {
     <div class="sec-h"><h2>📊 ${t('wrong_title')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
     <div class="app-card">
       <b style="font-size:13px;color:var(--ios-blue);">${t('wrong_by_type')}</b>
-      ${hasData ? acc.byType.map(r => accBar(typeLabel(r.k) + (r.k === 'writing_short' || r.k === 'writing_letter' ? '' : ''), r.p, `${r.c}/${r.n}문항`)).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_no_data')}</p>`}
+      ${hasData ? acc.byType.map(r => accBar(typeLabel(r.k) + (r.k === 'writing_short' || r.k === 'writing_letter' ? '' : ''), r.p, qSub(r.c, r.n))).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_no_data')}</p>`}
     </div>
     <div class="app-card">
       <b style="font-size:13px;color:var(--ios-blue);">${t('wrong_by_level')}</b>
-      ${hasData ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, `${r.c}/${r.n}문항`)).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_level_no_data')}</p>`}
+      ${hasData ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, qSub(r.c, r.n))).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_level_no_data')}</p>`}
     </div>
 
     <div class="sec-h"><h2>${t('weak_spots')}</h2></div>
