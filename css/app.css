@@ -393,10 +393,27 @@
   border-radius: 999px; padding: 3px 11px; letter-spacing: .4px;
   animation: aqTag 2.4s ease-in-out infinite;
 }
-.aq-btn { flex: 1; border-radius: 15px; padding: 14px 8px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: transform .12s; }
-.aq-btn:active { transform: scale(.96); }
-.aq-btn-r { background: linear-gradient(135deg, #7C5CF0, #A78BFA); color: #fff; box-shadow: 0 8px 18px rgba(124,92,240,.45); }
-.aq-btn-l { background: linear-gradient(135deg, #0EA5A0, #34D3C4); color: #fff; box-shadow: 0 8px 18px rgba(14,165,160,.4); }
+.aq-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; position: relative; z-index: 1; }
+.aq-cell {
+  display: flex; align-items: center; gap: 9px;
+  border: none; cursor: pointer; text-align: left;
+  padding: 13px 13px; border-radius: 15px;
+  font-family: var(--font);
+  background: rgba(255,255,255,.94); color: var(--ios-label);
+  box-shadow: 0 4px 12px rgba(20,16,50,.12);
+  transition: transform .12s, box-shadow .15s;
+}
+.aq-cell:active { transform: scale(.96); }
+.aq-cell .aq-ico {
+  width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.aq-cell b { font-size: 13.5px; font-weight: 800; line-height: 1.2; }
+.aq-r .aq-ico { background: linear-gradient(135deg, #7C5CF0, #A78BFA); }
+.aq-l .aq-ico { background: linear-gradient(135deg, #0EA5A0, #34D3C4); }
+.aq-v .aq-ico { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
+.aq-m .aq-ico { background: linear-gradient(135deg, #EC4899, #F472B6); }
+[data-theme="dark"] .aq-cell { background: rgba(38,33,64,.92); color: #F4F1FF; }
 @keyframes aiGrad {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
