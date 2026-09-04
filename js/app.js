@@ -2499,6 +2499,8 @@ function setRankSort(m) {
   _rankSort = m;
   const list = $id('rank-list');
   if (list) list.innerHTML = rankListHTML();
+  const meCard = $id('rank-me');
+  if (meCard) meCard.innerHTML = rankMeCardHTML();
   document.querySelectorAll('.rk-chip').forEach(b => b.classList.toggle('on', b.dataset.m === m));
 }
 function rankMetricHTML(r) {
@@ -2518,21 +2520,30 @@ function rankListHTML() {
       <span class="rk-name">${esc(r.name)}${r.me ? ` <em class="rk-me">${t('rank_me')}</em>` : ''}</span>
       <span class="rk-val">${rankMetricHTML(r)}</span>
     </div>`).join('');
-  // if my row is outside the top 30, pin it at the bottom so it's always findable
-  const meIdx = rows.findIndex(r => r.me);
-  if (meIdx >= SHOW && meIdx !== -1) {
-    const me = rows[meIdx];
-    visible += `
-      <div class="rk-sep">· · ·</div>
-      <div class="rk-row me">
-        <span class="rk-pos">${meIdx + 1}</span>
-        <span class="rk-ava"><img src="${me.img}" alt=""></span>
-        <span class="rk-name">${esc(me.name)} <em class="rk-me">${t('rank_me')}</em></span>
-        <span class="rk-val">${rankMetricHTML(me)}</span>
-      </div>`;
-  }
   return `${visible}
     <div class="rk-more">${t('rank_top_of', { n: SHOW, total })}</div>`;
+}
+/* my standing card — always visible at the top of the ranking tab */
+function rankMeCardHTML() {
+  const rows = rankRows();
+  const total = rows.length;
+  const meIdx = rows.findIndex(r => r.me);
+  const me = meIdx !== -1 ? rows[meIdx] : myRankEntry();
+  if (!me) return '';
+  const place = meIdx !== -1 ? meIdx + 1 : '–';
+  const pctRank = meIdx !== -1 && total > 1 ? Math.round((1 - meIdx / (total - 1)) * 100) : 100;
+  return `
+    <div class="rk-me-card">
+      <span class="rk-ava"><img src="${me.img}" alt=""></span>
+      <div class="rk-me-info">
+        <b>${esc(me.name)}</b>
+        <span class="rk-me-sub">${t('rank_me')} · ${rankMetricHTML(me)}</span>
+      </div>
+      <div class="rk-me-right">
+        <span class="rk-me-place"><b>${place}</b>/${total}</span>
+        <span class="rk-me-pct"><i style="width:${pctRank}%"></i></span>
+      </div>
+    </div>`;
 }
 function viewRank() {
   return `
@@ -2542,6 +2553,7 @@ function viewRank() {
       <button class="rk-chip ${_rankSort === 'solved' ? 'on' : ''}" data-m="solved" onclick="setRankSort('solved')">${t('rank_solved')}</button>
       <button class="rk-chip ${_rankSort === 'level' ? 'on' : ''}" data-m="level" onclick="setRankSort('level')">${t('rank_level')}</button>
     </div>
+    <div id="rank-me">${rankMeCardHTML()}</div>
     <div id="rank-list">${rankListHTML()}</div>
     <div class="app-card rk-note">
       <span class="sub">${LANG === 'ko' ? '랭킹은 내 학습 기록을 기준으로 해요 — 문제를 풀수록 순위가 올라가요!' : LANG === 'km' ? 'ចំណាត់ថ្នាក់ផ្អែកលើកំណត់ត្រារបស់អ្នក — ដោះស្រាយសំណួរកាន់តែច្រើន កាន់តែឡើងខ្ពស់!' : 'Ranking is based on your study record — the more you solve, the higher you climb!'}</span>
@@ -2553,6 +2565,8 @@ function bindRank() {
     loadRankPeers().then(() => {
       const list = $id('rank-list');
       if (list) list.innerHTML = rankListHTML();
+      const meCard = $id('rank-me');
+      if (meCard) meCard.innerHTML = rankMeCardHTML();
     });
   }
 }
