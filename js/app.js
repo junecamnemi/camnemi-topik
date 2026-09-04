@@ -860,6 +860,49 @@ const FX_MOODS = [
   { k: 'selfie', file: 'selfie', cls: 'fx-selfie' }   // 셀카 찍는 얼굴
 ];
 let _fxTimer = null, _fxIdx = -1, _fxLastKey = 'smile';
+/* frames per mood — when a mood has N frames (f-01-{mood}-1.webp … -N.webp)
+   the avatar plays them as a flip-book loop for a real animation feel.
+   Fallback to the single still portrait when frames are missing. */
+const FX_FRAMES = { dance: 4 };
+const FX_FRAME_MS = 280;   // ms per frame (≈3.5 fps flip-book)
+let _fxFrameTimer = null, _fxFrameIdx = 0;
+function fxFrameCount(k) {
+  const n = FX_FRAMES[k] || 0;
+  return n;
+}
+/* play a flip-book loop for the current mood — called after the still is set */
+function fxStartFrames(m) {
+  if (_fxFrameTimer) { clearInterval(_fxFrameTimer); _fxFrameTimer = null; }
+  const n = fxFrameCount(m.k);
+  if (!n) return;
+  const img = $id('greet-avatar-img');
+  if (!img) return;
+  _fxFrameIdx = 0;
+  const id = myCharId();
+  const base = `assets/img/chars/fx/${id}-${m.file}.webp`;
+  // pre-load all frames, then loop 1..n → n..1 ping-pong for smoothness
+  const frames = [];
+  let loaded = 0;
+  const onProbe = (src, ok) => {
+    if (ok) { frames.push(src); loaded++; }
+    if (loaded === n) {
+      if (!frames.length) return;
+      _fxFrameTimer = setInterval(() => {
+        const img2 = $id('greet-avatar-img');
+        if (!img2 || _fxLastKey !== m.k) { clearInterval(_fxFrameTimer); _fxFrameTimer = null; return; }
+        img2.src = frames[_fxFrameIdx % frames.length];
+        _fxFrameIdx++;
+      }, FX_FRAME_MS);
+    }
+  };
+  for (let i = 1; i <= n; i++) {
+    const p = `assets/img/chars/fx/${id}-${m.file}-${i}.webp`;
+    const pr = new Image();
+    pr.onload = () => onProbe(p, true);
+    pr.onerror = () => onProbe(base, false);
+    pr.src = p;
+  }
+}
 /* Which moods fit each 3-hour Seoul block — the character only ACTS actions
    that make sense right now (sleeps late at night, studies in the morning,
    eats at lunch, cooks/sings in the evening, games before bed). */
@@ -890,7 +933,7 @@ function fxApply(m) {
   _fxLastKey = m.k;
   const target = fxImgPath(m);
   const probe = new Image();
-  probe.onload = () => { img.src = target; };
+  probe.onload = () => { img.src = target; fxStartFrames(m); };
   probe.onerror = () => { img.src = myChar().img; };   // portrait missing → base face
   probe.src = target;
 }
@@ -909,7 +952,7 @@ function startFxCycle() {
     _fxTimer = setInterval(nextFx, 4200);
   }
 }
-function stopFxCycle() { if (_fxTimer) { clearInterval(_fxTimer); _fxTimer = null; } }
+function stopFxCycle() { if (_fxTimer) { clearInterval(_fxTimer); _fxTimer = null; } if (_fxFrameTimer) { clearInterval(_fxFrameTimer); _fxFrameTimer = null; } }
 /* when the time-of-day scene changes, hop the character to a mood that fits */
 function syncFxWithPart() {
   const pool = fxPoolForPart(scenePartOfDay());
