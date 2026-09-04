@@ -50,4 +50,28 @@
       <animateMotion dur="21s" begin="-6s" repeatCount="indefinite" path="M0,0 C70,-20 140,-20 220,-6 C-50,-12 -140,-6 -280,8"/>
     </path>
   </g>
+
+  <!-- twinkling fairy lights around the tower & ridge -->
+  <g>
+    <circle cx="520" cy="200" r="2.2" fill="#FFE9A8"><animate attributeName="opacity" values="0;1;0" dur="1.6s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;2.6;1.2" dur="1.6s" repeatCount="indefinite"/></circle>
+    <circle cx="600" cy="190" r="1.8" fill="#FFD6E8"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.7s" repeatCount="indefinite"/><animate attributeName="r" values="1;2.2;1" dur="2s" begin="0.7s" repeatCount="indefinite"/></circle>
+    <circle cx="470" cy="230" r="1.8" fill="#CDE6FF"><animate attributeName="opacity" values="0;1;0" dur="1.8s" begin="1.1s" repeatCount="indefinite"/><animate attributeName="r" values="1;2.2;1" dur="1.8s" begin="1.1s" repeatCount="indefinite"/></circle>
+    <circle cx="650" cy="215" r="2" fill="#FFE9A8"><animate attributeName="opacity" values="0;1;0" dur="2.3s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="r" values="1.2;2.4;1.2" dur="2.3s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <circle cx="540" cy="150" r="1.6" fill="#FFD6E8"><animate attributeName="opacity" values="0;1;0" dur="1.9s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="r" values="1;2;1" dur="1.9s" begin="1.5s" repeatCount="indefinite"/></circle>
+    <circle cx="385" cy="235" r="1.6" fill="#CDE6FF"><animate attributeName="opacity" values="0;1;0" dur="2.6s" begin="0.9s" repeatCount="indefinite"/><animate attributeName="r" values="1;2;1" dur="2.6s" begin="0.9s" repeatCount="indefinite"/></circle>
+    <circle cx="730" cy="235" r="1.6" fill="#FFE9A8"><animate attributeName="opacity" values="0;1;0" dur="2.1s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="r" values="1;2;1" dur="2.1s" begin="1.8s" repeatCount="indefinite"/></circle>
+    <!-- sparkle crosses -->
+    <g stroke="#FFF3C4" stroke-width="1.6" stroke-linecap="round" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+      <path d="M740 172 l8 0 M744 168 l0 8"/>
+    </g>
+    <g stroke="#FFE0EF" stroke-width="1.6" stroke-linecap="round" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="2.8s" begin="1.9s" repeatCount="indefinite"/>
+      <path d="M445 195 l8 0 M449 191 l0 8"/>
+    </g>
+    <g stroke="#D6EBFF" stroke-width="1.6" stroke-linecap="round" opacity="0">
+      <animate attributeName="opacity" values="0;1;0" dur="2s" begin="2.6s" repeatCount="indefinite"/>
+      <path d="M635 180 l8 0 M639 176 l0 8"/>
+    </g>
+  </g>
 </svg>

@@ -377,8 +377,8 @@
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
-.greet-h { font-size: 20px; font-weight: 800; color: var(--ios-label); line-height: 1.25; }
-.greet-s { font-size: 12px; color: var(--ios-secondary-label); font-weight: 600; margin-top: 1px; }
+.greet-h { font-size: 19px; font-weight: 800; color: var(--ios-label); line-height: 1.25; }
+.greet-s { font-size: 10.5px; color: var(--ios-secondary-label); font-weight: 600; margin-top: 1px; opacity: .9; }
 /* ---------- Seoul scene card (Namsan landmark + weather/time) ---------- */
 .seoul-scene {
   position: relative; overflow: hidden; border-radius: 20px;
@@ -410,19 +410,23 @@
 /* ---------- Weather backdrop (subtle, behind the greeting) ---------- */
 .weather-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .5; }
 .wb-sun {
-  position: absolute; top: -6px; right: 16px; width: 96px; height: 96px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 210, 90, .95), rgba(255, 210, 90, 0) 70%);
-  animation: wbPulse 5s ease-in-out infinite;
+  position: absolute; top: -10px; right: 8px; width: 108px; height: 108px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 90, 1), rgba(255, 214, 90, 0) 70%);
+  animation: wbPulse 2.6s ease-in-out infinite;
 }
-.wb-sun.small { width: 64px; height: 64px; right: 30px; }
+.wb-sun.small { width: 72px; height: 72px; right: 30px; animation-duration: 2.2s; }
 .wb-ray {
   position: absolute; border-radius: 50%;
-  border: 2px dashed rgba(255, 200, 80, .65);
-  animation: wbSpin 26s linear infinite;
+  border: 2px dashed rgba(255, 200, 80, .8);
+  animation: wbSpin 9s linear infinite;
 }
-.wb-ray.r1 { width: 118px; height: 118px; top: -18px; right: 5px; }
-.wb-ray.r2 { width: 150px; height: 150px; top: -35px; right: -10px; animation-direction: reverse; animation-duration: 34s; }
-.wb-ray.r3 { width: 86px; height: 86px; top: -2px; right: 22px; animation-duration: 18s; }
+.wb-ray.r1 { width: 130px; height: 130px; top: -22px; right: -4px; }
+.wb-ray.r2 { width: 162px; height: 162px; top: -40px; right: -19px; animation-direction: reverse; animation-duration: 12s; }
+.wb-ray.r3 { width: 96px; height: 96px; top: -6px; right: 14px; animation-duration: 6.5s; }
+.wb-ray::after {
+  content: ''; position: absolute; inset: -6px; border-radius: 50%;
+  border: 1px dashed rgba(255, 220, 120, .55);
+}
 .wb-cloud {
   position: absolute; background: rgba(255, 255, 255, .85); border-radius: 24px;
   animation: wbDrift 12s ease-in-out infinite;
@@ -461,7 +465,10 @@
   animation: wbBolt 2.6s ease-in-out infinite;
 }
 @keyframes wbSpin { to { transform: rotate(360deg); } }
-@keyframes wbPulse { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.12); opacity: 1; } }
+@keyframes wbPulse {
+  0%, 100% { transform: scale(1); opacity: .9; }
+  50% { transform: scale(1.16); opacity: 1; filter: brightness(1.12); }
+}
 @keyframes wbDrift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-24px); } }
 @keyframes wbFall {
   0% { transform: translateY(-8px); opacity: 0; }
@@ -480,20 +487,20 @@
 [data-theme="dark"] .wb-flake { background: rgba(220, 220, 255, .9); }
 [data-theme="dark"] .wb-fog { background: linear-gradient(90deg, transparent, rgba(150, 150, 200, .5), transparent); }
 .greet-avatar {
-  width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+  width: 66px; height: 66px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, #A78BFA, #F9A8D4);
-  box-shadow: 0 6px 16px rgba(167, 139, 250, .35);
+  box-shadow: 0 6px 20px rgba(167, 139, 250, .4);
   border: 2.5px solid #fff; overflow: hidden;
 }
 .greet-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .greet-avatar { cursor: pointer; position: relative; }
 .avatar-edit {
   position: absolute; bottom: -2px; right: -2px;
-  width: 18px; height: 18px; border-radius: 50%;
+  width: 21px; height: 21px; border-radius: 50%;
   background: var(--grad-brand); color: #fff;
-  font-size: 10px; font-weight: 800; line-height: 18px; text-align: center;
-  border: 1.5px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  font-size: 11px; font-weight: 800; line-height: 21px; text-align: center;
+  border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2);
 }
 [data-theme="dark"] .avatar-edit { border-color: var(--ios-card); }
 
