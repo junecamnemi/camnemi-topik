@@ -79,6 +79,7 @@ const T = {
     level_empty: 'Accuracy by level will appear here too.',
     choose_test: 'Choose your test', choose_desc_II: 'Level 3 is the score most Korean universities require. AI generates reading, listening & writing questions at your level.',
     choose_desc_I: 'Start with TOPIK I basics — AI builds questions that match your current level.',
+    lt_title: 'Level test', lt_sub: '12 quick questions — we\u2019ll find your starting level', lt_start: 'Start level test', lt_skip: 'Skip', lt_q: 'Question {i} / 12', lt_next: 'Next', lt_finish: 'See my level', lt_done: 'Your level', lt_rec: 'Recommended level', lt_rec_sub: 'Based on your answers, this is the best level to start from. You can change it anytime in My.', lt_set: 'Start at this level', lt_retake: 'Retake level test', lt_home_card: 'Not sure about your level?', lt_home_card_sub: 'Take a 12-question level test to start at the right level.', lt_correct: 'Correct!', lt_wrong: 'Not quite', lt_explain: 'Explanation', lt_note: 'You can retake the test anytime in My settings.',
     quick: 'Quick actions', sched_link: 'TOPIK test schedule', sched_desc: 'Dates · registration · results by country',
     learn_link: 'Weak-spot review', learn_desc: 'Vocab & grammar based on your mistakes',
     wrong_link: 'Wrong answer notes', wrong_desc: '{n} recent misses · type-wise breakdown',
@@ -158,6 +159,7 @@ const T = {
     level_empty: '난이도별 정답률도 여기에 표시돼요!',
     choose_test: '시험 선택', choose_desc_II: 'Level 3 is the score most Korean universities require. AI generates reading, listening & writing questions at your level.',
     choose_desc_I: 'TOPIK I 기초부터 시작 — AI가 내 수준에 맞는 문제를 만들어요.',
+    lt_title: '레벨 테스트', lt_sub: '12문제로 내 시작 레벨을 찾아드려요', lt_start: '레벨 테스트 시작', lt_skip: '나중에', lt_q: '문제 {i} / 12', lt_next: '다음', lt_finish: '내 레벨 보기', lt_done: '나의 레벨', lt_rec: '추천 레벨', lt_rec_sub: '답변을 바탕으로 시작하기 좋은 레벨이에요. My에서 언제든 바꿀 수 있어요.', lt_set: '이 레벨로 시작', lt_retake: '레벨 테스트 다시 보기', lt_home_card: '내 레벨이 궁금해요?', lt_home_card_sub: '12문제 레벨 테스트로 딱 맞는 레벨에서 시작하세요.', lt_correct: '정답!', lt_wrong: '아쉬워요', lt_explain: '해설', lt_note: 'My 설정에서 언제든 다시 볼 수 있어요.',
     quick: '바로가기', sched_link: 'TOPIK 시험 일정', sched_desc: '나라별 시험일 · 접수기간 · 결과 발표',
     learn_link: '취약점 복습', learn_desc: '틀린 문제 기반 어휘·문법',
     wrong_link: '오답노트', wrong_desc: '최근 {n}개 · 유형별 분석',
@@ -237,6 +239,7 @@ const T = {
     level_empty: 'ភាពត្រឹមត្រូវតាមកម្រិតក៏នឹងបង្ហាញដែរ។',
     choose_test: 'ជ្រើសរើសការប្រឡង', choose_desc_II: 'Level 3 is the score most Korean universities require. AI generates reading, listening & writing questions at your level.',
     choose_desc_I: 'ចាប់ផ្តើមជាមួយ TOPIK I មូលដ្ឋាន។',
+    lt_title: 'តេស្តកម្រិត', lt_sub: '១២ សំណួរខ្លីៗ — យើងនឹងរកកម្រិតចាប់ផ្តើមរបស់អ្នក', lt_start: 'ចាប់ផ្តើមតេស្តកម្រិត', lt_skip: 'រំលង', lt_q: 'សំណួរ {i} / ១២', lt_next: 'បន្ទាប់', lt_finish: 'មើលកម្រិតរបស់ខ្ញុំ', lt_done: 'កម្រិតរបស់អ្នក', lt_rec: 'កម្រិតដែលបានណែនាំ', lt_rec_sub: 'ផ្អែកលើចម្លើយរបស់អ្នក នេះជាកម្រិតល្អបំផុតដើម្បីចាប់ផ្តើម។ អ្នកអាចប្តូរបានគ្រប់ពេល។', lt_set: 'ចាប់ផ្តើមកម្រិតនេះ', lt_retake: 'ធ្វើតេស្តកម្រិតម្តងទៀត', lt_home_card: 'មិនប្រាកដពីកម្រិតរបស់អ្នក?', lt_home_card_sub: 'ធ្វើតេស្ត ១២ សំណួរ ដើម្បីចាប់ផ្តើមកម្រិតត្រឹមត្រូវ។', lt_correct: 'ត្រឹមត្រូវ!', lt_wrong: 'មិនទាន់ត្រឹមត្រូវ', lt_explain: 'ការពន្យល់', lt_note: 'អ្នកអាចធ្វើតេស្តម្តងទៀតនៅក្នុងការកំណត់ My។',
     quick: 'ផ្លូវកាត់', sched_link: 'កាលវិភាគប្រឡង TOPIK', sched_desc: 'កាលបរិច្ឆេទ · ការចុះឈ្មោះ · លទ្ធផលតាមប្រទេស',
     learn_link: 'ពិនិត្យចំណុចខ្សោយ', learn_desc: 'វេយ្យាករណ៍ និងវាក្យសព្ទ ពីកំហុសរបស់អ្នក',
     wrong_link: 'កំណត់ចំណាំកំហុស', wrong_desc: '{n} កំហុសថ្មីៗ · ការវិភាគតាមប្រភេទ',
@@ -679,9 +682,96 @@ window.addEventListener('popstate', () => {
   // Android / browser hardware back — mimic the on-screen back button
   goBack();
 });
+/* ================= LEVEL TEST (placement quiz) ================= */
+/* APP.lt = null | { i: current q index, ans: {band: [correct?]}, done: bool }
+   The quiz lives in data/level-test.js as window.QUIZ (12 q, bands 1-6 ×2). */
+function startLevelTest() {
+  APP.lt = { i: 0, picks: {}, done: false };
+  render();
+}
+function exitLevelTest() { APP.lt = null; render(); }
+function pickLevelTest(oi) {
+  const lt = APP.lt; if (!lt) return;
+  const q = window.QUIZ[lt.i]; if (!q) return;
+  lt.picks[q.band] = lt.picks[q.band] || [];
+  lt.picks[q.band].push(oi === q.correct);
+  lt.i++;
+  if (lt.i >= window.QUIZ.length) lt.done = true;
+  render();
+}
+/* recommended level: highest band where both answers were correct; a band
+   with exactly one correct is a "borderline pass" → we stay at that level. */
+function ltRecommended() {
+  const picks = (APP.lt && APP.lt.picks) || {};
+  let lvl = 1;
+  for (let b = 1; b <= 6; b++) {
+    const arr = picks[b] || [];
+    const c = arr.filter(Boolean).length;
+    if (c >= 2) lvl = b + 1;        // fully passed this band → can try next
+    else if (c === 1) { lvl = Math.max(lvl, b); break; }  // borderline → land here
+    else break;                      // failed the band → stop
+  }
+  return Math.min(6, Math.max(1, lvl));
+}
+function applyLevelTestResult() {
+  setMyLevel(ltRecommended());
+  exitLevelTest();
+}
+function viewLevelTest() {
+  const lt = APP.lt;
+  const qs = window.QUIZ || [];
+  if (!lt || !qs.length) return '';
+  const ko = LANG === 'ko';
+  // ---- result screen ----
+  if (lt.done) {
+    const lvl = ltRecommended();
+    const grade = lvl <= 2 ? (ko ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner')
+              : lvl <= 4 ? (ko ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate')
+              : (ko ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
+    let c = 0; Object.values(lt.picks).forEach(a => a.forEach(x => { if (x) c++; }));
+    const pct = Math.round(c / qs.length * 100);
+    return `
+    <div class="lt-result">
+      <div class="lt-badge">${t('lt_done')}</div>
+      <div class="lt-lvl" style="--lvl:${lvl}">L${lvl}</div>
+      <div class="lt-grade">${grade}</div>
+      <div class="lt-score">${c} / ${qs.length} · ${pct}%</div>
+      <p class="lt-sub">${t('lt_rec_sub')}</p>
+      <button class="btn btn-primary lt-cta" onclick="applyLevelTestResult()">${t('lt_set')} →</button>
+      <button class="btn btn-ghost lt-ghost" onclick="startLevelTest()">↻ ${t('lt_retake')}</button>
+      <p class="lt-note">${t('lt_note')}</p>
+    </div>`;
+  }
+  // ---- question screen ----
+  const q = qs[lt.i];
+  const picked = lt.picks[q.band] ? lt.picks[q.band][lt.i % 2] : undefined; // not used before pick
+  const pct = Math.round(lt.i / qs.length * 100);
+  return `
+    <div class="lt-card">
+      <div class="lt-top">
+        <span class="lt-title">🎓 ${t('lt_title')}</span>
+        <span class="lt-q">${t('lt_q', { i: lt.i + 1 })}</span>
+      </div>
+      <div class="lt-progress"><div style="width:${pct}%"></div></div>
+      <div class="lt-band">TOPIK ${q.band <= 2 ? 'I' : 'II'} · Band ${q.band}</div>
+      <div class="lt-question">${esc(q.q)}</div>
+      <div class="lt-opts">
+        ${q.options.map((o, i) => `
+          <button class="lt-opt" onclick="pickLevelTest(${i})">
+            <span class="lt-letter">${'①②③'[i] || i + 1}</span>
+            <span class="lt-t">${esc(o.t)}</span>
+            ${o.gl ? `<span class="lt-gl">${esc(o.gl)}</span>` : ''}
+          </button>`).join('')}
+      </div>
+      <div class="lt-tip">💡 ${ko ? '정답을 고르면 바로 다음 문제로 넘어가요.' : LANG === 'km' ? 'ជ្រើសរើសចម្លើយ បន្ទាប់មកទៅសំណួរបន្ទាប់។' : 'Pick an answer — the next question comes right after.'}</div>
+    </div>`;
+}
+
 function render() {
   const s = $id('screen');
   if (!s) return;
+  // Level test takes over the whole screen while active
+  if (APP.lt) { s.innerHTML = viewLevelTest(); renderSchedBanner(); updateBackBtn(); stopFxCycle(); return; }
   switch (APP.tab) {
     case 'home': s.innerHTML = viewHome(); bindHome(); break;
     case 'daily': s.innerHTML = viewDaily(); bindDaily(); break;
@@ -798,6 +888,15 @@ function viewHome() {
     ${streakCardHTML()}`;
   return `
     ${scene}
+    ${localStorage.getItem(LS.mylevel) == null ? `
+    <div class="app-card lt-home-card">
+      <div class="lt-home-ico">🎓</div>
+      <div class="lt-home-txt">
+        <b>${t('lt_home_card')}</b>
+        <span class="sub">${t('lt_home_card_sub')}</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
+    </div>` : ''}
     ${recommendCard(acc, lvl.lv)}
     ${aiQuick}
     ${weekBlock}
@@ -1772,6 +1871,7 @@ function viewMy() {
       <div class="lv-picker" style="grid-template-columns:repeat(6,1fr);margin:0;">
         ${[1,2,3,4,5,6].map(n => `<button class="lv-btn ${n === myLevel() ? 'active' : ''}" style="--lv-col:var(--ios-blue);" onclick="setMyLevel(${n})"><b>L${n}</b></button>`).join('')}
       </div>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px;border:1.5px solid var(--ios-purple);color:var(--ios-purple);border-radius:12px;" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
     </div>
     <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
     <div class="app-card" style="padding:6px 14px;">

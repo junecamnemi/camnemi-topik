@@ -427,6 +427,56 @@
 .rec-pick-txt .sub { font-size: 11px; margin-top: 1px; }
 .rec-pick-btn { flex-shrink: 0; font-size: 12px; padding: 8px 14px; border-radius: 12px; }
 .rec-empty { justify-content: center; padding: 14px; border-style: dashed; }
+/* ---------- Level test (placement quiz) ---------- */
+.lt-home-card {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, #EDF2FF, #F6F0FF);
+  border: 1.5px dashed rgba(139,92,246,.4);
+  margin-bottom: 14px;
+}
+[data-theme="dark"] .lt-home-card { background: rgba(99,102,241,.12); }
+.lt-home-ico { font-size: 30px; flex-shrink: 0; }
+.lt-home-txt { flex: 1; min-width: 0; }
+.lt-home-txt b { font-size: 14px; color: var(--ios-label); }
+.lt-home-txt .sub { font-size: 11.5px; margin-top: 2px; }
+.lt-card {
+  max-width: 520px; margin: 10px auto; padding: 22px 20px 26px;
+  background: var(--ios-card); border-radius: 24px;
+  border: 1px solid rgba(139,92,246,.22);
+  box-shadow: 0 12px 36px var(--ios-shadow);
+}
+.lt-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lt-title { font-size: 16px; font-weight: 800; color: var(--ios-label); }
+.lt-q { font-size: 12px; font-weight: 800; color: var(--ios-purple); background: rgba(139,92,246,.12); border-radius: 999px; padding: 4px 12px; }
+.lt-progress { height: 7px; border-radius: 999px; background: rgba(139,92,246,.14); overflow: hidden; margin: 14px 0 6px; }
+.lt-progress div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #6D4AE8, #A78BFA); transition: width .3s; }
+.lt-band { font-size: 10.5px; font-weight: 800; letter-spacing: .5px; color: var(--ios-secondary-label); text-transform: uppercase; margin-bottom: 12px; }
+.lt-question { font-size: 17px; font-weight: 700; line-height: 1.5; color: var(--ios-label); margin-bottom: 18px; }
+.lt-opts { display: flex; flex-direction: column; gap: 10px; }
+.lt-opt {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ios-fill); border: 1.5px solid var(--ios-separator);
+  border-radius: 14px; padding: 13px 14px; cursor: pointer;
+  font-family: var(--font); text-align: left; transition: transform .1s, border-color .15s, background .15s;
+}
+.lt-opt:active { transform: scale(.98); border-color: var(--ios-purple); background: rgba(139,92,246,.07); }
+.lt-letter { font-weight: 800; color: var(--ios-purple); font-size: 14px; flex-shrink: 0; }
+.lt-t { flex: 1; font-size: 14.5px; font-weight: 600; color: var(--ios-label); }
+.lt-gl { font-size: 11.5px; color: var(--ios-secondary-label); font-weight: 500; text-align: right; }
+.lt-tip { margin-top: 16px; font-size: 11.5px; color: var(--ios-secondary-label); text-align: center; }
+.lt-result { max-width: 520px; margin: 10px auto; padding: 36px 24px; text-align: center; background: var(--ios-card); border-radius: 24px; border: 1px solid rgba(139,92,246,.22); box-shadow: 0 12px 36px var(--ios-shadow); }
+.lt-badge { display: inline-block; font-size: 12px; font-weight: 800; color: var(--ios-purple); background: rgba(139,92,246,.12); border-radius: 999px; padding: 5px 14px; margin-bottom: 14px; }
+.lt-lvl {
+  font-size: 64px; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, hsl(calc(var(--lvl) * 55), 75%, 55%), hsl(calc(var(--lvl) * 55 + 40), 85%, 68%));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.lt-grade { font-size: 16px; font-weight: 800; color: var(--ios-label); margin-top: 6px; }
+.lt-score { font-size: 13px; font-weight: 700; color: var(--ios-secondary-label); margin-top: 6px; }
+.lt-sub { font-size: 12.5px; line-height: 1.55; color: var(--ios-secondary-label); margin: 16px 0 20px; }
+.lt-cta { width: 100%; padding: 14px; font-size: 15px; border-radius: 14px; }
+.lt-ghost { width: 100%; margin-top: 10px; border: 1.5px solid var(--ios-separator); border-radius: 14px; color: var(--ios-secondary-label); }
+.lt-note { font-size: 10.5px; color: var(--ios-secondary-label); margin-top: 14px; }
 .app-card h3 { font-size: 17px; color: var(--ios-label); margin-bottom: 6px; font-weight: 700; }
 .app-card .sub { font-size: 13px; color: var(--ios-secondary-label); }
 .app-card .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
