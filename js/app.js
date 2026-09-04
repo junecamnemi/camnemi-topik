@@ -449,6 +449,62 @@ function freqBadge(q) {
   return `<span class="q-freq" title="${esc(f.note)}">${ic('schedule', 11)} ${esc(f.note)}</span>`;
 }
 
+/* ---------- Grammar point → Sejong textbook mapping ----------
+   Authoritative, level-true placement of the TOPIK grammar tested in each
+   question. sej: suggested 세종한국어 volume (1A–6B) for review. */
+const GRAMMAR_LIB = [
+  // --- TOPIK I / 초급 (세종 1–2) ---
+  { m: '아/어요',  pat: '-(아/어)요', sej: 1, ko: '해요체(두루높임)의 종결 어미로, 일상적인 대화에서 가장 많이 쓰입니다.', ex: '지금 학교에 가요.' },
+  { m: '을 수 있', pat: '-(으)ㄹ 수 있다', sej: 1, ko: '가능(할 수 있음)을 나타냅니다.', ex: '저는 수영을 할 수 있어요.' },
+  { m: '을 거',   pat: '-(으)ㄹ 거예요', sej: 2, ko: '미래의 일이나 추측을 나타냅니다.', ex: '내일은 비가 올 거예요.' },
+  { m: '지 않',   pat: '-지 않다', sej: 2, ko: '부정(하지 않음)을 나타내는 표현입니다.', ex: '그는 밥을 먹지 않았어요.' },
+  { m: '려고',    pat: '-(으)려고', sej: 2, ko: '목적·의도를 나타냅니다. 뒤에는 주로 행동 동사가 옵니다.', ex: '한국어를 배우려고 한국에 왔어요.' },
+  { m: '러 가',   pat: '-(으)러 가다/오다', sej: 2, ko: '어떤 행동을 하러 이동함을 나타냅니다.', ex: '책을 빌리러 도서관에 갔어요.' },
+  { m: '기 전에', pat: '-기 전에', sej: 2, ko: '어떤 행동보다 앞선 시점을 나타냅니다.', ex: '밥을 먹기 전에 손을 씻어요.' },
+  { m: '은 후에', pat: '-(으)ㄴ 후에', sej: 2, ko: '어떤 행동이 끝난 뒤의 시점을 나타냅니다.', ex: '수업이 끝난 후에 만나요.' },
+  // --- TOPIK II 중급 (세종 3) ---
+  { m: '다가',    pat: '-다가', sej: 3, ko: '어떤 동작을 하다가 중단하거나 다른 동작으로 바뀜을 나타냅니다.', ex: '전화를 하다가 갑자기 끊겼어요.' },
+  { m: '는 동안', pat: '-는 동안', sej: 3, ko: '어떤 행동이 지속되는 시간을 나타냅니다.', ex: '음악을 듣는 동안 공부를 했어요.' },
+  { m: '은 지',   pat: '-(으)ㄴ 지', sej: 3, ko: '어떤 일이 일어난 후 경과한 시간을 나타냅니다.', ex: '한국에 온 지 1년이 됐어요.' },
+  { m: '고 나서', pat: '-고 나서', sej: 3, ko: '앞의 행동을 마친 후에 다음 행동을 함을 나타냅니다.', ex: '숙제를 하고 나서 텔레비전을 봤어요.' },
+  { m: '아/어 놓', pat: '-아/어 놓다', sej: 3, ko: '행동의 결과가 그대로 유지됨을 나타냅니다.', ex: '문을 열어 놓았어요.' },
+  { m: '아/어 두', pat: '-아/어 두다', sej: 3, ko: '미리 준비해 둠을 나타내는 표현입니다.', ex: '내일 쓸 자료를 미리 준비해 두었어요.' },
+  { m: '는 바람에', pat: '-는 바람에', sej: 3, ko: '앞의 일이 원인이 되어 부정적인 결과가 생겼음을 나타냅니다.', ex: '비가 오는 바람에 약속을 취소했어요.' },
+  { m: '는지 알', pat: '-(으)ㄴ/는지 알다/모르다', sej: 3, ko: '어떤 사실의 여부를 알거나 모름을 나타냅니다.', ex: '그가 언제 오는지 몰라요.' },
+  { m: '아/어도 되', pat: '-아/어도 되다', sej: 3, ko: '허용·허락의 뜻을 나타냅니다.', ex: '여기에 앉아도 돼요?' },
+  { m: '면 안',   pat: '-(으)면 안 되다', sej: 3, ko: '금지의 뜻을 나타냅니다.', ex: '수업 시간에 떠들면 안 돼요.' },
+  // --- TOPIK II 중고급 (세종 4) ---
+  { m: 'ㄹ 뻔',   pat: '-(으)ㄹ 뻔하다', sej: 4, ko: '거의 그렇게 될 뻔했으나 그렇게 되지 않았음을 나타냅니다.', ex: '늦을 뻔했어요.' },
+  { m: '는 김에', pat: '-는 김에', sej: 4, ko: '어떤 일을 하는 기회에 함께 다른 일도 함을 나타냅니다.', ex: '편지를 쓰는 김에 답장도 썼어요.' },
+  { m: '는 척',   pat: '-(으)ㄴ/는 척하다', sej: 4, ko: '실제로는 그렇지 않은데 그런 것처럼 행동함을 나타냅니다.', ex: '들은 척도 안 했어요.' },
+  { m: '더니',    pat: '-더니', sej: 4, ko: '과거에 경험한 일에 이어지는 일이나 대조를 나타냅니다.', ex: '아까는 덥더니 지금은 시원하네요.' },
+  { m: '을 텐데', pat: '-(으)ㄹ 텐데', sej: 4, ko: '미루어 짐작한 상황을 배경으로 말함을 나타냅니다.', ex: '아마 피곤할 텐데 좀 쉬세요.' },
+  { m: '아/어 버리', pat: '-아/어 버리다', sej: 4, ko: '행동이 완전히 끝났거나 아쉬움·안도감이 있음을 나타냅니다.', ex: '그만 실수로 지워 버렸어요.' },
+  { m: '기로 하', pat: '-기로 하다', sej: 4, ko: '결정·약속의 뜻을 나타냅니다.', ex: '매일 운동하기로 했어요.' },
+  { m: '자마자',  pat: '-자마자', sej: 4, ko: '앞의 일이 끝나자 곧바로 뒤의 일이 일어남을 나타냅니다.', ex: '집에 도착하자마자 전화했어요.' },
+  { m: '도록',    pat: '-도록', sej: 4, ko: '정도·기준 또는 목적(그렇게 되게)을 나타냅니다.', ex: '늦지 않도록 일찍 출발했어요.' },
+  { m: '는 편이', pat: '-는 편이다', sej: 4, ko: '대체로 그러한 경향이 있음을 나타냅니다.', ex: '저는 아침을 거르는 편이에요.' },
+  { m: 'ㄹ수록',  pat: '-(으)ㄹ수록', sej: 4, ko: '정도가 커짐에 따라 그만큼 더함을 나타냅니다.', ex: '공부할수록 어려워져요.' },
+  { m: '았/었더니', pat: '-았/었더니', sej: 4, ko: '과거의 행동을 하니 그 결과를 발견함을 나타냅니다.', ex: '창문을 열었더니 시원했어요.' },
+  { m: '는 데다가', pat: '-는 데다가', sej: 4, ko: '앞의 사실에 덧붙여 또 다른 사실이 있음을 나타냅니다.', ex: '값도 싼 데다가 맛도 좋아요.' },
+  // --- TOPIK II 고급 (세종 5–6) ---
+  { m: 'ㄹ 지경', pat: '-(으)ㄹ 지경이다', sej: 6, ko: '정도가 매우 심함을 나타냅니다.', ex: '걱정이 되어 잠을 못 잘 지경이에요.' },
+  { m: '는 한',   pat: '-는 한', sej: 6, ko: '앞의 조건이 유지되는 동안에는 뒤의 상황이 계속됨을 나타냅니다.', ex: '내가 있는 한 너를 지킬게.' },
+  { m: '다시피',  pat: '-다시피 하다', sej: 6, ko: '실제로 그렇게 한 것은 아니지만 그에 가깝게 함을 나타냅니다.', ex: '매일 학교에 가다시피 해요.' }
+];
+function grammarHit(q) {
+  const text = ((q.passage || '') + ' ' + (q.q || '') + ' ' +
+    (q.options || []).map(o => o.t || '').join(' '));
+  for (const g of GRAMMAR_LIB) {
+    if (text.includes(g.m)) return g;
+  }
+  return null;
+}
+function sejBookVol(sej) {
+  const map = { 1: '세종한국어 1A~2B · 초급', 2: '세종한국어 1A~2B · 초급', 3: '세종한국어 3A~4B · 중급', 4: '세종한국어 3A~4B · 중급', 5: '세종한국어 5A~6B · 고급', 6: '세종한국어 5A~6B · 고급' };
+  return map[sej] || '세종한국어';
+}
+
 /* ---------- Professional references (국립국어원 / 세종학당재단 / NIIED) ---------- */
 function refsFor(q) {
   const ko = LANG === 'ko';
@@ -495,6 +551,22 @@ function explainBlock(q) {
   let h = '';
   // 정답 상세
   const whyRight = optEx[correct] || q.explain || '';
+  // 공식 도입문 — 유형 안내 (해설을 교과서체로 시작)
+  const introGuide = {
+    grammar: { ko: '이 문항은 문법 표현의 의미와 쓰임을 정확히 이해하고 있는지 확인하는 문제입니다. 제시된 문장의 구조와 어미의 기능을 중심으로 판단해야 합니다.', en: 'This item checks whether you understand the meaning and use of the grammar expression. Judge by the sentence structure and the function of the ending.' },
+    vocab: { ko: '이 문항은 어휘의 정확한 의미를 알고 있는지 확인하는 문제입니다. 밑줄 친 단어가 문장 안에서 어떤 뜻으로 쓰였는지 살펴야 합니다.', en: 'This item checks your knowledge of exact word meaning. Look at how the underlined word is used in the sentence.' },
+    blank_fill: { ko: '이 문항은 문맥에 맞는 표현을 고르는 문제입니다. 앞뒤 문장이 요구하는 내용과 어울리는지 확인해야 합니다.', en: 'This item asks you to choose the expression that fits the context. Check what the surrounding sentences require.' },
+    main_idea: { ko: '이 문항은 글의 중심 내용(주제)을 파악하는 문제입니다. 필자가 전달하려는 핵심 주장에 주목해야 합니다.', en: 'This item asks for the main idea of the passage. Focus on the writer\'s core claim.' },
+    same_content: { ko: '이 문항은 글의 세부 내용과 일치하는 것을 고르는 문제입니다. 수량·시간·대상 등 구체적 정보를 지문과 대조해야 합니다.', en: 'This item asks which detail matches the passage. Compare quantity, time, and object details with the text.' },
+    insert_sentence: { ko: '이 문항은 주어진 문장이 들어갈 가장 자연스러운 위치를 찾는 문제입니다. 접속 표현과 문장 간 의미 관계를 살펴야 합니다.', en: 'This item asks where a given sentence best fits. Examine connective expressions and meaning relations.' },
+    attitude: { ko: '이 문항은 필자의 태도·심정을 파악하는 문제입니다. 평가를 드러내는 표현("~해야 한다", "우려된다" 등)에 주목해야 합니다.', en: 'This item asks about the writer\'s attitude. Watch for evaluative expressions such as "must" or "concerned".' },
+    headline_desc: { ko: '이 문항은 신문 제목이 전하는 내용을 정확히 해석하는 문제입니다. 주체·행위·대상의 관계를 풀어야 합니다.', en: 'This item asks you to interpret what a headline says. Unpack who did what to whom.' },
+    topic: { ko: '이 문항은 말이나 글의 주제를 파악하는 문제입니다.', en: 'This item asks for the topic of the utterance or text.' },
+    order: { ko: '이 문항은 문장을 자연스러운 순서로 배열하는 문제입니다. 시간 흐름과 접속 표현의 연결을 살펴야 합니다.', en: 'This item asks you to order sentences naturally. Follow time flow and connectives.' }
+  }[q.type] || null;
+  if (introGuide) {
+    h += `<div class="dx dx-intro"><b style="color:var(--ios-purple);">${ko ? '해설' : 'Explanation'}</b> · ${ko ? introGuide.ko : introGuide.en}</div>`;
+  }
   h += `<div class="dx dx-right">
     <div class="dx-head"><b>✅ ${en ? 'Correct' : ko ? '정답' : 'Correct'}: ${letters[correct]} ${optText(q.options[correct])}</b></div>
     <div class="dx-body">${esc(whyRight)}</div>
@@ -516,6 +588,24 @@ function explainBlock(q) {
   // TIP
   if (tipTxt) {
     h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(tipTxt)}</div></div>`;
+  }
+  // 문법 포인트 — 실제 기출 문법 표현을 감지해 세종학당 교재와 연결
+  const g = grammarHit(q);
+  const isGrammarType = q.type === 'grammar' || q.type === 'blank_fill' || q.type === 'sentence_pos';
+  if (ko && g) {
+    h += `<div class="dx dx-grammar"><div class="dx-head"><b>문법 포인트 · ${esc(g.pat)}</b></div>
+      <div class="dx-body">${esc(g.ko)}</div>
+      <div class="dx-gex">${esc(g.ex)}</div>
+      <div class="dx-gsej">📖 ${esc(sejBookVol(g.sej))} — 누리 세종학당(세종학당재단)의 해당 권수 교재에서 이 문법이 나오는 단원을 찾아 복습하면 같은 유형 문제를 정확히 풀 수 있습니다.</div>
+      <a class="dx-glink" href="https://nuri.iksi.or.kr/front/main/main.do?language=ko" target="_blank" rel="noopener">세종한국어 E-book에서 문법 단원 열기 ↗</a>
+    </div>`;
+  } else if (ko && isGrammarType) {
+    const vol = (q.level <= 2 ? '세종한국어 1A~2B · 초급' : q.level <= 4 ? '세종한국어 3A~4B · 중급' : '세종한국어 5A~6B · 고급');
+    h += `<div class="dx dx-grammar"><div class="dx-head"><b>문법 포인트</b></div>
+      <div class="dx-body">이 문항은 문법·문장 구조를 묻는 문제로, 어미와 연결 표현의 기능을 정확히 알고 있는지 확인합니다. 제시문의 (    ) 앞뒤 문장이 요구하는 의미 관계를 먼저 파악하세요.</div>
+      <div class="dx-gsej">📖 ${vol} — 세종학당재단 누리 세종학당의 해당 권수 교재에서 문법 단원을 복습하면 같은 유형 문제에 체계적으로 대비할 수 있습니다.</div>
+      <a class="dx-glink" href="https://nuri.iksi.or.kr/front/main/main.do?language=ko" target="_blank" rel="noopener">세종한국어 E-book에서 문법 단원 열기 ↗</a>
+    </div>`;
   }
   // 전문 참고자료 — 국립국어원 사전 / 세종학당 교재 / TOPIK 공식
   const refs = refsFor(q);
@@ -1306,19 +1396,41 @@ async function startSection(sec, lv, type) {
     const src = (pool.length >= 20 ? pool : bank).slice();
     const shuf = src.sort(() => Math.random() - 0.5);
     const pick = shuf.slice(0, 10);
+    const lvName = lvBand === 1 ? 'TOPIK I' : 'TOPIK II';
     const qs = pick.map((w, i) => {
       // distractors: 3 other English meanings from the same band
       const others = (pool.length >= 20 ? pool : bank).filter(x => x.k !== w.k);
       const dist = others.sort(() => Math.random() - 0.5).slice(0, 3);
       const opts = [{ t: w.e, gl: w.k }, ...dist.map(d => ({ t: d.e, gl: d.k }))];
       opts.sort(() => Math.random() - 0.5);
+      const correct = opts.findIndex(o => o.t === w.e);
+      // 조사 처리 helper (받침 유무)
+      const josa = (s, eunNeun) => {
+        const code = s.charCodeAt(s.length - 1);
+        return ((code - 0xAC00) % 28 !== 0) ? eunNeun[0] : eunNeun[1];
+      };
+      const optEx = opts.map((o, oi) => {
+        const wk = o.gl || '';
+        if (oi === correct) {
+          return `'${w.k}'은(는) '${w.e}'의 의미를 지닌 어휘입니다. 따라서 ${'①②③④'[oi]}이(가) 정답입니다.`;
+        }
+        return `${'①②③④'[oi]} '${wk}'은(는) '${o.t}'의 의미로 쓰이는 어휘로, 제시된 단어 '${w.k}'의 의미와 일치하지 않으므로 정답이 될 수 없습니다.`;
+      });
+      const optExEn = opts.map((o, oi) => {
+        if (oi === correct) return `'${w.k}' means '${w.e}', so option ${'①②③④'[oi]} is correct.`;
+        return `Option ${'①②③④'[oi]} '${o.gl}' means '${o.t}', which does not match the given word '${w.k}'.`;
+      });
+      const explain = `'${w.k}'은(는) '${w.e}'의 뜻입니다. TOPIK ${lvBand === 1 ? 'I(초급)' : 'II(중·고급)'} 어휘 목록에 포함된 빈출 어휘로, 문장 속에서의 쓰임까지 함께 익혀 두는 것이 효과적입니다.`;
       return {
         id: 'VOCAB' + (i + 1), section: 'reading', type: 'vocab', level: target, points: 2,
         q: LANG === 'ko' ? '다음 단어의 뜻으로 알맞은 것을 고르십시오.' :
            LANG === 'km' ? 'ជ្រើសរើសអត្ថន័យត្រឹមត្រូវរបស់ពាក្យ។' : 'Choose the correct meaning of the word.',
-        passage: w.k, passageGl: 'TOPIK ' + (lvBand === 1 ? 'I' : 'II') + ' · ' + (target <= 2 ? 'Level ' + target : 'Level ' + target),
-        options: opts, correct: opts.findIndex(o => o.t === w.e),
-        explain: w.k + ' = ' + w.e,
+        passage: w.k, passageGl: lvName + ' · Level ' + target,
+        options: opts, correct,
+        explain, optExplain: optEx, optExplainEn: optExEn,
+        tip: LANG === 'ko' ? `'${w.k}'은(는) ${lvName} 핵심 어휘입니다. 비슷한 의미의 어휘들과 함께 묶어 비교하며 암기하면 기억에 오래 남습니다.` :
+             `'${w.k}' is core ${lvName} vocabulary. Grouping it with similar words helps long-term retention.`,
+        tipEn: `'${w.k}' is core ${lvName} vocabulary. Grouping it with similar words helps long-term retention.`,
         freq: 5, freqNote: 'TOPIK 어휘 · 빈출 단어장'
       };
     });

@@ -807,9 +807,19 @@
 .dx-ref-src { flex: 0 0 auto; font-size: 9.5px; font-weight: 800; letter-spacing: .2px; color: #fff; background: var(--ios-purple); border-radius: 6px; padding: 3px 6px; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dx-ref-label { flex: 1 1 auto; font-size: 12px; line-height: 1.35; }
 .dx-ref-go { flex: 0 0 auto; color: var(--ios-secondary-label); font-size: 12px; }
+/* formal intro + grammar point blocks */
+.dx.dx-intro { background: rgba(139, 92, 246, .06); border: 1px dashed rgba(139, 92, 246, .35); color: var(--ios-secondary-label); font-size: 12.5px; line-height: 1.6; }
+.dx.dx-grammar { background: rgba(45, 212, 191, .07); border: 1px solid rgba(45, 212, 191, .30); }
+.dx.dx-grammar .dx-head b { color: var(--ios-teal); }
+.dx-gex { margin-top: 6px; font-size: 13.5px; color: var(--ios-label); background: var(--ios-card); border-radius: 8px; padding: 6px 10px; border: 1px solid var(--ios-separator); }
+.dx-gsej { margin-top: 6px; font-size: 12.5px; line-height: 1.55; color: var(--ios-secondary-label); }
+.dx-glink { display: inline-block; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--ios-purple); text-decoration: none; }
+.dx-glink:active { opacity: .6; }
 [data-theme="dark"] .dx-right { background: rgba(52, 211, 153, .10); }
 [data-theme="dark"] .dx-wrongs { background: rgba(248, 113, 113, .07); }
 [data-theme="dark"] .dx-tip { background: rgba(251, 191, 36, .08); }
+[data-theme="dark"] .dx.dx-grammar { background: rgba(45, 212, 191, .06); }
+[data-theme="dark"] .dx.dx-intro { background: rgba(167, 139, 250, .07); }
 
 /* English only when TIP is on — hidden by default */
 .opt-gloss { display: none; font-size: 12px; color: var(--ios-secondary-label); font-weight: 400; }
