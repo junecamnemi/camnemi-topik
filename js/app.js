@@ -569,11 +569,9 @@ function viewHome() {
   const nm = myCharName();
   const mc = myChar();
   const wxc = wxCached();
-  const sceneFx = wxc ? weatherAnimHTML(weatherType(wxc.code)) : '<span class="wb-cloud c1"></span>';
   const scene = `
     <div class="seoul-scene" id="seoul-scene">
       <img class="scene-landmark" src="assets/img/namsan.svg" alt="Namsan Seoul Tower" draggable="false">
-      <div class="weather-bg scene-fx" id="weather-bg">${sceneFx}</div>
       <div class="scene-top">
         <div class="scene-txt">
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
@@ -590,10 +588,9 @@ function viewHome() {
         <span class="time-chip" id="seoul-clock">${seoulTimeStr()}</span>
       </div>
     </div>`;
-  // fetch Seoul weather in the background and patch in place
+  // fetch Seoul weather in the background and patch in place (chip only)
   fetchSeoulWeather().then(wx => {
     if (!wx) return;
-    const bg = $id('weather-bg'); if (bg) bg.innerHTML = weatherAnimHTML(weatherType(wx.code));
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();

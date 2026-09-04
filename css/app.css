@@ -381,111 +381,30 @@
 .greet-s { font-size: 10.5px; color: var(--ios-secondary-label); font-weight: 600; margin-top: 1px; opacity: .9; }
 /* ---------- Seoul scene card (Namsan landmark + weather/time) ---------- */
 .seoul-scene {
-  position: relative; overflow: hidden; border-radius: 20px;
-  padding: 14px 16px 10px; margin: 2px 2px 12px;
+  position: relative; overflow: hidden; border-radius: 18px;
+  padding: 10px 14px 8px; margin: 2px 2px 10px;
   background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
   border: 1px solid rgba(167,139,250,.16);
-  min-height: 118px;
+  min-height: 0;
 }
+/* Namsan landmark fills the card, vertically centered, larger */
 .seoul-scene .scene-landmark {
-  position: absolute; left: 0; right: 0; bottom: -30px;
-  width: 115%; height: 190px; object-fit: cover; object-position: center 68%;
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 122%; height: auto; max-height: 110%;
   opacity: .6; pointer-events: none; user-select: none;
 }
-.seoul-scene .scene-fx { opacity: 1; z-index: 3; }
-/* weather fx sits above the landmark but below the text */
-.seoul-scene > .weather-bg { z-index: 2; }
-.scene-top, .scene-meta { position: relative; z-index: 4; }
+/* ---------- Weather backdrop (removed — no animated weather over the art) ---------- */
+.scene-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
+.scene-meta { display: flex; align-items: center; gap: 7px; position: relative; z-index: 2; margin-top: 6px; }
 .wx-chip, .time-chip {
   display: inline-flex; align-items: center; gap: 4px;
-  font-size: 12.5px; font-weight: 800; color: var(--ios-label);
-  background: rgba(255,255,255,.6); border: 1px solid rgba(167,139,250,.2);
-  border-radius: 999px; padding: 4px 11px;
+  font-size: 12px; font-weight: 800; color: var(--ios-label);
+  background: rgba(255,255,255,.66); border: 1px solid rgba(167,139,250,.2);
+  border-radius: 999px; padding: 2.5px 10px;
 }
-.scene-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.scene-txt { flex: 1; min-width: 0; }
-.scene-meta { display: flex; align-items: center; gap: 7px; margin-top: 10px; }
 .meta-dot { color: var(--ios-secondary-label); opacity: .5; font-size: 11px; }
-[data-theme="dark"] .wx-chip, [data-theme="dark"] .time-chip { background: rgba(40,35,66,.7); border-color: rgba(245,244,255,.12); }
-/* ---------- Weather backdrop (subtle, behind the greeting) ---------- */
-.weather-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .5; }
-.wb-sun {
-  position: absolute; top: -10px; right: 8px; width: 108px; height: 108px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 214, 90, 1), rgba(255, 214, 90, 0) 70%);
-  animation: wbPulse 2.6s ease-in-out infinite;
-}
-.wb-sun.small { width: 72px; height: 72px; right: 30px; animation-duration: 2.2s; }
-.wb-ray {
-  position: absolute; border-radius: 50%;
-  border: 2px dashed rgba(255, 200, 80, .8);
-  animation: wbSpin 9s linear infinite;
-}
-.wb-ray.r1 { width: 130px; height: 130px; top: -22px; right: -4px; }
-.wb-ray.r2 { width: 162px; height: 162px; top: -40px; right: -19px; animation-direction: reverse; animation-duration: 12s; }
-.wb-ray.r3 { width: 96px; height: 96px; top: -6px; right: 14px; animation-duration: 6.5s; }
-.wb-ray::after {
-  content: ''; position: absolute; inset: -6px; border-radius: 50%;
-  border: 1px dashed rgba(255, 220, 120, .55);
-}
-.wb-cloud {
-  position: absolute; background: rgba(255, 255, 255, .85); border-radius: 24px;
-  animation: wbDrift 12s ease-in-out infinite;
-}
-.wb-cloud::before, .wb-cloud::after {
-  content: ''; position: absolute; background: inherit; border-radius: 50%;
-}
-.wb-cloud.c1 { width: 84px; height: 26px; top: 6px; right: 0; }
-.wb-cloud.c1::before { width: 36px; height: 36px; top: -17px; left: 14px; }
-.wb-cloud.c1::after { width: 26px; height: 26px; top: -11px; right: 12px; }
-.wb-cloud.c2 { width: 56px; height: 18px; top: 52px; right: 26px; opacity: .6; animation-delay: -5s; animation-duration: 16s; }
-.wb-cloud.c2::before { width: 24px; height: 24px; top: -11px; left: 10px; }
-.wb-cloud.c2::after { width: 16px; height: 16px; top: -7px; right: 9px; }
-.wb-drop {
-  position: absolute; top: -10px; width: 3px; height: 22px; border-radius: 3px;
-  background: linear-gradient(rgba(120, 170, 255, .9), rgba(120, 170, 255, 0));
-  animation: wbFall 0.9s linear infinite;
-}
-.wb-flake {
-  position: absolute; top: -10px; width: 9px; height: 9px; border-radius: 50%;
-  background: rgba(255, 255, 255, .95);
-  animation: wbSnow linear infinite;
-}
-.wb-fog {
-  position: absolute; left: 0; right: 0; height: 16px; border-radius: 16px;
-  background: linear-gradient(90deg, transparent, rgba(200, 205, 225, .65), transparent);
-  animation: wbFog 9s ease-in-out infinite;
-}
-.wb-fog.f1 { top: 22px; }
-.wb-fog.f2 { top: 52px; opacity: .6; animation-delay: -3s; animation-duration: 12s; }
-.wb-fog.f3 { top: 80px; opacity: .4; animation-delay: -6s; animation-duration: 15s; }
-.wb-bolt {
-  position: absolute; top: 4px; right: 8px; width: 26px; height: 44px;
-  background: radial-gradient(circle, rgba(255, 235, 120, .95), rgba(255, 235, 120, 0) 75%);
-  clip-path: polygon(55% 0, 30% 45%, 48% 45%, 35% 100%, 75% 38%, 55% 38%);
-  animation: wbBolt 2.6s ease-in-out infinite;
-}
-@keyframes wbSpin { to { transform: rotate(360deg); } }
-@keyframes wbPulse {
-  0%, 100% { transform: scale(1); opacity: .9; }
-  50% { transform: scale(1.16); opacity: 1; filter: brightness(1.12); }
-}
-@keyframes wbDrift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-24px); } }
-@keyframes wbFall {
-  0% { transform: translateY(-8px); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateY(118px); opacity: 0; }
-}
-@keyframes wbSnow {
-  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
-  15% { opacity: 1; }
-  50% { transform: translateY(52px) translateX(14px); }
-  100% { transform: translateY(118px) translateX(-9px); opacity: 0; }
-}
-@keyframes wbFog { 0%, 100% { transform: translateX(-14px); opacity: .4; } 50% { transform: translateX(16px); opacity: .95; } }
-@keyframes wbBolt { 0%, 84%, 100% { opacity: 0; transform: scale(.8); } 88%, 93% { opacity: 1; transform: scale(1.05); } }
-[data-theme="dark"] .wb-cloud { background: rgba(160, 155, 200, .55); }
-[data-theme="dark"] .wb-flake { background: rgba(220, 220, 255, .9); }
-[data-theme="dark"] .wb-fog { background: linear-gradient(90deg, transparent, rgba(150, 150, 200, .5), transparent); }
+[data-theme="dark"] .wx-chip, [data-theme="dark"] .time-chip { background: rgba(40,35,66,.72); border-color: rgba(245,244,255,.12); }
+
 .greet-avatar {
   width: 66px; height: 66px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
