@@ -565,29 +565,38 @@ function viewHome() {
   const lvl = xpProgress();
   const goalTotal = 10;
   const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
-  // Greeting — Hi, {character name}! 👋 (character is the unified identity)
+  // Greeting — Hi, {character name}! 👋 inside a Seoul-scene card
   const nm = myCharName();
   const mc = myChar();
   const wxc = wxCached();
-  const greet = `
-    <div class="home-greet">
-      <div class="weather-bg" id="weather-bg">${wxc ? weatherAnimHTML(weatherType(wxc.code)) : ''}</div>
-      <div style="flex:1;min-width:0;position:relative;z-index:1;">
-        <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
-        <p class="greet-s">${t('home_greet_sub')}</p>
-        <p class="greet-wx" id="greet-wx">${wxc ? greetWxText(wxc) : ''}</p>
+  const sceneFx = wxc ? weatherAnimHTML(weatherType(wxc.code)) : '<span class="wb-cloud c1"></span>';
+  const scene = `
+    <div class="seoul-scene" id="seoul-scene">
+      <img class="scene-landmark" src="assets/img/namsan.svg" alt="Namsan Seoul Tower" draggable="false">
+      <div class="weather-bg scene-fx" id="weather-bg">${sceneFx}</div>
+      <div class="scene-top">
+        <div class="scene-txt">
+          <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
+          <p class="greet-s">${t('home_greet_sub')}</p>
+        </div>
+        <div class="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
+          <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
+          <span class="avatar-edit">✎</span>
+        </div>
       </div>
-      <div class="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
-        <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
-        <span class="avatar-edit">✎</span>
+      <div class="scene-meta">
+        <span class="wx-chip" id="wx-chip">${wxc ? greetWxText(wxc) : (LANG === 'ko' ? '서울 · --°' : 'Seoul · --°')}</span>
+        <span class="meta-dot">•</span>
+        <span class="time-chip" id="seoul-clock">${seoulTimeStr()}</span>
       </div>
     </div>`;
-  // fetch Seoul weather in the background (only when cache is missing) and patch in place
-  if (!wxc) fetchSeoulWeather().then(wx => {
+  // fetch Seoul weather in the background and patch in place
+  fetchSeoulWeather().then(wx => {
     if (!wx) return;
     const bg = $id('weather-bg'); if (bg) bg.innerHTML = weatherAnimHTML(weatherType(wx.code));
-    const wl = $id('greet-wx'); if (wl) wl.textContent = greetWxText(wx);
+    const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
+  tickClock();
   // Daily Goal — compact single-line bar (clean) with the helper cat
   const dailyGoal = `
     <div class="dg-mini">
@@ -643,7 +652,7 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   return `
-    ${greet}
+    ${scene}
     ${dailyGoal}
     ${aiQuick}
     ${weekBlock}
@@ -784,6 +793,28 @@ function toggleHomeTask(k) {
 /* ================= Seoul weather (subtle animated backdrop behind the greeting) ================= */
 const WX_LS = 'camnemi_topik_weather';
 const WX_CACHE_MS = 10 * 60 * 1000;      // 10-minute cache
+/* Seoul local time (Asia/Seoul), e.g. 오후 2:30 or 2:30 PM */
+function seoulTimeStr() {
+  try {
+    const loc = LANG === 'ko' ? 'ko-KR' : 'en-US';
+    return new Intl.DateTimeFormat(loc, { timeZone: 'Asia/Seoul', hour: 'numeric', minute: '2-digit' }).format(new Date());
+  } catch (e) {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+/* refresh #seoul-clock every 20s while visible */
+let _wxClockTimer = null;
+function tickClock() {
+  const el = $id('seoul-clock');
+  if (!el) return;
+  el.textContent = seoulTimeStr();
+  if (!_wxClockTimer) {
+    _wxClockTimer = setInterval(() => {
+      const e = $id('seoul-clock');
+      if (e && e.isConnected) e.textContent = seoulTimeStr();
+    }, 20000);
+  }
+}
 function wxCached() {
   try {
     const c = JSON.parse(localStorage.getItem(WX_LS) || 'null');

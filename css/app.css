@@ -376,81 +376,109 @@
 .aq-btn { flex: 1; border-radius: 14px; padding: 11px 8px; font-size: 12.5px; }
 
 /* ---------- Home greeting (Aiko style) ---------- */
-.home-greet { display: flex; align-items: center; gap: 12px; margin: 2px 2px 10px; position: relative; overflow: hidden; min-height: 74px; padding: 6px 2px; }
+.home-greet { display: flex; align-items: center; gap: 12px; }
 .greet-h { font-size: 20px; font-weight: 800; color: var(--ios-label); line-height: 1.25; }
 .greet-s { font-size: 12px; color: var(--ios-secondary-label); font-weight: 600; margin-top: 1px; }
-.greet-wx { font-size: 11px; font-weight: 700; color: var(--ios-secondary-label); margin-top: 3px; opacity: .85; }
+/* ---------- Seoul scene card (Namsan landmark + weather/time) ---------- */
+.seoul-scene {
+  position: relative; overflow: hidden; border-radius: 20px;
+  padding: 14px 16px 10px; margin: 2px 2px 12px;
+  background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
+  border: 1px solid rgba(167,139,250,.16);
+  min-height: 118px;
+}
+.seoul-scene .scene-landmark {
+  position: absolute; left: 0; right: 0; bottom: -26px;
+  width: 100%; height: 158px; object-fit: cover; object-position: center 72%;
+  opacity: .2; pointer-events: none; user-select: none;
+}
+.seoul-scene .scene-fx { opacity: .85; }
+.scene-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
+.scene-txt { flex: 1; min-width: 0; }
+.scene-meta {
+  display: flex; align-items: center; gap: 7px; position: relative; z-index: 2;
+  margin-top: 10px;
+}
+.wx-chip, .time-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12.5px; font-weight: 800; color: var(--ios-label);
+  background: rgba(255,255,255,.55); border: 1px solid rgba(167,139,250,.2);
+  border-radius: 999px; padding: 4px 11px;
+}
+.meta-dot { color: var(--ios-secondary-label); opacity: .5; font-size: 11px; }
+[data-theme="dark"] .wx-chip, [data-theme="dark"] .time-chip { background: rgba(40,35,66,.7); border-color: rgba(245,244,255,.12); }
 /* ---------- Weather backdrop (subtle, behind the greeting) ---------- */
 .weather-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .5; }
-.home-greet > div:not(.weather-bg) { position: relative; z-index: 1; }
+.seoul-scene > .weather-bg { z-index: 1; }
+.scene-top, .scene-meta { z-index: 2; }
 .wb-sun {
-  position: absolute; top: 2px; right: 34px; width: 52px; height: 52px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 210, 90, .9), rgba(255, 210, 90, 0) 68%);
+  position: absolute; top: -6px; right: 16px; width: 96px; height: 96px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 210, 90, .95), rgba(255, 210, 90, 0) 70%);
   animation: wbPulse 5s ease-in-out infinite;
 }
-.wb-sun.small { width: 36px; height: 36px; right: 52px; }
+.wb-sun.small { width: 64px; height: 64px; right: 30px; }
 .wb-ray {
   position: absolute; border-radius: 50%;
-  border: 1.5px dashed rgba(255, 200, 80, .55);
+  border: 2px dashed rgba(255, 200, 80, .65);
   animation: wbSpin 26s linear infinite;
 }
-.wb-ray.r1 { width: 66px; height: 66px; top: -6px; right: 27px; }
-.wb-ray.r2 { width: 84px; height: 84px; top: -15px; right: 18px; animation-direction: reverse; animation-duration: 34s; }
-.wb-ray.r3 { width: 48px; height: 48px; top: 3px; right: 36px; animation-duration: 18s; }
+.wb-ray.r1 { width: 118px; height: 118px; top: -18px; right: 5px; }
+.wb-ray.r2 { width: 150px; height: 150px; top: -35px; right: -10px; animation-direction: reverse; animation-duration: 34s; }
+.wb-ray.r3 { width: 86px; height: 86px; top: -2px; right: 22px; animation-duration: 18s; }
 .wb-cloud {
-  position: absolute; background: rgba(255, 255, 255, .75); border-radius: 24px;
+  position: absolute; background: rgba(255, 255, 255, .85); border-radius: 24px;
   animation: wbDrift 12s ease-in-out infinite;
 }
 .wb-cloud::before, .wb-cloud::after {
   content: ''; position: absolute; background: inherit; border-radius: 50%;
 }
-.wb-cloud.c1 { width: 46px; height: 15px; top: 12px; right: 6px; }
-.wb-cloud.c1::before { width: 20px; height: 20px; top: -9px; left: 8px; }
-.wb-cloud.c1::after { width: 14px; height: 14px; top: -6px; right: 7px; }
-.wb-cloud.c2 { width: 30px; height: 10px; top: 34px; right: 30px; opacity: .55; animation-delay: -5s; animation-duration: 16s; }
-.wb-cloud.c2::before { width: 13px; height: 13px; top: -6px; left: 5px; }
-.wb-cloud.c2::after { width: 9px; height: 9px; top: -4px; right: 5px; }
+.wb-cloud.c1 { width: 84px; height: 26px; top: 6px; right: 0; }
+.wb-cloud.c1::before { width: 36px; height: 36px; top: -17px; left: 14px; }
+.wb-cloud.c1::after { width: 26px; height: 26px; top: -11px; right: 12px; }
+.wb-cloud.c2 { width: 56px; height: 18px; top: 52px; right: 26px; opacity: .6; animation-delay: -5s; animation-duration: 16s; }
+.wb-cloud.c2::before { width: 24px; height: 24px; top: -11px; left: 10px; }
+.wb-cloud.c2::after { width: 16px; height: 16px; top: -7px; right: 9px; }
 .wb-drop {
-  position: absolute; top: -8px; width: 2px; height: 14px; border-radius: 2px;
-  background: linear-gradient(rgba(120, 170, 255, .8), rgba(120, 170, 255, 0));
+  position: absolute; top: -10px; width: 3px; height: 22px; border-radius: 3px;
+  background: linear-gradient(rgba(120, 170, 255, .9), rgba(120, 170, 255, 0));
   animation: wbFall 0.9s linear infinite;
 }
 .wb-flake {
-  position: absolute; top: -8px; width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255, 255, 255, .9);
+  position: absolute; top: -10px; width: 9px; height: 9px; border-radius: 50%;
+  background: rgba(255, 255, 255, .95);
   animation: wbSnow linear infinite;
 }
 .wb-fog {
-  position: absolute; left: 0; right: 0; height: 10px; border-radius: 10px;
-  background: linear-gradient(90deg, transparent, rgba(200, 205, 225, .6), transparent);
+  position: absolute; left: 0; right: 0; height: 16px; border-radius: 16px;
+  background: linear-gradient(90deg, transparent, rgba(200, 205, 225, .65), transparent);
   animation: wbFog 9s ease-in-out infinite;
 }
-.wb-fog.f1 { top: 16px; }
-.wb-fog.f2 { top: 32px; opacity: .6; animation-delay: -3s; animation-duration: 12s; }
-.wb-fog.f3 { top: 48px; opacity: .4; animation-delay: -6s; animation-duration: 15s; }
+.wb-fog.f1 { top: 22px; }
+.wb-fog.f2 { top: 52px; opacity: .6; animation-delay: -3s; animation-duration: 12s; }
+.wb-fog.f3 { top: 80px; opacity: .4; animation-delay: -6s; animation-duration: 15s; }
 .wb-bolt {
-  position: absolute; top: 8px; right: 20px; width: 18px; height: 30px;
+  position: absolute; top: 4px; right: 8px; width: 26px; height: 44px;
   background: radial-gradient(circle, rgba(255, 235, 120, .95), rgba(255, 235, 120, 0) 75%);
   clip-path: polygon(55% 0, 30% 45%, 48% 45%, 35% 100%, 75% 38%, 55% 38%);
   animation: wbBolt 2.6s ease-in-out infinite;
 }
 @keyframes wbSpin { to { transform: rotate(360deg); } }
 @keyframes wbPulse { 0%, 100% { transform: scale(1); opacity: .85; } 50% { transform: scale(1.12); opacity: 1; } }
-@keyframes wbDrift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-18px); } }
+@keyframes wbDrift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-24px); } }
 @keyframes wbFall {
-  0% { transform: translateY(-6px); opacity: 0; }
+  0% { transform: translateY(-8px); opacity: 0; }
   20% { opacity: 1; }
-  100% { transform: translateY(76px); opacity: 0; }
+  100% { transform: translateY(118px); opacity: 0; }
 }
 @keyframes wbSnow {
-  0% { transform: translateY(-8px) translateX(0); opacity: 0; }
+  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
   15% { opacity: 1; }
-  50% { transform: translateY(32px) translateX(9px); }
-  100% { transform: translateY(76px) translateX(-6px); opacity: 0; }
+  50% { transform: translateY(52px) translateX(14px); }
+  100% { transform: translateY(118px) translateX(-9px); opacity: 0; }
 }
-@keyframes wbFog { 0%, 100% { transform: translateX(-10px); opacity: .4; } 50% { transform: translateX(12px); opacity: .9; } }
+@keyframes wbFog { 0%, 100% { transform: translateX(-14px); opacity: .4; } 50% { transform: translateX(16px); opacity: .95; } }
 @keyframes wbBolt { 0%, 84%, 100% { opacity: 0; transform: scale(.8); } 88%, 93% { opacity: 1; transform: scale(1.05); } }
-[data-theme="dark"] .wb-cloud { background: rgba(160, 155, 200, .5); }
+[data-theme="dark"] .wb-cloud { background: rgba(160, 155, 200, .55); }
 [data-theme="dark"] .wb-flake { background: rgba(220, 220, 255, .9); }
 [data-theme="dark"] .wb-fog { background: linear-gradient(90deg, transparent, rgba(150, 150, 200, .5), transparent); }
 .greet-avatar {
