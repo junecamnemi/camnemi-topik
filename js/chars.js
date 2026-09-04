@@ -168,10 +168,10 @@ function selectChar(id) {
   // selecting a character applies its default name (custom name resets to the char's own name)
   localStorage.removeItem('camnemi_topik_char_name');
   setMyChar(id);
-  const g = _charTab;
-  const grid = $id('char-grid');
-  if (grid) grid.innerHTML = charGridHTML(g);
-  renderCharPickerHead();
+  // close the picker and re-render — home avatar/name update immediately,
+  // and the expression cycle restarts with the new character's face
+  closeCharPicker();
+  render();
 }
 function renderCharPickerHead() {
   const ov = $id('char-picker');
@@ -223,4 +223,5 @@ function saveCharName() {
   setMyCharName(inp.value);
   toast(LANG === 'ko' ? '💖 이름이 저장됐어요!' : LANG === 'km' ? '💖 ឈ្មោះត្រូវបានរក្សាទុក!' : '💖 Name saved!');
   closeCharPicker();
+  render();
 }

@@ -579,9 +579,9 @@ function viewHome() {
           <p class="greet-s">${t('home_greet_sub')}</p>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:2;">
-          <div class="greet-avatar" id="greet-avatar" onclick="randomFx(event)" title="${LANG==='ko'?'캐릭터를 누르면 표정이 바뀌어요':'Tap to change expression'}">
+          <div class="greet-avatar" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
             <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
-            <span class="avatar-edit" onclick="event.stopPropagation();openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎</span>
+            <span class="avatar-edit">✎</span>
           </div>
         </div>
       </div>
@@ -726,14 +726,6 @@ function showFx(i) {
   probe.src = target;
 }
 function nextFx() { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); }
-/* tap the avatar → jump to a RANDOM different expression (auto-cycle keeps running) */
-function randomFx(ev) {
-  if (ev) ev.stopPropagation();
-  let n;
-  do { n = Math.floor(Math.random() * FX_MOODS.length); } while (n === _fxIdx && FX_MOODS.length > 1);
-  _fxIdx = n;
-  showFx(_fxIdx);
-}
 function startFxCycle() {
   if (_fxTimer) clearInterval(_fxTimer);
   if ($id('greet-avatar')) {
