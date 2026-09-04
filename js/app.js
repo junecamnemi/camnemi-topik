@@ -1698,6 +1698,8 @@ const TYPE_LABELS = {
   sentence_pos: '문장위치', reply: '대답고르기', place: '장소', topic: '주제',
   intent: '의도', detail: '세부사항', flow: '흐름', synonym: '동의어',
   notice: '안내문', comprehension: '내용이해', long: '장문',
+  blank_fill: '빈칸채우기', same_content: '내용일치', headline_desc: '제목이해',
+  insert_sentence: '문장넣기', attitude: '글쓴이태도', purpose: '글의목적',
   writing_short: '쓰기·단답', writing_letter: '쓰기·편지'
 };
 const TYPE_LABELS_EN = {
@@ -1705,6 +1707,8 @@ const TYPE_LABELS_EN = {
   sentence_pos: 'Sentence position', reply: 'Reply', place: 'Place', topic: 'Topic',
   intent: 'Intent', detail: 'Detail', flow: 'Flow', synonym: 'Synonym',
   notice: 'Notice', comprehension: 'Comprehension', long: 'Long passage',
+  blank_fill: 'Fill in blank', same_content: 'Content match', headline_desc: 'Headline',
+  insert_sentence: 'Insert sentence', attitude: "Writer's attitude", purpose: 'Purpose',
   writing_short: 'Writing · short', writing_letter: 'Writing · letter'
 };
 function typeLabel(t) {
@@ -1725,8 +1729,10 @@ function smartRecCard(acc) {
       </div></div>`;
   }
   const label = typeLabel(weak.k);
-  const icoName = { grammar:'mock', vocab:'notes', main_idea:'tip', order:'progress', sentence_pos:'target', topic:'listen', place:'schedule', intent:'target', comprehension:'notes', writing_short:'mock', writing_letter:'mock' }[weak.k] || 'target';
-  const icoColor = { grammar:'var(--ios-red)', vocab:'var(--ios-green)', main_idea:'var(--ios-blue)', order:'var(--ios-orange)', sentence_pos:'var(--ios-blue)', topic:'var(--ios-teal)', place:'var(--ios-orange)', intent:'var(--ios-red)', comprehension:'var(--ios-blue)', writing_short:'var(--ios-green)', writing_letter:'var(--ios-green)' }[weak.k] || 'var(--ios-blue)';
+  const icoName = { grammar:'mock', vocab:'notes', main_idea:'tip', order:'progress', sentence_pos:'target', topic:'listen', place:'schedule', intent:'target', comprehension:'notes', writing_short:'mock', writing_letter:'mock',
+    blank_fill:'edit', same_content:'notes', headline_desc:'chart', insert_sentence:'progress', attitude:'tip', purpose:'target' }[weak.k] || 'target';
+  const icoColor = { grammar:'var(--ios-red)', vocab:'var(--ios-green)', main_idea:'var(--ios-blue)', order:'var(--ios-orange)', sentence_pos:'var(--ios-blue)', topic:'var(--ios-teal)', place:'var(--ios-orange)', intent:'var(--ios-red)', comprehension:'var(--ios-blue)', writing_short:'var(--ios-green)', writing_letter:'var(--ios-green)',
+    blank_fill:'var(--ios-teal)', same_content:'var(--ios-blue)', headline_desc:'var(--ios-orange)', insert_sentence:'var(--ios-purple)', attitude:'var(--ios-pink)', purpose:'var(--ios-blue)' }[weak.k] || 'var(--ios-blue)';
   return `<div class="app-card smart-card" style="border:1.5px solid var(--ios-blue);">
     <div class="row">
       <div style="color:${icoColor};margin-right:10px;">${ic(icoName, 24)}</div>

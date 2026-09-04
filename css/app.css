@@ -27,6 +27,7 @@
   --ios-orange: #FB923C;
   --ios-teal: #2DD4BF;
   --ios-pink: #F472B6;
+  --ios-purple: #8B5CF6;
   --ios-gray: #9A92C4;
   --ios-shadow: rgba(123, 108, 246, .12);
   --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
@@ -50,6 +51,7 @@
   --ios-orange: #FBBF24;
   --ios-teal: #22D3EE;
   --ios-pink: #F472B6;
+  --ios-purple: #A78BFA;
   --ios-gray: #B4ADD6;
   --ios-shadow: rgba(0, 0, 0, .45);
   --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
