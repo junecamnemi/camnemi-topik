@@ -2,12 +2,12 @@
   <!-- Namsan + N Seoul Tower — soft animation-style pastel illustration -->
 
   <!-- far hills -->
-  <path d="M0 340V250C70 228 140 240 210 226C290 210 360 238 430 224L520 208C610 192 690 226 780 214C840 206 875 220 900 212V340Z" fill="#A9BCE0" opacity="0.6"/>
+  <path d="M0 340V250C70 228 140 240 210 226C290 210 360 238 430 224L520 208C610 192 690 226 780 214C840 206 875 220 900 212V340Z" fill="#8BA3D4" opacity="0.6"/>
   <!-- Namsan hill (tower stands on the peak ~x560) -->
-  <path d="M0 340V292C90 272 180 288 270 278C360 268 440 286 520 276C545 272 556 268 560 262C564 268 578 272 610 276C700 286 800 272 900 282V340Z" fill="#8BA6D2" opacity="0.75"/>
+  <path d="M0 340V292C90 272 180 288 270 278C360 268 440 286 520 276C545 272 556 268 560 262C564 268 578 272 610 276C700 286 800 272 900 282V340Z" fill="#6E89C4" opacity="0.75"/>
 
   <!-- trees on the ridge -->
-  <g fill="#7C98C8" opacity="0.85">
+  <g fill="#5F7BB8" opacity="0.85">
     <path d="M120 284 Q128 258 136 284Z"/><rect x="126.5" y="283" width="3" height="12" rx="1"/>
     <path d="M170 288 Q178 266 186 288Z"/><rect x="176.5" y="287" width="3" height="10" rx="1"/>
     <path d="M250 282 Q257 262 264 282Z"/><rect x="255" y="281" width="3" height="11" rx="1"/>
@@ -21,16 +21,16 @@
   <!-- N Seoul Tower group (peak x=560, hill top y≈262) -->
   <g>
     <!-- pylon -->
-    <path d="M548 262 L560 232 L572 262Z" fill="#B7C6E6" opacity="0.95"/>
+    <path d="M548 262 L560 232 L572 262Z" fill="#93A9D9" opacity="0.95"/>
     <!-- observation deck drum -->
-    <rect x="540" y="220" width="40" height="14" rx="6" fill="#DCE5F6"/>
-    <rect x="552" y="208" width="16" height="12" rx="3" fill="#E9EEFA"/>
+    <rect x="540" y="220" width="40" height="14" rx="6" fill="#C3D2EE"/>
+    <rect x="552" y="208" width="16" height="12" rx="3" fill="#D5DEF4"/>
     <!-- tapering spire -->
-    <path d="M552 208 L560 172 L568 208Z" fill="#C6D3EE"/>
+    <path d="M552 208 L560 172 L568 208Z" fill="#A8BCE3"/>
     <!-- antenna -->
-    <line x1="560" y1="172" x2="560" y2="140" stroke="#9DB2DC" stroke-width="3" stroke-linecap="round"/>
-    <line x1="557" y1="166" x2="563" y2="166" stroke="#9DB2DC" stroke-width="2"/>
-    <line x1="557" y1="158" x2="563" y2="158" stroke="#9DB2DC" stroke-width="1.6"/>
+    <line x1="560" y1="172" x2="560" y2="140" stroke="#7E96C9" stroke-width="3" stroke-linecap="round"/>
+    <line x1="557" y1="166" x2="563" y2="166" stroke="#7E96C9" stroke-width="2"/>
+    <line x1="557" y1="158" x2="563" y2="158" stroke="#7E96C9" stroke-width="1.6"/>
 
     <!-- deck lights (twinkling) -->
     <circle cx="546" cy="226" r="1.7" fill="#FFE9A8"><animate attributeName="opacity" values="0.25;1;0.25" dur="2.2s" repeatCount="indefinite"/></circle>
@@ -42,7 +42,7 @@
   </g>
 
   <!-- drifting birds -->
-  <g stroke="#6E88BB" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7">
+  <g stroke="#58719F" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7">
     <path d="M300 200 q7 -5 14 0 q7 -5 14 0">
       <animateMotion dur="16s" repeatCount="indefinite" path="M0,0 C60,-26 120,-26 200,-2 C-40,-16 -120,-10 -260,6"/>
     </path>
