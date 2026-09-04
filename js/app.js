@@ -449,6 +449,40 @@ function freqBadge(q) {
   return `<span class="q-freq" title="${esc(f.note)}">${ic('schedule', 11)} ${esc(f.note)}</span>`;
 }
 
+/* ---------- Professional references (국립국어원 / 세종학당재단 / NIIED) ---------- */
+function refsFor(q) {
+  const ko = LANG === 'ko';
+  const refs = [];
+  const lv = q.level || 3;
+  const band = lv <= 2 ? (ko ? '초급(1A~2B)' : 'Beginner (1A–2B)')
+            : lv <= 4 ? (ko ? '중급(3A~4B)' : 'Intermediate (3A–4B)')
+            : (ko ? '고급(5A~6B)' : 'Advanced (5A–6B)');
+  const p = (q.passage || '').trim();
+  // 1) dictionary deep-links when the target word is directly available
+  if (/^[가-힣]+$/.test(p) && p.length <= 20) {
+    const enc = encodeURIComponent(p);
+    refs.push({ src: ko ? '국립국어원 우리말샘' : 'NIKL Open Dictionary',
+      label: ko ? `'${p}' 뜻과 용례 검색` : `Search '${p}' — meaning & usage`,
+      url: 'https://opendict.korean.go.kr/search/searchResult?searchType=all&query=' + enc });
+    refs.push({ src: '표준국어대사전',
+      label: ko ? `'${p}' 표준어 뜻풀이 보기` : `'${p}' in the Standard Korean Dictionary`,
+      url: 'https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&searchKeyword=' + enc });
+  } else {
+    refs.push({ src: '표준국어대사전',
+      label: ko ? '국립국어원 표준국어대사전 — 어휘 뜻 확인' : 'Standard Korean Dictionary (NIKL) — word meanings',
+      url: 'https://stdict.korean.go.kr/' });
+  }
+  // 2) Sejong textbook matching this question's level band
+  refs.push({ src: '세종학당재단',
+    label: ko ? `누리 세종학당 — 세종한국어 ${band} 교재(E-book·PDF)에서 같은 문법·표현 복습` : `Nuri Sejong Institute — review the same grammar/expression in Sejong Korean ${band}`,
+    url: 'https://nuri.iksi.or.kr/front/main/main.do?language=' + (ko ? 'ko' : 'en') });
+  // 3) official TOPIK site
+  refs.push({ src: 'NIIED',
+    label: ko ? 'TOPIK 공식 누리집 — 시험 안내·기출 자료' : 'Official TOPIK (NIIED) — test guide & past papers',
+    url: 'https://www.topik.go.kr/' });
+  return refs;
+}
+
 /* ---------- Detailed explanation (why each option is right/wrong) ---------- */
 function explainBlock(q) {
   const ko = LANG === 'ko';
@@ -483,6 +517,11 @@ function explainBlock(q) {
   if (tipTxt) {
     h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(tipTxt)}</div></div>`;
   }
+  // 전문 참고자료 — 국립국어원 사전 / 세종학당 교재 / TOPIK 공식
+  const refs = refsFor(q);
+  h += `<div class="dx dx-ref"><div class="dx-head"><b>📚 ${ko ? '전문 참고자료' : 'References'}</b></div><div class="dx-refs">` +
+    refs.map(r => `<a class="dx-ref-link" href="${escAttr(r.url)}" target="_blank" rel="noopener"><span class="dx-ref-src">${esc(r.src)}</span><span class="dx-ref-label">${esc(r.label)}</span><span class="dx-ref-go">↗</span></a>`).join('') +
+    `</div></div>`;
   return h;
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }

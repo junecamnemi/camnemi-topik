@@ -798,6 +798,15 @@
 .dx-why { color: var(--ios-secondary-label); font-size: 12.5px; margin-top: 2px; }
 .dx-tip { background: rgba(245, 158, 11, .08); border: 1px solid rgba(245, 158, 11, .22); }
 .dx-tip .dx-head b { color: var(--ios-orange); }
+/* professional reference block (국립국어원 · 세종학당 · NIIED) */
+.dx.dx-ref { background: rgba(139, 92, 246, .07); border: 1px solid rgba(139, 92, 246, .20); }
+.dx.dx-ref .dx-head b { color: var(--ios-purple); }
+.dx-refs { display: flex; flex-direction: column; gap: 6px; }
+.dx-ref-link { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ios-label); padding: 7px 9px; border-radius: 10px; background: var(--ios-card); border: 1px solid var(--ios-separator); transition: transform .1s, border-color .1s; }
+.dx-ref-link:active { transform: scale(.98); border-color: var(--ios-purple); }
+.dx-ref-src { flex: 0 0 auto; font-size: 9.5px; font-weight: 800; letter-spacing: .2px; color: #fff; background: var(--ios-purple); border-radius: 6px; padding: 3px 6px; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dx-ref-label { flex: 1 1 auto; font-size: 12px; line-height: 1.35; }
+.dx-ref-go { flex: 0 0 auto; color: var(--ios-secondary-label); font-size: 12px; }
 [data-theme="dark"] .dx-right { background: rgba(52, 211, 153, .10); }
 [data-theme="dark"] .dx-wrongs { background: rgba(248, 113, 113, .07); }
 [data-theme="dark"] .dx-tip { background: rgba(251, 191, 36, .08); }
