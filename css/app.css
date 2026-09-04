@@ -510,29 +510,53 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .goal-card:active { transform: scale(.98); }
 .goal-card .sub { color: var(--ios-secondary-label); font-weight: 600; }
 
-/* ---------- Quick-start 4-card grid (no wrapper) ---------- */
-.aq-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+/* ---------- Quick-start 4-card grid — ONE merged card with a flowing brand gradient ----------
+   The four cells sit flush inside a single rounded card; the character brand
+   gradient animates across the WHOLE card (background-position drift), so the
+   four look like one living AI surface. Thin inner dividers keep them distinct. */
+.aq-4 {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; margin-top: 16px;
+  border-radius: 22px; overflow: hidden;
+  position: relative;
+  background: var(--grad-brand);
+  background-size: 320% 320%;
+  animation: aqFlow 14s ease-in-out infinite;
+  box-shadow: 0 8px 22px rgba(20,16,50,.28);
+  border: 1px solid rgba(255,255,255,.14);
+}
+@keyframes aqFlow {
+  0%   { background-position: 0% 50%; }
+  33%  { background-position: 100% 20%; }
+  66%  { background-position: 40% 100%; }
+  100% { background-position: 0% 50%; }
+}
+/* one soft corner shine over the whole merged card */
+.aq-4::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  border-radius: 22px;
+  background: radial-gradient(60% 85% at 86% 0%, rgba(255,255,255,.16), transparent 55%);
+}
 .aq-cell {
-  position: relative; overflow: hidden;
+  position: relative;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   border: none; cursor: pointer; text-align: left;
-  padding: 19px 16px; border-radius: 20px;
+  padding: 20px 18px; border-radius: 0;
   font-family: var(--font);
+  background: transparent;
   color: var(--on-brand, #fff);
-  box-shadow: 0 8px 20px rgba(20,16,50,.25), inset 0 1px 0 rgba(255,255,255,.18);
-  transition: transform .13s, box-shadow .15s, filter .15s;
+  transition: transform .13s, filter .15s, background .15s;
 }
-.aq-cell:active { transform: scale(.95); filter: brightness(.93); }
-/* soft corner shine — keeps the card pretty without icons */
-.aq-cell::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(70% 90% at 88% 8%, rgba(255,255,255,.16), transparent 55%);
-}
-.aq-cell .aq-txt { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.aq-cell:active { filter: brightness(.9); }
+.aq-cell:hover { background: color-mix(in srgb, var(--on-brand, #fff) 6%, transparent); }
+/* inner dividers — a single card divided into four sections */
+.aq-cell:nth-child(1), .aq-cell:nth-child(2) { border-bottom: 1px solid color-mix(in srgb, var(--on-brand, #fff) 22%, transparent); }
+.aq-cell:nth-child(odd) { border-right: 1px solid color-mix(in srgb, var(--on-brand, #fff) 22%, transparent); }
+.aq-cell .aq-txt { position: relative; z-index: 2; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .aq-cell b { font-size: 16.5px; font-weight: 800; line-height: 1.15; }
 .aq-cell .aq-sub { font-size: 11px; font-weight: 600; opacity: .92; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .aq-cell .aq-arr {
-  position: relative; z-index: 1; flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+  position: relative; z-index: 2; flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
   background: color-mix(in srgb, var(--on-brand, #fff) 22%, transparent);
   border: 1.5px solid color-mix(in srgb, var(--on-brand, #fff) 45%, transparent);
   display: flex; align-items: center; justify-content: center;
@@ -540,12 +564,6 @@ body.has-back .app-header .brand { margin-left: 34px; }
   transition: transform .13s;
 }
 .aq-cell:active .aq-arr { transform: translateX(2px); }
-/* quick cards share the SAME brand gradient as the TOPIK-session badge (--grad-brand),
-   only the angle differs so the four stay distinguishable */
-.aq-r { background: var(--grad-a, var(--grad-brand)); }
-.aq-l { background: var(--grad-b, var(--grad-brand)); }
-.aq-v { background: var(--grad-c, var(--grad-brand)); }
-.aq-m { background: var(--grad-d, var(--grad-brand)); }
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
