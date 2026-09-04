@@ -67,7 +67,7 @@ const LS = {
 const T = {
   en: {
     nav_home: 'Home', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_rank: 'Ranking', nav_my: 'My',
-    rank_title: 'Ranking', rank_sub: 'Learners ranked by accuracy · solved · level', rank_acc: 'Accuracy', rank_solved: 'Solved', rank_level: 'Level score', rank_me: 'You', rank_no_data: 'No ranking data yet — solve questions to join!',
+    rank_title: 'Ranking', rank_sub: 'Learners ranked by accuracy · solved · level', rank_acc: 'Accuracy', rank_solved: 'Solved', rank_level: 'Level score', rank_me: 'You', rank_no_data: 'No ranking data yet — solve questions to join!', rank_top_of: 'Top {n} of {total} learners',
     home_sub: 'AI questions · daily mocks · weak-spot review',
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
     btn_today: 'Daily 10', btn_mock: 'Mock Test', btn_read: 'Start reading',
@@ -145,7 +145,7 @@ const T = {
   },
   ko: {
     nav_home: '홈', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_rank: '랭킹', nav_my: 'MY',
-    rank_title: '랭킹', rank_sub: '정답률 · 푼 문제 · 레벨점수 순위', rank_acc: '정답률', rank_solved: '푼 문제', rank_level: '레벨점수', rank_me: '나', rank_no_data: '아직 랭킹 데이터가 없어요 — 문제를 풀어 참여하세요!',
+    rank_title: '랭킹', rank_sub: '정답률 · 푼 문제 · 레벨점수 순위', rank_acc: '정답률', rank_solved: '푼 문제', rank_level: '레벨점수', rank_me: '나', rank_no_data: '아직 랭킹 데이터가 없어요 — 문제를 풀어 참여하세요!', rank_top_of: '상위 {n}명 · 전체 {total}명',
     home_sub: 'AI 문제 · 매일 모의고사 · 취약점 복습',
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
     btn_today: '데일리 10', btn_mock: '모의고사', btn_read: '리딩 시작',
@@ -223,7 +223,7 @@ const T = {
   },
   km: {
     nav_home: 'ទំព័រដើម', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_rank: 'ចំណាត់ថ្នាក់', nav_my: 'ខ្ញុំ',
-    rank_title: 'ចំណាត់ថ្នាក់', rank_sub: 'ចំណាត់ថ្នាក់តាម ភាពត្រឹមត្រូវ · សំណួរ · ពិន្ទុកម្រិត', rank_acc: 'ភាពត្រឹមត្រូវ', rank_solved: 'បានដោះស្រាយ', rank_level: 'ពិន្ទុកម្រិត', rank_me: 'អ្នក', rank_no_data: 'មិនទាន់មានទិន្នន័យ — ដោះស្រាយសំណួរដើម្បីចូលរួម!',
+    rank_title: 'ចំណាត់ថ្នាក់', rank_sub: 'ចំណាត់ថ្នាក់តាម ភាពត្រឹមត្រូវ · សំណួរ · ពិន្ទុកម្រិត', rank_acc: 'ភាពត្រឹមត្រូវ', rank_solved: 'បានដោះស្រាយ', rank_level: 'ពិន្ទុកម្រិត', rank_me: 'អ្នក', rank_no_data: 'មិនទាន់មានទិន្នន័យ — ដោះស្រាយសំណួរដើម្បីចូលរួម!', rank_top_of: 'កំពូល {n} នៃ {total} នាក់',
     home_sub: 'សំណួរ AI · ប្រឡងសាកប្រចាំថ្ងៃ · ពិនិត្យចំណុចខ្សោយ',
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
     btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក', btn_read: 'ចាប់ផ្តើមអាន',
@@ -593,16 +593,17 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // AI quick-start — solve reading/listening right away (no timer, no stats)
+  // AI quick-start — solve reading/listening right away (animated AI gradient hero)
   const aiQuick = `
-    <div class="app-card ai-quick">
+    <div class="app-card ai-quick ai-hero">
+      <div class="aq-glow"></div>
       <div class="aq-head">
         <div class="aq-title">${ic('spark',18)} <b>${t('home_ai_read')} · ${t('home_ai_listen')}</b></div>
-        <div class="aq-sub">${t('home_ai_sub')}</div>
+        <span class="aq-ai-tag">✨ AI</span>
       </div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <button class="btn btn-primary aq-btn" onclick="generateAI('reading')">${ic('learn',16)} ${t('home_ai_read')}</button>
-        <button class="btn btn-teal aq-btn" onclick="generateAI('listening')">${ic('listen',16)} ${t('home_ai_listen')}</button>
+      <div style="display:flex;gap:10px;margin-top:18px;position:relative;z-index:1;">
+        <button class="btn aq-btn aq-btn-r" onclick="generateAI('reading')">${ic('learn',16)} ${t('home_ai_read')}</button>
+        <button class="btn aq-btn aq-btn-l" onclick="generateAI('listening')">${ic('listen',16)} ${t('home_ai_listen')}</button>
       </div>
     </div>`;
   // Today's Schedule — compact 2×2 grid (clean)
@@ -2267,6 +2268,45 @@ function bindMock() {}
 /* ================= RANKING ================= */
 let _rankSort = 'acc';            // 'acc' | 'solved' | 'level'
 let _rankPeers = null;            // [{name, img, acc, solved, level, xp, me}] — lazy-loaded from Supabase
+const _RANK_FAKE_COUNT = 100;     // assume ~100 learners on the leaderboard
+
+/* deterministic PRNG so the demo leaderboard is stable across visits */
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+/* build 100 fake learners (used when there's no real synced data) */
+function makeFakePeers() {
+  const rnd = mulberry32(20260904);
+  const chars = window.CHAR_LIST || [];
+  const namePool = ['Jisoo','Minji','Hana','Yuna','Seojun','Doyun','Eunwoo','Jihye','Somin','Taeyang',
+    'Lina','Kai','Nari','Junho','Sooah','Hyunwoo','Bomi','Chan','Yerin','Donghyun',
+    'Ara','Seungmin','Hyerin','Jaehyun','Gowoon','Sangwoo','Mina','Kyungsoo','Dahye','Wonho',
+    'Eunbi','Jiho','Nayoung','Taemin','Boram','Sungjae','Chaewon','Minseok','Hana','Yujin',
+    'Seoyoung','Kangmin','Yeji','Joon','Sara','Doyoung','Rin','Hoseok','Miso','Taeri'];
+  const peers = [];
+  for (let i = 0; i < _RANK_FAKE_COUNT; i++) {
+    const ch = chars[Math.floor(rnd() * chars.length)] || { id: 'f-01', img: 'assets/img/chars/f-01.webp' };
+    // accuracy clustered 30–100, skewed toward mid-high
+    const acc = Math.min(100, Math.max(10, Math.round((rnd() * 0.7 + 0.25) * 100)));
+    const solved = Math.max(1, Math.round(rnd() * 260 + 4));
+    const xp = Math.round(solved * 3.1 + rnd() * 200);
+    peers.push({
+      name: namePool[i % namePool.length] + (i >= namePool.length ? ' ' + (Math.floor(i / namePool.length) + 2) : ''),
+      img: ch.img,
+      acc,
+      solved,
+      level: xpLevel(xp),
+      xp,
+      me: false
+    });
+  }
+  return peers;
+}
 function charImg(id) {
   const c = (window.CHAR_LIST || []).find(x => x.id === id);
   return c ? c.img : 'assets/img/chars/f-01.webp';
@@ -2284,30 +2324,34 @@ function myRankEntry() {
   };
 }
 async function loadRankPeers() {
-  if (!isAuthed() || !window.getSupabase) { _rankPeers = []; return; }
-  try {
-    const sb = getSupabase();
-    const { data, error } = await sb.from('topik_user_data').select('user_id, data').limit(200);
-    if (error || !data) { _rankPeers = []; return; }
-    const peers = [];
-    data.forEach(r => {
-      if (r.user_id === getSession().user.id) return;   // me is rendered separately
-      const d = r.data || {};
-      const prog = d[LS.progress] || {};
-      let c = 0, n = 0;
-      Object.values(prog).forEach(p => { if (p && p.total) { c += p.correct || 0; n += p.total; } });
-      const xp = (d[LS.xp] || {}).total || 0;
-      const solved = Object.keys(prog).length;
-      if (!solved && !xp) return;                        // skip empty profiles
-      peers.push({
-        name: (d.camnemi_topik_char_name || d[LS.lang] === 'ko' ? '학습자' : 'Learner'),
-        img: charImg(d.camnemi_topik_char),
-        acc: n ? Math.round(c / n * 100) : 0,
-        solved, level: xpLevel(xp), xp, me: false
+  let real = [];
+  if (isAuthed() && window.getSupabase) {
+    try {
+      const sb = getSupabase();
+      const { data, error } = await sb.from('topik_user_data').select('user_id, data').limit(200);
+      if (error || !data) throw new Error('no data');
+      data.forEach(r => {
+        if (r.user_id === getSession().user.id) return;   // me is rendered separately
+        const d = r.data || {};
+        const prog = d[LS.progress] || {};
+        let c = 0, n = 0;
+        Object.values(prog).forEach(p => { if (p && p.total) { c += p.correct || 0; n += p.total; } });
+        const xp = (d[LS.xp] || {}).total || 0;
+        const solved = Object.keys(prog).length;
+        if (!solved && !xp) return;                        // skip empty profiles
+        real.push({
+          name: (d.camnemi_topik_char_name || 'Learner'),
+          img: charImg(d.camnemi_topik_char),
+          acc: n ? Math.round(c / n * 100) : 0,
+          solved, level: xpLevel(xp), xp, me: false
+        });
       });
-    });
-    _rankPeers = peers;
-  } catch (e) { _rankPeers = []; }
+    } catch (e) { real = []; }
+  }
+  // pad with deterministic fake learners so the board always shows ~100 people
+  const fakes = makeFakePeers();
+  const need = Math.max(0, _RANK_FAKE_COUNT - real.length);
+  _rankPeers = real.concat(fakes.slice(0, need));
 }
 function rankRows() {
   const rows = [myRankEntry()].concat(_rankPeers || []);
@@ -2331,18 +2375,31 @@ function rankMetricHTML(r) {
 }
 function rankListHTML() {
   const rows = rankRows();
-  const hasAny = rows.some(r => r.solved > 0 || r.xp > 0);
-  if (!hasAny) {
-    return `<div class="app-card rk-empty">🏆 ${t('rank_no_data')}</div>`;
-  }
+  const total = rows.length;
+  const SHOW = 30;                       // show the top 30 on screen
   const medals = ['🥇', '🥈', '🥉'];
-  return rows.map((r, i) => `
+  let visible = rows.slice(0, SHOW).map((r, i) => `
     <div class="rk-row ${r.me ? 'me' : ''}">
       <span class="rk-pos">${medals[i] || (i + 1)}</span>
       <span class="rk-ava"><img src="${r.img}" alt=""></span>
       <span class="rk-name">${esc(r.name)}${r.me ? ` <em class="rk-me">${t('rank_me')}</em>` : ''}</span>
       <span class="rk-val">${rankMetricHTML(r)}</span>
     </div>`).join('');
+  // if my row is outside the top 30, pin it at the bottom so it's always findable
+  const meIdx = rows.findIndex(r => r.me);
+  if (meIdx >= SHOW && meIdx !== -1) {
+    const me = rows[meIdx];
+    visible += `
+      <div class="rk-sep">· · ·</div>
+      <div class="rk-row me">
+        <span class="rk-pos">${meIdx + 1}</span>
+        <span class="rk-ava"><img src="${me.img}" alt=""></span>
+        <span class="rk-name">${esc(me.name)} <em class="rk-me">${t('rank_me')}</em></span>
+        <span class="rk-val">${rankMetricHTML(me)}</span>
+      </div>`;
+  }
+  return `${visible}
+    <div class="rk-more">${t('rank_top_of', { n: SHOW, total })}</div>`;
 }
 function viewRank() {
   return `

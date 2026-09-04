@@ -366,14 +366,44 @@
 .goal-card:active { transform: scale(.98); }
 .goal-card .sub { color: var(--ios-secondary-label); font-weight: 600; }
 
-/* ---------- AI quick-start (solve right away) ---------- */
+/* ---------- AI quick-start (animated AI gradient hero, tall) ---------- */
 .ai-quick {
-  background: linear-gradient(135deg, rgba(167,139,250,.14), rgba(249,168,212,.12));
-  border: 1.5px solid rgba(167,139,250,.25);
+  position: relative; overflow: hidden; border: none;
+  padding: 26px 20px 22px; margin-bottom: 12px;
 }
-.aq-title { font-size: 14.5px; font-weight: 800; color: var(--ios-label); display: flex; align-items: center; gap: 6px; }
-.aq-sub { font-size: 11.5px; color: var(--ios-secondary-label); margin-top: 3px; line-height: 1.5; }
-.aq-btn { flex: 1; border-radius: 14px; padding: 11px 8px; font-size: 12.5px; }
+.ai-quick::before {
+  content: ''; position: absolute; inset: -45%;
+  background: linear-gradient(115deg, #6D5AE6, #A78BFA, #F9A8D4, #5BC8E8, #8B7CF6, #6D5AE6);
+  background-size: 220% 220%;
+  animation: aiGrad 7s ease-in-out infinite;
+  z-index: 0;
+}
+.aq-glow {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(60% 90% at 18% 15%, rgba(255,255,255,.28), transparent 60%),
+    radial-gradient(55% 80% at 85% 90%, rgba(255,255,255,.2), transparent 60%);
+  animation: aqGlow 3.6s ease-in-out infinite alternate;
+}
+.aq-head { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.aq-title { font-size: 15px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; text-shadow: 0 1px 8px rgba(0,0,0,.18); }
+.aq-ai-tag {
+  font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+  background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px; padding: 3px 11px; letter-spacing: .4px;
+  animation: aqTag 2.4s ease-in-out infinite;
+}
+.aq-btn { flex: 1; border-radius: 15px; padding: 14px 8px; font-size: 13px; font-weight: 800; border: none; cursor: pointer; transition: transform .12s; }
+.aq-btn:active { transform: scale(.96); }
+.aq-btn-r { background: linear-gradient(135deg, #7C5CF0, #A78BFA); color: #fff; box-shadow: 0 8px 18px rgba(124,92,240,.45); }
+.aq-btn-l { background: linear-gradient(135deg, #0EA5A0, #34D3C4); color: #fff; box-shadow: 0 8px 18px rgba(14,165,160,.4); }
+@keyframes aiGrad {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes aqGlow { from { opacity: .65; } to { opacity: 1; } }
+@keyframes aqTag { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
@@ -767,6 +797,8 @@
 .rk-val b { font-size: 15px; font-weight: 800; color: var(--ios-blue); line-height: 1.1; }
 .rk-val .sub { font-size: 10px; font-weight: 700; color: var(--ios-secondary-label); }
 .rk-empty { text-align: center; padding: 26px 16px !important; font-size: 14px; font-weight: 700; color: var(--ios-secondary-label); }
+.rk-more { text-align: center; font-size: 11.5px; font-weight: 700; color: var(--ios-secondary-label); padding: 6px 0 2px; }
+.rk-sep { text-align: center; font-size: 15px; letter-spacing: 6px; color: var(--ios-secondary-label); opacity: .6; padding: 2px 0; }
 .rk-note { margin-top: 10px; padding: 10px 14px !important; text-align: center; }
 [data-theme="dark"] .rk-row { background: rgba(40,35,66,.6); }
 [data-theme="dark"] .rk-chip { background: rgba(40,35,66,.6); }
