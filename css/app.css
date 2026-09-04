@@ -444,6 +444,64 @@
 }
 .greet-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .greet-avatar { cursor: pointer; position: relative; }
+/* ---------- Expression animations (overlay on the avatar) ---------- */
+.fx-layer {
+  position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
+  pointer-events: none; z-index: 3; display: block;
+}
+/* mood symbol floating near the head */
+.fx-acc {
+  position: absolute; font-size: 13px; line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+  animation: fxPop .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+/* small mood badge pinned bottom-right of the avatar */
+.fx-badge {
+  position: absolute; bottom: 0; right: 0;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; border: 1.5px solid rgba(167,139,250,.4);
+  box-shadow: 0 1px 4px rgba(0,0,0,.18);
+  font-size: 10.5px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  animation: fxPop .5s cubic-bezier(.34,1.56,.64,1) both;
+}
+/* mood-specific accessory motion + avatar acting */
+.fx-smile .fx-acc { top: 4%; right: 2%; animation: fxSparkle 1.6s ease-in-out infinite; }
+.fx-angry .fx-acc { top: 0; left: 50%; transform: translateX(-50%); font-size: 15px; animation: fxShake .4s ease-in-out infinite; }
+.fx-angry { animation: fxShake .5s ease-in-out infinite; }
+.fx-phone .fx-acc { bottom: 14%; right: -2%; font-size: 14px; transform: rotate(-18deg); animation: fxBob 1.2s ease-in-out infinite; }
+.fx-phone { animation: fxTilt 2.4s ease-in-out infinite; }
+.fx-eat .fx-acc { top: 6%; right: 4%; font-size: 14px; animation: fxChew 1.1s ease-in-out infinite; }
+.fx-study .fx-acc { top: -6%; right: -6%; font-size: 14px; animation: fxFloat 2.6s ease-in-out infinite; }
+.fx-sleepy .fx-acc { top: -8%; left: 50%; transform: translateX(-50%); font-size: 15px; animation: fxFloat 2.2s ease-in-out infinite; }
+.fx-sing .fx-acc { top: 8%; left: 50%; transform: translateX(-50%); animation: fxMusic 1.4s ease-in-out infinite; }
+.fx-love .fx-acc { top: 2%; left: 50%; transform: translateX(-50%); font-size: 14px; animation: fxHeart 1.3s ease-in-out infinite; }
+/* tag under the avatar + mood button */
+.fx-tag {
+  font-size: 9px; font-weight: 800; color: var(--ios-secondary-label);
+  background: rgba(255,255,255,.7); border: 1px solid rgba(167,139,250,.18);
+  border-radius: 999px; padding: 1.5px 7px; white-space: nowrap;
+  opacity: 0; transform: translateY(-3px); transition: opacity .25s, transform .25s;
+}
+.fx-tag.show { opacity: 1; transform: translateY(0); }
+.fx-btn {
+  border: none; cursor: pointer; width: 22px; height: 22px; border-radius: 50%;
+  font-size: 11px; line-height: 1; background: rgba(255,255,255,.75);
+  border: 1px solid rgba(167,139,250,.25); box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  transition: transform .15s; padding: 0;
+}
+.fx-btn:active { transform: scale(.85); }
+@keyframes fxPop { 0% { transform: translateX(-50%) scale(.3); opacity: 0; } 100% { transform: translateX(-50%) scale(1); opacity: 1; } }
+@keyframes fxShake { 0%, 100% { transform: translateX(-50%) rotate(0); } 25% { transform: translateX(-50%) rotate(-6deg); } 75% { transform: translateX(-50%) rotate(6deg); } }
+@keyframes fxBob { 0%, 100% { transform: translateY(0) rotate(-18deg); } 50% { transform: translateY(-5px) rotate(-14deg); } }
+@keyframes fxTilt { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-3deg); } }
+@keyframes fxChew { 0%, 100% { transform: scale(1); } 40% { transform: scale(.85, 1.15); } }
+@keyframes fxFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes fxSparkle { 0%, 100% { opacity: .4; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.25); } }
+@keyframes fxMusic { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes fxHeart { 0%, 100% { transform: scale(.85); } 50% { transform: scale(1.2); } }
+[data-theme="dark"] .fx-tag { background: rgba(40,35,66,.75); border-color: rgba(245,244,255,.12); }
+[data-theme="dark"] .fx-btn { background: rgba(40,35,66,.75); }
 .avatar-edit {
   position: absolute; bottom: -2px; right: -2px;
   width: 21px; height: 21px; border-radius: 50%;
