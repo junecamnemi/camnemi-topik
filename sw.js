@@ -1,5 +1,5 @@
 /* Camnemi TOPIK service worker — offline-first caching for static assets */
-const CACHE = 'camnemi-topik-v2';
+const CACHE = 'camnemi-topik-v3';
 const ASSETS = [
   './',
   './app.html',
