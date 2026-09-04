@@ -583,7 +583,9 @@ function viewHome() {
             <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
             <span class="avatar-edit">✎</span>
           </div>
-          <button class="fx-btn" onclick="cycleFx(event)" title="${LANG==='ko'?'표정 바꾸기':'Change expression'}">🎭</button>
+          <button class="fx-btn" onclick="cycleFx(event)" title="${LANG==='ko'?'표정 바꾸기':'Change expression'}">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          </button>
         </div>
       </div>
       <div class="scene-meta">
@@ -700,7 +702,13 @@ const FX_MOODS = [
   { k: 'phone',  file: 'phone',  cls: 'fx-phone' },   // 전화하는 얼굴
   { k: 'eat',    file: 'eat',    cls: 'fx-eat' },     // 밥 먹는 얼굴
   { k: 'music',  file: 'music',  cls: 'fx-music' },   // 음악 듣는 얼굴 (헤드폰)
-  { k: 'sleep',  file: 'sleep',  cls: 'fx-sleep' }    // 책상에 엎드려 자는 얼굴
+  { k: 'sleep',  file: 'sleep',  cls: 'fx-sleep' },   // 책상에 엎드려 자는 얼굴
+  { k: 'study',  file: 'study',  cls: 'fx-study' },   // 책 읽는 얼굴
+  { k: 'sing',   file: 'sing',   cls: 'fx-sing' },    // 노래 부르는 얼굴
+  { k: 'dance',  file: 'dance',  cls: 'fx-dance' },   // 춤추는 얼굴
+  { k: 'cook',   file: 'cook',   cls: 'fx-cook' },    // 요리하는 얼굴
+  { k: 'game',   file: 'game',   cls: 'fx-game' },    // 게임하는 얼굴
+  { k: 'selfie', file: 'selfie', cls: 'fx-selfie' }   // 셀카 찍는 얼굴
 ];
 let _fxTimer = null, _fxIdx = -1, _fxPaused = false;
 /* pick the expression portrait path for the current character (falls back to base) */
