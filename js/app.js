@@ -66,7 +66,8 @@ const LS = {
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
 const T = {
   en: {
-    nav_home: 'Home', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_my: 'My',
+    nav_home: 'Home', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_rank: 'Ranking', nav_my: 'My',
+    rank_title: 'Ranking', rank_sub: 'Learners ranked by accuracy · solved · level', rank_acc: 'Accuracy', rank_solved: 'Solved', rank_level: 'Level score', rank_me: 'You', rank_no_data: 'No ranking data yet — solve questions to join!',
     home_sub: 'AI questions · daily mocks · weak-spot review',
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
     btn_today: 'Daily 10', btn_mock: 'Mock Test', btn_read: 'Start reading',
@@ -143,7 +144,8 @@ const T = {
     chal_title: 'Weak-spot challenge', chal_sub: 'Beat your weakest type in 5 minutes', chal_start: '⚔️ Start challenge', chal_time: 'Time', chal_correct: 'Correct', chal_conquer: '🏆 Conquered {t}!', chal_fail: 'Keep training — try again!', chal_reward: '+{n} XP bonus', chal_q: 'Question {i}/{n}', chal_done: 'Challenge finished', chal_conquered_before: 'Conquered {n}×', chal_again: 'Challenge again',
   },
   ko: {
-    nav_home: '홈', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_my: 'MY',
+    nav_home: '홈', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_rank: '랭킹', nav_my: 'MY',
+    rank_title: '랭킹', rank_sub: '정답률 · 푼 문제 · 레벨점수 순위', rank_acc: '정답률', rank_solved: '푼 문제', rank_level: '레벨점수', rank_me: '나', rank_no_data: '아직 랭킹 데이터가 없어요 — 문제를 풀어 참여하세요!',
     home_sub: 'AI 문제 · 매일 모의고사 · 취약점 복습',
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
     btn_today: '데일리 10', btn_mock: '모의고사', btn_read: '리딩 시작',
@@ -220,7 +222,8 @@ const T = {
     chal_title: '약점 정복 챌린지', chal_sub: '5분 안에 가장 약한 유형을 정복하세요', chal_start: '⚔️ 챌린지 시작', chal_time: '시간', chal_correct: '정답', chal_conquer: '🏆 {t} 정복!', chal_fail: '더 연습하고 다시 도전하세요!', chal_reward: '+{n} XP 보너스', chal_q: '문제 {i}/{n}', chal_done: '챌린지 완료', chal_conquered_before: '{n}회 정복', chal_again: '다시 도전',
   },
   km: {
-    nav_home: 'ទំព័រដើម', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_my: 'ខ្ញុំ',
+    nav_home: 'ទំព័រដើម', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_rank: 'ចំណាត់ថ្នាក់', nav_my: 'ខ្ញុំ',
+    rank_title: 'ចំណាត់ថ្នាក់', rank_sub: 'ចំណាត់ថ្នាក់តាម ភាពត្រឹមត្រូវ · សំណួរ · ពិន្ទុកម្រិត', rank_acc: 'ភាពត្រឹមត្រូវ', rank_solved: 'បានដោះស្រាយ', rank_level: 'ពិន្ទុកម្រិត', rank_me: 'អ្នក', rank_no_data: 'មិនទាន់មានទិន្នន័យ — ដោះស្រាយសំណួរដើម្បីចូលរួម!',
     home_sub: 'សំណួរ AI · ប្រឡងសាកប្រចាំថ្ងៃ · ពិនិត្យចំណុចខ្សោយ',
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
     btn_today: 'លំហាត់ ១០', btn_mock: 'ប្រឡងសាក', btn_read: 'ចាប់ផ្តើមអាន',
@@ -541,6 +544,7 @@ function render() {
     case 'listening': s.innerHTML = viewSection('listening'); bindDaily(); break;
     case 'writing': s.innerHTML = viewSection('writing'); bindDaily(); break;
     case 'mock': s.innerHTML = viewMock(); bindMock(); break;
+    case 'rank': s.innerHTML = viewRank(); bindRank(); break;
     case 'wrong': s.innerHTML = viewWrong(); bindWrong(); break;
     case 'learn': s.innerHTML = viewLearn(); bindLearn(); break;
     case 'progress': s.innerHTML = viewProgress(); bindProgress(); break;
@@ -557,14 +561,9 @@ function viewHome() {
   const prog = lsGet(LS.progress, {});
   const answered = Object.keys(prog).length;
   const streak = lsGet(LS.streak, { last: null, count: 0 });
-  const today = lsGet(LS.daily, {});
-  const doneToday = today[todayStr()] && today[todayStr()].done;
-  const doneCount = doneToday ? Object.keys(doneToday).length : 0;
   const acc = accuracyStats();
   const isNew = answered === 0;
   const lvl = xpProgress();
-  const goalTotal = 10;
-  const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
   // Greeting — Hi, {character name}! 👋 inside a Seoul-scene card
   const nm = myCharName();
   const mc = myChar();
@@ -594,14 +593,6 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // Daily Goal — compact single-line bar (clean) with the helper cat
-  const dailyGoal = `
-    <div class="dg-mini">
-      <img src="assets/img/cat-mascot.webp" alt="cat" class="dg-cat">
-      <span class="dg-mini-t">${ic('target',13)} ${t('home_daily_goal')}</span>
-      <span class="dg-mini-bar"><span style="width:${pct}%"></span></span>
-      <span class="dg-mini-c"><b>${doneCount}</b>/${goalTotal}</span>
-    </div>`;
   // AI quick-start — solve reading/listening right away (no timer, no stats)
   const aiQuick = `
     <div class="app-card ai-quick">
@@ -650,7 +641,6 @@ function viewHome() {
     ${streakCardHTML()}`;
   return `
     ${scene}
-    ${dailyGoal}
     ${aiQuick}
     ${weekBlock}
     ${schedule}
@@ -755,17 +745,61 @@ function toggleFocus() {
 }
 
 /* ================= WEEK CALENDAR + TASKS + STREAK (Aiko-style) ================= */
+/* per-day stats from the daily store: {solved, correct, pct} or null if untouched */
+function dayStats(dateStr) {
+  const rec = lsGet(LS.daily, {})[dateStr];
+  if (!rec) return null;
+  const done = rec.done || {};
+  const ids = Object.keys(done);
+  if (!ids.length) return null;
+  let correct = 0;
+  ids.forEach(qid => {
+    const q = (rec.questions && rec.questions.find(x => x.id === qid)) || qById(qid);
+    if (!q) return;
+    if (q.section === 'writing') { correct++; return; }   // submitted writing counts as attempted
+    if (done[qid] === q.correct) correct++;
+  });
+  const solved = ids.length;
+  return { solved, correct, pct: Math.round(correct / solved * 100) };
+}
 function weekCalendarHTML() {
   const now = new Date();
   const day = now.getDay();               // 0=Sun
   const mon = new Date(now); mon.setDate(now.getDate() - ((day + 6) % 7));   // Monday
   const days = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
+  const dailyAll = lsGet(LS.daily, {});
   const cells = days.map((d, i) => {
     const dt = new Date(mon); dt.setDate(mon.getDate() + i);
+    const ds = dayStats(dateKey(dt));
     const isToday = dt.toDateString() === now.toDateString();
-    return `<div class="wc-day ${isToday ? 'on' : ''}"><span class="wc-d">${d}</span><span class="wc-n">${dt.getDate()}</span></div>`;
+    return `<div class="wc-day ${isToday ? 'on' : ''} ${ds ? 'has' : ''}" onclick="showDayStats('${dateKey(dt)}', this)">
+      <span class="wc-d">${d}</span><span class="wc-n">${dt.getDate()}</span>
+      ${ds ? `<span class="wc-dot" title="${ds.solved} q · ${ds.pct}%"></span>` : ''}
+    </div>`;
   }).join('');
-  return `<div class="app-card wc-card"><div class="wc-grid">${cells}</div></div>`;
+  return `<div class="app-card wc-card">
+    <div class="wc-grid">${cells}</div>
+    <div class="wc-detail" id="wc-detail"></div>
+  </div>`;
+}
+function dateKey(dt) {
+  const m = String(dt.getMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getDate()).padStart(2, '0');
+  return `${dt.getFullYear()}-${m}-${dd}`;
+}
+function showDayStats(dateStr, el) {
+  const det = $id('wc-detail');
+  if (!det) return;
+  // highlight
+  document.querySelectorAll('.wc-day').forEach(x => x.classList.remove('pick'));
+  if (el) el.classList.add('pick');
+  const ds = dayStats(dateStr);
+  const dt = new Date(dateStr + 'T00:00:00');
+  const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
+  det.innerHTML = ds ? `
+    <div class="wc-stat"><b>${ds.solved}</b> ${t('sec_qs')} · ${t('rank_acc')} <b>${ds.pct}%</b></div>
+    <div class="wc-bar"><span style="width:${ds.pct}%"></span></div>` : `
+    <div class="wc-stat muted">${label} — ${LANG === 'ko' ? '푼 문제 없음' : LANG === 'km' ? 'គ្មានសំណួរ' : 'No questions solved'}</div>`;
 }
 function homeTasksHTML() {
   const done = lsGet('camnemi_topik_home_tasks', {});
@@ -2230,6 +2264,109 @@ function exitMock() {
 }
 function bindMock() {}
 
+/* ================= RANKING ================= */
+let _rankSort = 'acc';            // 'acc' | 'solved' | 'level'
+let _rankPeers = null;            // [{name, img, acc, solved, level, xp, me}] — lazy-loaded from Supabase
+function charImg(id) {
+  const c = (window.CHAR_LIST || []).find(x => x.id === id);
+  return c ? c.img : 'assets/img/chars/f-01.webp';
+}
+function myRankEntry() {
+  const prog = lsGet(LS.progress, {});
+  return {
+    name: myCharName() || (isAuthed() ? currentUser().name : 'Learner'),
+    img: myChar().img,
+    acc: accuracyStats().overall,
+    solved: Object.keys(prog).length,
+    level: xpProgress().lv,
+    xp: xpTotal(),
+    me: true
+  };
+}
+async function loadRankPeers() {
+  if (!isAuthed() || !window.getSupabase) { _rankPeers = []; return; }
+  try {
+    const sb = getSupabase();
+    const { data, error } = await sb.from('topik_user_data').select('user_id, data').limit(200);
+    if (error || !data) { _rankPeers = []; return; }
+    const peers = [];
+    data.forEach(r => {
+      if (r.user_id === getSession().user.id) return;   // me is rendered separately
+      const d = r.data || {};
+      const prog = d[LS.progress] || {};
+      let c = 0, n = 0;
+      Object.values(prog).forEach(p => { if (p && p.total) { c += p.correct || 0; n += p.total; } });
+      const xp = (d[LS.xp] || {}).total || 0;
+      const solved = Object.keys(prog).length;
+      if (!solved && !xp) return;                        // skip empty profiles
+      peers.push({
+        name: (d.camnemi_topik_char_name || d[LS.lang] === 'ko' ? '학습자' : 'Learner'),
+        img: charImg(d.camnemi_topik_char),
+        acc: n ? Math.round(c / n * 100) : 0,
+        solved, level: xpLevel(xp), xp, me: false
+      });
+    });
+    _rankPeers = peers;
+  } catch (e) { _rankPeers = []; }
+}
+function rankRows() {
+  const rows = [myRankEntry()].concat(_rankPeers || []);
+  const sorters = {
+    acc:    (a, b) => b.acc - a.acc || b.solved - a.solved,
+    solved: (a, b) => b.solved - a.solved || b.acc - a.acc,
+    level:  (a, b) => b.level - a.level || b.xp - a.xp || b.acc - a.acc
+  };
+  return rows.sort(sorters[_rankSort] || sorters.acc);
+}
+function setRankSort(m) {
+  _rankSort = m;
+  const list = $id('rank-list');
+  if (list) list.innerHTML = rankListHTML();
+  document.querySelectorAll('.rk-chip').forEach(b => b.classList.toggle('on', b.dataset.m === m));
+}
+function rankMetricHTML(r) {
+  if (_rankSort === 'solved') return `<b>${r.solved}</b><span class="sub">${t('rank_solved')}</span>`;
+  if (_rankSort === 'level') return `<b>Lv.${r.level}</b><span class="sub">${r.xp} XP</span>`;
+  return `<b>${r.acc}%</b><span class="sub">${t('rank_acc')}</span>`;
+}
+function rankListHTML() {
+  const rows = rankRows();
+  const hasAny = rows.some(r => r.solved > 0 || r.xp > 0);
+  if (!hasAny) {
+    return `<div class="app-card rk-empty">🏆 ${t('rank_no_data')}</div>`;
+  }
+  const medals = ['🥇', '🥈', '🥉'];
+  return rows.map((r, i) => `
+    <div class="rk-row ${r.me ? 'me' : ''}">
+      <span class="rk-pos">${medals[i] || (i + 1)}</span>
+      <span class="rk-ava"><img src="${r.img}" alt=""></span>
+      <span class="rk-name">${esc(r.name)}${r.me ? ` <em class="rk-me">${t('rank_me')}</em>` : ''}</span>
+      <span class="rk-val">${rankMetricHTML(r)}</span>
+    </div>`).join('');
+}
+function viewRank() {
+  return `
+    <div class="sec-h"><h2>${ic('trophy',16)} ${t('rank_title')}</h2><span class="sub">${t('rank_sub')}</span></div>
+    <div class="rk-chips">
+      <button class="rk-chip ${_rankSort === 'acc' ? 'on' : ''}" data-m="acc" onclick="setRankSort('acc')">${t('rank_acc')}</button>
+      <button class="rk-chip ${_rankSort === 'solved' ? 'on' : ''}" data-m="solved" onclick="setRankSort('solved')">${t('rank_solved')}</button>
+      <button class="rk-chip ${_rankSort === 'level' ? 'on' : ''}" data-m="level" onclick="setRankSort('level')">${t('rank_level')}</button>
+    </div>
+    <div id="rank-list">${rankListHTML()}</div>
+    <div class="app-card rk-note">
+      <span class="sub">${LANG === 'ko' ? '랭킹은 내 학습 기록을 기준으로 해요 — 문제를 풀수록 순위가 올라가요!' : LANG === 'km' ? 'ចំណាត់ថ្នាក់ផ្អែកលើកំណត់ត្រារបស់អ្នក — ដោះស្រាយសំណួរកាន់តែច្រើន កាន់តែឡើងខ្ពស់!' : 'Ranking is based on your study record — the more you solve, the higher you climb!'}</span>
+    </div>`;
+}
+function bindRank() {
+  // lazily load other learners once, then re-render the list
+  if (_rankPeers === null) {
+    loadRankPeers().then(() => {
+      const list = $id('rank-list');
+      if (list) list.innerHTML = rankListHTML();
+    });
+  }
+}
+
 /* ================= WRONG / TYPE-WISE ================= */
 function viewWrong() {
   const wrong = lsGet(LS.wrong, []);
@@ -2746,7 +2883,8 @@ async function syncUserData(btnEl) {
   if (!isAuthed() || !window.getSupabase) return;
   const sb = getSupabase();
   const payload = {};
-  [LS.progress, LS.wrong, LS.srs, LS.scores, LS.daily, LS.streak, LS.mockStatus, LS.country, LS.lang].forEach(k => {
+  [LS.progress, LS.wrong, LS.srs, LS.scores, LS.daily, LS.streak, LS.mockStatus, LS.country, LS.lang, LS.xp, LS.mylevel,
+   'camnemi_topik_char', 'camnemi_topik_char_name'].forEach(k => {
     const v = localStorage.getItem(k);
     if (!v) return;
     try { payload[k] = JSON.parse(v); } catch (e) { payload[k] = v; }  // plain strings (lang/country)
