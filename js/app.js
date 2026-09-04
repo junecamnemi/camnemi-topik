@@ -886,9 +886,11 @@ function viewHome() {
     ${weekCalendarHTML()}
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
+  const ltDone = localStorage.getItem(LS.mylevel) != null;
   return `
     ${scene}
-    ${localStorage.getItem(LS.mylevel) == null ? `
+    ${ltDone ? recommendCard(acc, lvl.lv)
+      : `
     <div class="app-card lt-home-card">
       <div class="lt-home-ico">🎓</div>
       <div class="lt-home-txt">
@@ -896,8 +898,7 @@ function viewHome() {
         <span class="sub">${t('lt_home_card_sub')}</span>
       </div>
       <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
-    </div>` : ''}
-    ${recommendCard(acc, lvl.lv)}
+    </div>`}
     ${aiQuick}
     ${weekBlock}
     ${schedule}

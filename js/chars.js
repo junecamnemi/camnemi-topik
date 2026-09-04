@@ -124,11 +124,25 @@ function applyCharTheme() {
   root.style.setProperty('--ios-pink', `hsl(${h3}, 82%, 72%)`);
   root.style.setProperty('--grad-brand', `linear-gradient(135deg, hsl(${hue}, 70%, 62%) 0%, hsl(${h2}, 82%, 70%) 55%, hsl(${h3}, 85%, 76%) 100%)`);
   root.style.setProperty('--grad-soft', `linear-gradient(135deg, hsla(${hue}, 80%, 65%, .12), hsla(${h3}, 85%, 75%, .16))`);
+  // character-tinted palette for every component (cards, badges, progress…)
+  root.style.setProperty('--br1', `hsl(${hue}, 72%, 60%)`);
+  root.style.setProperty('--br2', `hsl(${h2}, 82%, 70%)`);
+  root.style.setProperty('--br3', `hsl(${h3}, 85%, 76%)`);
+  root.style.setProperty('--br-deep', `hsl(${hue}, 70%, 52%)`);
+  root.style.setProperty('--br-soft', `hsla(${hue}, 80%, 65%, .13)`);
+  root.style.setProperty('--br-soft2', `hsla(${h2}, 85%, 72%, .16)`);
+  root.style.setProperty('--br-line', `hsla(${hue}, 80%, 62%, .28)`);
   // whole-app ambient AI backdrop — very low opacity, tinted by this character's hues
   root.style.setProperty('--ai-h1', String(hue));
   root.style.setProperty('--ai-h2', String(h2));
   root.style.setProperty('--ai-h3', String(h3));
   root.style.setProperty('--ai-a', document.documentElement.getAttribute('data-theme') === 'dark' ? '.16' : '.22');
+  // quick-test 4-card palette — all derived from the character hue (harmonious)
+  const q2 = (hue + 58) % 360, q3 = (hue + 116) % 360, q4 = (hue + 174) % 360;
+  root.style.setProperty('--q1', String(hue));
+  root.style.setProperty('--q2', String(q2));
+  root.style.setProperty('--q3', String(q3));
+  root.style.setProperty('--q4', String(q4));
   const mc = document.querySelector('meta[name="theme-color"]');
   if (mc) mc.setAttribute('content', `hsl(${hue}, 70%, 62%)`);
 }
