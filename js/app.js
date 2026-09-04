@@ -583,7 +583,6 @@ function viewHome() {
             <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
             <span class="avatar-edit">✎</span>
           </div>
-          <span class="fx-tag" id="fx-tag"></span>
           <button class="fx-btn" onclick="cycleFx(event)" title="${LANG==='ko'?'표정 바꾸기':'Change expression'}">🎭</button>
         </div>
       </div>
@@ -694,44 +693,30 @@ function bindHome() {
 /* The avatar "acts out" moods: smile · angry · phone · eat · study · sleepy · sing · love.
    Overlays (eyes/mouth/accessory) are drawn with CSS on top of the portrait. */
 const FX_MOODS = [
-  { k: 'smile',  label: { en: '😊 Smile', ko: '😊 웃음', km: '😊 ញញឹម' }, eyes: '^', mouth: 'w', acc: '✨', cls: 'fx-smile' },
-  { k: 'angry',  label: { en: '😤 Angry', ko: '😤 화남', km: '😤 ខឹង' }, eyes: '>', mouth: 'v', acc: '💢', cls: 'fx-angry' },
-  { k: 'phone',  label: { en: '📞 Phone', ko: '📞 전화', km: '📞 ទូរស័ព្ទ' }, eyes: 'o', mouth: 'o', acc: '📱', cls: 'fx-phone' },
-  { k: 'eat',    label: { en: '🍚 Eating', ko: '🍚 밥먹는 중', km: '🍚 ញ៉ាំបាយ' }, eyes: '>', mouth: 'a', acc: '🍚', cls: 'fx-eat' },
-  { k: 'study',  label: { en: '📖 Studying', ko: '📖 공부', km: '📖 រៀន' }, eyes: '^', mouth: '-', acc: '📚', cls: 'fx-study' },
-  { k: 'sleepy', label: { en: '😴 Sleepy', ko: '😴 졸림', km: '😴 ងងុយ' }, eyes: '-', mouth: 'o', acc: '💤', cls: 'fx-sleepy' },
-  { k: 'sing',   label: { en: '🎤 Singing', ko: '🎤 노래', km: '🎤 ច្រៀង' }, eyes: '^', mouth: 'D', acc: '🎵', cls: 'fx-sing' },
-  { k: 'love',   label: { en: '🥰 Love', ko: '🥰 사랑', km: '🥰 ស្រលាញ់' }, eyes: 'x', mouth: 'w', acc: '💕', cls: 'fx-love' }
+  { k: 'smile',  cls: 'fx-smile' },   // 웃음 — 깡충깡충 + 밝아짐
+  { k: 'angry',  cls: 'fx-angry' },   // 화남 — 머리 세차게 흔들기 + 붉은 기
+  { k: 'cry',    cls: 'fx-cry' },     // 울음 — 눈물 흘림 + 축 처짐
+  { k: 'phone',  cls: 'fx-phone' },   // 전화 — 고개 기울이며 통화
+  { k: 'eat',    cls: 'fx-eat' },     // 밥 — 쩝쩝 씹는 모션
+  { k: 'study',  cls: 'fx-study' },   // 공부 — 차분하게
+  { k: 'sleepy', cls: 'fx-sleepy' },  // 졸림 — 느릿하게
+  { k: 'sing',   cls: 'fx-sing' }     // 노래 — 신나게
 ];
 let _fxTimer = null, _fxIdx = -1, _fxPaused = false;
-function fxLabel(m) { return (m.label[LANG] || m.label.en); }
-function fxLayerHTML(m) {
-  const badge = { '^': '🙂', '>': '😠', 'o': '😮', '-': '😑', 'x': '😍' }[m.eyes] || '🙂';
-  return `<div class="fx-layer" data-mood="${m.k}">
-    <span class="fx-acc">${m.acc}</span>
-    <span class="fx-badge">${badge}</span>
-  </div>`;
-}
 function showFx(i) {
   const av = $id('greet-avatar');
   if (!av) return;
   const m = FX_MOODS[i % FX_MOODS.length];
-  const old = av.querySelector('.fx-layer');
-  if (old) old.remove();
-  av.insertAdjacentHTML('beforeend', fxLayerHTML(m));
-  av.classList.remove('fx-smile','fx-angry','fx-phone','fx-eat','fx-study','fx-sleepy','fx-sing','fx-love');
+  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-study','fx-sleepy','fx-sing');
   av.classList.add(m.cls);
-  const tag = $id('fx-tag');
-  if (tag) tag.textContent = fxLabel(m);
-  tag.classList.remove('show'); void tag.offsetWidth; tag.classList.add('show');
 }
 function nextFx() { if (!_fxPaused) { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); } }
 function startFxCycle() {
   if (_fxTimer) clearInterval(_fxTimer);
   if ($id('greet-avatar')) {
     _fxIdx = -1;
-    nextFx();                                  // show the first mood immediately
-    _fxTimer = setInterval(nextFx, 4000);      // then cycle every 4s
+    nextFx();
+    _fxTimer = setInterval(nextFx, 4200);
   }
 }
 function stopFxCycle() { if (_fxTimer) { clearInterval(_fxTimer); _fxTimer = null; } }
