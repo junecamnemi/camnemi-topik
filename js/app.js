@@ -888,21 +888,24 @@ function seoulTimeStr() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }
-/* Seoul hour-of-day → which Namsan scene: dawn(5-7) day(7-17) dusk(17-20) night(20-5) */
+/* Seoul hour-of-day → which Namsan scene (3-hour blocks, 8 scenes):
+   midnight(00-03) predawn(03-06) sunrise(06-09) morning(09-12)
+   midday(12-15) afternoon(15-18) sunset(18-21) night(21-24) */
 function scenePartOfDay() {
+  let h;
   try {
-    const h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', hour12: false }).format(new Date()), 10);
-    if (h >= 5 && h < 7) return 'dawn';
-    if (h >= 7 && h < 17) return 'day';
-    if (h >= 17 && h < 20) return 'dusk';
-    return 'night';
+    h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', hour12: false }).format(new Date()), 10);
   } catch (e) {
-    const h = new Date().getHours();
-    if (h >= 5 && h < 7) return 'dawn';
-    if (h >= 7 && h < 17) return 'day';
-    if (h >= 17 && h < 20) return 'dusk';
-    return 'night';
+    h = new Date().getHours();
   }
+  if (h >= 0 && h < 3) return 'midnight';
+  if (h >= 3 && h < 6) return 'predawn';
+  if (h >= 6 && h < 9) return 'sunrise';
+  if (h >= 9 && h < 12) return 'morning';
+  if (h >= 12 && h < 15) return 'midday';
+  if (h >= 15 && h < 18) return 'afternoon';
+  if (h >= 18 && h < 21) return 'sunset';
+  return 'night';
 }
 /* cross-fade the scene landmark to the time-of-day art */
 let _scenePart = null;
@@ -917,7 +920,7 @@ function updateScenePart() {
   // switch the card mood class too
   const card = $id('seoul-scene');
   if (card) {
-    card.classList.remove('scene-day','scene-dawn','scene-dusk','scene-night');
+    card.classList.remove('scene-midnight','scene-predawn','scene-sunrise','scene-morning','scene-midday','scene-afternoon','scene-sunset','scene-night');
     card.classList.add('scene-' + part);
   }
   img.style.opacity = 0;

@@ -417,11 +417,15 @@
   border: 1px solid rgba(167,139,250,.16);
   min-height: 0;
 }
-/* time-of-day card moods */
-.seoul-scene.scene-day   { background: linear-gradient(180deg, #D8ECFF, #EAF5FF 55%, #FFF4DE); border-color: rgba(120,170,235,.25); }
-.seoul-scene.scene-dawn  { background: linear-gradient(180deg, #C7B9E8, #E8C9E2 55%, #FFDFC2); border-color: rgba(160,130,200,.25); }
-.seoul-scene.scene-dusk  { background: linear-gradient(180deg, #B9A8D8, #E3B4C6 50%, #FFC9A3); border-color: rgba(170,120,160,.28); }
-.seoul-scene.scene-night { background: linear-gradient(180deg, #232A4E, #3A3E70 60%, #4A4E8C); border-color: rgba(90,100,170,.4); }
+/* time-of-day card moods (8 scenes, 3h blocks) */
+.seoul-scene.scene-midnight { background: linear-gradient(180deg, #0B0F26, #1A2140 60%, #232A52); border-color: rgba(90,100,170,.5); }
+.seoul-scene.scene-predawn  { background: linear-gradient(180deg, #141833, #2A2C58 55%, #5E4E80); border-color: rgba(110,100,170,.4); }
+.seoul-scene.scene-sunrise  { background: linear-gradient(180deg, #C7B9E8, #E8C9E2 55%, #FFDFC2); border-color: rgba(160,130,200,.25); }
+.seoul-scene.scene-morning  { background: linear-gradient(180deg, #CFE8FF, #EAF6FF 55%, #FFF7E8); border-color: rgba(110,170,230,.25); }
+.seoul-scene.scene-midday   { background: linear-gradient(180deg, #B8DFFF, #DFF0FF 55%, #FFF9E0); border-color: rgba(100,160,225,.25); }
+.seoul-scene.scene-afternoon{ background: linear-gradient(180deg, #A9D4FF, #E0ECFF 55%, #FFEDC8); border-color: rgba(110,160,220,.25); }
+.seoul-scene.scene-sunset   { background: linear-gradient(180deg, #B9A8D8, #E3B4C6 50%, #FFC9A3); border-color: rgba(170,120,160,.28); }
+.seoul-scene.scene-night    { background: linear-gradient(180deg, #1B2340, #3A3E70 60%, #4A4E8C); border-color: rgba(90,100,170,.4); }
 /* Namsan landmark fills the card, vertically centered, larger */
 .seoul-scene .scene-landmark {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
@@ -429,12 +433,16 @@
   opacity: .92; pointer-events: none; user-select: none;
   transition: opacity .5s ease;
 }
-/* night card → light text so it reads on the dark sky */
-.seoul-scene.scene-night .greet-h,
-.seoul-scene.scene-night .greet-s { color: #F4F1FF; text-shadow: 0 1px 6px rgba(0,0,20,.35); }
-.seoul-scene.scene-night .wx-chip,
-.seoul-scene.scene-night .time-chip { color: #F4F1FF; background: rgba(20,24,55,.55); border-color: rgba(200,205,255,.28); }
-.seoul-scene.scene-night .meta-dot { color: rgba(235,232,255,.7); }
+/* dark cards → light text so it reads on the dark sky */
+.seoul-scene.scene-midnight .greet-h, .seoul-scene.scene-midnight .greet-s,
+.seoul-scene.scene-predawn  .greet-h, .seoul-scene.scene-predawn  .greet-s,
+.seoul-scene.scene-night    .greet-h, .seoul-scene.scene-night    .greet-s { color: #F4F1FF; text-shadow: 0 1px 6px rgba(0,0,20,.35); }
+.seoul-scene.scene-midnight .wx-chip, .seoul-scene.scene-midnight .time-chip,
+.seoul-scene.scene-predawn  .wx-chip, .seoul-scene.scene-predawn  .time-chip,
+.seoul-scene.scene-night    .wx-chip, .seoul-scene.scene-night    .time-chip { color: #F4F1FF; background: rgba(20,24,55,.55); border-color: rgba(200,205,255,.28); }
+.seoul-scene.scene-midnight .meta-dot,
+.seoul-scene.scene-predawn  .meta-dot,
+.seoul-scene.scene-night    .meta-dot { color: rgba(235,232,255,.7); }
 /* ---------- Weather backdrop (removed — no animated weather over the art) ---------- */
 .scene-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
 .scene-meta { display: flex; align-items: center; gap: 7px; position: relative; z-index: 2; margin-top: 6px; }

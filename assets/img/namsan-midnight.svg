@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" preserveAspectRatio="xMidYMid slice">
+  <!-- Namsan + N Seoul Tower — MIDNIGHT (00-03): deep night, full starfield -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A0E24"/>
+      <stop offset="0.6" stop-color="#161B3E"/>
+      <stop offset="1" stop-color="#232A52"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="340" fill="url(#sky)"/>
+
+  <!-- high moon -->
+  <circle cx="160" cy="58" r="18" fill="#F4F0FF"/>
+  <circle cx="167" cy="52" r="15.5" fill="#10142E" opacity="0.5"/>
+
+  <!-- dense starfield -->
+  <g fill="#FFFFFF">
+    <circle cx="60" cy="90" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.2s" repeatCount="indefinite"/></circle>
+    <circle cx="120" cy="40" r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.8s" begin="0.3s" repeatCount="indefinite"/></circle>
+    <circle cx="200" cy="110" r="1.3"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.2s" begin="1.1s" repeatCount="indefinite"/></circle>
+    <circle cx="280" cy="50" r="1.6"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" begin="0.7s" repeatCount="indefinite"/></circle>
+    <circle cx="350" cy="95" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.6s" begin="1.9s" repeatCount="indefinite"/></circle>
+    <circle cx="420" cy="42" r="1.5"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.1s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle cx="500" cy="88" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="3s" begin="1.4s" repeatCount="indefinite"/></circle>
+    <circle cx="560" cy="36" r="1.4"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.6s" begin="0.9s" repeatCount="indefinite"/></circle>
+    <circle cx="640" cy="70" r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.4s" begin="2.2s" repeatCount="indefinite"/></circle>
+    <circle cx="710" cy="44" r="1.5"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.3s" begin="1.6s" repeatCount="indefinite"/></circle>
+    <circle cx="780" cy="92" r="1.2"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.9s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <circle cx="840" cy="52" r="1.3"><animate attributeName="opacity" values="0.2;1;0.2" dur="2.7s" begin="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="90" cy="150" r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.8s" begin="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="660" cy="140" r="1.1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.1s" begin="0.8s" repeatCount="indefinite"/></circle>
+    <circle cx="460" cy="130" r="1"><animate attributeName="opacity" values="0.2;1;0.2" dur="3.5s" begin="2s" repeatCount="indefinite"/></circle>
+    <!-- bright star cross -->
+    <g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="3s" begin="1.5s" repeatCount="indefinite"/><path d="M240 38 l8 0 M244 34 l0 8"/></g>
+    <g stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.6s" begin="2.6s" repeatCount="indefinite"/><path d="M730 32 l8 0 M734 28 l0 8"/></g>
+  </g>
+
+  <!-- milky way hint -->
+  <ellipse cx="450" cy="60" rx="330" ry="26" fill="#FFFFFF" opacity="0.05" transform="rotate(-8 450 60)"/>
+
+  <!-- far hills -->
+  <path d="M0 340V250C70 228 140 240 210 226C290 210 360 238 430 224L520 208C610 192 690 226 780 214C840 206 875 220 900 212V340Z" fill="#141A36" opacity="0.95"/>
+  <!-- Namsan hill -->
+  <path d="M0 340V292C90 272 180 288 270 278C360 268 440 286 520 276C545 272 556 268 560 262C564 268 578 272 610 276C700 286 800 272 900 282V340Z" fill="#0E132C" opacity="0.98"/>
+
+  <!-- trees -->
+  <g fill="#0A0F24">
+    <path d="M120 284 Q128 258 136 284Z"/><rect x="126.5" y="283" width="3" height="12" rx="1"/>
+    <path d="M170 288 Q178 266 186 288Z"/><rect x="176.5" y="287" width="3" height="10" rx="1"/>
+    <path d="M250 282 Q257 262 264 282Z"/><rect x="255" y="281" width="3" height="11" rx="1"/>
+    <path d="M700 280 Q708 258 716 280Z"/><rect x="706" y="279" width="3" height="12" rx="1"/>
+    <path d="M770 284 Q777 266 784 284Z"/><rect x="774" y="283" width="3" height="10" rx="1"/>
+    <path d="M640 282 Q647 264 654 282Z"/><rect x="645" y="281" width="3" height="10" rx="1"/>
+  </g>
+
+  <!-- city windows already lit (no switch-on anim — settled night) -->
+  <g fill="#FFD98A">
+    <rect x="140" y="262" width="4" height="5" rx="1" opacity="0.85"/>
+    <rect x="158" y="270" width="4" height="5" rx="1" opacity="0.6"/>
+    <rect x="176" y="258" width="4" height="5" rx="1" opacity="0.9"/>
+    <rect x="196" y="272" width="4" height="5" rx="1" opacity="0.5"/>
+    <rect x="215" y="264" width="4" height="5" rx="1" opacity="0.8"/>
+    <rect x="235" y="276" width="4" height="5" rx="1" opacity="0.65"/>
+    <rect x="255" y="266" width="4" height="5" rx="1" opacity="0.9"/>
+    <rect x="680" y="262" width="4" height="5" rx="1" opacity="0.8"/>
+    <rect x="700" y="272" width="4" height="5" rx="1" opacity="0.55"/>
+    <rect x="720" y="260" width="4" height="5" rx="1" opacity="0.9"/>
+    <rect x="742" y="270" width="4" height="5" rx="1" opacity="0.7"/>
+    <rect x="762" y="280" width="4" height="5" rx="1" opacity="0.5"/>
+    <rect x="300" y="280" width="4" height="5" rx="1" opacity="0.75"/>
+    <rect x="420" y="284" width="4" height="5" rx="1" opacity="0.6"/>
+    <rect x="560" y="280" width="4" height="5" rx="1" opacity="0.85"/>
+    <rect x="330" y="276" width="4" height="5" rx="1" opacity="0.4"><animate attributeName="opacity" values="0.3;1;0.3" dur="4.2s" repeatCount="indefinite"/></rect>
+    <rect x="520" y="284" width="4" height="5" rx="1" opacity="0.4"><animate attributeName="opacity" values="0.3;1;0.3" dur="3.4s" begin="1.2s" repeatCount="indefinite"/></rect>
+    <rect x="380" y="282" width="4" height="5" rx="1" opacity="0.4"><animate attributeName="opacity" values="0.3;1;0.3" dur="5s" begin="2.4s" repeatCount="indefinite"/></rect>
+  </g>
+
+  <!-- N Seoul Tower lit -->
+  <g>
+    <path d="M548 262 L560 232 L572 262Z" fill="#0A0E26"/>
+    <rect x="540" y="220" width="40" height="14" rx="6" fill="#1A2248"/>
+    <rect x="552" y="208" width="16" height="12" rx="3" fill="#1A2248"/>
+    <path d="M552 208 L560 172 L568 208Z" fill="#0A0E26"/>
+    <line x1="560" y1="172" x2="560" y2="140" stroke="#0A0E26" stroke-width="3" stroke-linecap="round"/>
+    <rect x="543" y="222" width="5" height="9" rx="1.5" fill="#FFE9A8"><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></rect>
+    <rect x="551" y="222" width="5" height="9" rx="1.5" fill="#FFD98A"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.7s" begin="0.5s" repeatCount="indefinite"/></rect>
+    <rect x="559" y="222" width="5" height="9" rx="1.5" fill="#FFE9A8"><animate attributeName="opacity" values="0.6;1;0.6" dur="2.3s" begin="1.1s" repeatCount="indefinite"/></rect>
+    <rect x="567" y="222" width="5" height="9" rx="1.5" fill="#FFD98A"><animate attributeName="opacity" values="0.6;1;0.6" dur="1.9s" begin="1.7s" repeatCount="indefinite"/></rect>
+    <circle cx="560" cy="139" r="2.4" fill="#FFB3C1"><animate attributeName="opacity" values="0.35;1;0.35" dur="1.4s" repeatCount="indefinite"/></circle>
+    <circle cx="520" cy="200" r="2.4" fill="#FFE9A8"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/></circle>
+    <circle cx="600" cy="190" r="2.2" fill="#FFD6E8"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.2s" begin="0.8s" repeatCount="indefinite"/></circle>
+    <circle cx="470" cy="230" r="2.2" fill="#CDE6FF"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" begin="1.3s" repeatCount="indefinite"/></circle>
+    <circle cx="650" cy="215" r="2.4" fill="#FFE9A8"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" begin="0.4s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- occasional shooting star -->
+  <g stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0" dur="9s" begin="2s" repeatCount="indefinite"/>
+    <path d="M620 50 l-30 30"/>
+  </g>
+  <g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;0" dur="11s" begin="7s" repeatCount="indefinite"/>
+    <path d="M420 90 l-24 24"/>
+  </g>
+</svg>
