@@ -165,10 +165,37 @@ function charGridHTML(g) {
     </div>`).join('');
 }
 function selectChar(id) {
+  // selecting a character applies its default name (custom name resets to the char's own name)
+  localStorage.removeItem('camnemi_topik_char_name');
   setMyChar(id);
   const g = _charTab;
   const grid = $id('char-grid');
   if (grid) grid.innerHTML = charGridHTML(g);
+  renderCharPickerHead();
+}
+function renderCharPickerHead() {
+  const ov = $id('char-picker');
+  if (!ov) return;
+  const head = ov.querySelector('.cp-name-row');
+  if (head) head.innerHTML = nameRowHTML();
+  const inp = ov.querySelector('.cp-rename');
+  if (inp) { inp.classList.remove('open'); inp.querySelector('input').value = myCharName(); }
+}
+function nameRowHTML() {
+  return `
+    <div class="cp-name-row">
+      <span class="cp-name"><img src="${myChar().img}" alt="" class="cp-name-face"> ${esc(myCharName())}</span>
+      <button class="cp-edit" onclick="toggleCharRename()">${LANG === 'ko' ? '✏️ 이름 변경' : LANG === 'km' ? '✏️ ប្តូរឈ្មោះ' : '✏️ Rename'}</button>
+    </div>`;
+}
+function toggleCharRename() {
+  const r = document.querySelector('.cp-rename');
+  if (!r) return;
+  r.classList.toggle('open');
+  if (r.classList.contains('open')) {
+    const inp = $id('cp-name-input');
+    if (inp) { inp.value = myCharName(); inp.focus(); inp.select(); }
+  }
 }
 function renderCharPicker() {
   const ov = $id('char-picker');
@@ -179,6 +206,7 @@ function renderCharPicker() {
       <b>${LANG === 'ko' ? '캐릭터 선택' : LANG === 'km' ? 'ជ្រើសរើសតួអង្គ' : 'Choose character'}</b>
       <span class="cp-x" onclick="closeCharPicker()">✕</span>
     </div>
+    ${nameRowHTML()}
     <div class="cp-rename">
       <input id="cp-name-input" class="cp-name-input" maxlength="20" placeholder="${LANG === 'ko' ? '이름 입력…' : LANG === 'km' ? 'បញ្ចូលឈ្មោះ…' : 'Enter name…'}" value="${esc(myCharName())}">
       <button class="btn btn-primary btn-sm" onclick="saveCharName()">${LANG === 'ko' ? '저장' : LANG === 'km' ? 'រក្សាទុក' : 'Save'}</button>
@@ -188,8 +216,6 @@ function renderCharPicker() {
       <button class="ctab ${g === 'm' ? 'on' : ''}" data-g="m" onclick="setCharTab('m')">👦 ${LANG === 'ko' ? '남자' : 'Male'}</button>
     </div>
     <div class="cp-grid" id="char-grid">${charGridHTML(g)}</div>`;
-  const inp = $id('cp-name-input');
-  if (inp) { inp.focus(); inp.select(); }
 }
 function saveCharName() {
   const inp = $id('cp-name-input');

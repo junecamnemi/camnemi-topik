@@ -187,8 +187,13 @@
 }
 .char-name { display: block; font-size: 10.5px; font-weight: 700; color: var(--ios-label); margin-top: 4px; }
 
-/* ---------- Rename input in the picker ---------- */
-.cp-rename { display: flex; gap: 8px; margin-bottom: 12px; }
+/* ---------- Rename row + input in the picker (hidden until ✏️ tapped) ---------- */
+.cp-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 2px 4px 10px; }
+.cp-name { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 800; color: var(--ios-label); }
+.cp-name-face { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.cp-edit { font-size: 12px; font-weight: 700; color: var(--ios-blue); background: var(--ios-fill); border: none; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.cp-rename { display: none; gap: 8px; padding: 0 4px 10px; }
+.cp-rename.open { display: flex; }
 .cp-name-input {
   flex: 1; min-width: 0; padding: 10px 14px; border-radius: 12px;
   border: 1.5px solid var(--ios-separator); background: var(--ios-card);

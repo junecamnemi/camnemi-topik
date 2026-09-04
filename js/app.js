@@ -565,8 +565,8 @@ function viewHome() {
   const lvl = xpProgress();
   const goalTotal = 10;
   const pct = Math.min(100, Math.round(doneCount / goalTotal * 100));
-  // Greeting — Hi, {name}! 👋 with our mascot girl (Aiko-style)
-  const nm = (window.AUTH && AUTH.user && AUTH.user.email) ? (AUTH.user.name || AUTH.user.email.split('@')[0]) : (LANG === 'ko' ? '학습자' : LANG === 'km' ? 'សិស្ស' : 'learner');
+  // Greeting — Hi, {character name}! 👋 (character is the unified identity)
+  const nm = myCharName();
   const mc = myChar();
   const greet = `
     <div class="home-greet">
@@ -1247,10 +1247,10 @@ function viewMy() {
       <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="doLogout()">${t('menu_logout')}</button>
     </div>` : `
     <div class="um-head">
-      <span class="um-avatar guest">👤</span>
+      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${myChar().img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
       <div class="um-id">
-        <b>${t('menu_guest')}</b>
-        <span class="sub">${t('menu_signed_in')}</span>
+        <b>${esc(myCharName())}</b>
+        <span class="sub">${LANG === 'ko' ? '게스트로 사용 중' : LANG === 'km' ? 'កំពុងប្រើជាភ្ញៀវ' : 'Using as guest'}</span>
       </div>
       <a class="btn btn-primary btn-sm" style="margin-left:auto;" href="login.html">${t('menu_login')}</a>
     </div>`;
