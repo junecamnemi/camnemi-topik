@@ -863,7 +863,7 @@ let _fxTimer = null, _fxIdx = -1, _fxLastKey = 'smile';
 /* frames per mood — when a mood has N frames (f-01-{mood}-1.webp … -N.webp)
    the avatar plays them as a flip-book loop for a real animation feel.
    Fallback to the single still portrait when frames are missing. */
-const FX_FRAMES = { dance: 4 };
+const FX_FRAMES = { dance: 4, smile: 3, angry: 3, cry: 3, phone: 3, eat: 3, music: 3, sleep: 3, study: 3, sing: 3, cook: 3, game: 3, selfie: 3 };
 const FX_FRAME_MS = 280;   // ms per frame (≈3.5 fps flip-book)
 let _fxFrameTimer = null, _fxFrameIdx = 0;
 function fxFrameCount(k) {
