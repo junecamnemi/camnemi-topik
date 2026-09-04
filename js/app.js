@@ -579,13 +579,10 @@ function viewHome() {
           <p class="greet-s">${t('home_greet_sub')}</p>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:2;">
-          <div class="greet-avatar" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
+          <div class="greet-avatar" id="greet-avatar" onclick="randomFx(event)" title="${LANG==='ko'?'캐릭터를 누르면 표정이 바뀌어요':'Tap to change expression'}">
             <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
-            <span class="avatar-edit">✎</span>
+            <span class="avatar-edit" onclick="event.stopPropagation();openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎</span>
           </div>
-          <button class="fx-btn" onclick="cycleFx(event)" title="${LANG==='ko'?'표정 바꾸기':'Change expression'}">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-          </button>
         </div>
       </div>
       <div class="scene-meta">
@@ -710,7 +707,7 @@ const FX_MOODS = [
   { k: 'game',   file: 'game',   cls: 'fx-game' },    // 게임하는 얼굴
   { k: 'selfie', file: 'selfie', cls: 'fx-selfie' }   // 셀카 찍는 얼굴
 ];
-let _fxTimer = null, _fxIdx = -1, _fxPaused = false;
+let _fxTimer = null, _fxIdx = -1;
 /* pick the expression portrait path for the current character (falls back to base) */
 function fxImgPath(m) {
   return `assets/img/chars/fx/${myCharId()}-${m.file}.webp`;
@@ -728,7 +725,15 @@ function showFx(i) {
   probe.onerror = () => { img.src = myChar().img; };   // portrait missing → base face
   probe.src = target;
 }
-function nextFx() { if (!_fxPaused) { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); } }
+function nextFx() { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); }
+/* tap the avatar → jump to a RANDOM different expression (auto-cycle keeps running) */
+function randomFx(ev) {
+  if (ev) ev.stopPropagation();
+  let n;
+  do { n = Math.floor(Math.random() * FX_MOODS.length); } while (n === _fxIdx && FX_MOODS.length > 1);
+  _fxIdx = n;
+  showFx(_fxIdx);
+}
 function startFxCycle() {
   if (_fxTimer) clearInterval(_fxTimer);
   if ($id('greet-avatar')) {
@@ -738,7 +743,6 @@ function startFxCycle() {
   }
 }
 function stopFxCycle() { if (_fxTimer) { clearInterval(_fxTimer); _fxTimer = null; } }
-function cycleFx(ev) { if (ev) ev.stopPropagation(); _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); _fxPaused = true; }
 
 
 /* ================= FOCUS TIMER (Pomodoro, Aiko-style) ================= */

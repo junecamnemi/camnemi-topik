@@ -446,14 +446,8 @@
 .greet-avatar { cursor: pointer; position: relative; }
 /* ---------- Expression animations — the character portrait ITSELF changes (real face-image swap) ---------- */
 /* Each mood swaps #greet-avatar-img to a real AI-generated expression face of the same character.
-   (No emoji, no overlays, no CSS-filter emulation — the actual face image changes.) */
-.fx-btn {
-  border: none; cursor: pointer; width: 22px; height: 22px; border-radius: 50%;
-  font-size: 11px; line-height: 1; background: rgba(255,255,255,.75);
-  border: 1px solid rgba(167,139,250,.25); box-shadow: 0 2px 6px rgba(0,0,0,.1);
-  transition: transform .15s; padding: 0;
-}
-.fx-btn:active { transform: scale(.85); }
+   (No emoji, no overlays, no CSS-filter emulation — the actual face image changes.)
+   Tap the avatar → random expression; ✎ badge → character picker. Auto-cycle every 4.2s. */
 .avatar-edit {
   position: absolute; bottom: -2px; right: -2px;
   width: 21px; height: 21px; border-radius: 50%;
