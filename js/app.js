@@ -690,25 +690,34 @@ function bindHome() {
   startFxCycle();
 }
 /* ================= CHARACTER EXPRESSION ANIMATIONS ================= */
-/* The avatar "acts out" moods: smile · angry · phone · eat · study · sleepy · sing · love.
-   Overlays (eyes/mouth/accessory) are drawn with CSS on top of the portrait. */
+/* Each mood swaps the avatar to a REAL face-image of the same character
+   (AI-generated expression portraits in assets/img/chars/fx/). The face
+   itself changes: smile / angry / cry / phone / eat / sleepy. */
 const FX_MOODS = [
-  { k: 'smile',  cls: 'fx-smile' },   // 웃음 — 깡충깡충 + 밝아짐
-  { k: 'angry',  cls: 'fx-angry' },   // 화남 — 머리 세차게 흔들기 + 붉은 기
-  { k: 'cry',    cls: 'fx-cry' },     // 울음 — 눈물 흘림 + 축 처짐
-  { k: 'phone',  cls: 'fx-phone' },   // 전화 — 고개 기울이며 통화
-  { k: 'eat',    cls: 'fx-eat' },     // 밥 — 쩝쩝 씹는 모션
-  { k: 'study',  cls: 'fx-study' },   // 공부 — 차분하게
-  { k: 'sleepy', cls: 'fx-sleepy' },  // 졸림 — 느릿하게
-  { k: 'sing',   cls: 'fx-sing' }     // 노래 — 신나게
+  { k: 'smile',  file: 'smile',  cls: 'fx-smile' },   // 웃는 얼굴
+  { k: 'angry',  file: 'angry',  cls: 'fx-angry' },   // 화난 얼굴
+  { k: 'cry',    file: 'cry',    cls: 'fx-cry' },     // 우는 얼굴
+  { k: 'phone',  file: 'phone',  cls: 'fx-phone' },   // 전화하는 얼굴
+  { k: 'eat',    file: 'eat',    cls: 'fx-eat' },     // 밥 먹는 얼굴
+  { k: 'sleepy', file: 'sleepy', cls: 'fx-sleepy' }   // 졸린 얼굴
 ];
 let _fxTimer = null, _fxIdx = -1, _fxPaused = false;
+/* pick the expression portrait path for the current character (falls back to base) */
+function fxImgPath(m) {
+  return `assets/img/chars/fx/${myCharId()}-${m.file}.webp`;
+}
 function showFx(i) {
   const av = $id('greet-avatar');
-  if (!av) return;
+  const img = $id('greet-avatar-img');
+  if (!av || !img) return;
   const m = FX_MOODS[i % FX_MOODS.length];
-  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-study','fx-sleepy','fx-sing');
+  av.classList.remove('fx-smile','fx-angry','fx-cry','fx-phone','fx-eat','fx-sleepy');
   av.classList.add(m.cls);
+  const target = fxImgPath(m);
+  const probe = new Image();
+  probe.onload = () => { img.src = target; };
+  probe.onerror = () => { img.src = myChar().img; };   // portrait missing → base face
+  probe.src = target;
 }
 function nextFx() { if (!_fxPaused) { _fxIdx = (_fxIdx + 1) % FX_MOODS.length; showFx(_fxIdx); } }
 function startFxCycle() {
