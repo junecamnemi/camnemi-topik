@@ -571,8 +571,8 @@ function viewHome() {
   const mc = myChar();
   const wxc = wxCached();
   const scene = `
-    <div class="seoul-scene" id="seoul-scene">
-      <img class="scene-landmark" src="assets/img/namsan.svg" alt="Namsan Seoul Tower" draggable="false">
+    <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
+      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-${scenePartOfDay()}.svg" alt="Namsan Seoul Tower" draggable="false">
       <div class="scene-top">
         <div class="scene-txt">
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
@@ -888,16 +888,58 @@ function seoulTimeStr() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 }
+/* Seoul hour-of-day → which Namsan scene: dawn(5-7) day(7-17) dusk(17-20) night(20-5) */
+function scenePartOfDay() {
+  try {
+    const h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Seoul', hour: '2-digit', hour12: false }).format(new Date()), 10);
+    if (h >= 5 && h < 7) return 'dawn';
+    if (h >= 7 && h < 17) return 'day';
+    if (h >= 17 && h < 20) return 'dusk';
+    return 'night';
+  } catch (e) {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 7) return 'dawn';
+    if (h >= 7 && h < 17) return 'day';
+    if (h >= 17 && h < 20) return 'dusk';
+    return 'night';
+  }
+}
+/* cross-fade the scene landmark to the time-of-day art */
+let _scenePart = null;
+function updateScenePart() {
+  const img = $id('scene-landmark');
+  if (!img) return;
+  const part = scenePartOfDay();
+  if (part === _scenePart) return;
+  _scenePart = part;
+  const next = 'assets/img/namsan-' + part + '.svg';
+  if (img.src && img.src.indexOf('namsan-' + part) !== -1) return;
+  // switch the card mood class too
+  const card = $id('seoul-scene');
+  if (card) {
+    card.classList.remove('scene-day','scene-dawn','scene-dusk','scene-night');
+    card.classList.add('scene-' + part);
+  }
+  img.style.opacity = 0;
+  setTimeout(() => {
+    const probe = new Image();
+    probe.onload = () => { img.src = next; img.style.opacity = .92; };
+    probe.onerror = () => { img.style.opacity = .92; };  // keep current art if missing
+    probe.src = next;
+  }, 450);
+}
 /* refresh #seoul-clock every 20s while visible */
 let _wxClockTimer = null;
 function tickClock() {
   const el = $id('seoul-clock');
   if (!el) return;
   el.textContent = seoulTimeStr();
+  updateScenePart();
   if (!_wxClockTimer) {
     _wxClockTimer = setInterval(() => {
       const e = $id('seoul-clock');
       if (e && e.isConnected) e.textContent = seoulTimeStr();
+      updateScenePart();
     }, 20000);
   }
 }

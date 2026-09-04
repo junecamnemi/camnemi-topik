@@ -417,12 +417,24 @@
   border: 1px solid rgba(167,139,250,.16);
   min-height: 0;
 }
+/* time-of-day card moods */
+.seoul-scene.scene-day   { background: linear-gradient(180deg, #D8ECFF, #EAF5FF 55%, #FFF4DE); border-color: rgba(120,170,235,.25); }
+.seoul-scene.scene-dawn  { background: linear-gradient(180deg, #C7B9E8, #E8C9E2 55%, #FFDFC2); border-color: rgba(160,130,200,.25); }
+.seoul-scene.scene-dusk  { background: linear-gradient(180deg, #B9A8D8, #E3B4C6 50%, #FFC9A3); border-color: rgba(170,120,160,.28); }
+.seoul-scene.scene-night { background: linear-gradient(180deg, #232A4E, #3A3E70 60%, #4A4E8C); border-color: rgba(90,100,170,.4); }
 /* Namsan landmark fills the card, vertically centered, larger */
 .seoul-scene .scene-landmark {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
   width: 122%; height: auto; max-height: 110%;
-  opacity: .6; pointer-events: none; user-select: none;
+  opacity: .92; pointer-events: none; user-select: none;
+  transition: opacity .5s ease;
 }
+/* night card → light text so it reads on the dark sky */
+.seoul-scene.scene-night .greet-h,
+.seoul-scene.scene-night .greet-s { color: #F4F1FF; text-shadow: 0 1px 6px rgba(0,0,20,.35); }
+.seoul-scene.scene-night .wx-chip,
+.seoul-scene.scene-night .time-chip { color: #F4F1FF; background: rgba(20,24,55,.55); border-color: rgba(200,205,255,.28); }
+.seoul-scene.scene-night .meta-dot { color: rgba(235,232,255,.7); }
 /* ---------- Weather backdrop (removed — no animated weather over the art) ---------- */
 .scene-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
 .scene-meta { display: flex; align-items: center; gap: 7px; position: relative; z-index: 2; margin-top: 6px; }
