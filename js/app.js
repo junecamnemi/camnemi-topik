@@ -849,7 +849,7 @@ function viewHome() {
   const wxc = wxCached();
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-ai.jpg?v=plane-1" alt="Namsan Seoul Tower" draggable="false">
+      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-ai.jpg?v=photo-1" alt="Namsan Seoul Tower" draggable="false">
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
         <div class="scene-txt">

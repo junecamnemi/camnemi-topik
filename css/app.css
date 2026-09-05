@@ -583,6 +583,8 @@ body.has-back .app-header .brand { margin-left: 34px; }
   border: 1px solid rgba(167,139,250,.16);
   min-height: 0;
 }
+/* center the greeting + avatar vertically in the hero banner */
+.seoul-scene .scene-top { min-height: 108px; align-items: center; }
 /* keep the banner's inner content aligned with the app column on wide screens */
 .seoul-scene .scene-top,
 .seoul-scene .scene-meta { max-width: 600px; margin-left: auto; margin-right: auto; }
