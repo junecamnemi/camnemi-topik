@@ -817,6 +817,10 @@ function render() {
   if (APP.lt) { s.innerHTML = viewLevelTest(); renderSchedBanner(); updateBackBtn(); stopFxCycle(); return; }
   switch (APP.tab) {
     case 'home': s.innerHTML = viewHome(); bindHome(); break;
+    case 'book':
+      s.innerHTML = (typeof viewBook === 'function') ? viewBook() : viewHome();
+      if (typeof window.glowEnsureReady === 'function') window.glowEnsureReady();
+      break;
     case 'daily': s.innerHTML = viewDaily(); bindDaily(); break;
     case 'reading': s.innerHTML = viewSection('reading'); bindDaily(); break;
     case 'listening': s.innerHTML = viewSection('listening'); bindDaily(); break;
@@ -3636,7 +3640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'home'));
+  go(['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'book'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {

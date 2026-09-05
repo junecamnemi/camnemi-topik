@@ -1,0 +1,1 @@
+window.GLOWSIS_1A = [];

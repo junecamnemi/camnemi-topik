@@ -1,0 +1,105 @@
+/* Glowsis Book viewer — app-level chrome (level grid, unit list, study header).
+   The textbook content styles (.grammar, .d-line, .v-item …) live in
+   glowsis-book.css; this file only styles the Book tab shell around them. */
+
+.book-home { padding: 14px 4px 20px; }
+.book-hero {
+  border-radius: 20px; padding: 20px 18px; margin-bottom: 16px;
+  background: linear-gradient(135deg, #7B6CF6, #A78BFA 55%, #F9A8D4);
+  color: #fff; position: relative; overflow: hidden;
+}
+.book-hero::after {
+  content: '🎤'; position: absolute; right: 14px; bottom: -10px; font-size: 64px; opacity: .25;
+}
+.book-badge {
+  display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .4px;
+  background: rgba(255,255,255,.22); padding: 2px 9px; border-radius: 999px; margin-bottom: 6px;
+}
+.book-hero h2 { font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
+.book-hero p { font-size: 12.5px; opacity: .92; margin-top: 4px; max-width: 78%; line-height: 1.5; }
+
+.book-levels { display: flex; flex-direction: column; gap: 12px; }
+.book-level {
+  border: 1px solid var(--ios-separator); border-radius: 18px; padding: 14px 16px;
+  background: var(--ios-card);
+}
+.bl-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bl-lv {
+  font-size: 17px; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, var(--br2, #7B6CF6), var(--br3, #A78BFA));
+  border-radius: 12px; padding: 3px 10px; letter-spacing: -.2px;
+}
+.book-level.soon .bl-lv { background: linear-gradient(135deg, #b9b9cd, #cfcfdd); }
+.bl-label { font-size: 12.5px; font-weight: 700; color: var(--ios-label); }
+.bl-ok { margin-left: auto; color: #2DD4BF; font-weight: 800; }
+.bl-coming { margin-left: auto; font-size: 9.5px; font-weight: 800; letter-spacing: .5px; color: var(--ios-tertiary-label); }
+.bl-soon-txt { font-size: 12px; color: var(--ios-tertiary-label); padding: 2px 0 4px; }
+.bl-books { display: flex; flex-direction: column; gap: 8px; }
+.bl-book {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: var(--ios-fill, #f4f3fa); border-radius: 14px; padding: 12px 14px;
+  border: 1px solid var(--ios-separator); cursor: pointer; width: 100%;
+}
+.bl-b-ico { font-size: 24px; }
+.bl-b-t { display: flex; flex-direction: column; }
+.bl-b-t b { font-size: 15px; color: var(--ios-label); }
+.bl-b-t small { font-size: 11px; color: var(--ios-tertiary-label); margin-top: 2px; }
+.bl-b-arr { margin-left: auto; color: var(--ios-blue); font-weight: 800; font-size: 18px; }
+
+/* ---- unit list ---- */
+.book-units { padding: 8px 4px 20px; }
+.bu-head { margin-bottom: 14px; }
+.back-btn-mini {
+  border: none; background: transparent; color: var(--ios-blue); font-weight: 700;
+  font-size: 13px; cursor: pointer; padding: 0 0 6px;
+}
+.bu-head h2 { font-size: 21px; font-weight: 800; color: var(--ios-label); }
+.bu-sub { font-size: 12px; color: var(--ios-tertiary-label); margin-top: 3px; }
+.bu-list { display: flex; flex-direction: column; gap: 8px; }
+.bu-item {
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%;
+  background: var(--ios-card); border: 1px solid var(--ios-separator);
+  border-radius: 15px; padding: 12px 14px; cursor: pointer;
+}
+.bu-no {
+  width: 34px; height: 34px; border-radius: 11px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, var(--br2, #7B6CF6), var(--br3, #A78BFA));
+}
+.bu-info { display: flex; flex-direction: column; }
+.bu-info b { font-size: 14.5px; color: var(--ios-label); }
+.bu-info small { font-size: 11px; color: var(--ios-tertiary-label); margin-top: 1px; }
+.bu-arr { margin-left: auto; color: var(--ios-blue); font-weight: 800; font-size: 17px; }
+
+/* ---- unit study view ---- */
+.glowsis-book { padding: 0 0 24px; }
+.gb-toolbar { display: flex; align-items: center; margin-bottom: 2px; }
+.bu-view-head { margin-bottom: 6px; }
+.bu-flag {
+  display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .4px;
+  color: #fff; background: linear-gradient(135deg, #7B6CF6, #A78BFA);
+  border-radius: 999px; padding: 2px 9px; margin-bottom: 4px;
+}
+.bu-view-head h2 { font-size: 20px; font-weight: 800; color: var(--ios-label); }
+.gb-body { margin-top: 0; }
+/* pull the textbook up tight under the slim back bar so it reads like a page */
+.gb-body .unit-flag { margin-top: 4px; }
+.bu-nav { display: flex; gap: 10px; justify-content: space-between; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--ios-separator); }
+.bnav {
+  background: var(--ios-fill); border: 1px solid var(--ios-separator); color: var(--ios-blue);
+  font-weight: 700; font-size: 13px; border-radius: 999px; padding: 8px 16px; cursor: pointer;
+}
+.bnav-next { margin-left: auto; }
+
+/* scope a few shared textbook atoms that might collide in the app shell */
+.glowsis-book .opt { width: 100%; margin-bottom: 8px; }
+
+/* ---- iframe textbook view (original 1a.html, design preserved) ---- */
+.book-frame-wrap { display: flex; flex-direction: column; height: calc(100vh - 140px); }
+.bf-head { display: flex; align-items: center; gap: 10px; padding: 4px 2px 8px; }
+.bf-title { font-size: 14px; font-weight: 800; color: var(--ios-label); }
+.book-frame {
+  flex: 1; width: 100%; border: none; border-radius: 14px;
+  background: #fff;
+}
