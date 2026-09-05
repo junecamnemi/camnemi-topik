@@ -859,7 +859,7 @@ function viewHome() {
         <div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:2;">
           <div class="greet-avatar ${glowUnlocked() ? 'glow-ring' : ''}" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
             ${crownUnlocked() ? '<span class="avatar-crown">👑</span>' : ''}
-            <img id="greet-avatar-img" src="${mc.img}" alt="mascot">
+            <span class="avatar-clip"><img id="greet-avatar-img" src="${mc.img}" alt="mascot"></span>
             <span class="avatar-edit">✎</span>
           </div>
         </div>

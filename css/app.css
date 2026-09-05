@@ -567,8 +567,8 @@ body.has-back .app-header .brand { margin-left: 34px; }
 
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
-.greet-h { font-size: 19px; font-weight: 800; color: var(--ios-label); line-height: 1.25; }
-.greet-s { font-size: 10.5px; color: var(--ios-secondary-label); font-weight: 600; margin-top: 1px; opacity: .9; }
+.greet-h { font-size: 19px; font-weight: 800; color: #FFFFFF; line-height: 1.25; text-shadow: 0 1px 8px rgba(15,10,40,.55); }
+.greet-s { font-size: 10.5px; color: rgba(255,255,255,.92); font-weight: 600; margin-top: 1px; opacity: .95; text-shadow: 0 1px 5px rgba(15,10,40,.5); }
 /* ---------- Seoul scene card (Namsan landmark + weather/time) ---------- */
 .seoul-scene {
   position: relative; overflow: hidden;
@@ -615,18 +615,26 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .seoul-scene .scene-landmark {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center;
-  opacity: .92; pointer-events: none; user-select: none;
+  opacity: .9; pointer-events: none; user-select: none;
   transition: filter .6s ease, opacity .5s ease;
 }
+/* legibility scrim — always darkens the top (greeting) and bottom (meta) so the
+   white text reads no matter how bright the AI art is in that scene */
+.seoul-scene::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(18,12,42,.62), rgba(18,12,42,0) 45%),
+    linear-gradient(0deg,   rgba(18,12,42,.55), rgba(18,12,42,0) 40%);
+}
 /* time-of-day tint over the constant AI art (8 scenes, 3h blocks) */
-.seoul-scene.scene-midnight .scene-landmark { filter: brightness(.82) saturate(1.15) hue-rotate(-8deg); }
-.seoul-scene.scene-predawn  .scene-landmark { filter: brightness(.9) saturate(1.1) hue-rotate(6deg); }
-.seoul-scene.scene-sunrise  .scene-landmark { filter: brightness(1.05) saturate(1.25) hue-rotate(18deg); }
-.seoul-scene.scene-morning  .scene-landmark { filter: brightness(1.18) saturate(1.05) hue-rotate(24deg); }
-.seoul-scene.scene-midday   .scene-landmark { filter: brightness(1.28) saturate(.95) hue-rotate(30deg); }
-.seoul-scene.scene-afternoon .scene-landmark { filter: brightness(1.2) saturate(1.1) hue-rotate(20deg); }
-.seoul-scene.scene-sunset   .scene-landmark { filter: brightness(1.02) saturate(1.35) hue-rotate(8deg); }
-.seoul-scene.scene-night    .scene-landmark { filter: brightness(.86) saturate(1.2) hue-rotate(-4deg); }
+.seoul-scene.scene-midnight .scene-landmark { filter: brightness(.62) saturate(1.3) hue-rotate(-14deg) contrast(1.08); }
+.seoul-scene.scene-predawn  .scene-landmark { filter: brightness(.72) saturate(1.25) hue-rotate(-4deg) contrast(1.05); }
+.seoul-scene.scene-sunrise  .scene-landmark { filter: brightness(1.12) saturate(1.3) hue-rotate(22deg) sepia(.18); }
+.seoul-scene.scene-morning  .scene-landmark { filter: brightness(1.22) saturate(1.02) hue-rotate(4deg); }
+.seoul-scene.scene-midday   .scene-landmark { filter: brightness(1.32) saturate(.95); }
+.seoul-scene.scene-afternoon .scene-landmark { filter: brightness(1.22) saturate(1.08) hue-rotate(10deg); }
+.seoul-scene.scene-sunset   .scene-landmark { filter: brightness(1.05) saturate(1.4) hue-rotate(-6deg) sepia(.22); }
+.seoul-scene.scene-night    .scene-landmark { filter: brightness(.66) saturate(1.25) hue-rotate(-12deg) contrast(1.06); }
 
 /* ---------- airplane drifting right → left across the sky ---------- */
 .scene-plane {
@@ -669,21 +677,35 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .scene-meta { display: flex; align-items: center; gap: 7px; position: relative; z-index: 2; margin-top: 6px; }
 .wx-chip, .time-chip {
   display: inline-flex; align-items: center; gap: 4px;
-  font-size: 12px; font-weight: 800; color: var(--ios-label);
-  background: rgba(255,255,255,.66); border: 1px solid rgba(167,139,250,.2);
+  font-size: 12px; font-weight: 800; color: #FFFFFF;
+  background: rgba(22,15,52,.5); border: 1px solid rgba(255,255,255,.25);
   border-radius: 999px; padding: 2.5px 10px;
+  text-shadow: 0 1px 3px rgba(0,0,20,.4);
 }
 .meta-dot { color: var(--ios-secondary-label); opacity: .5; font-size: 11px; }
 [data-theme="dark"] .wx-chip, [data-theme="dark"] .time-chip { background: rgba(40,35,66,.72); border-color: rgba(245,244,255,.12); }
 
 .greet-avatar {
-  width: 66px; height: 66px; border-radius: 50%; flex-shrink: 0;
+  width: 82px; height: 82px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   background: linear-gradient(135deg, var(--br2), var(--br3));
   box-shadow: 0 6px 20px hsla(var(--ai-h2), 80%, 65%, .4);
-  border: 2.5px solid #fff; overflow: visible; position: relative;
+  border: 2.5px solid rgba(255,255,255,.9); position: relative; cursor: pointer;
 }
-.greet-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; border-radius: 50%; }
+/* circular clip that holds the zoomed-in face; crown & edit badges stay visible
+   because only this inner clip is masked */
+.greet-avatar .avatar-clip {
+  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.greet-avatar .avatar-clip img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+  display: block;
+  /* gentle zoom so full-body portraits (in the picker/other spots) read as a
+     face in the small circle — but mild enough not to over-crop the fx frames
+     which are already face close-ups */
+  transform: scale(1.22); transform-origin: 50% 32%;
+}
 .greet-avatar { cursor: pointer; position: relative; }
 /* Lv 50+ — glowing ring pulsing around the avatar */
 .greet-avatar.glow-ring { animation: avGlowRing 2.6s ease-in-out infinite; }
