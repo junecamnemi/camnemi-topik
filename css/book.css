@@ -103,3 +103,134 @@
   flex: 1; width: 100%; border: none; border-radius: 14px;
   background: #fff;
 }
+
+/* ==================== FLIP-BOOK (swipe pages) ==================== */
+.flip-wrap { display: flex; flex-direction: column; height: calc(100vh - 130px); }
+.flip-top { display: flex; align-items: center; gap: 8px; padding: 2px 2px 8px; }
+.flip-unit { font-size: 13px; font-weight: 800; color: var(--ios-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flip-viewport {
+  flex: 1; overflow: hidden; border-radius: 16px; position: relative;
+  background: #fff; border: 1px solid var(--ios-separator);
+}
+.flip-track {
+  display: flex; height: 100%; width: 100%;
+  transition: transform .4s cubic-bezier(.25,.8,.25,1);
+  will-change: transform;
+}
+.flip-page {
+  flex: 0 0 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
+  padding: 18px 18px 30px; background: #fff;
+}
+.flip-page::-webkit-scrollbar { width: 0; }
+.fp-coverhead { margin-bottom: 6px; text-align: center; }
+.fp-badge {
+  display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .4px;
+  color: #fff; background: linear-gradient(135deg,#7B6CF6,#A78BFA); border-radius: 999px; padding: 3px 10px;
+}
+.fp-coverhead h2 { font-size: 20px; font-weight: 800; color: #2b2547; margin: 8px 0 2px; }
+.fp-en { font-size: 12.5px; color: #8a83a6; font-weight: 600; }
+.fp-secbar {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 800; color: #fff; letter-spacing: .3px;
+  background: linear-gradient(135deg,#7B6CF6,#A78BFA); border-radius: 999px;
+  padding: 5px 13px; margin-bottom: 12px;
+}
+.fp-sec-ico { font-size: 13px; }
+.flip-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0 4px; flex-wrap: wrap; }
+.fdot {
+  width: 7px; height: 7px; border-radius: 50%; border: none; cursor: pointer;
+  background: #d5d0e8; padding: 0;
+}
+.fdot.on { background: #7B6CF6; width: 18px; border-radius: 4px; transition: .2s; }
+.flip-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding-top: 6px; }
+.fnav {
+  width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
+  background: linear-gradient(135deg,#7B6CF6,#A78BFA); color: #fff; font-size: 17px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.fnav:disabled { background: #e4e0f0; color: #b7b0cc; }
+.fp-cnt { font-size: 13px; font-weight: 700; color: var(--ios-label); min-width: 50px; text-align: center; }
+
+/* ==================== BOOK PAGE TYPES (chapter design) ==================== */
+/* Each flip page is a "sheet of the book". We restyle the original textbook
+   atoms (.story/.dialog/.grammar/.vocab-grid/.practice/.culture) into clean,
+   book-appropriate cards per page type. */
+
+/* base page = cream paper */
+.flip-page { background: #fdfbf3; }
+.bk-page { position: relative; min-height: 100%; display: flex; flex-direction: column; }
+.bk-page .bk-body { flex: 1; }
+
+/* cover page (hardback chapter title + story) */
+.bk-cover { justify-content: flex-start; background:
+  radial-gradient(120% 90% at 15% 0%, #efeaff 0%, transparent 55%),
+  radial-gradient(120% 100% at 90% 100%, #ffe9f2 0%, transparent 50%),
+  #fdfbf3;
+}
+.bk-cover-inner { text-align: center; padding: 12px 6px 0; }
+.bk-cover-badge {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1px;
+  color: #fff; background: linear-gradient(135deg,#5b3fd4,#8b5cf6); border-radius: 999px;
+  padding: 4px 14px; box-shadow: 0 4px 12px rgba(91,63,212,.3);
+}
+.bk-cover-title { font-size: 26px; font-weight: 900; color: #2b2547; margin: 12px 0 4px; letter-spacing: -.5px; }
+.bk-cover-sub { font-size: 14px; color: #8a7fb0; font-weight: 700; }
+.bk-cover .bk-body { margin-top: 14px; }
+.bk-cover .story {
+  background: #fff; border: 1px solid #ece6f5; border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(91,63,212,.08);
+}
+
+/* chapter pages shared head */
+.bk-chaphead { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 2px solid #efeaf7; margin-bottom: 12px; }
+.bk-ch-ico { font-size: 22px; width: 42px; height: 42px; border-radius: 12px; display:flex; align-items:center; justify-content:center; background: #f2edfd; }
+.bk-chaphead b { display:block; font-size: 16px; color: #2b2547; letter-spacing:-.2px; }
+.bk-chaphead small { font-size: 11px; color: #a79bc9; font-weight: 700; }
+
+/* talk page — goals as pills + dialogue bubbles */
+.bk-talk .goals { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; background:transparent; border:none; box-shadow:none; padding:0; }
+.bk-talk .goals .goal {
+  background:#f0ecfb; border-radius:999px; padding:6px 13px; font-size:12.5px; font-weight:700; color:#4a3f78;
+}
+.bk-talk .goal .g-ico { margin-right:4px; }
+.bk-talk .dialog { background:#fff; border:1px solid #efe9f8; border-radius:18px; padding:16px; }
+
+/* grammar page — clean white cards with a soft number chip */
+.bk-grammar .grammar {
+  background:#fff; border:1px solid #ece6f5; border-radius:16px; padding:16px 18px;
+  margin:0 0 14px; box-shadow:0 6px 18px rgba(91,63,212,.06);
+}
+.bk-grammar .g-label { display:inline-block; background:#6d4ef0; color:#fff; font-weight:800; font-size:11px;
+  letter-spacing:.3px; border-radius:999px; padding:3px 12px; margin-bottom:8px; }
+.bk-grammar .g-point { font-size:15px; font-weight:800; color:#2b2547; margin:2px 0 8px; }
+.bk-grammar .g-rule { font-size:13px; color:#5b5285; line-height:1.7; }
+.bk-grammar .g-ex { margin-top:10px; }
+.bk-grammar .g-ex .ex { display:flex; flex-direction:column; gap:2px; padding:8px 12px; background:#faf8ff; border-radius:10px; margin-bottom:6px; }
+.bk-grammar .g-ex .ko { font-size:15px; font-weight:800; color:#3a2e63; }
+.bk-grammar .g-ex .gl { font-size:12px; color:#8a83a6; }
+
+/* vocab page — grid of word cards like a picture dictionary */
+.bk-vocab .bk-body { padding-top:4px; }
+.bk-vocab .vocab-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.bk-vocab .v-item {
+  background:#fff; border:1px solid #ece6f5; border-radius:13px; padding:10px;
+  display:flex; flex-direction:column; gap:4px; box-shadow:0 4px 12px rgba(91,63,212,.05);
+}
+.bk-vocab .v-emoji { font-size:22px; }
+.bk-vocab .v-ko { font-size:16px; font-weight:800; color:#2b2547; }
+.bk-vocab .v-rom { font-size:11px; color:#a79bc9; font-weight:600; }
+.bk-vocab .v-en { font-size:11px; color:#5b5285; font-weight:600; }
+
+/* practice page — worksheet look */
+.bk-practice .bk-body { display:flex; flex-direction:column; gap:14px; }
+.bk-practice .practice {
+  background:#fff; border:1.5px dashed #cfc6e8; border-radius:14px; padding:14px;
+}
+.bk-practice .p-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.bk-practice .p-badge { background:#ffcf6b; color:#7a5200; font-weight:800; font-size:10px; padding:2px 8px; border-radius:6px; }
+.bk-practice .p-title { font-size:13px; font-weight:800; color:#2b2547; }
+.bk-practice .opts { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+
+/* culture page */
+.bk-culture .culture { background:#fff7ef; border:1px solid #f4e2cd; border-radius:18px; padding:18px; }
+.bk-pageno { position:absolute; bottom:6px; right:12px; font-size:12px; font-weight:700; color:#c9c2de; }
