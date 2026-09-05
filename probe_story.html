@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<iframe id="f" src="textbook/1a.html" style="width:412px;height:900px;border:none"></iframe>
+<script>
+setTimeout(function(){
+ try{
+  var d=f.contentDocument,w=f.contentWindow;
+  var out=[];
+  // story 박스 실제 치수
+  var st=d.querySelector('.story'); 
+  if(st){var r=st.getBoundingClientRect();out.push('story box: l='+Math.round(r.left)+' r='+Math.round(r.right)+' w='+Math.round(r.width));}
+  // story-body
+  var sb=st.querySelector('.story-body');
+  if(sb){var r=sb.getBoundingClientRect();out.push('story-body: l='+Math.round(r.left)+' r='+Math.round(r.right)+' w='+Math.round(r.width));}
+  var im=st.querySelector('.story-art');
+  if(im){var r=im.getBoundingClientRect();out.push('story-art: w='+Math.round(r.width)+' r='+Math.round(r.right));}
+  // wrap 폭
+  var w=st.closest('.wrap');
+  if(w){var r=w.getBoundingClientRect();out.push('wrap: l='+Math.round(r.left)+' r='+Math.round(r.right));}
+  document.title='DIAG|'+out.join(' || ');
+ }catch(e){document.title='ERR'+e.message;}
+},3000);
+</script></body></html>

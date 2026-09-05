@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<iframe id="f" src="textbook/1a.html#unit1" style="width:412px;height:900px;border:none"></iframe>
+<script>
+setTimeout(function(){
+ try{
+  var d=f.contentDocument,w=f.contentWindow;
+  var out=[];
+  // body & wrap 폭
+  out.push('clientW='+d.documentElement.clientWidth);
+  // unit1 위치
+  var u1=d.getElementById('unit1');
+  if(u1){var r=u1.getBoundingClientRect();out.push('unit1: l='+Math.round(r.left)+' r='+Math.round(r.right)+' w='+Math.round(r.width));}
+  // 모든 섹션 top 요소들 l 위치
+  var secs=d.querySelectorAll('.unit-flag,.sec-title,.story,.dialog,.grammar,.vocab-grid,.practice,.goals,.culture');
+  var off=[];
+  secs.forEach(function(e){var r=e.getBoundingClientRect();if(r.left>120){var c=e.className;if(typeof c==='string')off.push(c+'@l'+Math.round(r.left));}});
+  out.push('right_offset='+off.slice(0,8).join(','));
+  document.title='DIAG|'+out.join(' || ');
+ }catch(e){document.title='ERR'+e.message;}
+},3500);
+</script></body></html>

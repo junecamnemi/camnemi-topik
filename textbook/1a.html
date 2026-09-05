@@ -45,6 +45,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px 80px; }
+/* prevent horizontal overflow on small screens (mobile) — nothing may push wider than the viewport */
+.wrap, .story, .story-body, .dialog, .d-line, .d-bubble, .grammar, .g-ex, .ex, .vocab-grid, .v-item, .practice, .opts, .opt, .culture, .goals, .sec-title, .unit-flag, .book-page, .cover, .cover-img { max-width: 100%; }
+.story-body, .d-bubble, .g-ex, .p-q, .p-passage, .p-dir { min-width: 0; }
+.wrap { overflow-x: hidden; }
 
 /* ---------- top nav ---------- */
 .topnav {
@@ -640,7 +644,8 @@ body {
      ============================================================ -->
   <div class="unit-divider" id="unit1"></div>
   <div class="unit-flag">UNIT 1 · GREETINGS</div>
-  <div class="sec-title"><div class="no">1</div><div><h2>Hello!</h2><div class="en">안녕하세요! — Greetings & 이에요/예요</div></div>  <div class="story">
+  <div class="sec-title"><div class="no">1</div><div><h2>Hello!</h2><div class="en">안녕하세요! — Greetings & 이에요/예요</div></div></div>
+  <div class="story">
     <img class="story-art" src="assets/glowsis/aran.png" alt="아란">
     <div class="story-body">
       <span class="story-tag">💿 GLOWSIS STORY · 1/8</span>
@@ -649,8 +654,6 @@ body {
       <span class="story-piece">⭐ GLOW POINT 1/8 획득 — Greetings!</span>
     </div>
   </div>
-
-</div>
 
   <div class="goals">
     <div class="goal"><span class="g-ico">👋</span> Learn greeting expressions</div>
