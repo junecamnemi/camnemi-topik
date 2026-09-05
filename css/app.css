@@ -607,13 +607,12 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .seoul-scene.scene-afternoon{ background: linear-gradient(180deg, #A9D4FF, #E0ECFF 55%, #FFEDC8); border-color: rgba(110,160,220,.25); }
 .seoul-scene.scene-sunset   { background: linear-gradient(180deg, #B9A8D8, #E3B4C6 50%, #FFC9A3); border-color: rgba(170,120,160,.28); }
 .seoul-scene.scene-night    { background: linear-gradient(180deg, #1B2340, #3A3E70 60%, #4A4E8C); border-color: rgba(90,100,170,.4); }
-/* AI Namsan art fills the whole banner — tower pre-positioned at ~57% in the
-   image so it lands slightly right of center; scale 115% makes it a bit larger */
+/* AI Namsan art fills the whole banner — tower drawn at ~66% in the image.
+   inset:0 stretches the img to the banner box so object-fit:cover fills it;
+   object-position centers the tower (66% in source) slightly right of center. */
 .seoul-scene .scene-landmark {
-  position: absolute; left: 50%; top: 50%;
-  width: 120%; height: 120%;
-  transform: translate(-50%, -50%);
-  object-fit: cover; object-position: 50% 45%;
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
   opacity: .92; pointer-events: none; user-select: none;
   transition: filter .6s ease, opacity .5s ease;
 }
