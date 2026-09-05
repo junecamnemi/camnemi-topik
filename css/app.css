@@ -101,10 +101,12 @@
   80%  { background-position: 16% 16%, 80% 34%, 56% 100%, 26% 60%, 78% 58%, 38% 78%; }
   100% { background-position: 12% 8%, 88% 20%, 50% 104%, 30% 55%, 72% 68%, 0% 50%; }
 }
-/* soft ambient color blobs behind content */
+/* soft ambient color blobs behind content — promote to their own GPU layer so
+   the big blur isn't recomputed on every scroll frame */
 .app-shell::before, .app-shell::after {
   content: ''; position: fixed; z-index: 0; pointer-events: none;
-  border-radius: 50%; filter: blur(70px); opacity: .5;
+  border-radius: 50%; filter: blur(60px); opacity: .42;
+  will-change: transform; transform: translateZ(0);
 }
 .app-shell::before {
   width: 300px; height: 300px; top: -80px; right: -100px;
@@ -117,13 +119,15 @@
 [data-theme="dark"] .app-shell::before { opacity: .35; }
 [data-theme="dark"] .app-shell::after { opacity: .3; }
 
-/* ---------- Nav bar (modern glass header) — pinned to the very top ---------- */
+/* ---------- Nav bar (modern glass header) — pinned to the very top ----------
+   NOTE: backdrop-filter blur is EXPENSIVE on scroll (re-blurs every frame).
+   We keep a subtle frosted look but cap the blur low so scrolling stays smooth. */
 .app-header {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 60;
-  background: rgba(247, 244, 255, .75);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  backdrop-filter: saturate(180%) blur(24px);
+  background: rgba(247, 244, 255, .86);
+  -webkit-backdrop-filter: saturate(150%) blur(8px);
+  backdrop-filter: saturate(150%) blur(8px);
   border-bottom: 0.5px solid var(--ios-separator);
   padding: 10px 20px 8px;
   display: flex; align-items: center; gap: 10px;
@@ -345,9 +349,9 @@ body.has-back .app-header .brand { margin-left: 34px; }
   position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   width: calc(100% - 28px); max-width: 540px; z-index: 60;
-  background: rgba(255, 255, 255, .78);
-  -webkit-backdrop-filter: saturate(180%) blur(28px);
-  backdrop-filter: saturate(180%) blur(28px);
+  background: rgba(255, 255, 255, .92);
+  -webkit-backdrop-filter: saturate(150%) blur(10px);
+  backdrop-filter: saturate(150%) blur(10px);
   border: 1px solid rgba(255, 255, 255, .6);
   border-radius: 26px;
   box-shadow: 0 12px 40px rgba(91, 91, 214, .18), 0 2px 8px rgba(23, 21, 34, .06);
@@ -389,7 +393,6 @@ body.has-back .app-header .brand { margin-left: 34px; }
   padding: 16px 18px; margin-bottom: 12px;
   box-shadow: 0 8px 28px var(--ios-shadow), 0 1px 3px rgba(23, 21, 34, .04);
   border: 1px solid rgba(255, 255, 255, .55);
-  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   position: relative; z-index: 1;
 }
 /* Smart recommendation card — theme-aware (light tint / dark navy) */
@@ -591,9 +594,9 @@ body.has-back .app-header .brand { margin-left: 34px; }
 /* hero mode: the header turns into a floating glass strip so the banner
    fills the very top of the screen; text flips to white over dark scenes */
 body.has-hero .app-header {
-  background: rgba(247, 244, 255, .10);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  backdrop-filter: saturate(160%) blur(12px);
+  background: rgba(247, 244, 255, .14);
+  -webkit-backdrop-filter: saturate(150%) blur(8px);
+  backdrop-filter: saturate(150%) blur(8px);
   border-bottom-color: transparent;
   box-shadow: none;
 }
