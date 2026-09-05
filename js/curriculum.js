@@ -1,8 +1,8 @@
 /* Camnemi TOPIK Preparation — curriculum page renderer */
 
 const BOOK_META = [
-  { id: "1a", topik: "TOPIK 1", cefr: "A1", tag: "beginner", label: "Beginner", status: "live" },
-  { id: "1b", topik: "TOPIK 1→2", cefr: "A1–A2", tag: "beginner", label: "Beginner", status: "live" },
+  { id: "1a", topik: "TOPIK 1", cefr: "A1", tag: "beginner", label: "Beginner", status: "live", hours: 200, hoursPer: 25 },
+  { id: "1b", topik: "TOPIK 1→2", cefr: "A1–A2", tag: "beginner", label: "Beginner", status: "live", hours: 200, hoursPer: 25 },
   { id: "2a", topik: "TOPIK 2", cefr: "A2", tag: "beginner", label: "Beginner", status: "soon" },
   { id: "2b", topik: "TOPIK 2→3", cefr: "A2–B1", tag: "beginner", label: "Beginner", status: "soon" },
   { id: "3a", topik: "TOPIK 3", cefr: "B1", tag: "intermediate", label: "Intermediate", status: "soon" },
@@ -28,7 +28,7 @@ function renderCurriculum() {
       <tr data-book="${m.id}">
         <td><b class="kr">${level}</b><br><span class="badge ${m.tag}">${m.label}</span></td>
         <td><span class="badge navy">${m.topik}</span> · ${m.cefr}</td>
-        <td>${isLive ? `<b>${lessonCount} lessons</b>` : '<span style="color:var(--muted);">Coming soon</span>'}</td>
+        <td>${isLive ? `<b>${lessonCount} lessons</b>${m.hours ? `<br><span class="badge amber" style="margin-top:4px;">≈ ${m.hours} hrs · ${m.hoursPer}h/lesson</span>` : ''}` : '<span style="color:var(--muted);">Coming soon</span>'}</td>
         <td>${isLive
           ? `<a class="btn btn-sm btn-teal" href="lesson.html?book=${m.id}&lesson=${book.lessons[0].id}">Start →</a>`
           : `<a class="btn btn-sm btn-ghost" href="contact.html?level=${m.id}">Notify me</a>`}</td>
@@ -56,6 +56,7 @@ function renderCurriculum() {
     html += `<div class="card">
       <h3 class="kr">${book.book}</h3>
       <p style="margin-bottom:12px;">${book.intro}</p>
+      <p style="margin-bottom:12px;"><span class="badge amber">≈ 200 hours · ${book.lessons.length} lessons · 25h each</span></p>
       <div style="display:grid;gap:6px;">
         ${book.lessons.map(l => `
           <a href="lesson.html?book=${bid}&lesson=${l.id}" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:#f7f8fc;border-radius:8px;font-size:14.5px;">

@@ -149,6 +149,7 @@ tr:hover td { background: #fafbfe; }
 .badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 12.5px; font-weight: 700; }
 .badge.navy { background: #eef1fa; color: var(--navy); }
 .badge.teal { background: #e3f6ef; color: #008f65; }
+.badge.amber { background: #fff4d6; color: #b8860b; }
 .badge.red { background: #fdeceb; color: #c4302b; }
 .badge.gold { background: #fff4d6; color: #a97d0a; }
 
