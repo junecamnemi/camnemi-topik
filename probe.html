@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-title" content="Camnemi TOPIK">
 <title>Camnemi TOPIK App</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/app.css?v=tower-1">
+<link rel="stylesheet" href="css/app.css?v=fix-1">
 </head>
 <body>
 <div class="app-shell">
@@ -82,7 +82,29 @@
 <script src="data/level-test.js"></script>
 <script src="data/vocab-bank.js"></script>
 <script src="data/topik-schedule.js"></script>
-<script src="js/chars.js?v=tower-1"></script>
-<script src="js/app.js?v=tower-1"></script>
+<script src="js/chars.js?v=fix-1"></script>
+<script src="js/app.js?v=fix-1"></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const img = document.getElementById('scene-landmark');
+    const scene = document.getElementById('seoul-scene');
+    if (!img || !scene) { document.title = 'NO IMG'; return; }
+    const cs = getComputedStyle(img);
+    const ir = img.getBoundingClientRect();
+    const sr = scene.getBoundingClientRect();
+    document.title = 'PROBE|' + [
+      'op:' + cs.objectPosition,
+      'fit:' + cs.objectFit,
+      'imgW:' + Math.round(ir.width), 'imgH:' + Math.round(ir.height),
+      'imgLeft:' + Math.round(ir.left), 'imgTop:' + Math.round(ir.top),
+      'sceneW:' + Math.round(sr.width), 'sceneH:' + Math.round(sr.height),
+      'natural:' + img.naturalWidth + 'x' + img.naturalHeight,
+      'src:' + (img.src.split('/').pop())
+    ].join('|');
+  }, 1500);
+});
+</script>
 </body>
 </html>
