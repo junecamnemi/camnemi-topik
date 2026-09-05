@@ -1035,6 +1035,8 @@ function fxStartFrames(m) {
       _fxFrameTimer = setInterval(() => {
         const img2 = $id('greet-avatar-img');
         if (!img2 || _fxLastKey !== m.k) { clearInterval(_fxFrameTimer); _fxFrameTimer = null; return; }
+        // swap the SRC directly — the browser replaces the bitmap atomically,
+        // so no ghosting/overlap of the previous frame or previous character
         img2.src = frames[_fxFrameIdx % frames.length];
         _fxFrameIdx++;
       }, FX_FRAME_MS);
