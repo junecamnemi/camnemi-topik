@@ -625,6 +625,33 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .seoul-scene.scene-afternoon .scene-landmark { filter: brightness(1.2) saturate(1.1) hue-rotate(20deg); }
 .seoul-scene.scene-sunset   .scene-landmark { filter: brightness(1.02) saturate(1.35) hue-rotate(8deg); }
 .seoul-scene.scene-night    .scene-landmark { filter: brightness(.86) saturate(1.2) hue-rotate(-4deg); }
+
+/* ---------- airplane drifting right → left across the sky ---------- */
+.scene-plane {
+  position: absolute; top: 16%; left: 0;
+  width: 52px; height: 22px;
+  pointer-events: none; user-select: none;
+  opacity: 0;
+  transform: translateX(110%);
+  animation: planeFly 26s linear infinite;
+  z-index: 1;
+}
+@keyframes planeFly {
+  0%   { transform: translateX(110%); opacity: 0; }
+  4%   { opacity: .9; }
+  88%  { opacity: .9; }
+  96%  { opacity: 0; }
+  100% { transform: translateX(-24%); opacity: 0; }
+}
+/* time-of-day tint for the plane (matches the scene filter) */
+.seoul-scene.scene-midnight .scene-plane { filter: brightness(.82) saturate(1.15) hue-rotate(-8deg); }
+.seoul-scene.scene-predawn  .scene-plane { filter: brightness(.9) saturate(1.1) hue-rotate(6deg); }
+.seoul-scene.scene-sunrise  .scene-plane { filter: brightness(1.05) saturate(1.25) hue-rotate(18deg); }
+.seoul-scene.scene-morning  .scene-plane { filter: brightness(1.18) saturate(1.05) hue-rotate(24deg); }
+.seoul-scene.scene-midday   .scene-plane { filter: brightness(1.28) saturate(.95) hue-rotate(30deg); }
+.seoul-scene.scene-afternoon .scene-plane { filter: brightness(1.2) saturate(1.1) hue-rotate(20deg); }
+.seoul-scene.scene-sunset   .scene-plane { filter: brightness(1.02) saturate(1.35) hue-rotate(8deg); }
+.seoul-scene.scene-night    .scene-plane { filter: brightness(.86) saturate(1.2) hue-rotate(-4deg); }
 /* dark cards → light text so it reads on the dark sky */
 .seoul-scene.scene-midnight .greet-h, .seoul-scene.scene-midnight .greet-s,
 .seoul-scene.scene-predawn  .greet-h, .seoul-scene.scene-predawn  .greet-s,
