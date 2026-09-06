@@ -930,23 +930,32 @@ function render() {
 }
 
 /* ================= HOME ================= */
-function tabHeroHTML(tab) {
-  // map tab -> looping idol clip + caption
-  const cfg = {
-    book:   { v: 'assets/home_bg/tabs/aran_book_sing.mp4',        cap: 'Book · Sing with Aran' },
-    daily:  { v: 'assets/home_bg/tabs/aran_test_ending.mp4',      cap: 'TOPIK Test · Ending pose' },
-    rank:   { v: 'assets/home_bg/tabs/aran_rank_fight.mp4',       cap: 'Rank · Fighting!' },
-    my:     { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'My · Music time' },
-    mock:   { v: 'assets/home_bg/tabs/aran_test_ending.mp4',      cap: 'Mock · Ending pose' },
-    wrong:  { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'Notes · Music time' },
-    learn:  { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'Learn · Music time' },
-    reading:{ v: 'assets/home_bg/tabs/aran_book_sing.mp4',        cap: 'Reading · Sing with Aran' },
-    listening:{ v:'assets/home_bg/tabs/aran_settings_music.mp4',  cap: 'Listening · Music time' }
-  };
-  const c = cfg[tab];
-  if (!c) return '';
-  return `<div class="tab-hero" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata">
-    <source src="${c.v}" type="video/mp4"></video><span class="tab-hero-cap">${c.cap}</span></div>`;
+function heroCharVideo() {
+  // looping idol clip for the currently-selected character (myChar), so switching
+  // your character changes the whole app's hero background.
+  try {
+    const id = (typeof myCharId === 'function' ? myCharId() : 'f-01');
+    return {
+      'f-01': 'assets/home_bg/tabs/aran_home_hi.mp4',   // aran → hi wave
+      'f-02': 'assets/home_bg/chars/chaea.mp4',         // chaea → singing
+      'f-03': 'assets/home_bg/chars/dahee.mp4',         // dahee → fighting
+      'f-04': 'assets/home_bg/chars/roy.mp4',           // roy → music
+      'f-05': 'assets/home_bg/chars/group.mp4',
+      'f-06': 'assets/home_bg/chars/group.mp4'
+    }[id] || 'assets/home_bg/chars/group.mp4';
+  } catch (e) { return 'assets/home_bg/tabs/aran_home_hi.mp4'; }
+}
+function tabHeroHTML(tab, overlay) {
+  const charVideo = heroCharVideo();
+  const inner = overlay || `<span class="tab-hero-cap">${capLabel(tab)}</span>`;
+  return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" aria-hidden="false">
+    <video autoplay muted loop playsinline preload="metadata">
+      <source src="${charVideo}" type="video/mp4"></video>
+    <div class="scene-overlay">${inner}</div>
+  </div>`;
+}
+function capLabel(tab) {
+  return ({ book:'TOPIK Levels 1–6', daily:'TOPIK Test', rank:'My Ranking', my:'Account' }[tab] || '');
 }
 
 function viewHome() {
@@ -962,7 +971,7 @@ function viewHome() {
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
       <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="assets/home_bg/tabs/aran_home_hi.mp4" type="video/mp4">
+        <source src="${heroCharVideo()}" type="video/mp4">
       </video>
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
@@ -1721,9 +1730,22 @@ function viewDailySetup() {
             : (LANG === 'ko' ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
   // weakness from accuracy (lowest type with >=2 attempts)
   const weak = (acc.byType || []).filter(r => r.n >= 2).sort((a, b) => a.p - b.p)[0];
-  const weakHTML = weak
-    ? `<div class="lw-row"><span class="lw-name">${esc(typeLabel(weak.k))}</span><span class="lw-bar"><span style="width:${weak.p}%;"></span></span><span class="lw-pct">${weak.p}%</span></div>`
-    : `<p class="sub" style="margin-top:6px;">${LANG==='ko'?'문제를 풀면 약점이 표시돼요':'Solve questions to reveal your weak spot'}</p>`;
+  const weakName = weak ? esc(typeLabel(weak.k)) : (LANG==='ko'?'—':LANG==='km'?'—':'—');
+  const weakPct = weak ? `${weak.p}%` : (LANG==='ko'?'풀면 표시돼요':LANG==='km'?'':'—');
+  const overlay = `
+    <div style="display:flex;align-items:center;gap:14px;justify-content:center;text-align:left;">
+      <div style="text-align:center;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.9;">${LANG==='ko'?'나의 레벨':LANG==='km'?'កម្រិត':'MY LEVEL'}</div>
+        <div style="font-size:44px;font-weight:900;line-height:1;">L${myLv}</div>
+        <div style="font-size:12px;font-weight:700;opacity:.92;">${lvGrade}</div>
+      </div>
+      <div style="width:1px;height:54px;background:rgba(255,255,255,.35);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.9;">🎯 ${LANG==='ko'?'약점':LANG==='km'?'':'WEAK SPOT'}</div>
+        <div style="font-size:26px;font-weight:900;line-height:1.1;margin-top:4px;">${weakName}</div>
+        <div style="font-size:13px;font-weight:700;opacity:.92;">${weakPct}</div>
+      </div>
+    </div>`;
   const sections = [
     { k: 'reading', ico: 'learn', col: 'var(--ios-blue)',   label: t('nav_reading') },
     { k: 'listening',ico: 'listen', col: 'var(--ios-teal)',  label: t('nav_listening') },
@@ -1734,18 +1756,7 @@ function viewDailySetup() {
     <button class="daily-sec ${APP.dailySec === s.k ? 'on' : ''}" style="--sc:${s.col};" onclick="setDailySec('${s.k}')">
       ${ic(s.ico,20)}<b>${s.label}</b>
     </button>`).join('');
-  return `${tabHeroHTML('daily')}
-    <div class="app-card daily-setup">
-      <div class="ds-level">
-        <div class="ds-lvl" style="--lvl:${myLv}">L${myLv}</div>
-        <div class="ds-grade">${lvGrade}</div>
-        <span class="ds-lvlabel">${LANG==='ko'?'나의 레벨':'My Level'}</span>
-      </div>
-      <div class="ds-weak">
-        <div class="lw-weak-label">🎯 ${LANG==='ko'?'나의 약점':'Weak spot'}</div>
-        ${weakHTML}
-      </div>
-    </div>
+  return `${tabHeroHTML('daily', overlay)}
     <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
     <button class="aq-redo aq-gborder aq-redo-compact" onclick="aiRedoGo()">
       <span class="aq-redo-ico">${ic('spark',18)}</span>
@@ -2301,9 +2312,26 @@ function viewMy() {
       </div>
       ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
     </div>`;
-  return `${tabHeroHTML('my')}
-    <div class="sec-h"><h2>${t('menu_account')}</h2></div>
-    <div class="app-card" style="padding:14px 16px;">${head}${stats}</div>
+  // Overlay account head + stats onto the hero video (home-style)
+  const myOverlay = `<div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:340px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);width:52px;height:52px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
+        <div style="text-align:left;">
+          <div style="font-size:19px;font-weight:900;line-height:1.1;">${esc(myCharName())}</div>
+          <div style="font-size:12px;opacity:.9;font-weight:600;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;justify-content:center;">
+        <a class="btn btn-primary btn-sm" style="pointer-events:auto;" href="login.html">${t('menu_login')}</a>
+        ${authed ? `<button class="btn btn-ghost btn-sm" style="pointer-events:auto;border-color:rgba(255,255,255,.4);color:#fff;" onclick="doLogout()">${t('menu_logout')}</button>` : ''}
+      </div>
+      <div style="display:flex;gap:26px;justify-content:center;margin-top:2px;">
+        <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">${streak.count}</div><div style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_streak')}</div></div>
+        <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">${acc}%</div><div style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_acc')}</div></div>
+        <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">L${lvl.lv}</div><div style="font-size:11px;font-weight:700;opacity:.92;">${lvl.xp} XP</div></div>
+      </div>
+    </div>`;
+  return `${tabHeroHTML('my', myOverlay)}
     ${rows}
     ${settings}
   `;
@@ -3451,9 +3479,31 @@ function rankMeCardHTML() {
       </div>
     </div>`;
 }
+/* My standing as a compact overlay for the hero video (no card chrome) */
+function rankMeOverlayHTML() {
+  try {
+    const rows = rankRows();
+    const total = rows.length;
+    const meIdx = rows.findIndex(r => r.me);
+    const me = meIdx !== -1 ? rows[meIdx] : myRankEntry();
+    if (!me) return `<span class="tab-hero-cap">My Ranking</span>`;
+    const place = meIdx !== -1 ? meIdx + 1 : '–';
+    const metric = _rankSort === 'solved' ? `${me.solved} ${t('rank_solved')}`
+      : _rankSort === 'level' ? `Lv.${me.level} · ${me.xp} XP`
+      : `${me.acc}% ${t('rank_acc')}`;
+    const top10 = meIdx !== -1 && meIdx < 10;
+    return `<div style="display:flex;align-items:center;gap:16px;">
+        ${top10 ? rankLightstick(place) : `<div style="font-size:64px;font-weight:900;line-height:.9;min-width:70px;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.5);">${place}</div>`}
+        <div style="text-align:left;">
+          <div style="font-size:13px;font-weight:800;letter-spacing:2px;opacity:.9;">${t('rank_title')}</div>
+          <div style="font-size:22px;font-weight:900;line-height:1.15;">${esc(me.name)}${place !== '–' ? ' · #'+place : ''}</div>
+          <div style="font-size:14px;font-weight:700;opacity:.95;">${metric}${place !== '–' ? ' · '+place+'/'+total : ''}</div>
+        </div>
+      </div>`;
+  } catch (e) { return `<span class="tab-hero-cap">My Ranking</span>`; }
+}
 function viewRank() {
-  return `${tabHeroHTML('rank')}
-    <div class="sec-h"><h2>${ic('trophy',16)} ${t('rank_title')}</h2><span class="sub">${t('rank_sub')}</span></div>
+  return `${tabHeroHTML('rank', rankMeOverlayHTML())}
     <div class="rk-chips">
       <button class="rk-chip ${_rankSort === 'acc' ? 'on' : ''}" data-m="acc" onclick="setRankSort('acc')">${t('rank_acc')}</button>
       <button class="rk-chip ${_rankSort === 'solved' ? 'on' : ''}" data-m="solved" onclick="setRankSort('solved')">${t('rank_solved')}</button>
@@ -4308,7 +4358,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'home'));
+  go(['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge','rank'].includes(q) ? q : (['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge','rank'].includes(h) ? h : 'home'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {

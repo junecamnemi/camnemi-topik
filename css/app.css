@@ -1477,12 +1477,15 @@ select { font-family: var(--ios-font); }
 .ds-weak .lw-weak-label { font-size: 12.5px; font-weight: 800; color: var(--ios-label); margin-bottom: 8px; }
 .daily-secs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
 .daily-sec {
-  display: flex; align-items: center; gap: 8px; justify-content: flex-start;
+  display: flex; align-items: center; gap: 10px; justify-content: flex-start;
+  text-align: left;
   border: 1.5px solid var(--ios-separator); border-radius: 14px;
   background: var(--ios-card); color: var(--ios-label);
-  padding: 14px 16px; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer;
+  padding: 14px 16px; font-family: var(--font); font-size: 13.5px; font-weight: 700; cursor: pointer;
+  min-height: 60px; line-height: 1.25;
   transition: transform .12s, border-color .15s, box-shadow .2s;
 }
+.daily-sec b { flex: 1; min-width: 0; }
 .daily-sec.on { border-color: var(--sc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sc) 22%, transparent); color: var(--sc); }
 .daily-sec:active { transform: scale(.97); }
 .ds-start { width: 100%; margin-top: 16px; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 14px; }
@@ -1585,11 +1588,25 @@ select { font-family: var(--ios-font); }
 .ar-ov-dots span:nth-child(3){ animation-delay:.32s; background:#22d3ee; }
 @keyframes arDot { 0%,60%,100%{ transform:translateY(0); opacity:.5;} 30%{ transform:translateY(-7px); opacity:1;} }
 
-/* ---------- Tab hero: looping idol clip atop each tab screen ---------- */
-.tab-hero { position: relative; overflow: hidden; border-radius: 18px; margin: 2px 0 14px; }
-.tab-hero video { display: block; width: 100%; height: 190px; object-fit: cover; object-position: center 22%; }
-.tab-hero::after { content:''; position:absolute; inset:0; pointer-events:none;
-  background:linear-gradient(180deg, rgba(18,12,42,.20), rgba(18,12,42,0) 40%, rgba(18,12,42,.25)); }
-.tab-hero .tab-hero-cap { position:absolute; left:14px; bottom:10px; z-index:2;
-  font-size:12px; font-weight:800; color:#fff; letter-spacing:1px;
-  text-shadow:0 1px 6px rgba(0,0,0,.5); text-transform:uppercase; }
+/* ---------- Tab hero: full-bleed looping idol clip, home-style overlay ---------- */
+.scene-hero.tab-hero {
+  position: relative; overflow: hidden; width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: -68px;               /* reach the very top like the home seoul-scene */
+  margin-bottom: 14px;
+  border-radius: 0 0 18px 18px;
+  background: linear-gradient(180deg, rgba(18,12,42,.55), rgba(18,12,42,.25));
+}
+.scene-hero.tab-hero video { display: block; width: 100%; height: 230px; object-fit: cover; object-position: center 20%; }
+/* uniform dark scrim so every tab's overlay reads the same over the bright video */
+.scene-hero.tab-hero::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background: linear-gradient(180deg, rgba(16,11,38,.60), rgba(16,11,38,.16) 48%, rgba(16,11,38,.55)); }
+.scene-hero.tab-hero .scene-overlay {
+  position: absolute; inset: 0; z-index: 2; display: flex;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 0 22px; color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.6); pointer-events: none; gap: 10px;
+}
+.scene-hero.tab-hero .tab-hero-cap { font-size: 25px; font-weight: 900; letter-spacing: -.3px; line-height: 1.08; }
+.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .95; letter-spacing: .2px; }
+
