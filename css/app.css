@@ -65,6 +65,15 @@
   --grad-brand: linear-gradient(135deg, #A78BFA 0%, #F9A8D4 100%);
   --grad-soft: linear-gradient(135deg, rgba(167,139,250,.18), rgba(249,168,212,.16));
 }
+/* Dark mode: also remap the style.css body tokens so inherited text (app-card,
+   row, etc.) is light instead of the light-theme --ink that makes it invisible. */
+[data-theme="dark"] {
+  --ink: #F1EEFF;
+  --bg: #191627;
+  --border: rgba(241, 238, 255, .12);
+  --navy: #A78BFA;
+  --red: #F9A8D4;
+}
 [data-theme="dark"] .app-card { box-shadow: 0 8px 24px rgba(0,0,0,.25); border: 1px solid rgba(245,244,255,.06); }
 [data-theme="dark"] .q-passage { background: var(--ios-fill); color: var(--ios-label); }
 [data-theme="dark"] .q-opt { background: var(--ios-card); color: var(--ios-label); }
@@ -513,49 +522,56 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .goal-card:active { transform: scale(.98); }
 .goal-card .sub { color: var(--ios-secondary-label); font-weight: 600; }
 
+/* Tammy Library home card */
+.tammy-card { display: flex; align-items: center; gap: 13px; transition: transform .12s, box-shadow .2s; }
+.tammy-card:active { transform: scale(.98); }
+.tammy-card .tammy-ico {
+  flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; display: flex;
+  align-items: center; justify-content: center; font-size: 22px;
+  background: linear-gradient(135deg, var(--br1, #6d4ef0), #e65d9b); color: #fff;
+}
+.tammy-card .tammy-txt { flex: 1; min-width: 0; }
+.tammy-card .tammy-txt b { font-size: 14px; color: var(--ios-label); }
+.tammy-card .tammy-txt .sub { font-size: 11.5px; margin-top: 2px; color: var(--ios-secondary-label); }
+.tammy-card .tammy-arr { color: var(--br1, #6d4ef0); font-size: 18px; font-weight: 800; flex-shrink: 0; }
+
 /* ---------- Quick-start 4-card grid — ONE merged card with a flowing brand gradient ----------
    The four cells sit flush inside a single rounded card; the character brand
    gradient animates across the WHOLE card (background-position drift), so the
    four look like one living AI surface. Thin inner dividers keep them distinct. */
 .aq-4 {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0; margin-top: 16px;
-  border-radius: 22px; overflow: hidden;
-  position: relative;
-  background: var(--grad-brand);
-  background-size: 320% 320%;
-  animation: aqFlow 14s ease-in-out infinite;
-  box-shadow: 0 8px 22px rgba(20,16,50,.28);
-  border: 1px solid rgba(255,255,255,.14);
-}
-@keyframes aqFlow {
-  0%   { background-position: 0% 50%; }
-  33%  { background-position: 100% 20%; }
-  66%  { background-position: 40% 100%; }
-  100% { background-position: 0% 50%; }
-}
-/* one soft corner shine over the whole merged card */
-.aq-4::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  gap: 8px; margin-top: 16px;
   border-radius: 22px;
-  background: radial-gradient(60% 85% at 86% 0%, rgba(255,255,255,.16), transparent 55%);
 }
 .aq-cell {
   position: relative;
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   border: none; cursor: pointer; text-align: left;
-  padding: 20px 18px; border-radius: 0;
+  padding: 14px 16px; border-radius: 16px;
   font-family: var(--font);
-  background: transparent;
-  color: var(--on-brand, #fff);
-  transition: transform .13s, filter .15s, background .15s;
+  color: #fff;
+  transition: transform .13s, filter .15s;
+  overflow: hidden;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--aq-c1) 72%, transparent), color-mix(in srgb, var(--aq-c2) 72%, transparent), color-mix(in srgb, var(--aq-c3) 72%, transparent));
+  background-size: 200% 200%;
+  height: 96px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  backdrop-filter: blur(4px);
 }
-.aq-cell:active { filter: brightness(.9); }
-.aq-cell:hover { background: color-mix(in srgb, var(--on-brand, #fff) 6%, transparent); }
-/* inner dividers — a single card divided into four sections */
-.aq-cell:nth-child(1), .aq-cell:nth-child(2) { border-bottom: 1px solid color-mix(in srgb, var(--on-brand, #fff) 22%, transparent); }
-.aq-cell:nth-child(odd) { border-right: 1px solid color-mix(in srgb, var(--on-brand, #fff) 22%, transparent); }
-.aq-cell .aq-txt { position: relative; z-index: 2; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.aq-cell.aq-spin {
+  animation: aqSpin 5s linear infinite;
+}
+@keyframes aqSpin {
+  0%   { background-position: 0% 0%; }
+  25%  { background-position: 100% 0%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0% 100%; }
+  100% { background-position: 0% 0%; }
+}
+.aq-cell:active { filter: brightness(.9); transform: scale(.97); }
+.aq-cell .aq-txt { position: relative; z-index: 2; flex: 1 1 auto; display: flex; flex-direction: column; gap: 4px; min-width: 0; text-shadow: 0 1px 3px rgba(0,0,0,.3); }
 .aq-cell b { font-size: 16.5px; font-weight: 800; line-height: 1.15; }
 .aq-cell .aq-sub { font-size: 11px; font-weight: 600; opacity: .92; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .aq-cell .aq-arr {
@@ -617,7 +633,7 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
    object-position centers the tower (66% in source) slightly right of center. */
 .seoul-scene .scene-landmark {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: center;
+  object-fit: cover; object-position: 30% 50%;
   opacity: .9; pointer-events: none; user-select: none;
   transition: filter .6s ease, opacity .5s ease;
 }
@@ -795,7 +811,9 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .fs-girl { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
 
 /* ---------- Week calendar ---------- */
-.wc-card { padding: 10px 12px !important; }
+.wc-card { padding: 10px 12px !important; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); backdrop-filter: blur(6px); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
+.wc-nav { background: none; border: none; color: var(--ios-secondary-label); font-size: 14px; font-weight: 800; cursor: pointer; padding: 2px 6px; border-radius: 8px; }
+.wc-nav:hover { background: var(--ios-fill); }
 .wc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .wc-day { display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: 6px 2px; border-radius: 12px; cursor: pointer; position: relative; transition: transform .12s, background .2s; }
@@ -1275,3 +1293,102 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 
 /* select (modern dropdown) */
 select { font-family: var(--ios-font); }
+
+/* ---------- Weekly study time (home) ---------- */
+.study-card { padding: 14px 16px; }
+.study-total { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.study-total b { font-size: 26px; font-weight: 800; color: var(--ios-blue); }
+.study-total span { font-size: 12px; color: var(--ios-secondary-label); }
+.study-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+.study-ico { display: inline-flex; width: 20px; justify-content: center; }
+.study-name { flex: 0 0 auto; font-size: 12.5px; font-weight: 700; color: var(--ios-label); width: 72px; }
+.study-bar { flex: 1; height: 6px; background: var(--ios-fill); border-radius: 4px; overflow: hidden; }
+.study-bar span { display: block; height: 100%; border-radius: 4px; }
+.study-min { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--ios-secondary-label); width: 34px; text-align: right; }
+
+/* ---------- Home brand under avatar ---------- */
+.scene-brand {
+  font-size: 11px; font-weight: 800; letter-spacing: 1px;
+  color: #fff; background: rgba(0,0,0,.35);
+  padding: 3px 10px; border-radius: 999px;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+}
+
+/* ---------- Weekly study calendar ---------- */
+.wc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.wc-head b { font-size: 14px; font-weight: 800; color: var(--ios-label); }
+.wc-week-min { font-size: 12px; font-weight: 800; color: var(--ios-blue); }
+.wc-daystat { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; font-size: 12.5px; }
+.wc-daystat b { color: var(--ios-label); }
+
+/* ---------- AI star on quick cards ---------- */
+.aq-star {
+  flex: 0 0 auto; font-size: 18px; line-height: 1;
+  color: rgba(255,255,255,.95); text-shadow: 0 0 8px rgba(255,255,255,.8);
+  animation: starPulse 2.2s ease-in-out infinite;
+}
+@keyframes starPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: .8; }
+}
+
+/* ---------- Level + Weak points combined card ---------- */
+.lw-card { padding: 16px 18px; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); backdrop-filter: blur(6px); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
+.lw-top { display: flex; gap: 18px; align-items: flex-start; }
+.lw-level { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.lw-lvl {
+  font-size: 30px; font-weight: 800;
+  color: var(--ios-label);
+  width: 64px; height: 64px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--ios-blue), var(--ios-pink));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(139,124,246,.3);
+}
+.lw-grade { font-size: 11px; font-weight: 700; color: var(--ios-secondary-label); }
+.lw-weak { flex: 1; min-width: 0; }
+.lw-weak-label { font-size: 12.5px; font-weight: 800; color: var(--ios-label); margin-bottom: 8px; }
+.lw-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.lw-name { flex: 1 1 auto; min-width: 0; font-size: 12px; font-weight: 700; color: var(--ios-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lw-bar { flex: 0 1 auto; min-width: 40px; height: 6px; background: var(--ios-fill); border-radius: 4px; overflow: hidden; }
+.lw-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--ios-orange), var(--ios-pink)); border-radius: 4px; }
+.lw-pct { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--ios-secondary-label); width: 38px; text-align: right; }
+.lw-divider { height: 1px; background: var(--ios-separator, rgba(0,0,0,.08)); margin: 12px 0 10px; }
+
+/* ---------- Bookmark button ---------- */
+.bookmark-btn {
+  background: none; border: none; cursor: pointer; font-size: 15px;
+  padding: 2px 6px; border-radius: 8px; margin-left: auto;
+  display: inline-flex; align-items: center; gap: 3px;
+  color: #E33; /* red bookmark outline (unselected) */
+}
+.bookmark-btn:hover { background: var(--ios-fill); }
+.bookmark-btn .sub { font-size: 10px; font-weight: 700; color: var(--ios-secondary-label); }
+.bookmark-btn.on {
+  color: var(--ios-red); /* filled red when bookmarked */
+}
+.bookmark-btn.on svg { fill: currentColor; }
+.bookmark-btn.on .sub { color: var(--ios-red); }
+
+/* ---------- Schedule screen ---------- */
+.sched-search {
+  width: 100%; padding: 11px 12px; margin-bottom: 8px;
+  border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 14px; font-family: var(--font); color: var(--ios-label); background: var(--ios-card);
+}
+.sched-search::placeholder { color: var(--ios-secondary-label); }
+.sched-select {
+  width: 100%; padding: 12px; border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 15px; font-family: var(--font);
+  color: var(--ios-label); background: var(--ios-card);
+}
+.sched-fold {
+  width: 100%; margin: 6px 0 10px; text-align: center;
+  color: var(--ios-blue); font-weight: 700; font-size: 12.5px;
+  border: 1px dashed var(--ios-separator); border-radius: 12px; padding: 8px;
+}
+.sched-sess { margin-bottom: 10px; }
+.sched-ovs { color: var(--ios-label) !important; }
+/* IBT / All schedule headings — explicit label color that works in both themes */
+.sched-ibt-title { font-size: 13px; color: var(--ios-blue); }
+.sched-ibt-card { color: var(--ios-label); }

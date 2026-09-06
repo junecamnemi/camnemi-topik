@@ -34,6 +34,21 @@
    NOT applied here — this stylesheet is loaded app-wide and that reset would
    clobber the app layout. The textbook renders inside a .glowsis-book
    container using its own scoped classes below; the app supplies body font/bg. */
+/* Book pages are always a light "paper" page (white viewport), so force the
+   textbook's light-theme tokens inside them even when the app is in dark mode. */
+[data-theme="dark"] .glowsis-book,
+[data-theme="dark"] .flip-viewport,
+[data-theme="dark"] .book-frame,
+[data-theme="dark"] .book-units {
+  --ink: #3D3561;
+  --ink2: #9A92C4;
+  --card: #ffffff;
+  --card2: #F0EBFB;
+  --line: rgba(61,53,97,.10);
+  --bg: #F7F4FF;
+  color: var(--ink);
+  background: #fff;
+}
 .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px 80px; }
 
 /* ---------- top nav ---------- */

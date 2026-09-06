@@ -5,7 +5,27 @@
 /* ---------- textbook interaction helpers ---------- */
 function gtts(text) {
   try {
+    if (!('speechSynthesis' in window) && !window.fetch) return;
+    // Preferred: Nous OpenAI TTS (nova) served by ai_server.py at same origin /api/tts
+    // (human-like Korean voice). Cache keyed by hash server-side.
+    const url = (window.CAMNEMI_AI_BASE || (location.protocol.startsWith('http') ? '/api' : 'http://127.0.0.1:9001/api')) + '/tts?voice=coral&text=' + encodeURIComponent(text);
+    if (window.fetch) {
+      fetch(url).then(res => {
+        if (!res.ok) throw 0;
+        return res.blob();
+      }).then(blob => {
+        const au = new Audio(URL.createObjectURL(blob));
+        au.play().catch(()=>{});
+      }).catch(() => fallbackTTS(text));
+      return;
+    }
+    fallbackTTS(text);
+  } catch (e) { try { fallbackTTS(text); } catch (_) {} }
+}
+function fallbackTTS(text) {
+  try {
     if (!('speechSynthesis' in window)) return;
+    if (window.camVoice) { window.camVoice.speak(text, 'ko-KR'); return; }
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ko-KR'; u.rate = 0.9;
@@ -46,11 +66,34 @@ function glowCheckQ(qid, correctIdx, btn) {
     const label = (correctOpt.childNodes[1] || {}).textContent ? correctOpt.childNodes[1].textContent.trim() : '';
     fb.innerHTML = '❌ The answer is #' + (correctIdx + 1) + ' "' + label + '" ' + (hintText ? '→ ' + hintText : '');
   }
+  // reveal the teacher's deep-dive explanation for this problem (if present)
+  const wrap = btn.closest ? btn.closest('.practice') : null;
+  if (wrap) {
+    const note = wrap.querySelector('.pt-note');
+    if (note) note.classList.add('show');
+  }
 }
 window.gtts = gtts;
 window.glowCheckQ = glowCheckQ;
 window.checkQ = glowCheckQ;
 window.tts = gtts;
+
+/* vocab-lab accordion toggles */
+function glowVocab(btn) {
+  const cat = btn.closest ? btn.closest('.vl-cat') : null;
+  if (cat) cat.classList.toggle('open');
+}
+function glowVocabAll() {
+  const lab = document.querySelector('.vocab-lab');
+  if (!lab) return;
+  const cats = lab.querySelectorAll('.vl-cat');
+  const anyClosed = Array.prototype.some.call(cats, c => !c.classList.contains('open'));
+  cats.forEach(c => c.classList.toggle('open', anyClosed));
+  const exp = lab.querySelector('.vl-expand');
+  if (exp) exp.textContent = anyClosed ? '모두 접기' : '모두 펼치기';
+}
+window.glowVocab = glowVocab;
+window.glowVocabAll = glowVocabAll;
 
 /* ==================== BOOK: LEVELS ==================== */
 const GLOWSIS_LEVELS = [
@@ -62,17 +105,40 @@ const GLOWSIS_LEVELS = [
   { lv: 6, label: 'TOPIK II · Advanced+' }
 ];
 let _book = { unit: 0, page: 0 }; // current unit + page
+const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { unit, page } — restore on return
+
+function saveBookSession() {
+  try {
+    if (_book && _book.unit !== undefined) localStorage.setItem(BOOK_SESSION_KEY, JSON.stringify({ unit: _book.unit, page: _book.page || 0 }));
+  } catch (e) {}
+}
+function clearBookSession() {
+  try { localStorage.removeItem(BOOK_SESSION_KEY); } catch (e) {}
+}
+/* If the user left the book mid-page, bring them back to the flip page they were on. */
+function restoreBookSession() {
+  const raw = (() => { try { return localStorage.getItem(BOOK_SESSION_KEY); } catch (e) { return null; } })();
+  if (!raw) return false;
+  try {
+    const s = JSON.parse(raw);
+    if (s && (window.GLOWSIS_BOOK || []).some(x => x.id === s.unit)) {
+      openUnit(s.unit, s.page || 0);
+      return true;
+    }
+  } catch (e) {}
+  return false;
+}
 
 function viewBook() {
   describeUnits();
   const ready = GLOWSIS_LEVELS[0];
   return `<div class="book-home">
     <div class="book-hero">
-      <div class="book-hero-inner">
-        <span class="book-badge">📚 STUDY</span>
+      <div class="book-hero-txt">
         <h2>TOPIK Levels 1–6</h2>
         <p>Learn with Glowsis — our K-pop idol study crew. Pick a level to start studying.</p>
       </div>
+      <span class="book-badge">📚 STUDY</span>
     </div>
     <div class="book-levels">
       <div class="book-level ready">
@@ -97,6 +163,7 @@ function viewBook() {
   </div>`;
 }
 function openBookUnits() {
+  clearBookSession();
   const units = (window.GLOWSIS_BOOK || []).slice();
   document.getElementById('screen').innerHTML = `<div class="book-units">
     <div class="bu-head">
@@ -115,7 +182,7 @@ function openBookUnits() {
   </div>`;
   window.scrollTo(0, 0);
 }
-function backToBookLevels() { document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); }
+function backToBookLevels() { clearBookSession(); document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); }
 
 /* ==================== BOOK: FLIP-PAGE VIEWER ==================== */
 const GLOWSIS_UNITS = []; // filled from data below
@@ -128,51 +195,62 @@ function describeUnits() {
   (window.GLOWSIS_BOOK||[]).forEach((b,i) => GLOWSIS_UNITS.push({ id:b.id, no:(b.id===0?'준비':b.id), title:titles[b.id], en:ens[b.id] }));
 }
 
-/* group a unit's raw sections into flip pages (natural book-like chunks) */
+/* group a unit's raw sections into flip pages (natural book-like chunks).
+   The FIRST pages are a chapter cover (unit title + story) and a talk page
+   (goals + dialogue), then grammar / vocab / practice / culture.
+   Same-type consecutive blocks merge onto one page (max a few); changing type
+   pushes the current page. */
 function groupPages(unit) {
   const secs = unit.sections || [];
   const pages = [];
-  const push = () => { if (cur) { pages.push(cur); cur = null; } };
-  let cur = null;
+  const startPage = (type) => pages.push({ type, blocks: [] }) - 1;
+  let cover = { type: 'cover', blocks: [] };   // unit-flag + sec-title + story
+  let talk = null;                              // goals + dialogue
+  const mid = [];                               // grammar/vocab/practice/culture
+  let curPage = null;
+
   for (const s of secs) {
-    if (s.cls === 'unit-flag' || s.cls === 'sec-title' || s.cls === 'story') {
-      if (!cur) cur = { type: 'cover', blocks: [] };
-      cur.blocks.push(s.html);              // unit title + story = cover page
-    } else if (s.cls === 'goals' || s.cls === 'dialog') {
-      if (!cur || (cur.type !== 'talk')) cur = { type: 'talk', blocks: [] };
-      cur.blocks.push(s.html);              // goals + dialogue = talk page
-    } else if (s.cls === 'grammar') {
-      if (!cur || cur.type !== 'grammar') cur = { type: 'grammar', blocks: [] };
-      cur.blocks.push(s.html);              // all grammar on 1-2 pages
-      if (cur.blocks.length >= 2) push();    // max 2 grammars per page
-    } else if (s.cls === 'vocab-grid') {
-      push(); cur = { type: 'vocab', blocks: [s.html] }; push();  // vocab = own page
-    } else if (s.cls === 'practice') {
-      if (!cur || cur.type !== 'practice') cur = { type: 'practice', blocks: [] };
-      cur.blocks.push(s.html);              // practices bundled
-      if (cur.blocks.length >= 2) push();
-    } else if (s.cls === 'culture') {
-      push(); cur = { type: 'culture', blocks: [s.html] }; push();
-    } else {
-      if (!cur) cur = { type: 'cover', blocks: [] };
-      cur.blocks.push(s.html);
+    const t = s.cls;
+    if (t === 'unit-flag' || t === 'sec-title' || t === 'story') {
+      cover.blocks.push(s.html);
+    } else if (t === 'goals' || t === 'dialog') {
+      if (!talk) talk = { type: 'talk', blocks: [] };
+      talk.blocks.push(s.html);
+    } else if (t === 'grammar' || t === 'vocab-grid' || t === 'vocab-lab' || t === 'practice' || t === 'culture' || t === 'teach') {
+      const pg = (t === 'vocab-grid' || t === 'vocab-lab') ? 'vocab' : t;
+      // teach deep-dives are roomy → one per page; others merge (grammar/practice max 2)
+      const cap = (pg === 'grammar' || pg === 'practice') ? 2 : 1;
+      if (!curPage || curPage.type !== pg || (curPage.blocks.length >= cap)) {
+        if (curPage) mid.push(curPage);
+        curPage = { type: pg, blocks: [s.html] };
+      } else {
+        curPage.blocks.push(s.html);
+      }
     }
   }
-  push();
+  if (curPage) mid.push(curPage);
+
+  // cover always a page if it has unit flag/title
+  if (cover.blocks.length) pages.push(cover);
+  if (talk) pages.push(talk);
+  mid.forEach(p => pages.push(p));
   return pages;
 }
 function pageLabel(p, idx, total) {
-  const names = { cover:'Start', goals:'Goals', dialog:'Talk', grammar:'Grammar', vocab:'Words', practice:'Practice', culture:'Culture' };
+  const names = { cover:'Start', goals:'Goals', dialog:'Talk', grammar:'Grammar', teach:'Teacher', vocab:'Words', practice:'Practice', culture:'Culture' };
   const t = names[p.type] || 'Page';
   // practice 번호: page 앞 practice 수
   let n = 0;
   return t;
 }
-function openUnit(uid) {
+function openUnit(uid, page) {
   const u = (window.GLOWSIS_BOOK||[]).find(x => x.id === uid);
   if (!u) return;
   const pages = groupPages(u);
-  _book = { unit: uid, page: 0, pages };
+  const end = buildEndPage(u);
+  if (end) pages.push(end);
+  _book = { unit: uid, page: Math.min(page || 0, pages.length - 1), pages };
+  saveBookSession();
   renderFlip();
 }
 function renderFlip() {
@@ -205,6 +283,15 @@ function renderFlip() {
   window.scrollTo(0,0);
   wireSwipe();
 }
+/* build a "unit end → next unit" page appended after the last real page */
+function buildEndPage(meta) {
+  const units = (window.GLOWSIS_BOOK || []).sort((a,b)=>a.id-b.id);
+  const idx = units.findIndex(u => u.id === _book.unit);
+  const next = (idx >= 0 && idx < units.length-1) ? units[idx+1] : null;
+  const nMeta = next ? GLOWSIS_UNITS.find(x => x.id === next.id) : null;
+  const isLast = idx >= 0 && idx === units.length-1;
+  return { type: 'end', blocks: [], endMeta: { next, nMeta, isLast } };
+}
 function pageBody(p, i, meta) {
   const cls = p.type;
   // pull out labels / titles per type
@@ -220,12 +307,38 @@ function pageBody(p, i, meta) {
   } else if (cls === 'grammar') {
     const gnum = (p.blocks[0].match(/GRAMMAR\s*(\d)/) || [,'1'])[1];
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">📖</span><div><b>Grammar</b><small>Unit ${meta.no}</small></div></div>`;
+  } else if (cls === 'teach') {
+    top = `<div class="bk-chaphead bk-chaphead-teach"><span class="bk-ch-ico">🧑‍🏫</span><div><b>선생님 노트</b><small>Teacher's Deep-Dive · Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'vocab') {
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">🗂️</span><div><b>Vocabulary</b><small>Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'practice') {
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">✏️</span><div><b>Practice</b><small>Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'culture') {
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">🎤</span><div><b>Culture</b><small>Unit ${meta.no}</small></div></div>`;
+  }
+  if (cls === 'end') {
+    const e = p.endMeta || {};
+    const next = e.next, nMeta = e.nMeta;
+    const nextBtn = next
+      ? `<button class="bk-next-btn" onclick="openUnit(${next.id})">
+          <span class="bk-next-t">다음 과로</span>
+          <span class="bk-next-n">Unit ${nMeta.no} · ${nMeta.title}</span>
+          <span class="bk-next-arr">→</span>
+        </button>`
+      : `<button class="bk-next-btn" onclick="openBookUnits()">
+          <span class="bk-next-t">완료! 📚</span>
+          <span class="bk-next-n">다른 Unit 고르기</span>
+        </button>`;
+    return `<div class="bk-page bk-end">
+      <div class="bk-end-inner">
+        <div class="bk-end-check">✓</div>
+        <div class="bk-end-title">Unit ${meta.no} 완료!</div>
+        <div class="bk-end-sub">${meta.title} 학습을 마쳤어요</div>
+        ${nextBtn}
+        <button class="bk-units-btn" onclick="openBookUnits()">← 모든 Unit</button>
+      </div>
+      <div class="bk-pageno">${i+1}</div>
+    </div>`;
   }
   return `<div class="bk-page bk-${cls}">${top}<div class="bk-body">${p.blocks.join('')}</div>
     <div class="bk-pageno">${i+1}</div>
@@ -234,6 +347,7 @@ function pageBody(p, i, meta) {
 function gotoPage(i) {
   if (i < 0 || i >= _book.pages.length) return;
   _book.page = i;
+  saveBookSession();
   const t = document.getElementById('flip-track');
   if (t) t.style.transform = `translateX(-${i*100}%)`;
   document.querySelectorAll('.flip-page').forEach((el,idx)=>el.classList.toggle('active', idx===i));

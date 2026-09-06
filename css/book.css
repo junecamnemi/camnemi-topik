@@ -2,21 +2,35 @@
    The textbook content styles (.grammar, .d-line, .v-item …) live in
    glowsis-book.css; this file only styles the Book tab shell around them. */
 
-.book-home { padding: 14px 4px 20px; }
+/* Dark mode: app body text uses the light label color (loaded last so this wins
+   over glowsis-book.css's :root --ink). Book pages are scoped back to light
+   "paper" in glowsis-book.css, so they stay light regardless of theme. */
+[data-theme="dark"] {
+  --ink: #F1EEFF;
+  --bg: #191627;
+  --border: rgba(241, 238, 255, .12);
+  --navy: #A78BFA;
+  --red: #F9A8D4;
+}
+
+.book-home { padding: 10px 4px 20px; }
 .book-hero {
-  border-radius: 20px; padding: 20px 18px; margin-bottom: 16px;
+  border-radius: 18px; padding: 12px 14px; margin-bottom: 14px;
   background: linear-gradient(135deg, #7B6CF6, #A78BFA 55%, #F9A8D4);
   color: #fff; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
 }
 .book-hero::after {
-  content: '🎤'; position: absolute; right: 14px; bottom: -10px; font-size: 64px; opacity: .25;
+  content: '🎤'; position: absolute; right: 6px; bottom: -16px; font-size: 52px; opacity: .18;
 }
+.book-hero-txt { position: relative; z-index: 1; flex: 1; }
 .book-badge {
-  display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .4px;
-  background: rgba(255,255,255,.22); padding: 2px 9px; border-radius: 999px; margin-bottom: 6px;
+  display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .4px;
+  background: rgba(255,255,255,.25); padding: 3px 10px; border-radius: 999px;
+  white-space: nowrap; flex-shrink: 0; align-self: flex-start;
 }
-.book-hero h2 { font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
-.book-hero p { font-size: 12.5px; opacity: .92; margin-top: 4px; max-width: 78%; line-height: 1.5; }
+.book-hero h2 { font-size: 20px; font-weight: 800; letter-spacing: -.3px; }
+.book-hero p { font-size: 12px; opacity: .92; margin-top: 2px; max-width: 90%; line-height: 1.4; }
 
 .book-levels { display: flex; flex-direction: column; gap: 12px; }
 .book-level {
@@ -234,3 +248,131 @@
 /* culture page */
 .bk-culture .culture { background:#fff7ef; border:1px solid #f4e2cd; border-radius:18px; padding:18px; }
 .bk-pageno { position:absolute; bottom:6px; right:12px; font-size:12px; font-weight:700; color:#c9c2de; }
+
+/* end-of-unit page */
+.bk-end { background:
+  radial-gradient(120% 100% at 50% 0%, #efeaff 0%, transparent 60%),
+  radial-gradient(120% 100% at 50% 100%, #ddf5f0 0%, transparent 55%),
+  #fdfbf3;
+}
+.bk-end-inner { text-align:center; padding: 60px 20px 20px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.bk-end-check {
+  width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#2dd4bf,#10b981);
+  color:#fff; font-size:34px; font-weight:900; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 26px rgba(16,185,129,.35); margin-bottom:6px;
+}
+.bk-end-title { font-size:22px; font-weight:900; color:#1f2937; }
+.bk-end-sub { font-size:13px; color:#8a83a6; font-weight:600; margin-bottom:10px; }
+.bk-next-btn {
+  width:100%; max-width:300px; display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:linear-gradient(135deg,#6d4ef0,#8b5cf6); color:#fff; border:none; border-radius:16px;
+  padding:16px; cursor:pointer; margin-top:8px; box-shadow:0 10px 24px rgba(109,78,240,.3);
+}
+.bk-next-t { font-size:12px; font-weight:700; opacity:.85; }
+.bk-next-n { font-size:16px; font-weight:800; }
+.bk-next-arr { font-size:20px; }
+.bk-units-btn {
+  background:none; border:none; color:#8a83a6; font-size:13px; font-weight:700; cursor:pointer; margin-top:12px; padding:6px;
+}
+
+
+/* ============ TEACHER DEEP-DIVE ============ */
+.bk-chaphead-teach .bk-ch-ico { background:#fff3e0; }
+.teach { background:#FFFDF7; border:1.5px solid #F3D9A6; border-radius:18px; padding:14px 16px 12px; box-shadow:0 6px 18px rgba(212,150,44,.09); }
+.teach .t-label { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:800; letter-spacing:.2px; color:#8a5a00; background:#FFF1D6; padding:4px 11px; border-radius:999px; margin-bottom:8px; }
+.teach .t-q { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; background:#fff; border:1.5px solid #F3D9A6; border-radius:12px; padding:8px 12px; }
+.teach .t-q .t-ko { font-size:20px; font-weight:800; color:#5a3b00; }
+.teach .t-q .t-en { font-size:14px; color:#a8823c; font-weight:700; }
+.teach .t-row { margin-top:10px; }
+.teach .t-why { font-size:12.5px; font-weight:800; color:#8a5a00; margin-bottom:3px; }
+.teach .t-deep { font-size:12.5px; line-height:1.55; color:#5a4630; font-weight:600; }
+.teach .hl { color:#E8930C; font-weight:800; }
+.teach .t-grid { display:flex; align-items:stretch; justify-content:space-between; gap:5px; margin-top:10px; }
+.teach .t-cell { flex:1; background:#fff; border:1.5px solid #EED9B0; border-radius:10px; padding:6px 4px; text-align:center; }
+.teach .t-qcell { border-color:#F6C6E0; background:#FFF7FB; }
+.teach .t-eqcell { border-color:#B9E8E0; background:#F3FCFA; }
+.teach .t-word { font-size:17px; font-weight:800; color:#5a3b00; }
+.teach .t-qcell .t-word { color:#C72E87; }
+.teach .t-eqcell .t-word { color:#0E9F8A; }
+.teach .t-role { font-size:11.5px; font-weight:800; color:#333; margin-top:1px; }
+.teach .t-role .t-sub { font-weight:600; color:#a8823c; font-size:10px; }
+.teach .t-note { font-size:10.5px; line-height:1.4; color:#8a7a5c; font-weight:600; margin-top:4px; }
+.teach .t-op { align-self:center; font-size:20px; font-weight:800; color:#d8b26a; padding:0 2px; }
+.teach .t-insight { margin-top:9px; background:#FFF1D6; border-radius:10px; padding:7px 10px; font-size:12px; line-height:1.5; color:#6b4a10; font-weight:600; }
+.teach .t-i-ko { font-size:16px; font-weight:800; }
+.teach .t-compare { display:flex; gap:8px; margin-top:10px; }
+.teach .t-c-a, .teach .t-c-b { flex:1; border-radius:10px; padding:7px 8px; text-align:center; font-size:11px; line-height:1.4; font-weight:700; }
+.teach .t-c-a { background:#F3F0FF; border:1.5px solid #D8CCFF; color:#5b5285; }
+.teach .t-c-b { background:#E8FAF6; border:1.5px solid #9FE0D2; color:#0E7A69; }
+.teach .t-c-a b, .teach .t-c-b b { font-size:12px; display:block; margin-bottom:4px; }
+.teach .t-ko { font-weight:800; }
+.teach .t-en { font-size:11px; font-weight:600; opacity:.8; }
+.teach .t-tip { margin-top:9px; background:#FFF4F9; border:1.5px dashed #F4B5D6; border-radius:10px; padding:7px 10px; font-size:11.5px; line-height:1.45; color:#7a2a55; font-weight:600; }
+
+
+/* ============ VOCAB LAB · 카테고리별 어휘 (이미지 플래시카드) ============ */
+.vocab-lab { margin-top:6px; }
+.vl-toolbar { display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.vl-toolbar .vl-hint { font-size:12px; color:#9a92c4; font-weight:700; }
+.vl-expand { border:none; background:#f2edfd; color:#7b5cf6; font-size:12px; font-weight:800; border-radius:999px; padding:7px 15px; cursor:pointer; }
+.vl-expand:hover { background:#e6ddfc; }
+
+/* category card */
+.vl-cat { border-radius:20px; margin-bottom:12px; background:#fff; overflow:hidden; box-shadow:0 6px 18px rgba(91,63,212,.07); }
+.vl-cat-head { width:100%; display:flex; align-items:center; gap:11px; padding:14px 16px; background:none; border:none; cursor:pointer; text-align:left; font-family:inherit; color:#fff; }
+.vl-cat-ico { font-size:21px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.08)); }
+.vl-cat-name { font-size:16px; font-weight:800; flex:1; letter-spacing:-.2px; text-shadow:0 1px 2px rgba(0,0,0,.08); }
+.vl-cat-name small { display:block; font-size:11px; font-weight:700; opacity:.9; text-shadow:none; }
+.vl-cat-count { font-size:11px; font-weight:800; color:#fff; background:rgba(255,255,255,.25); border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:2px 10px; }
+.vl-cat-arr { font-size:13px; opacity:.8; transition:transform .25s; }
+.vl-cat.open .vl-cat-arr { transform:rotate(180deg); }
+
+/* per-category pastel gradient header + tinted body */
+.vl-cat[data-tone=pink] .vl-cat-head { background:linear-gradient(120deg,#F78FB3,#F4718F 55%,#E85D9E); }
+.vl-cat[data-tone=mint] .vl-cat-head { background:linear-gradient(120deg,#3ED3B0,#2BB9A2); }
+.vl-cat[data-tone=sky] .vl-cat-head { background:linear-gradient(120deg,#5BB5F7,#4A90E2); }
+.vl-cat[data-tone=lav] .vl-cat-head { background:linear-gradient(120deg,#A78BFA,#8B6CF6); }
+.vl-cat[data-tone=pink] .vl-cat-body { background:linear-gradient(180deg,#FFF2F7,#fff); }
+.vl-cat[data-tone=mint] .vl-cat-body { background:linear-gradient(180deg,#EEFAF7,#fff); }
+.vl-cat[data-tone=sky] .vl-cat-body { background:linear-gradient(180deg,#EFF7FF,#fff); }
+.vl-cat[data-tone=lav] .vl-cat-body { background:linear-gradient(180deg,#F5F1FF,#fff); }
+
+.vl-cat-body { display:none; padding:14px 14px 16px; }
+.vl-cat.open .vl-cat-body { display:block; }
+
+/* image flashcard grid */
+.vw-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+.vw-card { background:#fff; border:1px solid #f0ecfb; border-radius:16px; overflow:hidden;
+  box-shadow:0 3px 10px rgba(91,63,212,.06); transition:transform .15s, box-shadow .15s; display:flex; flex-direction:column; }
+.vw-card:hover { transform:translateY(-3px); box-shadow:0 10px 22px rgba(91,63,212,.14); }
+.vw-pic { aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#fdf8fb; }
+.vw-pic img { width:100%; height:100%; object-fit:cover; }
+.vw-info { padding:8px 10px 10px; position:relative; }
+.vw-tts { position:absolute; top:-13px; right:8px; border:none; background:#7b5cf6; color:#fff; width:26px; height:26px; border-radius:50%; cursor:pointer; font-size:12px; box-shadow:0 2px 6px rgba(123,92,246,.4); }
+.vw-ko { font-size:15px; font-weight:800; color:#2b2547; }
+.vw-rom { font-size:10.5px; color:#a79bc9; font-weight:700; }
+.vw-en { font-size:11.5px; color:#6b5aa8; font-weight:600; margin-top:1px; }
+
+/* example sentences */
+.vs-box { margin-top:12px; background:#fff; border:1px dashed #e3d9fb; border-radius:14px; padding:11px 13px; }
+.vs-head { font-size:11px; font-weight:800; letter-spacing:.3px; color:#8b5cf6; margin-bottom:8px; }
+.vs-line { display:flex; align-items:flex-start; gap:8px; padding:5px 0; }
+.vs-tts { border:none; background:#f2edfd; color:#7b5cf6; width:22px; height:22px; border-radius:50%; cursor:pointer; font-size:10px; flex-shrink:0; margin-top:1px; }
+.vs-ko { font-weight:800; font-size:14px; color:#3a2e63; }
+.vs-en { font-size:11.5px; color:#8a83a6; font-weight:600; margin-left:8px; }
+
+.vl-link { margin-top:12px; font-size:12.5px; color:#6b5aa8; font-weight:600; line-height:1.6;
+  background:#fff; border-left:4px solid #b7a3f5; padding:9px 12px; border-radius:8px; box-shadow:0 2px 8px rgba(123,92,246,.05); }
+.vl-link b { color:#4c3aa6; }
+
+
+/* ============ PRACTICE + 선생님 해설 ============ */
+.pt-note { display:none; margin-top:12px; border-radius:14px; overflow:hidden;
+  box-shadow:0 4px 14px rgba(91,63,212,.08); }
+.pt-note.show { display:block; }
+.pt-note-head { display:flex; align-items:center; gap:7px; padding:9px 13px;
+  background:linear-gradient(120deg,#FFE9B8,#FFD88F); font-weight:800; font-size:12px; color:#7a4d00; }
+.pt-note-body { background:#FFFBF2; border:1px solid #F4E1B5; border-top:none; padding:12px 14px;
+  font-size:13px; line-height:1.7; color:#5a4630; font-weight:600; }
+.pt-note-body b.hl { color:#E8930C; }
+.pt-note-body .pt-ko { font-weight:800; color:#3a2e63; }

@@ -60,7 +60,10 @@ const LS = {
   challenge: 'camnemi_topik_challenge',  // { type, idx, answers:{qid:pick}, startAt, timeLeft, qids[] } (in-progress)
   conquered: 'camnemi_topik_conquered',   // { [type]: { n: times conquered, last: date } }
   section:  'camnemi_topik_section',    // { [section]: { qids[], done:{} } }
-  mylevel:  'camnemi_topik_mylevel'      // 1-6 — default practice level (set in My)
+  mylevel:  'camnemi_topik_mylevel',    // 1-6 — default practice level (set in My)
+  studyTime:'camnemi_topik_study_time', // { 'YYYY-MM-DD': { reading:min, listening:min, vocab:min, mock:min } }
+  ltResult: 'camnemi_topik_lt_result',  // { lvl, at, bands:[{band,pct}], weak:band }
+  bookmarks:'camnemi_topik_bookmarks'    // [ {qid, at} ] — saved questions for review
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -416,7 +419,8 @@ const ICONS = {
   chart: '<path d="M3 3v18h18"/><path d="M7 15v3M12 10v8M17 6v12"/>',
   pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/>',
-  edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/>'
+  edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/>',
+  bookmark: '<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>'
 };
 function ic(name, size = 24) {
   const body = ICONS[name] || '';
@@ -748,7 +752,23 @@ function ltRecommended() {
   return Math.min(6, Math.max(1, lvl));
 }
 function applyLevelTestResult() {
-  setMyLevel(ltRecommended());
+  const lvl = ltRecommended();
+  // save level-test result: band-by-band correctness → derive weak points
+  try {
+    const picks = (APP.lt && APP.lt.picks) || {};
+    // per-band accuracy
+    const bands = [];
+    for (let b = 1; b <= 6; b++) {
+      const arr = picks[b] || [];
+      if (!arr.length) continue;
+      const c = arr.filter(Boolean).length;
+      bands.push({ band: b, pct: Math.round(c / arr.length * 100) });
+    }
+    // weakest = lowest band accuracy (band with <=50% first, else lowest overall)
+    const weak = [...bands].sort((a, b) => a.pct - b.pct)[0] || null;
+    lsSet(LS.ltResult, { lvl, at: Date.now(), bands, weak: weak ? weak.band : null });
+  } catch (e) {}
+  setMyLevel(lvl);
   exitLevelTest();
 }
 function viewLevelTest() {
@@ -818,8 +838,11 @@ function render() {
   switch (APP.tab) {
     case 'home': s.innerHTML = viewHome(); bindHome(); break;
     case 'book':
-      s.innerHTML = (typeof viewBook === 'function') ? viewBook() : viewHome();
-      if (typeof window.glowEnsureReady === 'function') window.glowEnsureReady();
+      // restore the last-read book page (unit + flip page) when returning
+      if (!(typeof restoreBookSession === 'function' && restoreBookSession())) {
+        s.innerHTML = (typeof viewBook === 'function') ? viewBook() : viewHome();
+        if (typeof window.glowEnsureReady === 'function') window.glowEnsureReady();
+      }
       break;
     case 'daily': s.innerHTML = viewDaily(); bindDaily(); break;
     case 'reading': s.innerHTML = viewSection('reading'); bindDaily(); break;
@@ -880,22 +903,27 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // Quick start — four big pretty one-tap test cards (no icons, no title bar)
+  // Quick start — four big pretty one-tap test cards, each with a distinct
+  // rotating radial (conic) gradient background.
   const aiQuick = `
     <div class="aq-4">
-      <button class="aq-cell aq-r" onclick="startSection('reading', myLevel())">
+      <button class="aq-cell aq-r aq-spin" style="--aq-c1:#4A6FA5;--aq-c2:#7FB5E8;--aq-c3:#FFD6E8;" onclick="startSection('reading', myLevel())">
+        <span class="aq-star">✦</span>
         <span class="aq-txt"><b>${t('nav_reading')}</b><span class="aq-sub">${t('home_ai_read')}</span></span>
         <span class="aq-arr">→</span>
       </button>
-      <button class="aq-cell aq-l" onclick="startSection('listening', myLevel())">
+      <button class="aq-cell aq-l aq-spin" style="--aq-c1:#14B8A6;--aq-c2:#5EEAD4;--aq-c3:#FDE68A;" onclick="startSection('listening', myLevel())">
+        <span class="aq-star">✦</span>
         <span class="aq-txt"><b>${t('nav_listening')}</b><span class="aq-sub">${t('home_ai_listen')}</span></span>
         <span class="aq-arr">→</span>
       </button>
-      <button class="aq-cell aq-v" onclick="startSection('reading', myLevel(), 'vocab')">
+      <button class="aq-cell aq-v aq-spin" style="--aq-c1:#F59E0B;--aq-c2:#FBBF24;--aq-c3:#FB923C;" onclick="startSection('reading', myLevel(), 'vocab')">
+        <span class="aq-star">✦</span>
         <span class="aq-txt"><b>${t('home_task_vocab')}</b><span class="aq-sub">${t('home_sch_vocab')}</span></span>
         <span class="aq-arr">→</span>
       </button>
-      <button class="aq-cell aq-m" onclick="go('mock')">
+      <button class="aq-cell aq-m aq-spin" style="--aq-c1:#EC4899;--aq-c2:#F472B6;--aq-c3:#A78BFA;" onclick="go('mock')">
+        <span class="aq-star">✦</span>
         <span class="aq-txt"><b>${t('home_task_mock')}</b><span class="aq-sub">${t('home_sch_mock')}</span></span>
         <span class="aq-arr">→</span>
       </button>
@@ -935,50 +963,95 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   const ltDone = localStorage.getItem(LS.mylevel) != null;
-  return `
+  // Before the level test: show only the greeting scene + a prominent level-test card.
+  if (!ltDone) {
+    return `
     ${scene}
-    ${ltDone
-      ? `${levelCardHTML()}
-    ${recommendCard(acc)}`
-      : `
-    <div class="app-card lt-home-card">
+    <div class="app-card lt-home-card" style="margin-top:16px;">
       <div class="lt-home-ico">🎓</div>
       <div class="lt-home-txt">
         <b>${t('lt_home_card')}</b>
         <span class="sub">${t('lt_home_card_sub')}</span>
       </div>
       <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
-    </div>`}
+    </div>`;
+  }
+  // This week's study calendar (Sunday start) + weekly total, navigable by week
+  const studyCard = `
+    <div class="sec-h"><h2>${ic('schedule',15)} ${t('prog_study_time')}</h2></div>
+    ${weekCalendarHTML(APP.studyWeek || 0)}`;
+  // Level + weak points from the level test (sample test) — so just taking the
+  // sample test already reveals your level AND your weak spots.
+  const ltRes = lsGet(LS.ltResult, null);
+  const myLv = myLevel();
+  const lvLabel = 'L' + myLv;
+  const lvGrade = myLv <= 2 ? (LANG === 'ko' ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner')
+            : myLv <= 4 ? (LANG === 'ko' ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate')
+            : (LANG === 'ko' ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
+  // weak bands from level-test result (bands under 100%, lowest first)
+  const ltBands = (ltRes && ltRes.bands) || [];
+  const bandName = (b) => {
+    const n = b.band;
+    const ko = LANG === 'ko';
+    if (n <= 2) return ko ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner';
+    if (n <= 4) return ko ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate';
+    return ko ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced';
+  };
+  const weakBands = ltBands.filter(b => b.pct < 100).sort((a, b) => a.pct - b.pct).slice(0, 3);
+  const weakBarHTML = weakBands.length
+    ? weakBands.map(b => `
+        <div class="lw-row">
+          <span class="lw-name">${bandName(b)}</span>
+          <span class="lw-bar"><span style="width:${b.pct}%;"></span></span>
+          <span class="lw-pct">${b.pct}%</span>
+        </div>`).join('')
+    : `<p class="sub" style="margin-top:6px;color:var(--ios-green);">${LANG === 'ko' ? '🎉 모든 레벨을 통과했어요!' : LANG === 'km' ? '🎉 អ្នកបានឆ្លងគ្រប់កម្រិត!' : '🎉 All levels passed!'}</p>`;
+  // Type-wise weak spots — lowest-accuracy question types (from real solved progress)
+  const typeWeak = (acc.byType || [])
+    .filter(s => s.n > 0 && s.p < 100)
+    .sort((a, b) => a.p - b.p)
+    .slice(0, 3);
+  const typeWeakHTML = typeWeak.length
+    ? typeWeak.map(s => `
+        <div class="lw-row">
+          <span class="lw-name">${esc(typeLabel(s.k))}</span>
+          <span class="lw-bar"><span style="width:${s.p}%;"></span></span>
+          <span class="lw-pct">${s.p}%</span>
+        </div>`).join('')
+    : `<p class="sub" style="margin-top:6px;color:var(--ios-green);">${t('no_weak')}</p>`;
+  const levelWeakCard = `
+    <div class="sec-h"><h2>${ic('target',15)} ${LANG === 'ko' ? 'My Level' : LANG === 'km' ? 'កម្រិតរបស់ខ្ញុំ' : 'My Level'}</h2></div>
+    <div class="app-card lw-card">
+      <div class="lw-top">
+        <div class="lw-level">
+          <div class="lw-lvl" style="--lvl:${myLv}">${lvLabel}</div>
+          <div class="lw-grade">${lvGrade}</div>
+        </div>
+        <div class="lw-weak">
+          <div class="lw-weak-label">🎯 ${t('rec_weak')}</div>
+          ${weakBarHTML}
+        </div>
+      </div>
+      <div class="lw-divider"></div>
+      <div class="lw-weak">
+        <div class="lw-weak-label">🧩 ${t('weak_spots')}</div>
+        ${typeWeakHTML}
+      </div>
+    </div>`;
+  return `
+    ${scene}
+    ${levelWeakCard}
+    <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2></div>
     ${aiQuick}
-    ${weekBlock}
-    ${schedule}
-    <div class="sec-h"><h2>${ic('target',15)} ${t('goal_title')}</h2><span class="sub">${t('goal_sub')}</span></div>
-    ${goalCards}
-    ${smartRecCard(acc)}
-    ${questHTML()}
+    ${studyCard}
     ${isNew ? '' : `
     <div class="sec-h"><h2>${ic('chart',15)} ${t('avg_acc')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
-    <div class="app-card filled">
-      <b style="font-size:13px;color:var(--ios-blue);">${t('by_type')}</b>
-      ${acc.byType.length
-        ? acc.byType.slice(0, 5).map(r => accBar(typeLabel(r.k), r.p, qSub(r.c, r.n))).join('')
-        : `<p class="sub" style="margin-top:6px;">${t('type_empty')}</p>`}
-      ${acc.byType.length > 5 ? `<div class="sub" style="font-size:11px;margin-top:6px;">+ ${acc.byType.length - 5} ${t('by_type')} → ${ic('notes',12)} ${t('wrong_link')}</div>` : ''}
-    </div>
     <div class="app-card filled">
       <b style="font-size:13px;color:var(--ios-blue);">${t('by_level')}</b>
       ${acc.byLevel.length
         ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, qSub(r.c, r.n))).join('')
         : `<p class="sub" style="margin-top:6px;">${t('level_empty')}</p>`}
     </div>`}
-
-    <div class="sec-h"><h2>${t('quick')}</h2></div>
-    <div class="app-card elevated"><div class="row" onclick="go('schedule')" style="cursor:pointer;">
-      <div style="color:var(--ios-blue);margin-right:10px;">${ic('schedule',22)}</div><div><b>${t('sched_link')}</b><div class="sub">${t('sched_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
-    <div class="app-card elevated"><div class="row" onclick="go('learn')" style="cursor:pointer;">
-      <div style="color:var(--ios-green);margin-right:10px;">${ic('learn',22)}</div><div><b>${t('learn_link')}</b><div class="sub">${t('learn_desc')}</div></div><span style="color:var(--ios-green);">→</span></div></div>
-    <div class="app-card elevated"><div class="row" onclick="go('wrong')" style="cursor:pointer;">
-      <div style="color:var(--ios-orange);margin-right:10px;">${ic('notes',22)}</div><div><b>${t('wrong_link')}</b><div class="sub">${t('wrong_desc', { n: lsGet(LS.wrong, []).length })}</div></div><span style="color:var(--ios-green);">→</span></div></div>
   `;
 }
 function setLevel(lv) {
@@ -996,6 +1069,13 @@ function bindHome() {
     im.src = (mc && mc.face) ? mc.face : (mc ? mc.img : '');
   }
 }
+/* Open the Tammy Library viewer (standalone page loading data/tammy-library.js).
+   Prefer an in-app route when running on the integrated server; fall back to a
+   new tab for the static/PWA build. */
+function openTammyLib() {
+  window.open('tammy-library.html', '_blank', 'noopener');
+}
+window.openTammyLib = openTammyLib;
 /* ================= CHARACTER EXPRESSION ANIMATIONS ================= */
 /* Each mood swaps the avatar to a REAL face-image of the same character
    (AI-generated expression portraits in assets/img/chars/fx/). The face
@@ -1202,25 +1282,69 @@ function dayStats(dateStr) {
   const solved = ids.length;
   return { solved, correct, pct: Math.round(correct / solved * 100) };
 }
-function weekCalendarHTML() {
+function weekCalendarHTML(weekOffset) {
+  weekOffset = weekOffset || 0;
   const now = new Date();
   const day = now.getDay();               // 0=Sun
-  const mon = new Date(now); mon.setDate(now.getDate() - ((day + 6) % 7));   // Monday
-  const days = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
-  const dailyAll = lsGet(LS.daily, {});
+  const sun = new Date(now); sun.setDate(now.getDate() - day + weekOffset * 7);   // Sunday start, offset weeks
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const allTime = lsGet(LS.studyTime, {});
+  // sum minutes for a given date string
+  const dayMin = (ds) => { const m = allTime[ds] || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0); };
   const cells = days.map((d, i) => {
-    const dt = new Date(mon); dt.setDate(mon.getDate() + i);
-    const ds = dayStats(dateKey(dt));
+    const dt = new Date(sun); dt.setDate(sun.getDate() + i);
+    const ds = dateKey(dt);
+    const min = dayMin(ds);
     const isToday = dt.toDateString() === now.toDateString();
-    return `<div class="wc-day ${isToday ? 'on' : ''} ${ds ? 'has' : ''}" onclick="showDayStats('${dateKey(dt)}', this)">
+    return `<div class="wc-day ${isToday ? 'on' : ''} ${min ? 'has' : ''}" onclick="showDayStudy('${ds}', this)">
       <span class="wc-d">${d}</span><span class="wc-n">${dt.getDate()}</span>
-      ${ds ? `<span class="wc-dot" title="${ds.solved} q · ${ds.pct}%"></span>` : ''}
+      ${min ? `<span class="wc-dot" title="${min}m"></span>` : ''}
     </div>`;
   }).join('');
-  return `<div class="app-card wc-card">
+  // week total minutes
+  let weekMin = 0;
+  for (let i = 0; i < 7; i++) { const dt = new Date(sun); dt.setDate(sun.getDate() + i); weekMin += dayMin(dateKey(dt)); }
+  const h = Math.floor(weekMin / 60), m = weekMin % 60;
+  // week label (this/last/next)
+  const weekLabel = weekOffset === 0 ? (LANG === 'ko' ? '이번 주' : LANG === 'km' ? 'សប្តាហ៍នេះ' : 'This week')
+    : weekOffset === -1 ? (LANG === 'ko' ? '지난 주' : LANG === 'km' ? 'សប្តាហ៍មុន' : 'Last week')
+    : weekOffset === -2 ? (LANG === 'ko' ? '지지난 주' : LANG === 'km' ? 'សប្តាហ៍មុនៗ' : '2 weeks ago')
+    : weekOffset === 1 ? (LANG === 'ko' ? '다음 주' : LANG === 'km' ? 'សប្តាហ៍ក្រោយ' : 'Next week')
+    : weekOffset > 0 ? (LANG === 'ko' ? '+' + weekOffset + '주 뒤' : '+'+weekOffset+'w') : (LANG === 'ko' ? weekOffset + '주 전' : weekOffset + 'w');
+  return `<div class="app-card wc-card" id="wc-card">
+    <div class="wc-head">
+      <button class="wc-nav" onclick="navStudyWeek(-1)">◀</button>
+      <b>${weekLabel}</b><span class="wc-week-min">${h ? h + 'h ' : ''}${m}m</span>
+      <button class="wc-nav" onclick="navStudyWeek(1)">▶</button>
+    </div>
     <div class="wc-grid">${cells}</div>
     <div class="wc-detail" id="wc-detail"></div>
   </div>`;
+}
+/* Navigate the study-time week calendar (0 = this week, -1 = last, etc.) */
+function navStudyWeek(delta) {
+  APP.studyWeek = (APP.studyWeek || 0) + delta;
+  const card = document.getElementById('wc-card');
+  if (card) { card.outerHTML = weekCalendarHTML(APP.studyWeek); }
+}
+function showDayStudy(dateStr, el) {
+  const det = $id('wc-detail');
+  if (!det) return;
+  document.querySelectorAll('.wc-day').forEach(x => x.classList.remove('pick'));
+  if (el) el.classList.add('pick');
+  const all = lsGet(LS.studyTime, {});
+  const m = all[dateStr] || {};
+  const dt = new Date(dateStr + 'T00:00:00');
+  const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
+  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0);
+  const row = (k, lab, col) => { const v = m[k]||0; return v ? `<div class="wc-daystat"><span style="color:${col};">${lab}</span><b>${v}m</b></div>` : ''; };
+  det.innerHTML = total ? `
+    <div class="wc-stat"><b>${total}m</b> ${label}</div>
+    ${row('reading', t('nav_reading'), 'var(--ios-blue)')}
+    ${row('listening', t('nav_listening'), 'var(--ios-teal)')}
+    ${row('vocab', t('home_task_vocab'), 'var(--ios-orange)')}
+    ${row('mock', t('home_task_mock'), 'var(--ios-pink)')}` : `
+    <div class="wc-stat muted">${label} — ${LANG === 'ko' ? '학습 시간 없음' : LANG === 'km' ? 'គ្មានពេលសិក្សា' : 'No study time'}</div>`;
 }
 function dateKey(dt) {
   const m = String(dt.getMonth() + 1).padStart(2, '0');
@@ -1428,14 +1552,15 @@ function viewDaily() {
   return `
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.dailyIdx + 1} / ${qs.length} · DAILY${isAI ? ' ✨ AI' : ''}</span>
-      <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span></div>
+      <span class="q-type">${q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
+      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+      ${bookmarkBtn(q.id)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
-      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -1443,14 +1568,22 @@ function viewDaily() {
            <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitWriting()">${t('submit')}</button>
            <button class="btn btn-teal" style="margin-top:8px;width:100%;" onclick="gradeWriting('daily')">${t('grade_writing')}</button>
            <div id="write-grade"></div>`
-        : q.options.map((o, i) => `
-          <button class="q-opt ${picked === i ? 'correct' : ''} ${picked !== undefined && picked !== i ? 'disabled' : ''}" ${picked !== undefined ? 'disabled' : ''} onclick="pickDaily(${i})">
+        : q.options.map((o, i) => {
+          let cls = 'q-opt';
+          if (picked !== undefined) {
+            if (i === q.correct) cls += ' correct';
+            else if (picked === i) cls += ' wrong';
+            else cls += ' dim';
+          }
+          return `<button class="${cls}" onclick="pickDaily(${i})">
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
-          </button>`).join('')}
+          </button>`;
+        }).join('')}
       <div class="q-explain" id="daily-ex">
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
+      <button class="btn btn-ghost btn-sm q-tip-toggle" style="width:100%;margin-top:8px;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       ${relatedBlock(q)}
       ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
     </div>
@@ -1552,7 +1685,12 @@ function pickDaily(i) {
   const all = lsGet(LS.daily, {});
   all[today].done[q.id] = i;
   lsSet(LS.daily, all);
-  recordResult(q, i === q.correct);
+  // record result only on the FIRST pick for this question this run (flip-proof)
+  APP._dailyRec = APP._dailyRec || {};
+  if (!APP._dailyRec[q.id]) {
+    APP._dailyRec[q.id] = true;
+    recordResult(q, i === q.correct);
+  }
   render();
 }
 function submitWriting() {
@@ -1629,6 +1767,7 @@ async function startSection(sec, lv, type) {
     });
     APP.section = sec; APP.sectionLevel = target; APP.sectionType = 'vocab';
     APP.sectionQs = qs; APP.sectionIdx = 0; APP.sectionAnswers = {}; APP.sectionDone = false;
+    APP.sectionStart = Date.now();
     const all = lsGet(LS.section, {}); all['reading:' + target + ':vocab'] = { qids: qs.map(q => q.id), done: {}, level: target, type: 'vocab' };
     lsSet(LS.section, all);
     go(sec);
@@ -1659,6 +1798,7 @@ async function startSection(sec, lv, type) {
   APP.sectionIdx = 0;
   APP.sectionAnswers = {};
   APP.sectionDone = false;
+  APP.sectionStart = Date.now();
   // 10-minute practice timer (reading & listening only — writing has no timer)
   if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
   if (sec === 'reading' || sec === 'listening') {
@@ -1756,7 +1896,9 @@ function viewSectionCard() {
   return `
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
-      <span class="q-type">${q.section === 'reading' ? t('sec_reading') : q.section === 'listening' ? t('sec_listening') : t('sec_writing')}</span>
+      <span class="q-type">${APP.sectionType === 'vocab' || q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
+      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+      ${bookmarkBtn(q.id)}
       ${(sec === 'reading' || sec === 'listening') ? `<span id="sec-timer" class="mock-timer" style="font-weight:800;color:${_secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_secRemain)}</span>` : ''}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${APP.sectionLoading ? `<div style="margin:6px 0;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ios-blue);font-weight:700;">${ic('spark',13)} ${LANG==='ko'?'AI가 나머지 문제를 만들고 있어요…':'AI is making more questions…'}<span class="sub"> (${qs.length}/10)</span></div>` : ''}
@@ -1764,7 +1906,6 @@ function viewSectionCard() {
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
-      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -1772,14 +1913,24 @@ function viewSectionCard() {
            <button class="btn btn-primary" style="margin-top:10px;width:100%;" onclick="submitSectionWriting()">${t('submit')}</button>
            <button class="btn btn-teal" style="margin-top:8px;width:100%;" onclick="gradeWriting('daily')">${t('grade_writing')}</button>
            <div id="write-grade"></div>`
-        : q.options.map((o, i) => `
-          <button class="q-opt ${picked === i ? 'correct' : ''} ${picked !== undefined && picked !== i ? 'disabled' : ''}" ${picked !== undefined ? 'disabled' : ''} onclick="pickSection(${i})">
+        : q.options.map((o, i) => {
+          // clicking is always allowed — you can flip your answer and see the
+          // explanation update. The real answer is highlighted once you've picked.
+          let cls = 'q-opt';
+          if (picked !== undefined) {
+            if (i === q.correct) cls += ' correct';
+            else if (picked === i) cls += ' wrong';
+            else cls += ' dim';
+          }
+          return `<button class="${cls}" onclick="pickSection(${i})">
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
-          </button>`).join('')}
+          </button>`;
+        }).join('')}
       <div class="q-explain" id="daily-ex">
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
       <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
+      <button class="btn btn-ghost btn-sm q-tip-toggle" style="width:100%;margin-top:8px;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       ${relatedBlock(q)}
     </div>
     <div style="display:flex;gap:8px;">
@@ -1791,12 +1942,23 @@ function viewSectionCard() {
 function pickSection(i) {
   const q = APP.sectionQs[APP.sectionIdx];
   if (!q) return;
-  APP.sectionAnswers[q.id] = i;
-  recordResult(q, i === q.correct);
+  APP.sectionAnswers[q.id] = i;   // store selection (may be flipped later)
   const all = lsGet(LS.section, {});
   if (all[APP.section]) all[APP.section].done[q.id] = i;
   lsSet(LS.section, all);
   render();
+}
+/* record the FINAL answer for questions answered but not yet logged (flip-proof) */
+function recordPendingSection() {
+  const qs = APP.sectionQs || [];
+  APP._secRec = APP._secRec || {};
+  qs.forEach(q => {
+    const a = APP.sectionAnswers && APP.sectionAnswers[q.id];
+    if (a === undefined || APP._secRec['sec:' + q.id]) return;
+    if (typeof a === 'object' && a.w !== undefined) return; // writing handled separately
+    APP._secRec['sec:' + q.id] = true;
+    recordResult(q, a === q.correct);
+  });
 }
 function submitSectionWriting() {
   const q = APP.sectionQs[APP.sectionIdx];
@@ -1814,18 +1976,39 @@ function navSection(d) {
     toast(LANG === 'ko' ? '✨ 나머지 문제를 생성하고 있어요 — 잠시만요!' : '✨ Making more questions — one sec!');
     return;
   }
-  if (d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) { finishSection(); return; }
+  if (d > 0 && APP.sectionIdx >= APP.sectionQs.length - 1) { recordPendingSection(); finishSection(); return; }
+  recordPendingSection();
   APP.sectionIdx = Math.min(APP.sectionQs.length - 1, Math.max(0, APP.sectionIdx + d));
   // reset passage scroll to top
   const scr = $id('screen'); if (scr) scr.querySelector('.q-passage')?.scrollTo(0, 0);
   render();
+}
+/* Record study minutes for a type (reading/listening/vocab/mock) on today's date. */
+function addStudyTime(type, mins) {
+  try {
+    if (!mins || !['reading', 'listening', 'vocab', 'mock'].includes(type)) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const all = lsGet(LS.studyTime, {});
+    all[today] = all[today] || { reading: 0, listening: 0, vocab: 0, mock: 0 };
+    all[today][type] = (all[today][type] || 0) + mins;
+    lsSet(LS.studyTime, all);
+  } catch (e) { /* non-fatal */ }
 }
 function finishSection() {
   if (APP.sectionLoading) {
     toast(LANG === 'ko' ? '✨ 나머지 문제를 생성하고 있어요 — 잠시만요!' : '✨ Making more questions — one sec!');
     return;
   }
+  recordPendingSection();
   if (_secTimer) { clearInterval(_secTimer); _secTimer = null; }
+  // --- record study time for this section (reading/listening/vocab) ---
+  try {
+    const st = APP.sectionStart;
+    const secKey = APP.sectionType === 'vocab' ? 'vocab' : (APP.section || 'reading');
+    if (st && ['reading', 'listening', 'vocab'].includes(secKey)) {
+      addStudyTime(secKey, Math.max(1, Math.round((Date.now() - st) / 60000)));
+    }
+  } catch (e) { /* non-fatal */ }
   const qs = APP.sectionQs;
   const done = APP.sectionAnswers || {};
   let correct = 0, wrong = 0, unanswered = 0;
@@ -2151,10 +2334,6 @@ function recommendCard(acc) {
       ${recBar(pct(strong), 'var(--ios-green)')}
       <div class="rec-chips-row">${chips}</div>
     </div>` : ''}
-    <div class="rec-today">
-      <div class="rec-today-label">🎯 ${t('rec_today')}</div>
-      ${pick}
-    </div>
   </div>`;
 }
 
@@ -2632,6 +2811,27 @@ function recordResult(q, correct) {
     lsSet(LS.streak, st);
   }
 }
+/* ---------- Bookmarks (save a question to review later) ---------- */
+function isBookmarked(qid) {
+  return (lsGet(LS.bookmarks, []) || []).some(b => b.qid === qid);
+}
+function toggleBookmark(qid) {
+  const bks = lsGet(LS.bookmarks, []) || [];
+  const idx = bks.findIndex(b => b.qid === qid);
+  let on;
+  if (idx >= 0) { bks.splice(idx, 1); on = false; }
+  else { bks.unshift({ qid, at: Date.now() }); on = true; }
+  lsSet(LS.bookmarks, bks.slice(0, 200));
+  toast(on
+    ? (LANG === 'ko' ? '🔖 북마크에 저장했어요' : LANG === 'km' ? '🔖 បានរក្សាទុក' : '🔖 Bookmarked')
+    : (LANG === 'ko' ? '북마크 해제' : LANG === 'km' ? 'បានលុប' : 'Bookmark removed'));
+  render();
+}
+function bookmarkBtn(qid) {
+  const on = isBookmarked(qid);
+  const ico = `<svg viewBox="0 0 24 24" width="16" height="16" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
+  return `<button class="bookmark-btn ${on ? 'on' : ''}" onclick="toggleBookmark('${escAttr(qid)}')" title="${LANG==='ko'?'북마크':'Bookmark'}">${ico} ${on ? `<span class="sub">${LANG==='ko'?'저장됨':LANG==='km'?'បានរក្សា':'Saved'}</span>` : ''}</button>`;
+}
 /* SRS: due cards for review */
 function dueCards() {
   const srs = lsGet(LS.srs, {});
@@ -2778,6 +2978,7 @@ function startMock(id) {
   const m = (window.MOCK_TESTS || []).find(x => x.id === id);
   if (!m) return;
   APP.mock = m; APP.mockIdx = 0; APP.mockAnswers = {};
+  APP.mockStart = Date.now();
   const st = lsGet(LS.mockStatus, {});
   st[id] = 'progress'; lsSet(LS.mockStatus, st);
   // start countdown
@@ -2789,6 +2990,8 @@ function startMock(id) {
     if (el) el.textContent = fmtTime(_mockRemain);
     if (_mockRemain <= 0) {
       clearInterval(_mockTimer); _mockTimer = null;
+      // record mock study time
+      try { const ms = APP.mockStart, mins = ms ? Math.max(1, Math.round((Date.now() - ms) / 60000)) : 0; if (mins) addStudyTime('mock', mins); } catch (e) {}
       // auto-submit: mark done and return to list
       const st2 = lsGet(LS.mockStatus, {});
       st2[APP.mock.id] = 'done'; lsSet(LS.mockStatus, st2);
@@ -2815,13 +3018,15 @@ function viewMockRun() {
       <div class="row"><span class="q-num">${esc(m.name)}</span>
       <span id="mock-timer" class="mock-timer" style="font-weight:800;color:${_mockRemain < 300 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_mockRemain)}</span>
       <button class="btn btn-ghost btn-sm" onclick="exitMock()">${t('exit')}</button></div>
-      <div class="sub" style="margin:4px 0 8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}</div>
+      <div class="sub" style="margin:4px 0 8px;display:flex;align-items:center;gap:8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}
+        <span class="q-type">${q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
+        <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+      ${bookmarkBtn(q.id)}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
-      <button class="btn btn-ghost tip-btn" style="width:100%;margin:4px 0 8px;background:var(--ios-fill);border-radius:10px;font-size:12px;font-weight:800;padding:8px;" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       <div class="q-kr">${q.q}</div>
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
@@ -2858,6 +3063,8 @@ function navMock(d) {
   const next = Math.min(qs.length - 1, Math.max(0, APP.mockIdx + d));
   // moving forward off the last question (Finish) marks the mock done
   if (d > 0 && APP.mockIdx >= qs.length - 1) {
+    // record mock study time
+    try { const ms = APP.mockStart, mins = ms ? Math.max(1, Math.round((Date.now() - ms) / 60000)) : 0; if (mins) addStudyTime('mock', mins); } catch (e) {}
     const st = lsGet(LS.mockStatus, {});
     st[APP.mock.id] = 'done'; lsSet(LS.mockStatus, st);
     // XP: mock finished +100 · mock quest
@@ -3093,6 +3300,18 @@ function viewWrong() {
         <div class="q-explain show"><b>✓ ${q.correct !== undefined ? (LANG==='ko' ? '정답: ' : 'Answer: ') + '①②③④'[q.correct] : '참고'}</b> — ${esc(q.explain)}</div>
       </div>`;
     }).join('') : `<div class="app-card"><p class="sub">${LANG==='ko'?'아직 틀린 문제가 없어요 — 계속 연습하세요!':'No wrong answers yet — keep practicing!'}</p></div>`}
+    <div class="sec-h"><h2>🔖 ${LANG==='ko'?'북마크한 문제':LANG==='km'?'សំណួរដែលបានរក្សាទុក':'Bookmarked questions'}</h2><span class="sub">${LANG==='ko'?lsGet(LS.bookmarks,[]).length+'개':LANG==='km'?lsGet(LS.bookmarks,[]).length+' មាន':'saved'}</span></div>
+    ${(lsGet(LS.bookmarks, []) || []).length ? lsGet(LS.bookmarks, []).map(w => {
+      const q = qById(w.qid);
+      if (!q) return '';
+      return `<div class="app-card wrong-item">
+        <div class="row"><span class="q-num">${esc(q.id)}</span><span class="q-type">${q.section === 'reading' ? '📖' : q.section === 'listening' ? '🎧' : '✍️'} ${esc(typeLabel(q.type))}</span>
+        <span class="q-level" style="font-weight:800;font-size:11px;padding:1px 7px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">L${q.level || ''}</span>
+        <button class="bookmark-btn on" style="margin-left:auto;" onclick="toggleBookmark('${escAttr(q.id)}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.8" style="display:inline-block;vertical-align:-3px;"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button></div>
+        <div class="q-kr" style="font-size:14px;margin:8px 0;">${q.q}</div>
+        <div class="q-explain show"><b>✓ ${q.correct !== undefined ? (LANG==='ko' ? '정답: ' : 'Answer: ') + '①②③④'[q.correct] : '참고'}</b> — ${esc(q.explain)}</div>
+      </div>`;
+    }).join('') : `<div class="app-card"><p class="sub">${LANG==='ko'?'북마크한 문제가 없어요 — 문제에서 북마크를 눌러 저장하세요!':'No bookmarks yet — tap the bookmark on any question to save it!'}</p></div>`}
   `;
 }
 function bindWrong() {}
@@ -3324,46 +3543,74 @@ function sessionStatus(p) {
 
 function viewSchedule() {
   const sch = window.TOPIK_SCHEDULE;
-  if (!sch) return '<div class="app-card"><p class="sub">일정 데이터가 없습니다.</p></div>';
+  if (!sch) return '<div class="app-card"><p class="sub">No schedule data.</p></div>';
   const today = todayStr();
   const sel = APP.scheduleCountry || localStorage.getItem(LS.country) || 'KR';
   const country = sch.countries.find(c => c.key === sel) || sch.countries[0];
   const sessions = country.sessions;
   const rows = sch.pbt.filter(p => sessions.includes(parseInt(p.session)));
-  // D-Day 계산: 다가오는 접수 / 시험 / 결과
+  // D-Day calculation
   const upcoming = rows.map(p => ({ p, st: sessionStatus(p) }))
     .filter(x => x.st.key !== 'done');
-  // 접수 마감 D-day (접수 중 or 예정인 것 중 가장 가까운)
   const regTargets = upcoming.filter(x => x.st.key === 'reg_ing' || x.st.key === 'reg_open');
   const testTargets = upcoming.filter(x => x.st.key === 'reg_ing' || x.st.key === 'test_wait' || x.st.key === 'reg_open');
   const resultTargets = upcoming.filter(x => x.st.key === 'result_wait');
   const regNear = regTargets.length ? regTargets[0] : null;
   const testNear = testTargets.length ? testTargets[0] : null;
   const resultNear = resultTargets.length ? resultTargets[0] : null;
-  // 달력 이벤트
   const events = [];
   rows.forEach(p => {
     const reg = parseReg(p.reg, p.date);
     if (reg) {
-      events.push({ date: reg.start, type: 'reg', label: sessionTh(p.session) + ' 접수시작' });
-      events.push({ date: reg.end, type: 'reg', label: sessionTh(p.session) + ' 접수마감' });
+      events.push({ date: reg.start, type: 'reg', label: sessionTh(p.session) + ' reg start' });
+      events.push({ date: reg.end, type: 'reg', label: sessionTh(p.session) + ' reg close' });
     }
-    events.push({ date: p.date, type: 'test', label: sessionTh(p.session) + ' 시험' });
-    events.push({ date: p.result, type: 'result', label: sessionTh(p.session) + ' 결과' });
+    events.push({ date: p.date, type: 'test', label: sessionTh(p.session) + ' test' });
+    events.push({ date: p.result, type: 'result', label: sessionTh(p.session) + ' result' });
   });
-  const calMonth = APP.scheduleMonth || today.slice(0, 7);   // 'YYYY-MM'
+  const calMonth = APP.scheduleMonth || today.slice(0, 7);
+  const q = (APP.scheduleQ || '').toLowerCase();
+  // country options (filtered by search if any)
+  const countryOpts = sch.countries
+    .filter(c => !q || (c.name + ' ' + (c.cities||'') + ' ' + c.key).toLowerCase().includes(q))
+    .map(c => `<option value="${c.key}" ${c.key === sel ? 'selected' : ''}>${c.flag} ${c.name}</option>`).join('') || '<option disabled>' + (LANG==='ko'?'검색 결과 없음':'No matches') + '</option>';
+  // split sessions into upcoming vs done; fold away done (collapsible)
+  const doneRows = rows.map(p => ({ p, st: sessionStatus(p) })).filter(x => x.st.key === 'done');
+  const activeRows = rows.map(p => ({ p, st: sessionStatus(p) })).filter(x => x.st.key !== 'done');
+  const folded = APP.scheduleShowDone ? '' : 'style="display:none"';
+  const dow = (ds) => ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(ds + 'T00:00:00').getDay()];
+  const statusTxt = (st) => st.key === 'done' ? t('status_done') : st.key === 'reg_ing' ? t('status_ing') : st.key === 'reg_open' ? t('status_open') : st.key === 'test_wait' ? t('status_wait') : t('status_result');
+  const sessCard = (x) => {
+    const p = x.p, st = x.st, reg = st.reg;
+    const d = p.date.split('-');
+    const done = st.key === 'done';
+    return `
+      <div class="app-card sched-sess" style="${done ? 'opacity:.55;' : ''}">
+        <div class="row">
+          <span class="mock-badge ${p.overseas ? 't2' : 't1'}">${sessionTh(p.session)}</span>
+          <span style="font-size:12px;font-weight:800;color:${st.key === 'reg_ing' ? 'var(--ios-green)' : st.key === 'test_wait' ? '#c78a00' : 'var(--ios-secondary-label)'};">${statusTxt(st)}</span>
+        </div>
+        <div style="font-size:16px;font-weight:800;color:var(--ios-label);margin:8px 0 4px;">
+          ${d[1]}/${d[2]} (${dow(p.date)}) <span style="font-size:12px;color:var(--ios-secondary-label);font-weight:600;">${p.date.slice(0,4)}</span>
+        </div>
+        <div class="sub" style="font-size:12.5px;margin:3px 0;">🖥 ${LANG==='ko'?'접수':'Registration'}: <b>${p.reg}</b> ${reg && !done && st.key !== 'result_wait' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(reg.end)})</span>` : ''}</div>
+        <div class="sub" style="font-size:12.5px;margin:3px 0;">✏️ ${LANG==='ko'?'시험':'Exam'}: <b>${p.date}</b> ${!done && st.key !== 'result_wait' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(p.date)})</span>` : ''}</div>
+        <div class="sub" style="font-size:12.5px;margin:3px 0;">📄 ${LANG==='ko'?'결과':'Result'}: <b>${p.result}</b> ${st.key === 'result_wait' || st.key === 'test_wait' || st.key === 'reg_ing' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(p.result)})</span>` : ''}</div>
+        <div class="sub" style="font-size:11.5px;margin-top:4px;">📍 ${country.cities} · ${country.reg}</div>
+      </div>`;
+  };
   return `
     <div class="sec-h"><h2>🗓 ${t('sched_title')}</h2><span class="sub">${sch.year}</span></div>
-    <div class="app-card"><p class="sub" style="font-size:12px;">${LANG === 'ko' ? sch.note : t('sched_note')}</p></div>
+    <div class="app-card"><p class="sub" style="font-size:12px;">${t('sched_note')}</p></div>
 
     <div class="sec-h"><h2>${t('sched_country')}</h2></div>
     <div class="app-card">
-      <select id="schedule-country" style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font);" onchange="setScheduleCountry(this.value)">
-        ${sch.countries.map(c => `<option value="${c.key}" ${c.key === sel ? 'selected' : ''}>${c.flag} ${c.name}</option>`).join('')}
+      <input id="schedule-search" class="sched-search" type="text" placeholder="${LANG==='ko'?'나라 검색…':'Search country…'}" value="${APP.scheduleQ || ''}" oninput="scheduleSearch(this.value)">
+      <select id="schedule-country" class="sched-select" onchange="setScheduleCountry(this.value)">
+        ${countryOpts}
       </select>
     </div>
 
-    <!-- D-Day 요약 -->
     <div class="sec-h"><h2>${country.flag} ${country.name} · ${t('sched_dday')}</h2></div>
     <div class="app-card">
       <div class="dday-row">
@@ -3381,7 +3628,6 @@ function viewSchedule() {
       ${resultNear ? `<div class="sub" style="font-size:11px;">${sessionTh(resultNear.p.session)} · ${resultNear.p.result}</div>` : ''}
     </div>
 
-    <!-- 달력 -->
     <div class="sec-h"><h2>📅 ${t('sched_cal')}</h2>
       <span style="display:flex;gap:6px;">
         <button class="btn btn-ghost btn-sm" onclick="scheduleMonth(-1)">◀</button>
@@ -3396,53 +3642,37 @@ function viewSchedule() {
       </div>
     </div>
 
-    <!-- 회차별 상세 -->
     <div class="sec-h"><h2>${country.flag} ${country.name} · ${t('sched_sessions')}</h2><span class="sub">${country.cities}</span></div>
-    ${rows.length ? rows.map(p => {
-      const st = sessionStatus(p);
-      const reg = st.reg;
-      const d = p.date.split('-');
-      const dow = ['일','월','화','수','목','금','토'][new Date(p.date + 'T00:00:00').getDay()];
-      const statusTxt = st.key === 'done' ? t('status_done') : st.key === 'reg_ing' ? t('status_ing') : st.key === 'reg_open' ? t('status_open') : st.key === 'test_wait' ? t('status_wait') : t('status_result');
-      return `
-        <div class="app-card" style="${st.key === 'done' ? 'opacity:.5;' : ''}">
-          <div class="row">
-            <span class="mock-badge t2">${sessionTh(p.session)}</span>
-            <span style="font-size:12px;font-weight:800;color:${st.key === 'reg_ing' ? 'var(--ios-green)' : st.key === 'test_wait' ? '#c78a00' : 'var(--ios-secondary-label)'};">${statusTxt}</span>
-          </div>
-          <div style="font-size:16px;font-weight:800;color:var(--ios-label);margin:8px 0 4px;">
-            ${d[1]}월 ${d[2]}일 (${dow}) <span style="font-size:12px;color:var(--ios-secondary-label);font-weight:600;">${p.date.slice(0,4)}</span>
-          </div>
-          <div class="sub" style="font-size:12.5px;margin:3px 0;">🖥 ${LANG==='ko'?'접수':'Reg'}: <b>${p.reg}</b> ${reg && st.key !== 'done' && st.key !== 'result_wait' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(reg.end)})</span>` : ''}</div>
-          <div class="sub" style="font-size:12.5px;margin:3px 0;">✏️ ${LANG==='ko'?'시험':'Exam'}: <b>${p.date}</b> ${st.key !== 'done' && st.key !== 'result_wait' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(p.date)})</span>` : ''}</div>
-          <div class="sub" style="font-size:12.5px;margin:3px 0;">📄 ${LANG==='ko'?'결과':'Result'}: <b>${p.result}</b> ${st.key === 'result_wait' || st.key === 'test_wait' || st.key === 'reg_ing' ? `<span style="color:var(--ios-blue);font-weight:700;">(${ddayStr(p.result)})</span>` : ''}</div>
-          <div class="sub" style="font-size:11.5px;margin-top:4px;">📍 ${country.cities} · ${country.reg}</div>
-        </div>`;
-    }).join('') : `<div class="app-card"><p class="sub">${LANG==='ko'?'이 나라에서는 아직 시행 정보가 없습니다.':'No sessions in this country yet.'}</p></div>`}
+    ${activeRows.length ? activeRows.map(sessCard).join('') : `<div class="app-card"><p class="sub">${LANG==='ko'?'이 나라에서는 아직 시행 정보가 없습니다.':'No sessions in this country yet.'}</p></div>`}
+    ${doneRows.length ? `
+      <button class="btn btn-ghost btn-sm sched-fold" onclick="toggleSchedDone()">${APP.scheduleShowDone ? '▲ ' + (LANG==='ko'?'지난 회차 접기':'Hide past sessions') : '▼ ' + (LANG==='ko'?`지난 회차 ${doneRows.length}개 보기`:'Past sessions (' + doneRows.length + ')')}</button>
+      <div ${folded}>${doneRows.map(sessCard).join('')}</div>
+    ` : ''}
 
-    <!-- 전체 회차 -->
     <div class="sec-h"><h2>📋 ${t('sched_all')}</h2></div>
     <div class="app-card">
       ${sch.pbt.map(p => {
         const st = sessionStatus(p);
         return `<div class="row" style="padding:6px 0;border-bottom:1px solid var(--border);${st.key==='done'?'opacity:.5':''}">
-          <span style="font-size:13px;font-weight:700;">${sessionTh(p.session)}</span>
-          <span style="font-size:13px;">${p.date.slice(5)}</span>
+          <span style="font-size:13px;font-weight:700;color:var(--ios-label);">${sessionTh(p.session)}</span>
+          <span style="font-size:13px;color:var(--ios-label);">${p.date.slice(5)}</span>
           <span class="sub" style="font-size:10.5px;">${st.label}</span>
-          <span class="mock-badge ${p.overseas ? 't2' : 't1'}" style="font-size:9px;">${p.overseas ? '해외' : '한국'}</span>
+          <span class="mock-badge ${p.overseas ? 't2' : 't1'} sched-ovs" style="font-size:9px;">${p.overseas ? (LANG==='ko'?'해외':'Overseas') : (LANG==='ko'?'한국':'Korea')}</span>
         </div>`;}).join('')}
     </div>
-    <div class="app-card">
-      <b style="font-size:13px;color:var(--ios-blue);">${t('sched_ibt')}</b>
+    <div class="app-card sched-ibt-card">
+      <b class="sched-ibt-title">${t('sched_ibt')}</b>
       ${sch.ibt.map(p => `<div class="row" style="padding:5px 0;border-bottom:1px solid var(--border);">
-        <span style="font-size:12.5px;font-weight:700;">${sessionTh(p.session)}</span>
-        <span style="font-size:12.5px;">${p.date.slice(5)}</span>
+        <span style="font-size:12.5px;font-weight:700;color:var(--ios-label);">${sessionTh(p.session)}</span>
+        <span style="font-size:12.5px;color:var(--ios-label);">${p.date.slice(5)}</span>
         <span class="sub" style="font-size:10.5px;">${LANG==='ko'?'결과':'Result'} ${p.result.slice(5)}</span>
       </div>`).join('')}
       <p class="sub" style="font-size:10.5px;margin-top:6px;">${LANG==='ko'?'IBT는 2026년 17개국 확대 예정 (한국 중심)':'IBT expanding to 17 countries in 2026 (Korea-centered)'}</p>
     </div>
   `;
 }
+function scheduleSearch(v) { APP.scheduleQ = v; render(); }
+function toggleSchedDone() { APP.scheduleShowDone = !APP.scheduleShowDone; render(); }
 function calendarHTML(ym, events) {
   // ym: 'YYYY-MM', events: [{date, type, label}]
   const [y, m] = ym.split('-').map(Number);
@@ -3640,7 +3870,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // deep-link support: app.html?tab=daily (or #daily) opens that tab
   const q = new URLSearchParams(location.search).get('tab');
   const h = (location.hash || '').replace('#', '');
-  go(['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'book'));
+  go(['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(q) ? q : (['home','book','reading','listening','writing','mock','my','daily','wrong','learn','progress','schedule','challenge'].includes(h) ? h : 'home'));
   // demo mode for screenshots: ?tab=daily&demo=finish shows the score screen
   if (new URLSearchParams(location.search).get('demo') === 'finish') {
     setTimeout(() => {

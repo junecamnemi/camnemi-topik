@@ -2,151 +2,90 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Camnemi TOPIK Preparation — Learn Korean for the TOPIK Test</title>
-<meta name="description" content="Free Korean language lessons for Cambodian students preparing for the TOPIK test. Seoul National University curriculum, taught in Khmer. Study in Korea with Camnemi.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#A78BFA">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="theme-color" content="#8B5CF6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Camnemi TOPIK">
+<title>Camnemi TOPIK App</title>
 <link rel="stylesheet" href="css/style.css">
-<link rel="preconnect" href="https://zjdvzpylxazfbazioxto.supabase.co">
+<link rel="stylesheet" href="css/app.css?v=book-3">
+<link rel="stylesheet" href="css/glowsis-book.css?v=book-3">
+<link rel="stylesheet" href="css/book.css?v=book-3">
 </head>
 <body>
-<div id="nav"></div>
+<div class="app-shell">
+  <!-- ambient AI gradient backdrop — tinted by the current character's hue -->
+  <div class="ai-backdrop" aria-hidden="true"></div>
 
-<header class="hero">
-  <div class="container hero-inner">
-    <div>
-      <span class="eyebrow">For students worldwide · 한국 유학을 꿈꾸는 모두를 위해</span>
-      <h1>Pass TOPIK II. <span class="hl">Level 3.</span><br>Study in Korea.</h1>
-      <p class="lead">A structured path to <b>TOPIK II Level 3</b> — the score that unlocks university admission in Korea. Grammar, vocabulary, listening and reading practice built for global learners.</p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary btn-lg" href="level-test.html">Find your level — 2 min</a>
-        <a class="btn btn-teal btn-lg" href="curriculum.html">Start TOPIK II prep</a>
-      </div>
-      <div class="hero-proof"><b>TOPIK II · Level 3 goal:</b> 120+ points toward your Korean university admission.</div>
+  <!-- App header (iOS large title) -->
+  <header class="app-header">
+    <button id="back-btn" class="back-btn" onclick="goBack()" aria-label="Back" style="display:none;">←</button>
+    <a class="brand" href="javascript:void(0)" onclick="go('daily')" style="cursor:pointer;flex-direction:column;align-items:flex-start;gap:0;line-height:1.1;">
+      <span style="font-size:15px;font-weight:800;letter-spacing:-.2px;">AI TOPIK Test</span>
+      <span style="font-size:9.5px;font-weight:600;opacity:.75;letter-spacing:.3px;">by Camnemi Korea</span>
+    </a>
+    <div class="spacer"></div>
+    <div class="h-actions">
+      <span id="sched-banner" onclick="go('schedule')" title="TOPIK 일정" class="h-chip sched-banner"></span>
     </div>
-    <div class="hero-card">
-      <h3>Where should I start?</h3>
-      <div class="level-picker">
-        <div class="level-pill" onclick="location.href='curriculum.html?level=1a'">1A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=1b'">1B</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=2a'">2A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=2b'">2B</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=3a'">3A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=3b'">3B</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=4a'">4A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=4b'">4B</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=5a'">5A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=5b'">5B</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=6a'">6A</div>
-        <div class="level-pill" onclick="location.href='curriculum.html?level=6b'">6B</div>
-      </div>
-      <div class="mini-row"><span>Not sure? Take the free test</span><a href="level-test.html" style="font-weight:700;">Level Test →</a></div>
-    </div>
-  </div>
-</header>
+  </header>
 
-<section class="section tight">
-  <div class="container steps">
-    <div class="step"><div class="n">1</div><h4>Log in &amp; set your goal</h4><p>Sign in with Google or Facebook — your progress saves to your account.</p></div>
-    <div class="step"><div class="n">2</div><h4>Master TOPIK II grammar</h4><p>Intermediate grammar + 6000-word vocabulary, level 3 focused.</p></div>
-    <div class="step"><div class="n">3</div><h4>Practice TOPIK II papers</h4><p>Official past papers, listening + reading, timed like the real test.</p></div>
-    <div class="step"><div class="n">4</div><h4>Apply to Korea</h4><p>Camnemi guides your university application worldwide.</p></div>
-  </div>
-</section>
+  <!-- User menu sheet (account / stats / settings) -->
+  <div id="user-menu-overlay" class="menu-overlay" onclick="closeUserMenu()"></div>
+  <div id="user-menu" class="user-menu"></div>
 
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow">The curriculum</span>
-      <h2>One clear path to TOPIK II Level 3</h2>
-      <p>Original Camnemi lessons focused on the intermediate grammar and vocabulary that get you to TOPIK II Level 3 — the band most Korean universities require. English explanations for global learners.</p>
-    </div>
-    <div class="grid grid-3">
-      <div class="card hoverable">
-        <span class="tag tag-beginner">Foundation · TOPIK 1–2</span>
-        <h3>Building blocks</h3>
-        <p>Hangul, core particles, daily-life grammar. The base you need before intermediate.</p>
-        <p style="margin-top:12px;"><a href="curriculum.html?level=1a"><b>Review basics →</b></a></p>
-      </div>
-      <div class="card hoverable">
-        <span class="tag tag-intermediate" style="background:#fff3e0;color:#c1501f;">Your goal · TOPIK 3</span>
-        <h3>TOPIK II Level 3 core</h3>
-        <p>150 essential intermediate grammar points + reading/listening strategies to hit Level 3 (120+ points).</p>
-        <p style="margin-top:12px;"><a href="curriculum.html?level=3a"><b>Start Level 3 →</b></a></p>
-      </div>
-      <div class="card hoverable">
-        <span class="tag tag-advanced">Beyond · TOPIK 4–6</span>
-        <h3>Go further</h3>
-        <p>Academic and journalistic patterns when you're ready to push toward Levels 4–6.</p>
-        <p style="margin-top:12px;"><a href="curriculum.html?level=5a"><b>See advanced →</b></a></p>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- Character picker sheet -->
+  <div id="char-picker-overlay" class="menu-overlay" onclick="closeCharPicker()"></div>
+  <div id="char-picker" class="char-picker"></div>
 
-<section class="section" style="background:linear-gradient(180deg,var(--bg),#eef1fa);">
-  <div class="container">
-    <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:34px;">
-      <div>
-        <span class="eyebrow">TOPIK II · Level 3</span>
-        <h2 style="font-size:28px;color:var(--navy-dark);margin-bottom:10px;">The score that gets you into Korean universities</h2>
-        <p style="color:var(--muted);font-size:16px;">TOPIK II Level 3 is required by most Korean universities for foreign applicants. We break down the test, the schedule, and how to register — wherever you are in the world.</p>
-        <ul style="margin:18px 0;padding-left:20px;color:var(--muted);font-size:15px;line-height:2;">
-          <li>What Level 3 takes: reading + listening + writing strategy</li>
-          <li>2026 test dates, fees, and registration windows worldwide</li>
-          <li>IBT (computer) test — available in more countries than ever</li>
-          <li>Score → university eligibility mapping</li>
-        </ul>
-        <a class="btn btn-ghost" href="topik-info.html">TOPIK II Level 3 guide →</a>
-      </div>
-      <div class="hero-card">
-        <h3>2026 TOPIK at a glance</h3>
-        <div style="font-size:14.5px;line-height:2;">
-          <div style="display:flex;justify-content:space-between;"><span>PBT sittings</span><b>6 in Korea</b></div>
-          <div style="display:flex;justify-content:space-between;"><span>IBT (computer) sittings</span><b>6 globally</b></div>
-          <div style="display:flex;justify-content:space-between;"><span>Speaking test</span><b>3 sittings</b></div>
-          <div style="display:flex;justify-content:space-between;"><span>TOPIK I fee (Korea)</span><b>₩40,000</b></div>
-          <div style="display:flex;justify-content:space-between;"><span>TOPIK II fee (Korea)</span><b>₩55,000</b></div>
-          <div style="display:flex;justify-content:space-between;"><span>Phnom Penh venue</span><b>CKCC</b></div>
-        </div>
-        <div class="mini-row"><span>Full schedule</span><a href="topik-info.html#schedule" style="font-weight:700;">See dates →</a></div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- Screen container -->
+  <main class="app-content" id="screen"></main>
 
-<section class="section">
-  <div class="container">
-    <div class="book-hero">
-      <span class="eyebrow" style="color:#ffd7d4;">Coming from Camnemi</span>
-      <h1>Camnemi TOPIK II Preparation — the book</h1>
-      <p>A complete path from basic Korean to <b>TOPIK II Level 3</b>, written for international students. Original explanations, real example sentences, and practice — built on the official test structure.</p>
-      <div class="chips">
-        <span class="chip">🌍 For global learners</span>
-        <span class="chip">📖 Level 3 focused</span>
-        <span class="chip">🎧 Audio support</span>
-        <span class="chip">✅ Practice tests</span>
-      </div>
-      <div style="margin-top:24px;">
-        <a class="btn btn-red btn-lg" href="book.html">See the book →</a>
-        <a class="btn btn-ghost btn-lg" href="book.html#samples" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.6);">Read sample chapter</a>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- Bottom tab bar: Home / Book / TOPIK Test / Rank / My -->
+  <nav class="tab-bar">
+    <button class="tab-item active" data-tab="home" onclick="go('home')">
+      <span class="tab-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M9 21v-6h6v6"/></svg></span><span data-nav-label="home">Home</span>
+    </button>
+    <button class="tab-item" data-tab="book" onclick="go('book')">
+      <span class="tab-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span data-nav-label="book">Book</span>
+    </button>
+    <button class="tab-item" data-tab="daily" onclick="go('daily')">
+      <span class="tab-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6V3M16 6V3M3 10h18"/><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M9 15l2 2 4-4"/></svg></span><span data-nav-label="daily">TOPIK Test</span>
+    </button>
+    <button class="tab-item" data-tab="rank" onclick="go('rank')">
+      <span class="tab-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3"/></svg></span><span data-nav-label="rank">Rank</span>
+    </button>
+    <button class="tab-item" data-tab="my" onclick="go('my')">
+      <span class="tab-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span><span data-nav-label="my">설정</span>
+    </button>
+  </nav>
 
-<section class="section tight" style="padding-bottom:70px;">
-  <div class="container" style="text-align:center;">
-    <h2 style="font-size:26px;color:var(--navy-dark);margin-bottom:8px;">Start your TOPIK II journey — it's free</h2>
-    <p style="color:var(--muted);margin-bottom:22px;">Create an account with Google or Facebook to save your progress toward Level 3.</p>
-    <a class="btn btn-primary btn-lg" href="login.html">Log in with Google · Facebook</a>
-  </div>
-</section>
+</div>
 
-<div id="footer"></div>
-
-<script src="js/common.js"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js?v=book-3"></script>
+<script src="js/auth.js?v=book-3"></script>
+<script src="data/topik1-bank.js"></script>
+<script src="data/topik2-bank.js"></script>
+<script src="data/level1-bank.js"></script>
+<script src="data/level2-bank.js"></script>
+<script src="data/level3-bank.js"></script>
+<script src="data/level4-bank.js"></script>
+<script src="data/level5-bank.js"></script>
+<script src="data/level6-bank.js"></script>
+<script src="data/mock-tests.js"></script>
+<script src="data/level-test.js"></script>
+<script src="data/vocab-bank.js"></script>
+<script src="data/topik-schedule.js"></script>
+<script src="data/glowsis-book.js?v=book-3"></script>
+<script src="data/tammy-library.js?v=1"></script>
+<script src="js/chars.js?v=book-3"></script>
+<script src="js/app.js?v=book-3"></script>
+<script src="js/voice.js"></script>
+<script src="js/glowsis-view.js?v=book-3"></script>
 </body>
 </html>
