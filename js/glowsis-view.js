@@ -113,7 +113,8 @@ const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { book, unit, page } �
    add window.GLOWSIS_1B, GLOWSIS_2A, …). bookUnits() returns the ACTIVE book's units. */
 const GLOWSIS_BOOKS = [
   { id: '1a', title: 'Glowsis Korean 1A', ico: '🎤', sub: 'Beginner · 9 units', var: 'GLOWSIS_BOOK' },
-  { id: '1b', title: 'Glowsis Korean 1B', ico: '🎵', sub: 'Beginner · 12 units', var: 'GLOWSIS_1B' }
+  { id: '1b', title: 'Glowsis Korean 1B', ico: '🎵', sub: 'Beginner · 12 units', var: 'GLOWSIS_1B' },
+  { id: '2a', title: 'Glowsis Korean 2A', ico: '🎧', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2A' }
 ];
 function bookMeta(id) { return GLOWSIS_BOOKS.find(b => b.id === id) || GLOWSIS_BOOKS[0]; }
 function bookUnits(id) { const m = bookMeta(id || _book.book); return (window[m.var] || []).slice(); }
