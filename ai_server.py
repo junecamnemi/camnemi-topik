@@ -198,7 +198,7 @@ def _pick_types(level, section, n):
         return ["grammar"] * n
     return random.choices(keys, weights=weights, k=n)
 
-def _build_prompt(level, section, n, types):
+def _build_prompt(level, section, n, types, hint=""):
     ex = EXAM_STRUCTURE[level]
     type_str = ", ".join(types)
     return (
@@ -208,7 +208,8 @@ def _build_prompt(level, section, n, types):
         f"type weights: {ex['type_weights'].get(section, {})}.\n"
         f"Level-appropriate grammar pool (use some of these): {ex['grammar_pool']}.\n"
         f"Vocabulary guide: {ex['vocab_guide']}.\n"
-        f"Return STRICT JSON only."
+        + (f"These are problems the student got wrong / bookmarked — make NEW questions of the SAME types and themes (similar situation/vocab but different wording and different answers, never reusing the exact sentence): {hint}\n" if hint else "")
+        + f"Return STRICT JSON only."
     )
 
 @app.post("/api/generate")
@@ -222,6 +223,24 @@ async def generate(req: Request):
     if section not in ("reading", "listening", "writing", "all"):
         section = "all"
     focus_type = (body.get("type") or "").lower().strip()
+    # based_on: a list of source problems (wrong / bookmarked) to make similar ones from
+    based_on = body.get("based_on") or []
+    # build a compact hint describing the source types & themes
+    hint = ""
+    if based_on:
+        seen_types = []
+        for s in based_on:
+            st = (s.get("type") or s.get("section") or "").strip()
+            if st and st not in seen_types:
+                seen_types.append(st)
+        theme_gl = []
+        for s in based_on[:4]:
+            t = (s.get("q") or s.get("passage") or "")[:120]
+            if t:
+                theme_gl.append("· " + t)
+        if seen_types or theme_gl:
+            hint = ("[types: " + ", ".join(seen_types) + "]" if seen_types else "") + (
+                " [themes: " + " ".join(theme_gl) + "]" if theme_gl else "")
     # if a specific weak type is requested, generate that type (best-effort)
     if focus_type:
         valid_types = set()
@@ -247,6 +266,14 @@ async def generate(req: Request):
     if focus_type:
         host = "writing" if focus_type.startswith("writing") else ("listening" if focus_type in ("topic","place","intent") else "reading")
         plan = [(host, count)]
+    # review/similar mode: reflect the source mix (skip writing unless source had writing)
+    if based_on and not focus_type and section == "all":
+        src_secs = {(b.get("section") or (b.get("type") or "")).lower() for b in based_on}
+        has_w = any("writing" in s for s in src_secs) or any(str(b.get("type","")).startswith("writing") for b in based_on)
+        rest = count - (1 if has_w else 0)
+        half = rest // 2
+        plan = ([] if not has_w else [("writing", 1)])
+        plan += [("listening", half), ("reading", rest - half)]
     try:
         import asyncio
         chunk = 3
@@ -270,7 +297,7 @@ async def generate(req: Request):
             types = [focus_type] * n if focus_type else _pick_types(level, sec, n)
             for start in range(0, n, chunk):
                 types_chunk = types[start:start + chunk]
-                p = _build_prompt(level, sec, len(types_chunk), types_chunk)
+                p = _build_prompt(level, sec, len(types_chunk), types_chunk, hint)
                 tasks.append((sec, one_chunk(p)))
 
         results = await asyncio.gather(*(t for _, t in tasks))

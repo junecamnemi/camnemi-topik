@@ -97,7 +97,7 @@ window.glowVocabAll = glowVocabAll;
 
 /* ==================== BOOK: LEVELS ==================== */
 const GLOWSIS_LEVELS = [
-  { lv: 1, label: 'TOPIK I · Beginner', book: { id: 'glowsis-1a', title: 'Glowsis Korean 1A', sub: '아이돌과 함께 배우는 초급 한국어 · 9 units' } },
+  { lv: 1, label: 'TOPIK I · Beginner', book: { id: 'glowsis-1a', title: 'Glowsis Korean 1A', sub: 'Learn beginner Korean with your idols · 9 units' } },
   { lv: 2, label: 'TOPIK II · Intermediate' },
   { lv: 3, label: 'TOPIK II · Intermediate+' },
   { lv: 4, label: 'TOPIK II · Upper' },
@@ -105,6 +105,7 @@ const GLOWSIS_LEVELS = [
   { lv: 6, label: 'TOPIK II · Advanced+' }
 ];
 let _book = { unit: 0, page: 0 }; // current unit + page
+let _bookOpenAt = null;           // timestamp when the book reader was opened (study-time tracking)
 const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { unit, page } — restore on return
 
 function saveBookSession() {
@@ -150,7 +151,7 @@ function viewBook() {
         <div class="bl-books">
           <button class="bl-book" onclick="openBookUnits()">
             <span class="bl-b-ico">🎤</span>
-            <span class="bl-b-t"><b>Glowsis Korean 1A</b><small>아이돌과 함께 배우는 초급 한국어 · 9 units</small></span>
+            <span class="bl-b-t"><b>Glowsis Korean 1A</b><small>Learn beginner Korean with your idols · 9 units</small></span>
             <span class="bl-b-arr">→</span>
           </button>
         </div>
@@ -163,6 +164,7 @@ function viewBook() {
   </div>`;
 }
 function openBookUnits() {
+  recordBookStudy();
   clearBookSession();
   const units = (window.GLOWSIS_BOOK || []).slice();
   document.getElementById('screen').innerHTML = `<div class="book-units">
@@ -182,7 +184,7 @@ function openBookUnits() {
   </div>`;
   window.scrollTo(0, 0);
 }
-function backToBookLevels() { clearBookSession(); document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); }
+function backToBookLevels() { recordBookStudy(); clearBookSession(); document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); }
 
 /* ==================== BOOK: FLIP-PAGE VIEWER ==================== */
 const GLOWSIS_UNITS = []; // filled from data below
@@ -250,8 +252,19 @@ function openUnit(uid, page) {
   const end = buildEndPage(u);
   if (end) pages.push(end);
   _book = { unit: uid, page: Math.min(page || 0, pages.length - 1), pages };
+  _bookOpenAt = Date.now();   // start tracking book study time
   saveBookSession();
   renderFlip();
+}
+/* Record book (교재) study minutes since the last openUnit — call when leaving the reader. */
+function recordBookStudy() {
+  try {
+    if (_bookOpenAt) {
+      const mins = Math.max(1, Math.round((Date.now() - _bookOpenAt) / 60000));
+      if (typeof addStudyTime === 'function') addStudyTime('book', mins);
+      _bookOpenAt = null;
+    }
+  } catch (e) { /* non-fatal */ }
 }
 function renderFlip() {
   const meta = GLOWSIS_UNITS.find(x => x.id === _book.unit);
