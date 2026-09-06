@@ -886,10 +886,12 @@ function viewLevelTest() {
 function render() {
   const s = $id('screen');
   if (!s) return;
-  // full-bleed hero: home shows the character banner behind a glass header
-  const isHome = APP.tab === 'home' && !APP.lt;
-  document.body.classList.toggle('has-hero', isHome);
-  if (isHome) {
+  // full-bleed hero: tabs with a hero banner (home scene OR tab hero clips) get
+  // the transparent glass header so every tab's header matches home.
+  const heroTabs = { home:1, book:1, daily:1, rank:1, my:1 };
+  const hasHero = (APP.tab in heroTabs) && !APP.lt;
+  document.body.classList.toggle('has-hero', hasHero);
+  if (APP.tab === 'home' && !APP.lt) {
     const pod = scenePartOfDay();
     document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
   } else {
