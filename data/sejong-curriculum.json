@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "source": "세종학당 한국어 (King Sejong Institute Korean) 2020판 교재",
+    "levels": ["intro", "1", "2", "3A", "3B", "4A", "4B", "5A", "5B", "6A", "6B"],
+    "status": "in-progress",
+    "note": "Full decomposition: each level's unit list + per-unit vocab/grammar/dialogue. TOC extracted from scanned PDFs via vision; body decomposition pending per level."
+  },
+  "intro": {
+    "units": []
+  },
+  "1": {
+    "source_pdf": "세종학당 한국어1_영어.pdf",
+    "units": [
+      {"no": 1,  "topic": "자기소개", "title": "저는 한국 사람이에요", "en": "I am Korean"},
+      {"no": 2,  "topic": "가족", "title": "회사원이 아니에요", "en": "I'm not an office worker"},
+      {"no": 3,  "topic": "일상생활", "title": "저도 드라마를 좋아합니다", "en": "I also like dramas"},
+      {"no": 4,  "topic": "학교", "title": "여기가 지훈 씨의 학교입니까?", "en": "Is this Ji-hoon's school?"},
+      {"no": 5,  "topic": "날씨", "title": "날씨가 좋지 않아요", "en": "The weather isn't good"},
+      {"no": 6,  "topic": "친구", "title": "친구한테 편지를 써요", "en": "I write a letter to my friend"},
+      {"no": 7,  "topic": "위치", "title": "지금 어디에 있어요?", "en": "Where are you now?"},
+      {"no": 8,  "topic": "일상", "title": "토요일에 친구를 만났어요", "en": "I met a friend on Saturday"},
+      {"no": 9,  "topic": "능력", "title": "저는 수영을 못해요", "en": "I can't swim"},
+      {"no": 10, "topic": "제안", "title": "같이 점심을 먹을까요?", "en": "Shall we have lunch together?"},
+      {"no": 11, "topic": "음식", "title": "떡볶이는 매워서 잘 못 먹어요", "en": "I can't eat tteokbokki well because it's spicy"},
+      {"no": 12, "topic": "쇼핑", "title": "운동화를 좀 보고 싶어요", "en": "I want to look at some sneakers"},
+      {"no": 13, "topic": "취미", "title": "케이팝(K-pop) 댄스를 출 수 있어요?", "en": "Can you dance K-pop?"},
+      {"no": 14, "topic": "여행", "title": "고향에 가기 전에 여행을 할 거예요", "en": "I will travel before going to my hometown"},
+      {"no": 15, "topic": "건강", "title": "약을 먹은 후에 푹 쉬세요", "en": "Please rest well after taking medicine"},
+      {"no": 16, "topic": "길찾기", "title": "여기에서 서울역까지 어떻게 가요?", "en": "How do I get to Seoul Station from here?"},
+      {"no": 17, "topic": "선물", "title": "집들이에 뭘 사 가야 돼요?", "en": "What should I bring to the housewarming party?"},
+      {"no": 18, "topic": "교통", "title": "길이 막히니까 공연장까지 지하철로 갑시다", "en": "There's a lot of traffic, so let's get to the concert by subway"},
+      {"no": 19, "topic": "약속", "title": "저랑 같이 사러 가요", "en": "Come buy something with me"},
+      {"no": 20, "topic": "가족", "title": "어머니께서 꽃을 좋아하세요", "en": "My mother likes flowers"}
+    ],
+    "body": {}
+  },
+  "2": {
+    "source_pdf": "세종학당 한국어 2(영어)_(low file size).pdf",
+    "units": [
+      {"no": 1,  "topic": "날씨", "title": "비가 너무 많이 오네요", "en": "It's raining a lot"},
+      {"no": 2,  "topic": "권유", "title": "동대문에 가 보세요", "en": "Go to Dongdaemun"},
+      {"no": 3,  "topic": "외모", "title": "엄마 친구는 어떻게 생겼어요?", "en": "What does mom's friend look like?"},
+      {"no": 4,  "topic": "음식", "title": "불고기를 해 먹는 게 어때요?", "en": "How about making Bulgogi?"},
+      {"no": 5,  "topic": "식당", "title": "주문할게요", "en": "I'd like to order"},
+      {"no": 6,  "topic": "휴가", "title": "휴가를 어떻게 보내기로 했어요?", "en": "How did you decide to spend your vacation?"},
+      {"no": 7,  "topic": "건강", "title": "찬 음식을 너무 많이 먹지 마세요", "en": "Don't eat too much cold food"},
+      {"no": 8,  "topic": "약속", "title": "오늘 저녁에 뭐 할래요?", "en": "What do you want to do tonight?"},
+      {"no": 9,  "topic": "습관", "title": "주말마다 산에 가요", "en": "I go to the mountains every weekend"},
+      {"no": 10, "topic": "규칙", "title": "밤 10시 이후로는 조용히 할 것", "en": "Be quiet after 10 p.m."},
+      {"no": 11, "topic": "약속", "title": "약속 장소에 가다가 돌아왔어요", "en": "I came back on my way to the meetup location"},
+      {"no": 12, "topic": "성격", "title": "사비나 씨는 어떤 사람을 좋아해요?", "en": "What kind of person do you like, Savina?"},
+      {"no": 13, "topic": "집안일", "title": "집안일을 나눠서 하는 게 어때?", "en": "Why don't we share the housework?"},
+      {"no": 14, "topic": "경험", "title": "한국에서 찜질방은 처음인데요", "en": "It's my first time going to a jjimjilbang in Korea"},
+      {"no": 15, "topic": "주문", "title": "치킨 두 마리를 주문하려고 해요", "en": "I'd like to order two chickens"},
+      {"no": 16, "topic": "쇼핑", "title": "이 원피스를 입어 봐도 돼요?", "en": "Can I try this dress on?"},
+      {"no": 17, "topic": "취미", "title": "저는 시간이 있을 때 요리해요", "en": "I cook when I have time"},
+      {"no": 18, "topic": "가족", "title": "대한 씨 딸이 태어난 지 벌써 1년이 됐어요?", "en": "Has it already been a year since Daehan's daughter's birth?"},
+      {"no": 19, "topic": "이사", "title": "저도 학교 근처로 이사할까 봐요", "en": "Maybe I should move near the school, too"},
+      {"no": 20, "topic": "약속", "title": "이번 일요일은 좀 어려울 것 같아요", "en": "I can't make it this Sunday"}
+    ],
+    "body": {}
+  },
+  "3A": {
+    "source_pdf": "세종학당 한국어 3A(영어)_(low file size).pdf",
+    "units": [
+      {"no": 1,  "topic": "약속", "title": "약속 시간에 늦으면 안 돼요", "en": "You shouldn't be late for appointments"},
+      {"no": 2,  "topic": "우연", "title": "어제 친구를 우연히 기차역에서 만났어요", "en": "I met a friend by chance at the train station yesterday"},
+      {"no": 3,  "topic": "목표", "title": "열심히 노력해야 목표를 이룰 수 있어요", "en": "You have to work hard to achieve your goals"},
+      {"no": 4,  "topic": "건강", "title": "꾸준히 운동을 하면 건강해져요", "en": "If you exercise consistently, you'll become healthy"},
+      {"no": 5,  "topic": "감정", "title": "우리 팀이 이겨서 정말 신나더라", "en": "Our team won, so I was really excited"},
+      {"no": 6,  "topic": "감상", "title": "오랜만에 영화를 보니 정말 재미있었어요", "en": "It was really fun watching a movie after a long time"},
+      {"no": 7,  "topic": "선택", "title": "여행을 가는 대신에 집에서 쉬는 것이 좋겠네요", "en": "Instead of traveling, resting at home would be good"},
+      {"no": 8,  "topic": "정보", "title": "궁금한 것은 인터넷 게시판에 댓글로 남겨 주세요", "en": "Please leave questions as comments on the internet bulletin board"},
+      {"no": 9,  "topic": "성격", "title": "제 친구는 성격이 활발해요", "en": "My friend has an outgoing personality"},
+      {"no": 10, "topic": "재능", "title": "공부면 공부, 운동이면 운동 정말 못하는 게 없는 것 같아요", "en": "He seems to be good at everything, whether it's studying or exercising"}
+    ],
+    "body": {}
+  },
+  "3B": {
+    "source_pdf": "세종학당 한국어 3B(영어)_(low file size).pdf",
+    "units": [
+      {"no": 11, "topic": "장보기", "title": "채소를 사려거든 시장에 가세요", "en": "If you're going to buy vegetables, go to the market"},
+      {"no": 12, "topic": "약속", "title": "오늘은 제가 점심을 살 테니 새로 생긴 한식당에 가요", "en": "I'll buy lunch today, so let's go to the new Korean restaurant"},
+      {"no": 13, "topic": "요리", "title": "고기를 양념에 넣고 나서 30분 기다립니다", "en": "Put the meat in the seasoning and wait 30 minutes"},
+      {"no": 14, "topic": "휴가", "title": "휴가철이 다 되어 가는데 휴가 계획은 세웠어요?", "en": "Vacation season is almost here; did you make vacation plans?"},
+      {"no": 15, "topic": "여행", "title": "여행을 가려고 인터넷에서 숙소를 찾는 중이에요", "en": "I'm looking for accommodation on the internet to go on a trip"},
+      {"no": 16, "topic": "여행", "title": "여행 가방을 잃어버리지 않도록 가방에 이름표를 달았어요", "en": "I put name tags on my bags so I don't lose them during the trip"},
+      {"no": 17, "topic": "패션", "title": "흰색 셔츠가 청바지와 잘 어울려요", "en": "The white shirt goes well with jeans"},
+      {"no": 18, "topic": "구매", "title": "중고 소파를 사려다가 새 제품을 샀어요", "en": "I was going to buy a used sofa but ended up buying a new one"},
+      {"no": 19, "topic": "예절", "title": "한국 예절에 대하여 조언해 주세요", "en": "Please give me advice about Korean etiquette"},
+      {"no": 20, "topic": "회의", "title": "내일 회의 준비는 다 됐어요?", "en": "Are tomorrow's meeting preparations done?"}
+    ],
+    "body": {}
+  },
+  "4A": {"units": [], "body": {}},
+  "4B": {"units": [], "body": {}},
+  "5A": {"units": [], "body": {}},
+  "5B": {"units": [], "body": {}},
+  "6A": {"units": [], "body": {}},
+  "6B": {"units": [], "body": {}}
+}
