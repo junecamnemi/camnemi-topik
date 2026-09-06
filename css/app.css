@@ -1392,3 +1392,30 @@ select { font-family: var(--ios-font); }
 /* IBT / All schedule headings — explicit label color that works in both themes */
 .sched-ibt-title { font-size: 13px; color: var(--ios-blue); }
 .sched-ibt-card { color: var(--ios-label); }
+
+/* ---------- Daily setup screen ---------- */
+.daily-setup { display: flex; gap: 16px; align-items: center; padding: 16px 18px; }
+.ds-level { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.ds-lvl {
+  font-size: 30px; font-weight: 800; color: #fff;
+  width: 62px; height: 62px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--ios-blue), var(--ios-pink));
+  box-shadow: 0 6px 16px rgba(139,124,246,.3);
+}
+.ds-grade { font-size: 11px; font-weight: 700; color: var(--ios-secondary-label); }
+.ds-lvlabel { font-size: 10px; font-weight: 700; color: var(--ios-secondary-label); margin-top: 2px; }
+.ds-weak { flex: 1; min-width: 0; }
+.ds-weak .lw-weak-label { font-size: 12.5px; font-weight: 800; color: var(--ios-label); margin-bottom: 8px; }
+.daily-secs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.daily-sec {
+  display: flex; align-items: center; gap: 8px; justify-content: flex-start;
+  border: 1.5px solid var(--ios-separator); border-radius: 14px;
+  background: var(--ios-card); color: var(--ios-label);
+  padding: 14px 16px; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: transform .12s, border-color .15s, box-shadow .2s;
+}
+.daily-sec.on { border-color: var(--sc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sc) 22%, transparent); color: var(--sc); }
+.daily-sec:active { transform: scale(.97); }
+.ds-start { width: 100%; margin-top: 16px; padding: 15px; font-size: 16px; font-weight: 800; border-radius: 14px; }
+.btn-danger { background: var(--ios-red); color: #fff; border: none; border-radius: 12px; padding: 10px 14px; font-weight: 800; font-size: 13px; cursor: pointer; }

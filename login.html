@@ -83,7 +83,7 @@
     if (!r.ok) { showEmailErr(r.msg || 'Login failed.'); return; }
     const ok = document.getElementById('email-ok');
     ok.textContent = '✓ Logged in! Taking you to your dashboard…'; ok.style.display = 'block';
-    setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 900);
+    setTimeout(() => { window.location.href = 'app.html?welcome=1'; }, 900);
   }
   async function doEmailSignup() {
     hideEmailErr();
@@ -97,7 +97,7 @@
       ok.textContent = '✓ Check your email for a confirmation link, then log in.'; ok.style.display = 'block';
     } else {
       ok.textContent = '✓ Account created! Taking you in…'; ok.style.display = 'block';
-      setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 900);
+      setTimeout(() => { window.location.href = 'app.html?welcome=1'; }, 900);
     }
   }
   // OAuth callback handling: after Google/Facebook redirect, store session & go home.
@@ -113,7 +113,7 @@
       const s = getSession();
       if (s) {
         st.innerHTML = '<div class="welcome-banner">✓ You are logged in. Redirecting…</div>';
-        setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 900);
+        setTimeout(() => { window.location.href = 'app.html?welcome=1'; }, 900);
       } else if (qs('welcome') === '1') {
         st.innerHTML = '<div class="welcome-banner">✓ Account created! You are logged in.</div>';
       }

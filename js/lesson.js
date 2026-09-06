@@ -67,7 +67,7 @@ function renderLessonPage() {
       ${next ? `<a class="btn btn-primary" href="lesson.html?book=${bookId}&lesson=${next.id}">${next.title} →</a>` : '<span></span>'}
     </div>`;
 
-  host.innerHTML = lessonPlanHTML() + grammarHTML + vocabHTML + sectionsHTML + `
+  host.innerHTML = lessonPlanHTML() + grammarHTML + vocabHTML + sectionsHTML() + `
     <div class="callout" style="margin-top:28px;">
       <b>Study in Korea?</b> Camnemi helps Cambodian students apply to Korean universities. Getting your level right is step one —
       <a href="contact.html?level=${bookId}">book a free consultation</a> and we'll map your TOPIK level to real universities.
@@ -182,6 +182,18 @@ function lessonPlanHTML() {
 /* Simple text-to-speech for Korean examples (uses Web Speech API; works in Chrome/Edge). */
 function speak(text) {
   if (!('speechSynthesis' in window)) { toast('Your browser does not support speech.'); return; }
+  // Preferred: Nous OpenAI TTS (nova) at same origin; fall back to Web Speech.
+  const base = window.CAMNEMI_AI_BASE || (location.protocol.startsWith('http') ? '/api' : 'http://127.0.0.1:9001/api');
+  if (window.fetch) {
+    fetch(base + '/tts?voice=coral&text=' + encodeURIComponent(text)).then(r => r.ok ? r.blob() : Promise.reject())
+      .then(blob => { const a = new Audio(URL.createObjectURL(blob)); a.play().catch(()=>{}); })
+      .catch(() => speechFallback(text));
+    return;
+  }
+  speechFallback(text);
+}
+function speechFallback(text) {
+  if (window.camVoice) { window.camVoice.speak(text, 'ko-KR'); return; }
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'ko-KR';
   u.rate = 0.85;

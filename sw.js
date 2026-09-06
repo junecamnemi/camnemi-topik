@@ -3,7 +3,6 @@ const CACHE = 'camnemi-topik-v3';
 const ASSETS = [
   './',
   './app.html',
-  './index.html',
   './login.html',
   './manifest.json',
   './css/style.css',

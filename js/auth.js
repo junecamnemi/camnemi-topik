@@ -117,7 +117,7 @@ async function handleAuthCallback() {
   const { data: { session }, error } = await _sb.auth.getSession();
   if (error) console.warn('Callback error:', error.message);
   // Supabase stores the session in localStorage automatically; just head home.
-  setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 600);
+  setTimeout(() => { window.location.href = 'app.html?welcome=1'; }, 600);
 }
 
 /* ---------- navbar user chip ---------- */

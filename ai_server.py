@@ -375,20 +375,27 @@ def _nous_api_key():
     return api_key
 
 @app.get("/api/tts")
-async def tts(text: str = "", voice: str = "alloy"):
+async def tts(text: str = "", voice: str = "coral", instructions: str = ""):
     if not text.strip():
         return Response("missing text", status_code=400)
     text = text.strip()
-    key = hashlib.md5((voice + "|" + text).encode("utf-8")).hexdigest()
+    key = hashlib.md5((voice + "|" + (instructions or "") + "|" + text).encode("utf-8")).hexdigest()
     path = os.path.join(TTS_CACHE, key + ".mp3")
     if os.path.exists(path):
         return Response(open(path, "rb").read(), media_type="audio/mpeg")
     try:
         import httpx
+        # Default to a bright, youthful, friendly K-pop-idol teaching voice unless overridden.
+        instr = instructions or (
+            "Speak Korean like a bright, cheerful teenage girl K-pop idol (high-school age). "
+            "Sound warm, lively, friendly and encouraging, as if teaching a young friend Korean. "
+            "Use a light, clear, upbeat tone with natural kid-friendly energy; never flat or robotic."
+        )
         r = httpx.post(
             "https://openai-audio-gateway.nousresearch.com/v1/audio/speech",
             headers={"Authorization": "Bearer " + (_nous_api_key() or "dummy")},
-            json={"model": "gpt-4o-mini-tts", "voice": voice, "input": text[:1200]},
+            json={"model": "gpt-4o-mini-tts", "voice": voice, "input": text[:1200],
+                  "instructions": instr},
             timeout=60,
         )
         if r.status_code == 200 and r.content:

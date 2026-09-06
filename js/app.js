@@ -420,7 +420,8 @@ const ICONS = {
   pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/>',
   edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/>',
-  bookmark: '<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>'
+  bookmark: '<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+  shield: '<path d="M12 2l7 3v6c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V5z"/><path d="M9 12l2 2 4-4"/>'
 };
 function ic(name, size = 24) {
   const body = ICONS[name] || '';
@@ -1499,39 +1500,54 @@ function streakCardHTML() {
 function buildDaily() {
   const today = todayStr();
   const saved = lsGet(LS.daily, {})[today];
-  if (saved && saved.questions) {
+  const sec = APP.dailySec;  // 'reading' | 'listening' | 'vocab' | 'mock'
+  // mock → launch the mock test list
+  if (sec === 'mock') { APP.dailyStarted = false; go('mock'); return; }
+  if (saved && saved.questions && !sec) {
     // AI-generated set: full question objects stored
     APP.daily = saved.questions;
     APP.dailyAnswers = saved.done || {};
     APP.aiMode = true;
-  } else if (saved && saved.qids) {
+  } else if (saved && saved.qids && !sec) {
     APP.daily = saved.qids.map(qById).filter(Boolean);
     APP.dailyAnswers = saved.done || {};
     APP.aiMode = false;
   } else {
-    // AI-style daily set: pick 10 by level, balanced sections
-    const pool = allQuestions().filter(q => levelOf(q) === APP.level);
-    const secs = ['reading','listening','writing'];
-    const picked = [];
-    secs.forEach(sec => {
+    // build a set for the chosen section (default: balanced mix)
+    let pool = allQuestions().filter(q => levelOf(q) === APP.level);
+    let picked = [];
+    if (sec === 'vocab') {
+      pool = pool.filter(q => q.type === 'vocab' || q.section === 'reading');
+      const chosen = pool.filter(q => q.type === 'vocab');
+      picked = (chosen.length ? chosen : pool).slice(0, 10).map(q => q.id);
+    } else if (sec && sec !== 'reading') {
+      const want = Math.min(10, Math.max(3, Math.ceil(pool.filter(q => q.section === sec).length / 2)));
       const inSec = pool.filter(q => q.section === sec);
-      const want = sec === 'writing' ? 2 : 4;
-      for (let i = 0; i < want && inSec.length; i++) {
-        const q = inSec[i % inSec.length];
-        if (!picked.includes(q.id)) picked.push(q.id);
-      }
-    });
-    pool.forEach(q => { if (picked.length < 10 && !picked.includes(q.id)) picked.push(q.id); });
+      for (let i = 0; i < want && inSec.length; i++) picked.push(inSec[i % inSec.length].id);
+      pool.forEach(q => { if (picked.length < 10 && !picked.includes(q.id)) picked.push(q.id); });
+    } else {
+      const secs = ['reading','listening','writing'];
+      secs.forEach(s2 => {
+        const inSec = pool.filter(q => q.section === s2);
+        const want = s2 === 'writing' ? 2 : 4;
+        for (let i = 0; i < want && inSec.length; i++) {
+          const q = inSec[i % inSec.length];
+          if (!picked.includes(q.id)) picked.push(q.id);
+        }
+      });
+      pool.forEach(q => { if (picked.length < 10 && !picked.includes(q.id)) picked.push(q.id); });
+    }
     APP.daily = picked.map(qById).filter(Boolean);
     APP.dailyAnswers = {};
     APP.aiMode = false;
     const all = lsGet(LS.daily, {});
-    all[today] = { qids: picked, done: {} };
+    all[today] = { qids: picked, done: {}, sec: sec || 'all' };
     lsSet(LS.daily, all);
   }
 }
 function viewDaily() {
-  buildDaily();
+  // Setup screen (not started): show level + section selector + weakness + Start
+  if (!APP.dailyStarted) return viewDailySetup();
   if (APP.dailyDone) return viewDailyResult();
   const today = todayStr();
   const saved = lsGet(LS.daily, {})[today] || {};
@@ -1579,19 +1595,71 @@ function viewDaily() {
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
           </button>`;
         }).join('')}
-      <div class="q-explain" id="daily-ex">
+      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-ghost btn-sm q-ex-toggle" style="flex:1;color:${picked === q.correct ? 'var(--ios-purple)' : 'var(--ios-secondary-label)'};background:${picked === q.correct ? 'transparent' : 'var(--ios-fill)'};opacity:${picked === q.correct ? '1' : '.6'};" onclick="${picked === q.correct ? 'toggleExplain(this)' : ''}" ${picked === q.correct ? '' : 'disabled'}>💬 ${LANG==='ko'?'해설':'Explanation'}</button>
+        ${q.tip || q.tipEn ? `<button class="btn btn-ghost btn-sm q-tip-toggle" style="flex:1;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>` : ''}
+      </div>
+      <div class="q-explain" id="daily-ex" style="display:none;">
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
-      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <button class="btn btn-ghost btn-sm q-tip-toggle" style="width:100%;margin-top:8px;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
-      ${relatedBlock(q)}
-      ${!isAI ? `<button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-green);" onclick="generateAI()">${ic('spark',14)} ${t('gen_ai')}</button>` : ''}
+      <button class="btn btn-ghost btn-sm" disabled style="width:100%;margin-top:8px;opacity:.85;color:var(--ios-secondary-label);background:var(--ios-fill);border-radius:10px;font-size:11.5px;font-weight:700;cursor:default;padding:9px;" title="${LANG==='ko'?'이 문제는 정부 시스템 검증을 통과했습니다':'Verified by the Korea Government System'}">${ic('shield',13)} ${LANG==='ko'?'정부 검증 완료 · Generated AI':'Generated AI and Verified by Korea Government System'}</button>
     </div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-ghost" ${APP.dailyIdx === 0 ? 'disabled style="opacity:.4"' : ''} onclick="navDaily(-1)">${t('prev')}</button>
       <button class="btn btn-primary" style="flex:1;" onclick="navDaily(1)">${APP.dailyIdx >= qs.length - 1 ? t('finish') : t('next')}</button>
+      <button class="btn btn-danger" style="flex-shrink:0;" onclick="stopDaily()">${LANG==='ko'?'중지':'Stop'}</button>
     </div>
   `;
+}
+function viewDailySetup() {
+  const acc = accuracyStats();
+  const myLv = myLevel();
+  const lvGrade = myLv <= 2 ? (LANG === 'ko' ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner')
+            : myLv <= 4 ? (LANG === 'ko' ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate')
+            : (LANG === 'ko' ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
+  // weakness from accuracy (lowest type with >=2 attempts)
+  const weak = (acc.byType || []).filter(r => r.n >= 2).sort((a, b) => a.p - b.p)[0];
+  const weakHTML = weak
+    ? `<div class="lw-row"><span class="lw-name">${esc(typeLabel(weak.k))}</span><span class="lw-bar"><span style="width:${weak.p}%;"></span></span><span class="lw-pct">${weak.p}%</span></div>`
+    : `<p class="sub" style="margin-top:6px;">${LANG==='ko'?'문제를 풀면 약점이 표시돼요':'Solve questions to reveal your weak spot'}</p>`;
+  const sections = [
+    { k: 'reading', ico: 'learn', col: 'var(--ios-blue)',   label: t('nav_reading') },
+    { k: 'listening',ico: 'listen', col: 'var(--ios-teal)',  label: t('nav_listening') },
+    { k: 'vocab',   ico: 'notes',  col: 'var(--ios-orange)', label: t('home_task_vocab') },
+    { k: 'mock',    ico: 'mock',   col: 'var(--ios-pink)',   label: t('home_task_mock') }
+  ];
+  const secBtns = sections.map(s => `
+    <button class="daily-sec ${APP.dailySec === s.k ? 'on' : ''}" style="--sc:${s.col};" onclick="setDailySec('${s.k}')">
+      ${ic(s.ico,20)}<b>${s.label}</b>
+    </button>`).join('');
+  return `
+    <div class="app-card daily-setup">
+      <div class="ds-level">
+        <div class="ds-lvl" style="--lvl:${myLv}">L${myLv}</div>
+        <div class="ds-grade">${lvGrade}</div>
+        <span class="ds-lvlabel">${LANG==='ko'?'나의 레벨':'My Level'}</span>
+      </div>
+      <div class="ds-weak">
+        <div class="lw-weak-label">🎯 ${LANG==='ko'?'나의 약점':'Weak spot'}</div>
+        ${weakHTML}
+      </div>
+    </div>
+    <div class="sec-h"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
+    <div class="daily-secs">${secBtns}</div>
+    <button class="btn btn-primary ds-start" onclick="startDaily()">${ic('daily',18)} ${LANG==='ko'?'시작':'Start'}</button>
+  `;
+}
+function setDailySec(k) { APP.dailySec = k; render(); }
+function startDaily() {
+  APP.dailyStarted = true;
+  buildDaily();
+  render();
+}
+function stopDaily() {
+  APP.dailyStarted = false;
+  APP.daily = []; APP.dailyIdx = 0; APP.dailyAnswers = {}; APP.dailyDone = false; APP.dailyResult = null;
+  render();
 }
 /* ---------- AI question generation (streaming: 1st question fast, rest in background) ---------- */
 async function generateAI(optType) {
@@ -1926,11 +1994,14 @@ function viewSectionCard() {
             <span style="font-weight:700;">${'①②③④'[i]}</span> ${esc(o.t)}${o.gl ? `<span class="opt-gloss"> · ${esc(o.gl)}</span>` : ''}
           </button>`;
         }).join('')}
-      <div class="q-explain" id="daily-ex">
+      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-ghost btn-sm q-ex-toggle" style="flex:1;color:${picked === q.correct ? 'var(--ios-purple)' : 'var(--ios-secondary-label)'};background:${picked === q.correct ? 'transparent' : 'var(--ios-fill)'};opacity:${picked === q.correct ? '1' : '.6'};" onclick="${picked === q.correct ? 'toggleExplain(this)' : ''}" ${picked === q.correct ? '' : 'disabled'}>💬 ${LANG==='ko'?'해설':'Explanation'}</button>
+        ${q.tip || q.tipEn ? `<button class="btn btn-ghost btn-sm q-tip-toggle" style="flex:1;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>` : ''}
+      </div>
+      <div class="q-explain" id="daily-ex" style="display:none;">
         ${picked !== undefined ? explainBlock(q) : ''}
       </div>
-      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <button class="btn btn-ghost btn-sm q-tip-toggle" style="width:100%;margin-top:8px;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',14)} ${t('tip')}</button>
       ${relatedBlock(q)}
     </div>
     <div style="display:flex;gap:8px;">
@@ -2400,6 +2471,16 @@ function toggleTip(btn) {
   if (!card) return;
   const on = card.classList.toggle('tip-on');
   btn.innerHTML = (on ? ic('tip', 15) + ' ' + t('tip_hide') : ic('tip', 15) + ' ' + t('tip'));
+}
+/* Toggle the full explanation (해설) block independently from TIP */
+function toggleExplain(btn) {
+  const card = btn.closest('.app-card');
+  if (!card) return;
+  const ex = card.querySelector('.q-explain');
+  if (!ex) return;
+  const on = ex.style.display !== 'none';
+  ex.style.display = on ? 'none' : 'block';
+  btn.innerHTML = (on ? '💬 ' + (LANG==='ko'?'해설':'Explanation') : '💬 ' + (LANG==='ko'?'해설 닫기':'Hide explanation'));
 }
 
 /* ---------- Passage language toggle (지문 ↔ English) ---------- */

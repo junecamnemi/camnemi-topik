@@ -238,12 +238,37 @@
 /* practice page — worksheet look */
 .bk-practice .bk-body { display:flex; flex-direction:column; gap:14px; }
 .bk-practice .practice {
-  background:#fff; border:1.5px dashed #cfc6e8; border-radius:14px; padding:14px;
+  background:#fff; border:1.5px solid #d9d0ec; border-radius:16px; padding:16px 16px 14px;
+  box-shadow:0 4px 14px rgba(91,63,212,.06);
 }
-.bk-practice .p-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.bk-practice .p-badge { background:#ffcf6b; color:#7a5200; font-weight:800; font-size:10px; padding:2px 8px; border-radius:6px; }
+.bk-practice .p-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.bk-practice .p-badge { background:#ffcf6b; color:#7a5200; font-weight:800; font-size:10px; padding:3px 9px; border-radius:6px; letter-spacing:.3px; }
 .bk-practice .p-title { font-size:13px; font-weight:800; color:#2b2547; }
-.bk-practice .opts { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+/* The question/prompt is the star — big and bold */
+.bk-practice .p-dir { font-size:19px; font-weight:800; color:#1e1b2e; line-height:1.45; margin:0 0 6px; }
+.bk-practice .p-q { font-size:16px; font-weight:700; color:#4a3f6e; margin-bottom:8px; }
+.bk-practice .p-passage { font-size:15px; font-weight:600; color:#3a2e63; line-height:1.5; margin-bottom:6px; }
+.bk-practice .p-audio { font-size:15px; font-weight:800; }
+.bk-practice .opts { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.bk-practice .opt {
+  display:flex; align-items:center; gap:10px; text-align:left; width:100%;
+  background:#faf8ff; border:1.5px solid #e6dff6; border-radius:12px; padding:11px 12px;
+  font-size:17px; font-weight:700; color:#2b2547; cursor:pointer; font-family:inherit;
+  transition:transform .12s, box-shadow .12s, border-color .12s;
+}
+.bk-practice .opt:hover { border-color:#a78bfa; box-shadow:0 3px 10px rgba(139,92,246,.12); transform:translateY(-1px); }
+.bk-practice .o-idx {
+  flex:0 0 auto; width:26px; height:26px; border-radius:8px; background:#e8e0fb; color:#6d4ef0;
+  font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center;
+}
+.bk-practice .opt.correct { border-color:#34d399; background:#ecfdf5; }
+.bk-practice .opt.wrong { border-color:#fb7185; background:#fff1f2; }
+.bk-practice .o-gl { font-size:13px; font-weight:600; color:#8a83a6; }
+.bk-practice .p-feedback { margin-top:8px; font-size:15px; font-weight:700; }
+.bk-practice .p-feedback.ok { color:#059669; }
+.bk-practice .p-feedback.no { color:#e11d48; }
+.bk-practice .pt-note .pt-note-head { font-size:12px; }
+.bk-practice .pt-note .pt-note-body { font-size:14px; }
 
 /* culture page */
 .bk-culture .culture { background:#fff7ef; border:1px solid #f4e2cd; border-radius:18px; padding:18px; }

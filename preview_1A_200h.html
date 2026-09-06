@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1A · 200시간 전체 보기 — Camnemi TOPIK</title>
+<meta name="description" content="Preview of the full 200-hour Camnemi TOPIK 1A curriculum (8 lessons x 25h) in one scrollable page.">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body{background:#f4f2ee;}
+  .preview-head{background:linear-gradient(135deg,#0f2a6b,#1c3f9e);color:#fff;padding:26px 0;}
+  .preview-head .container{display:flex;flex-direction:column;gap:8px;}
+  .eyebrow{color:#ffd66e;letter-spacing:.12em;font-size:12px;font-weight:700;}
+  .toc{background:#fff;border-bottom:1px solid var(--border,#e2dfd8);position:sticky;top:0;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.04);}
+  .toc .container{display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px;}
+  .toc a{font-size:13px;padding:5px 11px;border:1px solid var(--border,#e2dfd8);border-radius:20px;text-decoration:none;color:#333;white-space:nowrap;}
+  .toc a:hover{background:#eef3ff;border-color:#1c3f9e;color:#1c3f9e;}
+  .lesson-block{margin:34px auto;max-width:960px;padding:0 16px;}
+  .lesson-card{background:#fff;border:1px solid var(--border,#e2dfd8);border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.05);}
+  .lesson-card-head{display:flex;align-items:center;gap:16px;padding:20px 24px;background:linear-gradient(90deg,#f7f9ff,#fff);border-bottom:2px solid #eef1f8;}
+  .lesson-card-head .no{background:#1c3f9e;color:#fff;font-weight:800;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .lesson-card-head h2{margin:0;font-size:22px;color:#12203f;}
+  .lesson-card-head .theme{color:var(--muted,#7a766e);font-size:13.5px;margin-top:2px;}
+  .lesson-card .inner{padding:6px 24px 24px;}
+  .hr{height:1px;background:var(--border,#e2dfd8);margin:0;}
+  .audio-btn{cursor:pointer;background:none;border:none;font-size:14px;vertical-align:middle;}
+</style>
+</head>
+<body>
+
+<div class="preview-head">
+  <div class="container">
+    <span class="eyebrow">Preview · ការមើលជាមុន · 200시간 전체</span>
+    <h1 style="margin:0;font-size:26px;">서울대 한국어 1A — 200시간 커리큘럼</h1>
+    <p style="margin:0;opacity:.85;font-size:14px;">TOPIK 1 · Beginner · CEFR A1 — 8 lessons × 25h = ~200 hours. 전 13개 섹션을 한 페이지로 표시합니다.</p>
+  </div>
+</div>
+
+<div class="toc">
+  <div class="container" id="toc"></div>
+</div>
+
+<div id="all"></div>
+
+<div style="text-align:center;padding:26px;color:var(--muted,#7a766e);font-size:13px;">
+  Camnemi TOPIK — 1A full 200-hour content preview · 렌더러 재사용(lesson.js) 기반
+</div>
+
+<script src="data/lessons.js?v=200h-1"></script>
+<script src="js/common.js"></script>
+<script src="js/lesson.js"></script>
+<script>
+/* ---- Override qs() so the shared builder functions render a chosen lesson ---- */
+var CURRENT = { book: '1a', lesson: '1a-01' };
+window.qs = function (name) {
+  if (name === 'book') return CURRENT.book;
+  if (name === 'lesson') return CURRENT.lesson;
+  return null;
+};
+
+/* ---- Grammar + vocab card markup reproduced exactly like lesson.js ---- */
+function grammarHTMLFor(lesson) {
+  return lesson.grammar.map(function (g) {
+    var ex = (g.examples || []).map(function (ex) {
+      return '<li><div class="ko">' + ex.ko + ' <button class="audio-btn" onclick="speak(\'' +
+        ex.ko.replace(/'/g, "\\'") + '\')">🔊</button></div>' +
+        '<div class="rom">' + ex.rom + '</div>' +
+        '<div class="gl">' + ex.gl + ' · <span style="color:var(--teal);font-weight:600;">' + (ex.kh || '') + '</span></div></li>';
+    }).join('');
+    return '<div class="grammar-card">' +
+      '<div class="gp"><span class="kr">' + g.point + '</span> <span style="font-size:14px;color:var(--muted);font-weight:600;">· ' + g.name + '</span></div>' +
+      '<div class="glabel">Rule · ក្បួន</div>' +
+      '<div class="grule">' + g.rule + '</div>' +
+      '<div class="glabel">Examples · ឧទាហរណ៍</div>' +
+      '<ul class="examples">' + ex + '</ul></div>';
+  }).join('');
+}
+function vocabHTMLFor(lesson) {
+  if (!lesson.vocab || !lesson.vocab.length) return '';
+  var items = lesson.vocab.map(function (v) {
+    return '<div class="vocab-item">' +
+      '<span><span class="ko">' + v.ko + '</span> <span style="color:var(--muted);font-size:12.5px;">' + v.rom + '</span></span>' +
+      '<span><span class="en">' + v.gl + '</span> <span style="color:var(--teal);font-weight:600;">' + (v.kh || '') + '</span></span></div>';
+  }).join('');
+  return '<div class="card" style="margin-top:24px;"><h3>Vocabulary · វាក្យសព្ទ</h3>' +
+    '<div class="vocab-grid" style="margin-top:12px;">' + items + '</div></div>';
+}
+
+/* ---- Build the whole 1A book ---- */
+(function () {
+  var book = window.LESSONS['1a'];
+  var toc = document.getElementById('toc');
+  var all = document.getElementById('all');
+  var out = '';
+  book.lessons.forEach(function (L) {
+    CURRENT.lesson = L.id;
+    var idx = L.id.split('-')[1];
+    out +=
+      '<section class="lesson-block" id="' + L.id + '">' +
+        '<div class="lesson-card">' +
+          '<div class="lesson-card-head">' +
+            '<div class="no">' + idx + '</div>' +
+            '<div><h2><span class="kr">' + L.title + '</span></h2>' +
+            '<div class="theme">' + (L.theme || '') + ' · grammar ' + L.grammar.length + ' · vocab ' + (L.vocab||[]).length + '</div></div>' +
+          '</div>' +
+          '<div class="inner">' +
+            lessonPlanHTML() +
+            '<div class="hr"></div>' +
+            grammarHTMLFor(L) +
+            vocabHTMLFor(L) +
+            sectionsHTML() +
+          '</div>' +
+        '</div>' +
+      '</section>';
+    toc.insertAdjacentHTML('beforeend', '<a href="#' + L.id + '">' + idx + ' · ' + L.title.replace(/&/g,'&amp;') + '</a>');
+  });
+  all.innerHTML = out;
+})();
+</script>
+</body>
+</html>

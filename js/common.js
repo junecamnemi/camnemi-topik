@@ -77,7 +77,7 @@ function qs(name) { return new URLSearchParams(location.search).get(name); }
 
 /* ---------- Nav + footer ---------- */
 const NAV = [
-  { href: 'index.html', label: 'Home' },
+  { href: 'app.html', label: 'Home' },
   { href: 'curriculum.html', label: 'Curriculum' },
   { href: 'practice.html', label: 'Practice Library' },
   { href: 'topik-practice.html', label: 'Practice App', cls: 'app' },
@@ -90,7 +90,7 @@ const NAV = [
 function renderNav() {
   const host = document.getElementById('nav');
   if (!host) return;
-  const here = (location.pathname.split('/').pop() || 'index.html');
+  const here = (location.pathname.split('/').pop() || 'app.html');
   const links = NAV.map(n => {
     const active = n.href === here ? ' class="active"' : '';
     return `<a href="${n.href}"${active}${n.cls ? ` data-${n.cls}="1"` : ''}>${n.label}</a>`;
@@ -98,7 +98,7 @@ function renderNav() {
   host.innerHTML = `
     <div class="nav">
       <div class="container nav-inner">
-        <a class="brand" href="index.html">
+        <a class="brand" href="app.html">
           <span class="logo">C</span>
           <span>Camnemi TOPIK<br><small>한국어능력시험 준비</small></span>
         </a>
