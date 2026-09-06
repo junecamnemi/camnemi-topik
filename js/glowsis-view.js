@@ -133,7 +133,8 @@ function restoreBookSession() {
 function viewBook() {
   describeUnits();
   const ready = GLOWSIS_LEVELS[0];
-  return `<div class="book-home">
+  const hero = (typeof tabHeroHTML === 'function') ? tabHeroHTML('book') : '';
+  return `${hero}<div class="book-home">
     <div class="book-hero">
       <div class="book-hero-txt">
         <h2>TOPIK Levels 1–6</h2>

@@ -1584,3 +1584,12 @@ select { font-family: var(--ios-font); }
 .ar-ov-dots span:nth-child(2){ animation-delay:.16s; background:#f472b6; }
 .ar-ov-dots span:nth-child(3){ animation-delay:.32s; background:#22d3ee; }
 @keyframes arDot { 0%,60%,100%{ transform:translateY(0); opacity:.5;} 30%{ transform:translateY(-7px); opacity:1;} }
+
+/* ---------- Tab hero: looping idol clip atop each tab screen ---------- */
+.tab-hero { position: relative; overflow: hidden; border-radius: 18px; margin: 2px 0 14px; }
+.tab-hero video { display: block; width: 100%; height: 190px; object-fit: cover; object-position: center 22%; }
+.tab-hero::after { content:''; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(180deg, rgba(18,12,42,.20), rgba(18,12,42,0) 40%, rgba(18,12,42,.25)); }
+.tab-hero .tab-hero-cap { position:absolute; left:14px; bottom:10px; z-index:2;
+  font-size:12px; font-weight:800; color:#fff; letter-spacing:1px;
+  text-shadow:0 1px 6px rgba(0,0,0,.5); text-transform:uppercase; }

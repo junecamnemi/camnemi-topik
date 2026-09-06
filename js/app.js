@@ -930,6 +930,25 @@ function render() {
 }
 
 /* ================= HOME ================= */
+function tabHeroHTML(tab) {
+  // map tab -> looping idol clip + caption
+  const cfg = {
+    book:   { v: 'assets/home_bg/tabs/aran_book_sing.mp4',        cap: 'Book · Sing with Aran' },
+    daily:  { v: 'assets/home_bg/tabs/aran_test_ending.mp4',      cap: 'TOPIK Test · Ending pose' },
+    rank:   { v: 'assets/home_bg/tabs/aran_rank_fight.mp4',       cap: 'Rank · Fighting!' },
+    my:     { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'My · Music time' },
+    mock:   { v: 'assets/home_bg/tabs/aran_test_ending.mp4',      cap: 'Mock · Ending pose' },
+    wrong:  { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'Notes · Music time' },
+    learn:  { v: 'assets/home_bg/tabs/aran_settings_music.mp4',   cap: 'Learn · Music time' },
+    reading:{ v: 'assets/home_bg/tabs/aran_book_sing.mp4',        cap: 'Reading · Sing with Aran' },
+    listening:{ v:'assets/home_bg/tabs/aran_settings_music.mp4',  cap: 'Listening · Music time' }
+  };
+  const c = cfg[tab];
+  if (!c) return '';
+  return `<div class="tab-hero" aria-hidden="true"><video autoplay muted loop playsinline preload="metadata">
+    <source src="${c.v}" type="video/mp4"></video><span class="tab-hero-cap">${c.cap}</span></div>`;
+}
+
 function viewHome() {
   const prog = lsGet(LS.progress, {});
   const answered = Object.keys(prog).length;
@@ -943,7 +962,7 @@ function viewHome() {
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
       <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="assets/home_bg/glowsis_ending_aran.mp4" type="video/mp4">
+        <source src="assets/home_bg/tabs/aran_home_hi.mp4" type="video/mp4">
       </video>
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
@@ -1715,7 +1734,7 @@ function viewDailySetup() {
     <button class="daily-sec ${APP.dailySec === s.k ? 'on' : ''}" style="--sc:${s.col};" onclick="setDailySec('${s.k}')">
       ${ic(s.ico,20)}<b>${s.label}</b>
     </button>`).join('');
-  return `
+  return `${tabHeroHTML('daily')}
     <div class="app-card daily-setup">
       <div class="ds-level">
         <div class="ds-lvl" style="--lvl:${myLv}">L${myLv}</div>
@@ -2282,7 +2301,7 @@ function viewMy() {
       </div>
       ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
     </div>`;
-  return `
+  return `${tabHeroHTML('my')}
     <div class="sec-h"><h2>${t('menu_account')}</h2></div>
     <div class="app-card" style="padding:14px 16px;">${head}${stats}</div>
     ${rows}
@@ -3433,7 +3452,7 @@ function rankMeCardHTML() {
     </div>`;
 }
 function viewRank() {
-  return `
+  return `${tabHeroHTML('rank')}
     <div class="sec-h"><h2>${ic('trophy',16)} ${t('rank_title')}</h2><span class="sub">${t('rank_sub')}</span></div>
     <div class="rk-chips">
       <button class="rk-chip ${_rankSort === 'acc' ? 'on' : ''}" data-m="acc" onclick="setRankSort('acc')">${t('rank_acc')}</button>
