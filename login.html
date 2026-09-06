@@ -22,8 +22,9 @@
   .auth-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
     padding:36px 20px max(28px, env(safe-area-inset-bottom)); box-sizing:border-box; position:relative; }
 
-  /* Whole-screen hero title */
-  .hero-title { text-align:center; color:#fff; margin-bottom:26px; max-width:600px; }
+  /* Whole-screen hero title — pinned to the top so the idol art stays visible */
+  .hero-title { position:fixed; top:0; left:0; right:0; z-index:5; text-align:center; color:#fff;
+    padding:max(34px, env(safe-area-inset-top)) 20px 20px; max-width:none; pointer-events:none; }
   .hero-title .eyebrow { font-size:11.5px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:#e9d5ff; opacity:.95; margin-bottom:12px; }
   .hero-title h1 { font-size:clamp(26px, 5.2vw, 46px); font-weight:900; letter-spacing:-1px; line-height:1.12; margin:0;
     background:linear-gradient(135deg,#fff 10%,#e9d5ff 45%,#f9a8d4 90%); -webkit-background-clip:text; background-clip:text;
@@ -79,7 +80,7 @@
 
   @media (max-width:480px) {
     .auth-wrap { padding:26px 18px max(24px, env(safe-area-inset-bottom)); justify-content:flex-end; }
-    .hero-title { margin-bottom:20px; }
+    .hero-title { padding:max(26px, env(safe-area-inset-top)) 16px 16px; }
     .hero-title h1 { font-size:28px; }
     .auth-card { padding:20px 18px 18px; border-radius:20px; }
   }
