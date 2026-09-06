@@ -945,12 +945,29 @@ function heroCharVideo() {
     }[id] || 'assets/home_bg/chars/group.mp4';
   } catch (e) { return 'assets/home_bg/tabs/aran_home_hi.mp4'; }
 }
+/* per-tab hero clip: each tab shows its OWN looping Aran clip (book sings,
+   daily=test ending, rank=fights, my/settings=music, fallback=home hi).
+   Each clip is a 1280×720 landscape shot of the idol; the banner crops it to a
+   tall portrait window, so we set the vertical object-position to each clip's
+   face height so the face is centered, not cut off. */
+function tabClip(tab) {
+  const map = {
+    book:     { v: 'assets/home_bg/tabs/aran_book_sing.mp4',     pos: 'center 33%' },
+    daily:    { v: 'assets/home_bg/tabs/aran_test_ending.mp4',   pos: 'center 43%' },
+    rank:     { v: 'assets/home_bg/tabs/aran_rank_fight.mp4',    pos: 'center 33%' },
+    my:       { v: 'assets/home_bg/tabs/aran_settings_music.mp4',pos: 'center 30%' },
+    settings: { v: 'assets/home_bg/tabs/aran_settings_music.mp4',pos: 'center 30%' },
+    home:     { v: 'assets/home_bg/tabs/aran_home_hi.mp4',       pos: 'center 30%' }
+  };
+  const e = map[tab] || { v: 'assets/home_bg/tabs/aran_home_hi.mp4', pos: 'center 30%' };
+  return e;
+}
 function tabHeroHTML(tab, overlay) {
-  const charVideo = heroCharVideo();
+  const clip = tabClip(tab);
   const inner = overlay || `<span class="tab-hero-cap">${capLabel(tab)}</span>`;
-  return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" aria-hidden="false">
-    <video autoplay muted loop playsinline preload="metadata">
-      <source src="${charVideo}" type="video/mp4"></video>
+  return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" data-pos="${clip.pos}" aria-hidden="false">
+    <video autoplay muted loop playsinline preload="metadata" style="object-position:${clip.pos}">
+      <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
   </div>`;
 }
@@ -970,9 +987,8 @@ function viewHome() {
   const wxc = wxCached();
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="${heroCharVideo()}" type="video/mp4">
-      </video>
+      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" style="object-position:center 30%" aria-hidden="true">
+        <source src="${heroCharVideo()}" type="video/mp4"></video>
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
         <div class="scene-txt">
