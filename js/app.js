@@ -965,19 +965,8 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   const ltDone = localStorage.getItem(LS.mylevel) != null;
-  // Level guidance card — shown at the top even before the level test, but the
-  // feature cards below (AI questions / study) are ALWAYS visible so new users
-  // can try everything before committing to a placement test.
-  const levelCard = !ltDone
-    ? `<div class="app-card lt-home-card" style="margin-top:16px;">
-      <div class="lt-home-ico">🎓</div>
-      <div class="lt-home-txt">
-        <b>${t('lt_home_card')}</b>
-        <span class="sub">${t('lt_home_card_sub')}</span>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
-    </div>`
-    : levelWeakCard;
+  // Level guidance card is built near the END (after levelWeakCard is defined)
+  // because it references levelWeakCard when the level test was already taken.
   // This week's study calendar (Sunday start) + weekly total, navigable by week
   const studyCard = `
     <div class="sec-h"><h2>${ic('schedule',15)} ${t('prog_study_time')}</h2></div>
@@ -1040,6 +1029,19 @@ function viewHome() {
         ${typeWeakHTML}
       </div>
     </div>`;
+  // Level guidance card — top card. Before the level test it's a prompt to take
+  // it; after, it's the My-Level summary. Defined here (after levelWeakCard) so
+  // the reference is safe. Features below are ALWAYS shown for new users too.
+  const levelCard = !ltDone
+    ? `<div class="app-card lt-home-card" style="margin-top:16px;">
+      <div class="lt-home-ico">🎓</div>
+      <div class="lt-home-txt">
+        <b>${t('lt_home_card')}</b>
+        <span class="sub">${t('lt_home_card_sub')}</span>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
+    </div>`
+    : levelWeakCard;
   return `
     ${scene}
     ${levelCard}
