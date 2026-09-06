@@ -3192,14 +3192,14 @@ function makeFakePeers() {
     'Seoyoung','Kangmin','Yeji','Joon','Sara','Doyoung','Rin','Hoseok','Miso','Taeri'];
   const peers = [];
   for (let i = 0; i < _RANK_FAKE_COUNT; i++) {
-    const ch = chars[Math.floor(rnd() * chars.length)] || { id: 'f-01', img: 'assets/img/chars/f-01.webp' };
+    const ch = chars[Math.floor(rnd() * chars.length)] || { id: 'f-01', face: 'assets/img/chars/face/f-01.webp', img: 'assets/img/chars/f-01.webp' };
     // accuracy clustered 30–100, skewed toward mid-high
     const acc = Math.min(100, Math.max(10, Math.round((rnd() * 0.7 + 0.25) * 100)));
     const solved = Math.max(1, Math.round(rnd() * 260 + 4));
     const xp = Math.round(solved * 3.1 + rnd() * 200);
     peers.push({
       name: namePool[i % namePool.length] + (i >= namePool.length ? ' ' + (Math.floor(i / namePool.length) + 2) : ''),
-      img: ch.img,
+      img: (ch.face) ? ch.face : ch.img,
       acc,
       solved,
       level: xpLevel(xp),
