@@ -104,13 +104,23 @@ const GLOWSIS_LEVELS = [
   { lv: 5, label: 'TOPIK II · Advanced' },
   { lv: 6, label: 'TOPIK II · Advanced+' }
 ];
-let _book = { unit: 0, page: 0 }; // current unit + page
+let _book = { book: '1a', unit: 0, page: 0 }; // active book + unit + page
 let _bookOpenAt = null;           // timestamp when the book reader was opened (study-time tracking)
-const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { unit, page } — restore on return
+const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { book, unit, page } — restore on return
+
+/* ---- multi-book registry ----
+   Each book's units live in its own global (window.GLOWSIS_BOOK = 1A; future books
+   add window.GLOWSIS_1B, GLOWSIS_2A, …). bookUnits() returns the ACTIVE book's units. */
+const GLOWSIS_BOOKS = [
+  { id: '1a', title: 'Glowsis Korean 1A', ico: '🎤', sub: 'Beginner · 9 units', var: 'GLOWSIS_BOOK' },
+  { id: '1b', title: 'Glowsis Korean 1B', ico: '🎵', sub: 'Beginner · 12 units', var: 'GLOWSIS_1B' }
+];
+function bookMeta(id) { return GLOWSIS_BOOKS.find(b => b.id === id) || GLOWSIS_BOOKS[0]; }
+function bookUnits(id) { const m = bookMeta(id || _book.book); return (window[m.var] || []).slice(); }
 
 function saveBookSession() {
   try {
-    if (_book && _book.unit !== undefined) localStorage.setItem(BOOK_SESSION_KEY, JSON.stringify({ unit: _book.unit, page: _book.page || 0 }));
+    if (_book && _book.unit !== undefined) localStorage.setItem(BOOK_SESSION_KEY, JSON.stringify({ book: _book.book, unit: _book.unit, page: _book.page || 0 }));
   } catch (e) {}
 }
 function clearBookSession() {
@@ -122,8 +132,8 @@ function restoreBookSession() {
   if (!raw) return false;
   try {
     const s = JSON.parse(raw);
-    if (s && (window.GLOWSIS_BOOK || []).some(x => x.id === s.unit)) {
-      openUnit(s.unit, s.page || 0);
+    if (s && bookUnits(s.book).some(x => x.id === s.unit)) {
+      openUnit(s.unit, s.page || 0, s.book);
       return true;
     }
   } catch (e) {}
@@ -133,52 +143,79 @@ function restoreBookSession() {
 function viewBook() {
   describeUnits();
   const ready = GLOWSIS_LEVELS[0];
-  const hero = (typeof tabHeroHTML === 'function') ? tabHeroHTML('book') : '';
-  return `${hero}<div class="book-home">
-    <div class="book-hero">
-      <div class="book-hero-txt">
-        <h2>TOPIK Levels 1–6</h2>
-        <p>Learn with Glowsis — our K-pop idol study crew. Pick a level to start studying.</p>
-      </div>
-      <span class="book-badge">📚 STUDY</span>
-    </div>
-    <div class="book-levels">
-      <div class="book-level ready">
-        <div class="bl-top">
-          <span class="bl-lv">Lv 1</span>
-          <span class="bl-label">TOPIK I · Beginner</span>
-          <span class="bl-ok">✓</span>
-        </div>
-        <div class="bl-books">
-          <button class="bl-book" onclick="openBookUnits()">
-            <span class="bl-b-ico">🎤</span>
-            <span class="bl-b-t"><b>Glowsis Korean 1A</b><small>Learn beginner Korean with your idols · 9 units</small></span>
-            <span class="bl-b-arr">→</span>
-          </button>
-        </div>
-      </div>
-      ${GLOWSIS_LEVELS.slice(1).map(l => `<div class="book-level soon">
+  // Recently studied unit (last session) → gently glowing card over the hero
+  let recentHTML = '';
+  try {
+    const raw = localStorage.getItem(BOOK_SESSION_KEY);
+    const s = raw ? JSON.parse(raw) : null;
+    const unit = s && GLOWSIS_UNITS.find(x => x.id === s.unit);
+    if (unit) {
+      const pageNo = (s.page || 0) + 1;
+      recentHTML = `
+        <div class="book-recent-glow">
+          <div class="brg-ico">🎤</div>
+          <div class="brg-txt">
+            <div class="brg-label">${LANG && LANG==='ko' ? '최근 공부한 곳' : LANG && LANG==='km' ? 'កន្លែងសិក្សាចុងក្រោយ' : 'Where you left off'}</div>
+            <div class="brg-title">Glowsis Korean 1A · ${unit.no==='준비'?'준비':('Unit '+unit.no)} — ${unit.title}</div>
+            <div class="brg-sub">${LANG && LANG==='ko' ? '계속 공부하기' : LANG && LANG==='km' ? 'បន្តសិក្សា' : 'Tap to continue studying'}</div>
+          </div>
+        </div>`;
+    }
+  } catch (e) {}
+  const fallback = `<span class="tab-hero-cap">TOPIK Levels 1–6</span>
+    <span class="scene-hero-sub">Learn with Glowsis — pick a level to start studying</span>`;
+  const overlay = recentHTML || fallback;
+  const hero = (typeof tabHeroHTML === 'function') ? tabHeroHTML('book', overlay) : '';
+  // build the available books list: any book whose global data array is non-empty
+  const avail = GLOWSIS_BOOKS.filter(m => (window[m.var] || []).length);
+  const soonLevels = GLOWSIS_LEVELS.filter(l => !avail.some(m => m.id.startsWith(String(l.lv))));
+  const levelsHTML = GLOWSIS_LEVELS.map((l, li) => {
+    const levelBooks = avail.filter(m => m.id.startsWith(String(l.lv)));
+    if (!levelBooks.length) {
+      return `<div class="book-level soon">
         <div class="bl-top"><span class="bl-lv">Lv ${l.lv}</span><span class="bl-label">${l.label}</span><span class="bl-coming">SOON</span></div>
         <div class="bl-soon-txt">교재 준비 중입니다.</div>
-      </div>`).join('')}
+      </div>`;
+    }
+    return `<div class="book-level ready">
+      <div class="bl-top">
+        <span class="bl-lv">Lv ${l.lv}</span>
+        <span class="bl-label">${l.label}</span>
+        <span class="bl-ok">✓</span>
+      </div>
+      <div class="bl-books">
+        ${levelBooks.map(m => `
+          <button class="bl-book" onclick="openBookUnits('${m.id}')">
+            <span class="bl-b-ico">${m.ico}</span>
+            <span class="bl-b-t"><b>${m.title}</b><small>${m.sub}</small></span>
+            <span class="bl-b-arr">→</span>
+          </button>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  return `${hero}<div class="book-home">
+    <div class="book-levels">
+      ${levelsHTML}
     </div>
   </div>`;
 }
-function openBookUnits() {
+function openBookUnits(bookId) {
   recordBookStudy();
   clearBookSession();
-  const units = (window.GLOWSIS_BOOK || []).slice();
+  const m = bookMeta(bookId);
+  _book.book = m.id;
+  const units = (window[m.var] || []).slice();
   document.getElementById('screen').innerHTML = `<div class="book-units">
     <div class="bu-head">
       <button class="back-btn-mini" onclick="backToBookLevels()">← Levels</button>
-      <h2>🎤 Glowsis Korean 1A</h2>
+      <h2>${m.ico} ${m.title}</h2>
       <p class="bu-sub">유닛을 골라 공부를 시작하세요</p>
     </div>
     <div class="bu-list">
-      ${GLOWSIS_UNITS.map(u => `
-        <button class="bu-item" onclick="openUnit(${u.id})">
-          <span class="bu-no">${u.no}</span>
-          <span class="bu-info"><b>${u.title}</b><small>${u.en}</small></span>
+      ${units.map(u => `
+        <button class="bu-item" onclick="openUnit(${u.id},0,'${m.id}')">
+          <span class="bu-no">${u.id===0?'준비':u.id}</span>
+          <span class="bu-info"><b>${u.title}</b><small>${u.en||''}</small></span>
           <span class="bu-arr">→</span>
         </button>`).join('')}
     </div>
@@ -195,7 +232,7 @@ function describeUnits() {
   GLOWSIS_UNITS.length = 0;
   const titles = ['Hangul First Steps','Hello!','I\'m a Singer','What is This?','Debut is in May','I Like Singing','Tteokbokki is Spicy','I\'m in the Practice Room','What Did You Do Yesterday?'];
   const ens = ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'];
-  (window.GLOWSIS_BOOK||[]).forEach((b,i) => GLOWSIS_UNITS.push({ id:b.id, no:(b.id===0?'준비':b.id), title:titles[b.id], en:ens[b.id] }));
+  bookUnits().forEach((b) => GLOWSIS_UNITS.push({ id:b.id, no:(b.id===0?'준비':b.id), title:titles[b.id], en:ens[b.id] }));
 }
 
 /* group a unit's raw sections into flip pages (natural book-like chunks).
@@ -246,13 +283,14 @@ function pageLabel(p, idx, total) {
   let n = 0;
   return t;
 }
-function openUnit(uid, page) {
-  const u = (window.GLOWSIS_BOOK||[]).find(x => x.id === uid);
+function openUnit(uid, page, book) {
+  if (book) _book.book = book;
+  const u = bookUnits().find(x => x.id === uid);
   if (!u) return;
   const pages = groupPages(u);
   const end = buildEndPage(u);
   if (end) pages.push(end);
-  _book = { unit: uid, page: Math.min(page || 0, pages.length - 1), pages };
+  _book = { book: _book.book, unit: uid, page: Math.min(page || 0, pages.length - 1), pages };
   _bookOpenAt = Date.now();   // start tracking book study time
   saveBookSession();
   renderFlip();
@@ -268,7 +306,10 @@ function recordBookStudy() {
   } catch (e) { /* non-fatal */ }
 }
 function renderFlip() {
-  const meta = GLOWSIS_UNITS.find(x => x.id === _book.unit);
+  // meta = the ACTIVE unit from the ACTIVE book (has id/title/en); 'no' defaults to id
+  const meta = bookUnits().find(x => x.id === _book.unit)
+    || { id: _book.unit, title: 'Unit ' + _book.unit, en: '', no: _book.unit };
+  if (meta.no == null) meta.no = meta.id;
   const pages = _book.pages;
   const track = pages.map((p, i) => {
     const cls = i === _book.page ? 'active' : '';
@@ -303,10 +344,10 @@ function renderFlip() {
    data order (id ascending), never backwards or to an unrelated unit. */
 function buildEndPage(meta) {
   const cur = meta && meta.id != null ? meta.id : _book.unit;
-  const units = (window.GLOWSIS_BOOK || []).slice().sort((a,b)=>a.id-b.id);
+  const units = bookUnits().sort((a,b)=>a.id-b.id);
   const idx = units.findIndex(u => u.id === cur);
   const next = (idx >= 0 && idx < units.length-1) ? units[idx+1] : null;
-  const nMeta = next ? GLOWSIS_UNITS.find(x => x.id === next.id) : null;
+  const nMeta = next ? { id: next.id, title: next.title || ('Unit '+next.id), en: next.en || '' } : null;
   const isLast = idx >= 0 && idx === units.length-1;
   return { type: 'end', blocks: [], endMeta: { next, nMeta, isLast } };
 }
