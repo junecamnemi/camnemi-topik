@@ -121,7 +121,12 @@
 /* ==================== FLIP-BOOK (swipe pages) ==================== */
 .flip-wrap { display: flex; flex-direction: column; height: calc(100vh - 130px); }
 .flip-top { display: flex; align-items: center; gap: 8px; padding: 2px 2px 8px; }
-.flip-unit { font-size: 13px; font-weight: 800; color: var(--ios-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flip-unit { flex: 1; font-size: 13px; font-weight: 800; color: var(--ios-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flip-restart {
+  border: 1px solid var(--ios-separator); background: var(--ios-fill); color: var(--ios-label);
+  font-weight: 700; font-size: 12px; cursor: pointer; padding: 3px 10px; border-radius: 999px;
+  flex-shrink: 0;
+}
 .flip-viewport {
   flex: 1; overflow: hidden; border-radius: 16px; position: relative;
   background: #fff; border: 1px solid var(--ios-separator);
@@ -134,7 +139,11 @@
 .flip-page {
   flex: 0 0 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
   padding: 18px 18px 30px; background: #fff;
+  /* performance: isolate each page's layout/paint so swiping never recomputes
+     the whole book; non-visible pages are not painted */
+  contain: layout paint style;
 }
+.flip-page img { content-visibility: auto; }
 .flip-page::-webkit-scrollbar { width: 0; }
 .fp-coverhead { margin-bottom: 6px; text-align: center; }
 .fp-badge {

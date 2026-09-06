@@ -265,6 +265,7 @@ function renderFlip() {
     <div class="flip-top">
       <button class="back-btn-mini" onclick="openBookUnits()">← Units</button>
       <span class="flip-unit">Unit ${meta ? meta.no : ''} · ${meta ? meta.title : ''}</span>
+      <button class="flip-restart" onclick="gotoPage(0)" title="처음으로">⏮ 처음</button>
     </div>
     <div class="flip-viewport" id="flip-vp">
       <div class="flip-track" id="flip-track" style="transform:translateX(-${_book.page * 100}%)">
