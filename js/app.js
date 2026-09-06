@@ -1114,6 +1114,13 @@ function viewHome() {
     </div>`
     : levelWeakCard;
   return `
+    <div class="home-bg" aria-hidden="true">
+      <video class="home-bg-video" autoplay muted loop playsinline preload="metadata"
+        poster="assets/home_bg/glowsis_poster.jpg"
+        src="assets/home_bg/glowsis_stage_anime.mp4"></video>
+      <div class="home-bg-shade"></div>
+    </div>
+    <div class="home-bg-content">
     ${scene}
     ${levelCard}
     <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
@@ -1129,6 +1136,7 @@ function viewHome() {
         ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, qSub(r.c, r.n))).join('')
         : `<p class="sub" style="margin-top:6px;">${t('level_empty')}</p>`}
     </div>`}
+    </div>
   `;
 }
 function setLevel(lv) {
@@ -3376,24 +3384,33 @@ function rankListHTML() {
   return `${visible}
     <div class="rk-more">${t('rank_top_of', { n: SHOW, total })}</div>`;
 }
-/* A glowing K-pop light stick (응원봉) instead of a medal. Ranks 1-10 are "lit"
-   with brightness tapering by rank (1 = brightest … 10 = dimmest). Ranks 11+
-   fall back to a plain number. */
+/* A glowing heart-shaped K-pop light stick (하트 응원봉) instead of a medal.
+   Ranks 1-10 are "lit" with brightness tapering by rank (1 = brightest …
+   10 = dimmest). Ranks 11+ fall back to a plain unlit stick + number. */
 function rankLightstick(place) {
   const lit = place >= 1 && place <= 10;
   // brightness from 1.0 (rank1) down to ~0.38 (rank10), a smooth glow taper
   const bright = lit ? (1 - (place - 1) * 0.068) : 0;
   const hue = 262; // brand violet
+  // heart stick, drawn tall (viewBox 24x44) so it reads clearly in the column
+  const heartBody = 'M12 9.5 C12 9.5 3.2 3.2 3.2 11 C3.2 16.4 12 21.6 12 24 C12 21.6 20.8 16.4 20.8 11 C20.8 3.2 12 9.5 12 9.5 Z';
+  const stick = 'M10.6 24.5 L11 40 L13 40 L13.4 24.5 Z';
+  const base = 'M9.5 40 L14.5 40 L13.6 43.5 L10.4 43.5 Z';
+  const glowStar = 'M12 3 l1.5 4.6 L18 6.6 14.5 10 18 13 13.5 12.2 12 17 10.5 12.2 6 13 9.5 10 6 6.6 10.5 7.6z';
   if (!lit) {
-    return `<span class="rk-ls rk-ls-off"><svg viewBox="0 0 24 34" width="18" height="25"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5.2" fill="#3b3355" stroke="none"/><path d="M12 13.5v6" stroke="#8a83a6" stroke-width="2.4"/><path d="M9 13.5 8 21l4 3 4-3-1-7.5" stroke="#8a83a6" stroke-width="2.4" fill="rgba(138,131,166,.15)"/></g></svg><b class="rk-ls-n">${place}</b></span>`;
+    return `<span class="rk-ls rk-ls-off"><svg viewBox="0 0 24 46" width="30" height="50"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="${heartBody}" fill="#3b3355" stroke="none" transform="translate(0 -3)"/>
+      <path d="${stick}" fill="#8a83a6"/>
+      <path d="${base}" fill="#8a83a6"/>
+    </g></svg><b class="rk-ls-n">${place}</b></span>`;
   }
   const gl = `hsla(${hue},90%,72%,${bright})`;
   const core = `hsla(${hue},92%,${62 + bright * 30}%,1)`;
-  return `<span class="rk-ls rk-ls-on" style="--ls-b:${bright};--ls-g:${gl};--ls-c:${core};" data-b="${bright}"><svg viewBox="0 0 24 34" width="18" height="25"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="5.2" fill="${core}" stroke="none"/>
-    <path d="M12 13.5v6" stroke="#fff" stroke-width="2.4" opacity=".9"/>
-    <path d="M9 13.5 8 21l4 3 4-3-1-7.5" fill="${core}" stroke="#fff" stroke-width="1.1" opacity=".85"/>
-    <path class="rk-ls-glow" d="M12 2.4 13 6l3.6-1-2.8 2.9L17 9.6l-4 .5 1.3 3.9-3-2.6-3 2.6L9.4 10l-4-.5 3.2-1.7L5.8 5l3.6 1z" fill="#fff" opacity="${(bright + 0.25).toFixed(2)}" transform="translate(0 0) scale(.9) translate(1 0)"/>
+  return `<span class="rk-ls rk-ls-on" style="--ls-b:${bright};--ls-g:${gl};--ls-c:${core};" data-b="${bright}"><svg viewBox="0 0 24 46" width="30" height="50"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="${heartBody}" fill="${core}" stroke="#fff" stroke-width="1" transform="translate(0 -3)"/>
+    <path d="${stick}" fill="${core}" stroke="#fff" stroke-width="1" opacity=".9"/>
+    <path d="${base}" fill="${core}" stroke="#fff" stroke-width="1" opacity=".9"/>
+    <path d="${glowStar}" fill="#fff" opacity="${(Math.min(1, bright + 0.35)).toFixed(2)}"/>
   </g></svg><b class="rk-ls-n">${place}</b></span>`;
 }
 /* my standing card — always visible at the top of the ranking tab */
@@ -4243,18 +4260,27 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   applyCharTheme();
   refreshUserBtn();
+  // start automatic learner-data sync (push-on-change + pull-on-login)
+  if (window.SYNC && typeof window.SYNC.init === 'function') { try { window.SYNC.init(); } catch (e) {} }
   // auth → refresh user button + pull synced data when signed in
+  function pullThenRender() {
+    if (window.SYNC && typeof window.SYNC.pull === 'function') {
+      window.SYNC.pull().then(() => { try { render(); } catch (e) {} });
+    } else {
+      loadUserData().then(() => { try { render(); } catch (e) {} });
+    }
+  }
   if (window.onAuthChange) {
     onAuthChange((session) => {
       refreshUserBtn();
       if (session) {
         syncCharFromAccount();
-        loadUserData().then(() => { try { render(); } catch (e) {} });
+        pullThenRender();
       }
     });
     // in case initAuth already fired before this listener registered
     setTimeout(() => {
-      if (isAuthed()) { refreshUserBtn(); syncCharFromAccount(); loadUserData().then(() => { try { render(); } catch (e) {} }); }
+      if (isAuthed()) { refreshUserBtn(); syncCharFromAccount(); pullThenRender(); }
     }, 400);
   }
   // apply saved language: selector, nav labels, header, strip
