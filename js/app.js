@@ -932,36 +932,54 @@ function render() {
 }
 
 /* ================= HOME ================= */
+/* Which tab clip a character has, and where its face sits in the frame (so the
+   hero can crop to the face). Measured per clip. facePos = vertical % of the
+   frame where the face is centered (higher = lower in frame). */
+const CHAR_TAB_VID = {
+  // default / Aran
+  aran: {
+    book:     { v:'assets/home_bg/tabs/aran_book_sing.mp4',      pos:'center 33%' },
+    daily:    { v:'assets/home_bg/tabs/aran_test_ending.mp4',    pos:'center 43%' },
+    rank:     { v:'assets/home_bg/tabs/aran_rank_fight.mp4',     pos:'center 33%' },
+    my:       { v:'assets/home_bg/tabs/aran_settings_music.mp4', pos:'center 30%' },
+    settings: { v:'assets/home_bg/tabs/aran_settings_music.mp4', pos:'center 30%' },
+    home:     { v:'assets/home_bg/tabs/aran_home_hi.mp4',        pos:'center 30%' }
+  },
+  chaea: {
+    book:     { v:'assets/home_bg/tabs/chaea_book_sing.mp4',     pos:'center 22%' },
+    daily:    { v:'assets/home_bg/tabs/chaea_test_ending.mp4',   pos:'center 30%' },
+    rank:     { v:'assets/home_bg/tabs/chaea_rank_fight.mp4',    pos:'center 28%' },
+    my:       { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 26%' },
+    settings: { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 26%' },
+    home:     { v:'assets/home_bg/tabs/chaea_home_hi.mp4',       pos:'center 25%' }
+  },
+  dahee: {
+    book:     { v:'assets/home_bg/tabs/dahee_book_sing.mp4',     pos:'center 35%' },
+    daily:    { v:'assets/home_bg/tabs/dahee_test_ending.mp4',   pos:'center 38%' },
+    rank:     { v:'assets/home_bg/tabs/dahee_rank_fight.mp4',    pos:'center 40%' },
+    my:       { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 30%' },
+    settings: { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 30%' },
+    home:     { v:'assets/home_bg/tabs/dahee_home_hi.mp4',       pos:'center 35%' }
+  },
+  roy: {
+    book:     { v:'assets/home_bg/tabs/roy_book_sing.mp4',       pos:'center 40%' },
+    daily:    { v:'assets/home_bg/tabs/roy_test_ending.mp4',     pos:'center 34%' },
+    rank:     { v:'assets/home_bg/tabs/roy_rank_fight.mp4',      pos:'center 40%' },
+    my:       { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 40%' },
+    settings: { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 40%' },
+    home:     { v:'assets/home_bg/tabs/roy_home_hi.mp4',         pos:'center 38%' }
+  }
+};
+const CHAR_TAB_KEY = { 'f-01':'aran', 'f-02':'chaea', 'f-03':'dahee', 'f-04':'roy', 'f-05':'aran', 'f-06':'aran' };
+function heroCharKey() { try { return CHAR_TAB_KEY[myCharId()] || 'aran'; } catch (e) { return 'aran'; } }
 function heroCharVideo() {
-  // looping idol clip for the currently-selected character (myChar), so switching
-  // your character changes the whole app's hero background.
-  try {
-    const id = (typeof myCharId === 'function' ? myCharId() : 'f-01');
-    return {
-      'f-01': 'assets/home_bg/tabs/aran_home_hi.mp4',   // aran → hi wave
-      'f-02': 'assets/home_bg/chars/chaea.mp4',         // chaea → singing
-      'f-03': 'assets/home_bg/chars/dahee.mp4',         // dahee → fighting
-      'f-04': 'assets/home_bg/chars/roy.mp4',           // roy → music
-      'f-05': 'assets/home_bg/chars/group.mp4',
-      'f-06': 'assets/home_bg/chars/group.mp4'
-    }[id] || 'assets/home_bg/chars/group.mp4';
-  } catch (e) { return 'assets/home_bg/tabs/aran_home_hi.mp4'; }
+  // home hero uses the "home" clip of the current character
+  const k = heroCharKey();
+  return CHAR_TAB_VID[k].home.v;
 }
-/* per-tab hero clip: each tab shows its OWN looping Aran clip (book sings,
-   daily=test ending, rank=fights, my/settings=music, fallback=home hi).
-   Each clip is a 1280×720 landscape shot of the idol; the banner crops it to a
-   tall portrait window, so we set the vertical object-position to each clip's
-   face height so the face is centered, not cut off. */
 function tabClip(tab) {
-  const map = {
-    book:     { v: 'assets/home_bg/tabs/aran_book_sing.mp4',     pos: 'center 33%' },
-    daily:    { v: 'assets/home_bg/tabs/aran_test_ending.mp4',   pos: 'center 43%' },
-    rank:     { v: 'assets/home_bg/tabs/aran_rank_fight.mp4',    pos: 'center 33%' },
-    my:       { v: 'assets/home_bg/tabs/aran_settings_music.mp4',pos: 'center 30%' },
-    settings: { v: 'assets/home_bg/tabs/aran_settings_music.mp4',pos: 'center 30%' },
-    home:     { v: 'assets/home_bg/tabs/aran_home_hi.mp4',       pos: 'center 30%' }
-  };
-  const e = map[tab] || { v: 'assets/home_bg/tabs/aran_home_hi.mp4', pos: 'center 30%' };
+  const k = heroCharKey();
+  const e = (CHAR_TAB_VID[k] && CHAR_TAB_VID[k][tab]) || CHAR_TAB_VID.aran.home;
   return e;
 }
 function tabHeroHTML(tab, overlay) {
