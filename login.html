@@ -18,18 +18,21 @@
   .stage-bg::after { content:''; position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(30,20,54,.78) 0%, rgba(30,20,54,.22) 38%, rgba(30,20,54,.62) 100%); }
 
-  /* Layout — content docked to the bottom like a mobile app sheet */
-  .auth-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
-    padding:36px 20px max(28px, env(safe-area-inset-bottom)); box-sizing:border-box; position:relative; }
+  /* Layout — content docked to the bottom; uses a spacer so content never
+     overflows up under the fixed title (it scrolls instead of overlapping). */
+  .auth-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    padding:110px 20px max(20px, env(safe-area-inset-bottom)); box-sizing:border-box; position:relative; }
+  .auth-wrap .spacer { flex:1 1 auto; min-height:0; }
 
   /* Whole-screen hero title — pinned to the top so the idol art stays visible */
   .hero-title { position:fixed; top:0; left:0; right:0; z-index:5; text-align:center; color:#fff;
-    padding:max(34px, env(safe-area-inset-top)) 20px 20px; max-width:none; pointer-events:none; }
-  .hero-title .eyebrow { font-size:11.5px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:#e9d5ff; opacity:.95; margin-bottom:12px; }
-  .hero-title h1 { font-size:clamp(26px, 5.2vw, 46px); font-weight:900; letter-spacing:-1px; line-height:1.12; margin:0;
+    padding:max(30px, env(safe-area-inset-top)) 20px 16px; max-width:none; pointer-events:none;
+    background:linear-gradient(180deg, rgba(30,20,54,.85), rgba(30,20,54,.35) 70%, transparent); }
+  .hero-title .eyebrow { font-size:11.5px; font-weight:800; letter-spacing:3px; text-transform:uppercase; color:#e9d5ff; opacity:.95; margin-bottom:10px; }
+  .hero-title h1 { font-size:clamp(26px, 5.2vw, 44px); font-weight:900; letter-spacing:-1px; line-height:1.1; margin:0;
     background:linear-gradient(135deg,#fff 10%,#e9d5ff 45%,#f9a8d4 90%); -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent; text-shadow:0 8px 40px rgba(0,0,0,.5); }
-  .hero-title p { font-size:14px; font-weight:600; color:#e6dcff; margin:13px 0 0; opacity:.95; }
+  .hero-title p { font-size:13.5px; font-weight:600; color:#e6dcff; margin:11px 0 0; opacity:.95; }
 
   /* Compact auth card — social login only */
   .auth-card {
@@ -55,34 +58,35 @@
 
   .welcome-banner { background:rgba(167,139,250,.16); border:1px solid rgba(167,139,250,.4); color:#e9d5ff; border-radius:12px; padding:11px 16px; margin-bottom:14px; font-size:14px; font-weight:600; }
 
-  /* Bottom — AI TOPIK START gradient button into the app */
-  .start-area { margin-top:22px; width:100%; max-width:360px; text-align:center; }
+  /* Bottom — AI TOPIK START gradient bar (one horizontal line, full width) */
+  .start-area { margin-top:18px; width:100%; max-width:420px; text-align:center; }
   .start-btn {
-    width:100%; padding:16px; border:none; border-radius:18px; font-size:17px; font-weight:900; letter-spacing:.5px;
-    cursor:pointer; color:#fff; display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%; padding:15px 18px; border:none; border-radius:18px; cursor:pointer; color:#fff;
+    display:flex; align-items:center; justify-content:center; gap:11px;
     background:linear-gradient(135deg,#7C3AED 0%,#A78BFA 30%,#EC4899 70%,#F59E0B 100%);
     background-size:220% 220%; animation:gradShift 6s ease infinite;
     box-shadow:0 10px 30px rgba(236,72,153,.45), 0 4px 14px rgba(124,58,237,.4);
     transition:transform .15s ease;
   }
   .start-btn .ai-ico { flex:none; filter:drop-shadow(0 2px 8px rgba(0,0,0,.35)); display:flex; align-items:center; }
-  .start-btn .ai-ico svg { display:block; width:24px; height:24px; opacity:.55;
+  .start-btn .ai-ico svg { display:block; width:22px; height:22px; opacity:.6;
     animation:starTwinkle 3.2s ease-in-out infinite; }
-  @keyframes starTwinkle {
-    0%,100% { opacity:.25; transform:scale(.9); }
-    50% { opacity:.85; transform:scale(1.12); }
-  }
-  .start-btn .lbl { display:flex; flex-direction:column; align-items:flex-start; line-height:1.1; }
+  @keyframes starTwinkle { 0%,100%{opacity:.25; transform:scale(.9);} 50%{opacity:.85; transform:scale(1.12);} }
+  .start-btn .lbl { display:flex; align-items:baseline; gap:8px; line-height:1; }
   .start-btn .lbl b { font-size:17px; font-weight:900; letter-spacing:.5px; }
-  .start-btn .lbl small { font-size:11px; font-weight:600; letter-spacing:1.5px; opacity:.9; margin-top:3px; }
+  .start-btn .lbl span { font-size:11px; font-weight:700; letter-spacing:1px; opacity:.9; }
   @keyframes gradShift { 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
-  .start-hint { font-size:12px; color:#c2b4e6; margin-top:11px; font-weight:500; }
+
+  /* copyright */
+  .copyright { margin-top:14px; font-size:12px; font-weight:600; color:#c2b4e6; letter-spacing:.3px; }
 
   @media (max-width:480px) {
-    .auth-wrap { padding:26px 18px max(24px, env(safe-area-inset-bottom)); justify-content:flex-end; }
-    .hero-title { padding:max(26px, env(safe-area-inset-top)) 16px 16px; }
+    .auth-wrap { padding:96px 18px max(20px, env(safe-area-inset-bottom)); }
+    .hero-title { padding:max(26px, env(safe-area-inset-top)) 16px 14px; }
     .hero-title h1 { font-size:28px; }
+    .hero-title p { font-size:12.5px; }
     .auth-card { padding:20px 18px 18px; border-radius:20px; }
+    .start-btn .lbl span { display:none; }
   }
 </style>
 </head>
@@ -96,12 +100,14 @@
 </div>
 
 <div class="auth-wrap">
-  <!-- Whole-screen hero title -->
+  <!-- Whole-screen hero title — pinned to top -->
   <div class="hero-title">
     <div class="eyebrow">★ Glowsis · AI TOPIK ★</div>
     <h1>AI TOPIK Practice<br>with K-POP IDOL</h1>
     <p>Learn Korean with your favorite idols — save progress, keep your streak alive.</p>
   </div>
+
+  <div class="spacer"></div>
 
   <!-- Compact social login -->
   <div class="auth-card">
@@ -118,16 +124,17 @@
     <div class="divider-mini">or just explore</div>
   </div>
 
-  <!-- AI TOPIK START — straight into the app -->
+  <!-- AI TOPIK START — one horizontal line, full width -->
   <div class="start-area">
     <button class="start-btn" onclick="goBrowse()">
       <span class="ai-ico">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2L12 2z"/></svg>
       </span>
-      <span class="lbl"><b>AI TOPIK START</b><small>둘러보기 · Browse for free</small></span>
+      <span class="lbl"><b>AI TOPIK START</b><span>둘러보기 · Browse for free</span></span>
     </button>
-    <p class="start-hint">Explore the app freely — sign in anytime to save progress.</p>
   </div>
+
+  <p class="copyright">© by Camnemi Korea</p>
 </div>
 
 <script src="js/config.js"></script>
