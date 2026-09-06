@@ -2138,7 +2138,7 @@ function viewMy() {
   const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
   const head = authed ? `
     <div class="um-head">
-      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${myChar().img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
+      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
       <div class="um-id">
         <b>${esc(myCharName())}</b>
         <span class="sub">${esc(u.email || t('menu_signed_in'))}</span>
@@ -2146,7 +2146,7 @@ function viewMy() {
       <button class="btn btn-ghost btn-sm" style="margin-left:auto;" onclick="doLogout()">${t('menu_logout')}</button>
     </div>` : `
     <div class="um-head">
-      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${myChar().img}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
+      <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
       <div class="um-id">
         <b>${esc(myCharName())}</b>
         <span class="sub">${LANG === 'ko' ? '게스트로 사용 중' : LANG === 'km' ? 'កំពុងប្រើជាភ្ញៀវ' : 'Using as guest'}</span>
@@ -3211,13 +3211,14 @@ function makeFakePeers() {
 }
 function charImg(id) {
   const c = (window.CHAR_LIST || []).find(x => x.id === id);
-  return c ? c.img : 'assets/img/chars/f-01.webp';
+  if (!c) return 'assets/img/chars/face/f-01.webp';
+  return c.face ? c.face : c.img;
 }
 function myRankEntry() {
   const prog = lsGet(LS.progress, {});
   return {
     name: myCharName() || (isAuthed() ? currentUser().name : 'Learner'),
-    img: myChar().img,
+    img: (myChar().face) ? myChar().face : myChar().img,
     acc: accuracyStats().overall,
     solved: Object.keys(prog).length,
     level: xpProgress().lv,
