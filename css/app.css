@@ -690,7 +690,7 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
    object-position centers the tower (66% in source) slightly right of center. */
 .seoul-scene .scene-landmark {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; object-position: 30% 50%;
+  object-fit: cover; object-position: 50% 12%;
   opacity: .9; pointer-events: none; user-select: none;
   transition: filter .6s ease, opacity .5s ease;
 }
@@ -1202,9 +1202,9 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .rk-row.me { border: 1.5px solid var(--ios-blue); background: linear-gradient(135deg, hsla(258,90%,80%,.16), rgba(249,168,212,.10)); }
 .rk-pos { width: 30px; text-align: center; font-size: 17px; font-weight: 800; color: var(--ios-secondary-label); flex-shrink: 0; }
 .rk-pos { width: 40px; } /* make room for the light-stick icon */
-.rk-ls { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 32px; }
+.rk-ls { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 54px; flex-shrink: 0; }
 .rk-ls svg { filter: drop-shadow(0 1px 2px rgba(0,0,0,.18)); }
-.rk-ls-n { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); font-size: 7.5px; font-weight: 900; color: rgba(255,255,255,.9); line-height: 1; text-shadow: 0 0 3px rgba(0,0,0,.5); }
+.rk-ls-n { position: absolute; top: 7px; left: 50%; transform: translateX(-50%); font-size: 9px; font-weight: 900; color: rgba(255,255,255,.95); line-height: 1; text-shadow: 0 0 3px rgba(0,0,0,.55); }
 /* lit light sticks (rank 1-10) — glow strength driven by inline --ls-b (0..1) */
 .rk-ls-on svg { filter: drop-shadow(0 0 3px var(--ls-c)) drop-shadow(0 0 6px var(--ls-g)) drop-shadow(0 0 12px var(--ls-g)); }
 .rk-ls-on { animation: rkPulse 2.4s ease-in-out infinite; animation-delay: calc((1 - var(--ls-b,0)) * -1.6s); }

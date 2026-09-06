@@ -297,10 +297,13 @@ function renderFlip() {
   window.scrollTo(0,0);
   wireSwipe();
 }
-/* build a "unit end → next unit" page appended after the last real page */
+/* build a "unit end → next unit" page appended after the last real page.
+   meta is the unit we are currently finishing — we advance to the NEXT unit by
+   data order (id ascending), never backwards or to an unrelated unit. */
 function buildEndPage(meta) {
-  const units = (window.GLOWSIS_BOOK || []).sort((a,b)=>a.id-b.id);
-  const idx = units.findIndex(u => u.id === _book.unit);
+  const cur = meta && meta.id != null ? meta.id : _book.unit;
+  const units = (window.GLOWSIS_BOOK || []).slice().sort((a,b)=>a.id-b.id);
+  const idx = units.findIndex(u => u.id === cur);
   const next = (idx >= 0 && idx < units.length-1) ? units[idx+1] : null;
   const nMeta = next ? GLOWSIS_UNITS.find(x => x.id === next.id) : null;
   const isLast = idx >= 0 && idx === units.length-1;
@@ -322,7 +325,7 @@ function pageBody(p, i, meta) {
     const gnum = (p.blocks[0].match(/GRAMMAR\s*(\d)/) || [,'1'])[1];
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">📖</span><div><b>Grammar</b><small>Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'teach') {
-    top = `<div class="bk-chaphead bk-chaphead-teach"><span class="bk-ch-ico">🧑‍🏫</span><div><b>선생님 노트</b><small>Teacher's Deep-Dive · Unit ${meta.no}</small></div></div>`;
+    top = `<div class="bk-chaphead bk-chaphead-teach"><span class="bk-ch-ico">🧑‍🏫</span><div><b>Teacher's Deep-Dive</b><small>Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'vocab') {
     top = `<div class="bk-chaphead"><span class="bk-ch-ico">🗂️</span><div><b>Vocabulary</b><small>Unit ${meta.no}</small></div></div>`;
   } else if (cls === 'practice') {

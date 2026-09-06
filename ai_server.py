@@ -414,9 +414,10 @@ async def tts(text: str = "", voice: str = "coral", instructions: str = ""):
         import httpx
         # Default to a bright, youthful, friendly K-pop-idol teaching voice unless overridden.
         instr = instructions or (
-            "Speak Korean like a bright, cheerful teenage girl K-pop idol (high-school age). "
-            "Sound warm, lively, friendly and encouraging, as if teaching a young friend Korean. "
-            "Use a light, clear, upbeat tone with natural kid-friendly energy; never flat or robotic."
+            "Speak Korean with the bright, sparkling, high-energy voice of a young teenage K-pop idol "
+            "(fresh high-school energy, ~15-16 years old). Sound extra lively, cheerful and adorable, like "
+            "a fun older sister teaching Korean to a young friend. Keep it light, quick and upbeat with a "
+            "warm smile in your voice, never flat, robotic, slow or deep."
         )
         r = httpx.post(
             "https://openai-audio-gateway.nousresearch.com/v1/audio/speech",

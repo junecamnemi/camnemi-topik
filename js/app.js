@@ -942,7 +942,9 @@ function viewHome() {
   const wxc = wxCached();
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <img class="scene-landmark" id="scene-landmark" src="assets/img/namsan-ai.jpg?v=crop-1" alt="Namsan Seoul Tower" draggable="false">
+      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="assets/home_bg/glowsis_ending_aran.mp4" type="video/mp4">
+      </video>
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
         <div class="scene-txt">
@@ -1114,12 +1116,6 @@ function viewHome() {
     </div>`
     : levelWeakCard;
   return `
-    <div class="home-bg" aria-hidden="true">
-      <video class="home-bg-video" autoplay muted loop playsinline preload="metadata"
-        poster="assets/home_bg/glowsis_poster.jpg"
-        src="assets/home_bg/glowsis_stage_anime.mp4"></video>
-      <div class="home-bg-shade"></div>
-    </div>
     <div class="home-bg-content">
     ${scene}
     ${levelCard}
