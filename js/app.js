@@ -1716,12 +1716,6 @@ function viewDailySetup() {
       ${ic(s.ico,20)}<b>${s.label}</b>
     </button>`).join('');
   return `
-    <button class="aq-redo aq-gborder aq-redo-compact" onclick="aiRedoGo()">
-      <span class="aq-redo-ico">${ic('spark',18)}</span>
-      <span class="aq-txt"><b>${t('home_ai_redo')}</b><span class="aq-sub">${t('home_ai_redo_sub')}</span></span>
-      <span class="aq-redo-badge">×5</span>
-      <span class="aq-arr">→</span>
-    </button>
     <div class="app-card daily-setup">
       <div class="ds-level">
         <div class="ds-lvl" style="--lvl:${myLv}">L${myLv}</div>
@@ -1733,7 +1727,14 @@ function viewDailySetup() {
         ${weakHTML}
       </div>
     </div>
-    <div class="sec-h"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
+    <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
+    <button class="aq-redo aq-gborder aq-redo-compact" onclick="aiRedoGo()">
+      <span class="aq-redo-ico">${ic('spark',18)}</span>
+      <span class="aq-txt"><b>${t('home_ai_redo')}</b><span class="aq-sub">${t('home_ai_redo_sub')}</span></span>
+      <span class="aq-redo-badge">×5</span>
+      <span class="aq-arr">→</span>
+    </button>
+    <div class="sec-h" style="margin-top:18px;"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
     <div class="daily-secs">${secBtns}</div>
     <button class="btn btn-primary ds-start" onclick="startDaily()">${ic('daily',18)} ${LANG==='ko'?'시작':'Start'}</button>
   `;
