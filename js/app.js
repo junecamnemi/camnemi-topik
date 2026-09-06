@@ -593,6 +593,11 @@ function explainBlock(q) {
   const tipTxt = en ? (q.tipEn || q.tip) : q.tip;
   const optText = (o) => esc(o.t || '');
   let h = '';
+  // TIP first — keep the learning tip above the correct/wrong explanations so
+  // it reads as guidance, not part of the answer key.
+  if (tipTxt) {
+    h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(tipTxt)}</div></div>`;
+  }
   // 정답 상세
   const whyRight = optEx[correct] || q.explain || '';
   // 공식 도입문 — 유형 안내 (해설을 교과서체로 시작)
@@ -628,10 +633,6 @@ function explainBlock(q) {
   });
   if (wrongs.length) {
     h += `<div class="dx dx-wrongs"><div class="dx-head"><b>${en ? 'Why the others are wrong' : ko ? '왜 틀렸을까?' : 'Why the others are wrong'}</b></div>${wrongs.join('')}</div>`;
-  }
-  // TIP
-  if (tipTxt) {
-    h += `<div class="dx dx-tip"><div class="dx-head"><b>💡 ${t('tip').replace(/^💡\s*/, '')}</b></div><div class="dx-body">${esc(tipTxt)}</div></div>`;
   }
   // 문법 포인트 — 실제 기출 문법 표현을 감지해 세종학당 교재와 연결
   const g = grammarHit(q);
@@ -964,19 +965,19 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   const ltDone = localStorage.getItem(LS.mylevel) != null;
-  // Before the level test: show only the greeting scene + a prominent level-test card.
-  if (!ltDone) {
-    return `
-    ${scene}
-    <div class="app-card lt-home-card" style="margin-top:16px;">
+  // Level guidance card — shown at the top even before the level test, but the
+  // feature cards below (AI questions / study) are ALWAYS visible so new users
+  // can try everything before committing to a placement test.
+  const levelCard = !ltDone
+    ? `<div class="app-card lt-home-card" style="margin-top:16px;">
       <div class="lt-home-ico">🎓</div>
       <div class="lt-home-txt">
         <b>${t('lt_home_card')}</b>
         <span class="sub">${t('lt_home_card_sub')}</span>
       </div>
       <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
-    </div>`;
-  }
+    </div>`
+    : levelWeakCard;
   // This week's study calendar (Sunday start) + weekly total, navigable by week
   const studyCard = `
     <div class="sec-h"><h2>${ic('schedule',15)} ${t('prog_study_time')}</h2></div>
@@ -1041,7 +1042,7 @@ function viewHome() {
     </div>`;
   return `
     ${scene}
-    ${levelWeakCard}
+    ${levelCard}
     <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2></div>
     ${aiQuick}
     ${studyCard}
