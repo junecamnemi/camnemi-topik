@@ -1598,29 +1598,27 @@ select { font-family: var(--ios-font); }
   margin-top: -68px;               /* reach the very top like the home seoul-scene */
   margin-bottom: 12px;             /* match home scene spacing */
   border-radius: 0 0 16px 16px;    /* same as home */
-  border: 1px solid rgba(167,139,250,.16);  /* same soft border as home scene */
+  border: 1px solid rgba(120,100,200,.35);  /* clearer violet border (home-style) */
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
   background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
   height: 208px;                   /* exact same banner height as home (.seoul-scene) */
 }
-/* video fills the whole banner box (like home's scene-landmark) */
+/* video fills the whole banner box but stays BELOW the border */
 .scene-hero.tab-hero video {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; pointer-events: none; user-select: none; opacity: .9;
 }
-/* content block mirrors home's scene-top: clears the glass header and centers
-   the caption in the same vertical area the home greeting occupies */
+/* content block: left-aligned so it doesn't sit over the character's centered
+   face — text goes to the left area, face stays visible on the right/center */
 .scene-hero.tab-hero .scene-overlay {
-  position: relative; z-index: 2; max-width: 600px; margin: 0 auto;
-  height: 100%; display: flex; flex-direction: column; align-items: center;
-  justify-content: flex-start; text-align: center;
-  padding: 56px 18px 10px;          /* same top/bottom padding as home seoul-scene */
-  color: var(--ios-label); box-sizing: border-box;
-  pointer-events: none; gap: 5px;
+  position: absolute; left: 18px; right: 45%; top: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  text-align: left; box-sizing: border-box;
+  color: var(--ios-label); pointer-events: none; gap: 4px;
+  text-shadow: 0 1px 6px rgba(255,255,255,.5);
 }
-/* the caption sits where home's greeting row is (upper area under header) */
-.scene-hero.tab-hero .scene-overlay > * { margin-top: auto; margin-bottom: auto; }
-.scene-hero.tab-hero .tab-hero-cap { font-size: 23px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
-.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .85; letter-spacing: .2px; }
+.scene-hero.tab-hero .tab-hero-cap { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
+.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .9; letter-spacing: .2px; }
 /* on dark time-of-day scenes flip caption to white like home */
 .scene-hero.tab-hero.scene-midnight .scene-overlay,
 .scene-hero.tab-hero.scene-predawn .scene-overlay,
