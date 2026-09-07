@@ -768,6 +768,25 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
   opacity: .9; pointer-events: none; user-select: none;
   transition: filter .6s ease, opacity .5s ease;
 }
+/* Home hero carousel: multiple scene videos stacked; only .is-active shows.
+   Outside #seoul-scene[data-hero-scenes] (single clip in tab heroes) it stays as-is. */
+#seoul-scene[data-hero-scenes] .scene-landmark { opacity: 0; pointer-events: none; }
+#seoul-scene[data-hero-scenes] .scene-landmark.is-active { opacity: .9; }
+/* carousel arrows + dots */
+.scene-carousel-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 4;
+  width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.22); color: #fff; font-size: 20px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2); opacity: 0; transition: opacity .3s;
+}
+.seoul-scene:hover .scene-carousel-nav { opacity: .9; }
+.scene-carousel-nav.prev { left: 10px; }
+.scene-carousel-nav.next { right: 10px; }
+#seoul-scene .scene-dots { position:absolute; left:0; right:0; bottom:8px; z-index:4; display:flex; gap:5px; justify-content:center; }
+.scene-dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.5); transition:all .3s; }
+.scene-dot.on { background:#fff; width:16px; border-radius:3px; }
 /* legibility scrim — always darkens the top (greeting) and bottom (meta) so the
    white text reads no matter how bright the AI art is in that scene */
 .seoul-scene::before {

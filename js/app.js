@@ -1026,11 +1026,21 @@ function viewHome() {
   const nm = myCharName();
   const mc = myChar();
   const wxc = wxCached();
+  // Home hero carousel: cycle Aran's everyday scenes (home/library/acceptance/park/goods).
+  // Home clip is the default; the others are the 4 tab-hero scenes, browsable by swipe.
+  const heroKey = heroCharKey();
+  const HERO_SCENES = (CHAR_TAB_VID[heroKey] || CHAR_TAB_VID.aran);
+  const _scenes = ['home','book','daily','rank','my'];
   const scene = `
-    <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" style="object-position:${CHAR_TAB_VID[heroCharKey()].home.pos}" aria-hidden="true">
-        <source src="${heroCharVideo()}" type="video/mp4"></video>
+    <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene" data-hero-scenes="1">
+      ${_scenes.map((tk, i) => `
+        <video class="scene-landmark ${i===0?'is-active':''}" data-scene-video="${tk}" autoplay muted loop playsinline preload="metadata"
+          style="object-position:${(HERO_SCENES[tk]||HERO_SCENES.home).pos}" aria-hidden="true">
+          <source src="${(HERO_SCENES[tk]||HERO_SCENES.home).v}" type="video/mp4"></video>`).join('')}
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
+      <button class="scene-carousel-nav prev" id="scene-caro-prev" onclick="homeCarousel(-1)" aria-label="prev">‹</button>
+      <button class="scene-carousel-nav next" id="scene-caro-next" onclick="homeCarousel(1)" aria-label="next">›</button>
+      <div class="scene-dots" id="scene-dots">${_scenes.map((_, i) => `<span class="scene-dot ${i===0?'on':''}" data-dot="${i}"></span>`).join('')}</div>
       <div class="scene-top">
         <div class="scene-txt">
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
@@ -1250,7 +1260,6 @@ function setLevel(lv) {
 function bindHome() {
   // fx face-swap cycle disabled: the avatar always shows the character's own
   // base portrait (new idol art). See startFxCycle below (kept for reference).
-  // Tapping the banner (character video area) opens the character picker.
   const scene = $id('seoul-scene');
   if (scene && typeof openCharPicker === 'function') {
     scene.addEventListener('click', (e) => {
@@ -1260,6 +1269,38 @@ function bindHome() {
       openCharPicker();
     });
   }
+  // Home hero carousel swipe support (only when multiple scene videos exist)
+  if (scene && scene.hasAttribute('data-hero-scenes')) {
+    let _sx = 0, _sy = 0, _lock = false;
+    scene.addEventListener('touchstart', (e) => {
+      const t = e.target;
+      if (t && t.closest && t.closest('button, a')) { _lock = true; return; }
+      _lock = false;
+      _sx = e.touches[0].clientX; _sy = e.touches[0].clientY;
+    }, { passive: true });
+    scene.addEventListener('touchend', (e) => {
+      if (_lock) return;
+      const dx = e.changedTouches[0].clientX - _sx;
+      const dy = e.changedTouches[0].clientY - _sy;
+      if (Math.abs(dx) > 46 && Math.abs(dx) > Math.abs(dy) * 1.4) homeCarousel(dx < 0 ? 1 : -1);
+    }, { passive: true });
+  }
+}
+
+/* Home hero carousel: switch the active scene video. dir = -1 prev / +1 next. */
+let __homeSceneIdx = 0;
+function homeCarousel(dir) {
+  const scene = $id('seoul-scene');
+  if (!scene || !scene.hasAttribute('data-hero-scenes')) return;
+  const vids = Array.from(scene.querySelectorAll('video.scene-landmark'));
+  if (vids.length < 2) return;
+  __homeSceneIdx = (__homeSceneIdx + dir + vids.length) % vids.length;
+  vids.forEach((v, i) => {
+    v.classList.toggle('is-active', i === __homeSceneIdx);
+    if (i === __homeSceneIdx) { v.currentTime = 0; v.play().catch(() => {}); }
+    else { v.pause(); v.currentTime = 0; }
+  });
+  scene.querySelectorAll('.scene-dot').forEach((d, i) => d.classList.toggle('on', i === __homeSceneIdx));
 }
 /* Open the Tammy Library viewer (standalone page loading data/tammy-library.js).
    Prefer an in-app route when running on the integrated server; fall back to a
