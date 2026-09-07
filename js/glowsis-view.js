@@ -152,15 +152,17 @@ function viewBook() {
     const unit = s && GLOWSIS_UNITS.find(x => x.id === s.unit);
     if (unit) {
       const pageNo = (s.page || 0) + 1;
+      const bId = (s && s.book) || _book.book || '1a';
       recentHTML = `
-        <div class="book-recent-glow">
+        <button class="book-recent-glow" onclick="openUnit(${unit.id}, ${(s.page||0)||0}, '${bId}')">
           <div class="brg-ico">🎤</div>
           <div class="brg-txt">
             <div class="brg-label">${LANG && LANG==='ko' ? '최근 공부한 곳' : LANG && LANG==='km' ? 'កន្លែងសិក្សាចុងក្រោយ' : 'Where you left off'}</div>
             <div class="brg-title">Glowsis Korean 1A · ${unit.no==='준비'?'준비':('Unit '+unit.no)} — ${unit.title}</div>
-            <div class="brg-sub">${LANG && LANG==='ko' ? '계속 공부하기' : LANG && LANG==='km' ? 'បន្តសិក្សា' : 'Tap to continue studying'}</div>
+            <div class="brg-sub">${LANG && LANG==='ko' ? '계속 공부하기 · 페이지 '+pageNo : LANG && LANG==='km' ? 'បន្តសិក្សា · ទំព័រ '+pageNo : 'Tap to continue · page '+pageNo}</div>
           </div>
-        </div>`;
+          <span class="brg-arr">→</span>
+        </button>`;
     }
   } catch (e) {}
   const fallback = `<span class="tab-hero-cap">TOPIK Levels 1–6</span>

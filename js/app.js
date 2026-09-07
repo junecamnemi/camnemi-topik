@@ -901,11 +901,10 @@ function render() {
   switch (APP.tab) {
     case 'home': s.innerHTML = viewHome(); bindHome(); break;
     case 'book':
-      // restore the last-read book page (unit + flip page) when returning
-      if (!(typeof restoreBookSession === 'function' && restoreBookSession())) {
-        s.innerHTML = (typeof viewBook === 'function') ? viewBook() : viewHome();
-        if (typeof window.glowEnsureReady === 'function') window.glowEnsureReady();
-      }
+      // Textbook tab always opens on the first (level/book-select) screen.
+      // The last-read unit is surfaced there as a gradient-bordered "continue" card.
+      s.innerHTML = (typeof viewBook === 'function') ? viewBook() : viewHome();
+      if (typeof window.glowEnsureReady === 'function') window.glowEnsureReady();
       break;
     case 'daily': s.innerHTML = viewDaily(); bindDaily(); break;
     case 'reading': s.innerHTML = viewSection('reading'); bindDaily(); break;
