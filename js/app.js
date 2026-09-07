@@ -946,28 +946,28 @@ const CHAR_TAB_VID = {
     home:     { v:'assets/home_bg/tabs/aran_home_hi.mp4',        pos:'center 30%' }
   },
   chaea: {
-    book:     { v:'assets/home_bg/tabs/chaea_book_sing.mp4',     pos:'center 22%' },
-    daily:    { v:'assets/home_bg/tabs/chaea_test_ending.mp4',   pos:'center 30%' },
-    rank:     { v:'assets/home_bg/tabs/chaea_rank_fight.mp4',    pos:'center 28%' },
-    my:       { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 26%' },
-    settings: { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 26%' },
-    home:     { v:'assets/home_bg/tabs/chaea_home_hi.mp4',       pos:'center 25%' }
+    book:     { v:'assets/home_bg/tabs/chaea_book_sing.mp4',     pos:'center 50%' },
+    daily:    { v:'assets/home_bg/tabs/chaea_test_ending.mp4',   pos:'center 50%' },
+    rank:     { v:'assets/home_bg/tabs/chaea_rank_fight.mp4',    pos:'center 50%' },
+    my:       { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 50%' },
+    settings: { v:'assets/home_bg/tabs/chaea_settings_music.mp4',pos:'center 50%' },
+    home:     { v:'assets/home_bg/tabs/chaea_home_hi.mp4',       pos:'center 50%' }
   },
   dahee: {
-    book:     { v:'assets/home_bg/tabs/dahee_book_sing.mp4',     pos:'center 35%' },
-    daily:    { v:'assets/home_bg/tabs/dahee_test_ending.mp4',   pos:'center 38%' },
-    rank:     { v:'assets/home_bg/tabs/dahee_rank_fight.mp4',    pos:'center 40%' },
-    my:       { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 30%' },
-    settings: { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 30%' },
-    home:     { v:'assets/home_bg/tabs/dahee_home_hi.mp4',       pos:'center 35%' }
+    book:     { v:'assets/home_bg/tabs/dahee_book_sing.mp4',     pos:'center 50%' },
+    daily:    { v:'assets/home_bg/tabs/dahee_test_ending.mp4',   pos:'center 50%' },
+    rank:     { v:'assets/home_bg/tabs/dahee_rank_fight.mp4',    pos:'center 50%' },
+    my:       { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 50%' },
+    settings: { v:'assets/home_bg/tabs/dahee_settings_music.mp4',pos:'center 50%' },
+    home:     { v:'assets/home_bg/tabs/dahee_home_hi.mp4',       pos:'center 50%' }
   },
   roy: {
-    book:     { v:'assets/home_bg/tabs/roy_book_sing.mp4',       pos:'center 40%' },
-    daily:    { v:'assets/home_bg/tabs/roy_test_ending.mp4',     pos:'center 34%' },
-    rank:     { v:'assets/home_bg/tabs/roy_rank_fight.mp4',      pos:'center 40%' },
-    my:       { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 40%' },
-    settings: { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 40%' },
-    home:     { v:'assets/home_bg/tabs/roy_home_hi.mp4',         pos:'center 38%' }
+    book:     { v:'assets/home_bg/tabs/roy_book_sing.mp4',       pos:'center 50%' },
+    daily:    { v:'assets/home_bg/tabs/roy_test_ending.mp4',     pos:'center 50%' },
+    rank:     { v:'assets/home_bg/tabs/roy_rank_fight.mp4',      pos:'center 50%' },
+    my:       { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 50%' },
+    settings: { v:'assets/home_bg/tabs/roy_settings_music.mp4',  pos:'center 50%' },
+    home:     { v:'assets/home_bg/tabs/roy_home_hi.mp4',         pos:'center 50%' }
   }
 };
 const CHAR_TAB_KEY = { 'f-01':'aran', 'f-02':'chaea', 'f-03':'dahee', 'f-04':'roy', 'f-05':'aran', 'f-06':'aran' };
@@ -1007,7 +1007,7 @@ function viewHome() {
   const wxc = wxCached();
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene">
-      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" style="object-position:center 30%" aria-hidden="true">
+      <video class="scene-landmark" id="scene-landmark" autoplay muted loop playsinline preload="metadata" style="object-position:${CHAR_TAB_VID[heroCharKey()].home.pos}" aria-hidden="true">
         <source src="${heroCharVideo()}" type="video/mp4"></video>
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <div class="scene-top">
