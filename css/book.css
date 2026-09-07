@@ -119,7 +119,7 @@
 }
 
 /* ==================== FLIP-BOOK (swipe pages) ==================== */
-.flip-wrap { display: flex; flex-direction: column; height: calc(100dvh - 232px); min-height: 240px; }
+.flip-wrap { display: flex; flex-direction: column; height: calc(100dvh - 168px); min-height: 280px; }
 .flip-top { display: flex; align-items: center; gap: 8px; padding: 2px 2px 8px; }
 .flip-unit { flex: 1; font-size: 13px; font-weight: 800; color: var(--ios-label); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .flip-restart {

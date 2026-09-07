@@ -437,23 +437,8 @@ function gotoPage(i) {
 }
 function turn(d) { gotoPage(_book.page + d); }
 function wireSwipe() {
-  const vp = document.getElementById('flip-vp');
-  if (!vp) return;
-  let x0=null, x1=null;
-  const down = e => { x0 = (e.touches ? e.touches[0].clientX : e.clientX); };
-  const move = e => { if (x0!=null) x1 = (e.touches ? e.touches[0].clientX : e.clientX); };
-  const up = () => {
-    if (x0==null || x1==null) { x0=x1=null; return; }
-    const dx = x1 - x0;
-    if (Math.abs(dx) > 60) { if (dx < 0) turn(1); else turn(-1); }
-    x0=x1=null;
-  };
-  vp.addEventListener('touchstart', down, {passive:true});
-  vp.addEventListener('touchmove', move, {passive:true});
-  vp.addEventListener('touchend', up, {passive:true});
-  vp.addEventListener('mousedown', down);
-  vp.addEventListener('mousemove', move);
-  vp.addEventListener('mouseup', up);
+  // Horizontal swipe-to-turn is disabled (too sensitive) — pages are turned via
+  // the ←/→ buttons and dots only.
 }
 /* init unit meta once data ready */
 function glowEnsureReady() { describeUnits(); }
