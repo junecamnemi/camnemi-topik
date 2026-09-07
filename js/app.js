@@ -1438,7 +1438,8 @@ function weekCalendarHTML(weekOffset) {
     const ds = dateKey(dt);
     const min = dayMin(ds);
     const isToday = dt.toDateString() === now.toDateString();
-    return `<div class="wc-day ${isToday ? 'on' : ''} ${min ? 'has' : ''}" onclick="showDayStudy('${ds}', this)">
+    const pick = weekOffset === 0 && isToday ? ' pick' : '';
+    return `<div class="wc-day ${isToday ? 'on' : ''} ${min ? 'has' : ''}${pick}" onclick="showDayStudy('${ds}', this)">
       <span class="wc-d">${d}</span><span class="wc-n">${dt.getDate()}</span>
       ${min ? `<span class="wc-dot" title="${min}m"></span>` : ''}
     </div>`;
@@ -1453,6 +1454,9 @@ function weekCalendarHTML(weekOffset) {
     : weekOffset === -2 ? (LANG === 'ko' ? '지지난 주' : LANG === 'km' ? 'សប្តាហ៍មុនៗ' : '2 weeks ago')
     : weekOffset === 1 ? (LANG === 'ko' ? '다음 주' : LANG === 'km' ? 'សប្តាហ៍ក្រោយ' : 'Next week')
     : weekOffset > 0 ? (LANG === 'ko' ? '+' + weekOffset + '주 뒤' : '+'+weekOffset+'w') : (LANG === 'ko' ? weekOffset + '주 전' : weekOffset + 'w');
+  // detail: default to today's breakdown (only for "this week"), else empty
+  const todayDS = dateKey(now);
+  const detHTML = weekOffset === 0 ? dayStudyDetailHTML(todayDS) : '';
   return `<div class="app-card wc-card" id="wc-card">
     <div class="wc-head">
       <button class="wc-nav" onclick="navStudyWeek(-1)">◀</button>
@@ -1460,8 +1464,26 @@ function weekCalendarHTML(weekOffset) {
       <button class="wc-nav" onclick="navStudyWeek(1)">▶</button>
     </div>
     <div class="wc-grid">${cells}</div>
-    <div class="wc-detail" id="wc-detail"></div>
+    <div class="wc-detail" id="wc-detail">${detHTML}</div>
   </div>`;
+}
+/* Build a single date's study breakdown HTML (used for the default-open today detail). */
+function dayStudyDetailHTML(dateStr) {
+  const all = lsGet(LS.studyTime, {});
+  const m = all[dateStr] || {};
+  const dt = new Date(dateStr + 'T00:00:00');
+  const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
+  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0);
+  const row = (k, lab, col) => { const v = m[k]||0; return v ? `<div class="wc-daystat"><span style="color:${col};">${lab}</span><b>${v}m</b></div>` : ''; };
+  return total ? `
+    <div class="wc-stat"><b>${total}m</b> ${label}</div>
+    ${row('aiRedo', 'AI Redo', 'var(--ios-purple)')}
+    ${row('reading', t('nav_reading'), 'var(--ios-blue)')}
+    ${row('listening', t('nav_listening'), 'var(--ios-teal)')}
+    ${row('vocab', t('home_task_vocab'), 'var(--ios-orange)')}
+    ${row('mock', t('home_task_mock'), 'var(--ios-pink)')}
+    ${row('book', (LANG==='ko'?'교재':'Book'), '#A78BFA')}` : `
+    <div class="wc-stat muted">${label} — ${LANG === 'ko' ? '학습 시간 없음' : LANG === 'km' ? 'គ្មានពេលសិក្សា' : 'No study time yet today'}</div>`;
 }
 /* Navigate the study-time week calendar (0 = this week, -1 = last, etc.) */
 function navStudyWeek(delta) {
