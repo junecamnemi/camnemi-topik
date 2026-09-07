@@ -714,7 +714,7 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 .seoul-scene .scene-top { min-height: 108px; align-items: center; }
 /* small "✎ Edit" button pinned to the banner's bottom-right corner */
 .char-edit-btn {
-  position: absolute; right: 12px; bottom: 34px; z-index: 3;
+  position: absolute; right: 12px; bottom: 11px; z-index: 3;
   display: inline-flex; align-items: center; gap: 3px;
   background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.38); color: #fff;
   font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 999px;
