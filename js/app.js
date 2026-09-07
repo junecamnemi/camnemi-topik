@@ -1162,8 +1162,8 @@ function viewHome() {
       </div>
     </div>`;
   // Level guidance card — top card. Before the level test it's a prompt to take
-  // it; after, it's the My-Level summary. Defined here (after levelWeakCard) so
-  // the reference is safe. Features below are ALWAYS shown for new users too.
+  // it. After, the journey card (below) is the "My Level" showing next-stage
+  // conditions; per-question performance lives in the AI TOPIK tab instead.
   const levelCard = !ltDone
     ? `<div class="app-card lt-home-card" style="margin-top:16px;">
       <div class="lt-home-ico">🎓</div>
@@ -1173,7 +1173,7 @@ function viewHome() {
       </div>
       <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
     </div>`
-    : levelWeakCard;
+    : '';
   return `
     <div class="home-bg-content">
     ${scene}
@@ -1796,9 +1796,56 @@ function viewDailySetup() {
     <div class="sec-h" style="margin-top:18px;"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
     <div class="daily-secs">${secBtns}</div>
     <button class="btn btn-primary ds-start" onclick="startDaily()">${ic('daily',18)} ${LANG==='ko'?'시작':'Start'}</button>
+    ${achievementCardHTML()}
   `;
 }
 function setDailySec(k) { APP.dailySec = k; render(); }
+/* 성취 · 약점 카드 (AI TOPIK 탭) — 문제별로 얼마나 잘하는지.
+   byLevel: 레벨별 정답률 / byType: 유형별 정답률 / 약한 유형 */
+function achievementCardHTML() {
+  try {
+    const acc = accuracyStats();
+    const byLevel = (acc.byLevel || []).filter(r => r.n > 0);
+    const byType = (acc.byType || []).filter(r => r.n > 0).sort((a, b) => a.p - b.p);
+    const weak = byType.filter(r => r.n >= 2).slice(0, 3);
+    if (!byLevel.length && !byType.length) {
+      return `<div class="app-card" style="margin-top:14px;">
+        <b style="font-size:14px;">📊 ${LANG==='ko'?'나의 성취':'My performance'}</b>
+        <p class="sub" style="margin-top:6px;">${LANG==='ko'?'문제를 풀면 유형·레벨별 정답률이 여기에 표시돼요.':'Solve questions to see your per-skill accuracy here.'}</p>
+      </div>`;
+    }
+    const lvRow = r => {
+      const label = r.k <= 2 ? (LANG==='ko'?'초급':'Beginner') : r.k <= 4 ? (LANG==='ko'?'중급':'Intermediate') : (LANG==='ko'?'고급':'Advanced');
+      return `<div class="lw-row"><span class="lw-name">${label}</span>
+        <span class="lw-bar"><span style="width:${r.p}%;"></span></span>
+        <span class="lw-pct">${r.p}%</span></div>`;
+    };
+    const tyRow = s => `<div class="lw-row"><span class="lw-name">${esc(typeLabel(s.k))}</span>
+      <span class="lw-bar"><span style="width:${s.p}%;"></span></span>
+      <span class="lw-pct">${s.p}%</span></div>`;
+    return `<div class="app-card lw-card" style="margin-top:14px;">
+      <b style="font-size:14px;">📊 ${LANG==='ko'?'나의 성취':'My performance'}</b>
+      ${byLevel.length ? `
+      <div class="lw-divider" style="margin-top:8px;"></div>
+      <div class="lw-weak" style="margin-top:6px;">
+        <div class="lw-weak-label">🗂 ${LANG==='ko'?'레벨별 정답률':'By level'}</div>
+        ${byLevel.map(lvRow).join('')}
+      </div>` : ''}
+      ${byType.length ? `
+      <div class="lw-weak" style="margin-top:8px;">
+        <div class="lw-weak-label">🧩 ${LANG==='ko'?'유형별 정답률':'By skill'}</div>
+        ${byType.map(tyRow).join('')}
+      </div>` : ''}
+      ${weak.length ? `
+      <div class="lw-weak" style="margin-top:8px;border-top:1px dashed rgba(139,92,246,.2);padding-top:8px;">
+        <div class="lw-weak-label" style="color:var(--ios-orange);">🎯 ${LANG==='ko'?'추천 복습':'Practice these'}</div>
+        ${weak.map(s => `<div class="lw-row"><span class="lw-name">${esc(typeLabel(s.k))}</span>
+          <span class="lw-bar" style="--bar:#f59e0b;"><span style="width:${s.p}%;background:#f59e0b;"></span></span>
+          <span class="lw-pct">${s.p}%</span></div>`).join('')}
+      </div>` : ''}
+    </div>`;
+  } catch (e) { return ''; }
+}
 function startDaily() {
   APP.dailyStarted = true;
   buildDaily();
@@ -2670,39 +2717,61 @@ function currentJourney() {
     return window.idolJourneyProgress(hours, qs, acc);
   } catch (e) { return null; }
 }
-/* 홈/여정에 쓰는 아이돌 성장 카드 HTML */
+/* 홈 'My Level' 카드 — 현재 레벨과 다음 보상(다음 스테이지)까지 남은 조건 표시 */
 function journeyCardHTML() {
   try {
     const j = currentJourney();
     if (!j || !window.IDOL_JOURNEY) return '';
     const J = window.IDOL_JOURNEY;
-    const L = J.levels[j.lv - 1];
-    const levelStars = '★'.repeat(j.lv) + '☆'.repeat(6 - j.lv);
-    // 진행바: 이 레벨에서 10단계 중 몇 단계까지
-    const stepPct = Math.round((j.stageIdx - 1) / 10 * 100);
-    const accOK = j.acc >= J.accGate;
-    const rewardLine = j.lvDone ? '🎉 ' + L.reward
-      : j.lvAccBlocked ? `🔒 ${L.reward} — 정답률 ${J.accGate}% 이상 필요 (현재 ${j.acc}%)`
-      : `다음 보상: ${L.reward}`;
-    return `<div class="app-card journey-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
+    // 레벨 라벨: Lv0 → "Lv0", Lv1..Lv6
+    const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
+    const stageName = j.stageName || '';
+    const accOK = j.acc >= j.accGate;
+    // 진행바: 이번 레벨 구간(100h·100q) 진행률 — 시간 기준 + 정답률 표시
+    const barPct = j.segPct;
+    // 상태 텍스트
+    let status;
+    if (j.maxed) status = '🏆 ' + j.lvReward;
+    else if (j.lvAccBlocked) status = `🔒 보상 해금하려면 정답률 ${j.accGate}% 필요 (현재 ${j.acc}%)`;
+    else if (j.lv === 0) status = `${j.totalH}시간 · ${j.totalQ}문제를 채워 데뷔팀 후보로!`;
+    else status = `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}`;
+    return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
-        <div style="font-size:26px;line-height:1;flex:none;">${j.lv >= 5 ? '🌍' : j.lv >= 3 ? '🎤' : '⭐'}</div>
+        <div class="ml-badge" style="flex:none;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:0 4px 14px rgba(124,58,237,.3);">
+          <span style="font-size:16px;">${lvBadge}</span>
+        </div>
         <div style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:6px;">
-            <b style="font-size:15px;">${esc(j.levelName)}</b>
-            <span style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;">${levelStars}</span>
+            <b style="font-size:15px;">${esc(j.lvName)}</b>
           </div>
-          <div style="font-size:12px;color:var(--ios-purple);font-weight:700;margin-top:1px;">${j.stageIdx}/10 · ${esc(j.stageName)}</div>
+          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${j.totalH}시간 · ${j.totalQ}문제</div>
         </div>
-        <button class="btn btn-ghost btn-sm" onclick="openJourneyDetail()" style="font-size:11px;padding:5px 10px;color:var(--ios-purple);border:1px solid rgba(139,92,246,.4);flex:none;">상세</button>
+        <div style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;flex:none;">단계 ${j.stageIdx}/10</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
-        <div style="flex:1;height:8px;border-radius:99px;background:rgba(139,92,246,.14);overflow:hidden;">
-          <div style="width:${stepPct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#EC4899);"></div>
+      ${j.maxed ? '' : `
+      <div class="ml-cond" style="margin-top:12px;border-top:1px dashed rgba(139,92,246,.25);padding-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-size:11px;font-weight:800;color:var(--ios-purple);">NEXT · ${j.nextStage ? esc(j.nextStage.replace('Lv','Lv ')) : ''}</span>
+          <span style="font-size:11px;font-weight:700;">정답률 ${j.acc}% / ${j.accGate}%</span>
         </div>
-        <span style="font-size:10.5px;font-weight:700;color:var(--ios-purple);">${j.totalH}시간 · ${j.totalQ}문제</span>
-      </div>
-      <div style="font-size:11px;font-weight:600;margin-top:7px;color:${j.lvDone ? '#16a34a' : j.lvAccBlocked ? '#d97706' : 'var(--ios-label)'};">${rewardLine}</div>
+        <div style="display:flex;gap:8px;margin-top:7px;">
+          <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
+            <div style="font-size:9px;font-weight:700;opacity:.65;">남은 공부</div>
+            <b style="font-size:15px;">${j.remH}h</b>
+          </div>
+          <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
+            <div style="font-size:9px;font-weight:700;opacity:.65;">남은 문제</div>
+            <b style="font-size:15px;">${j.remQ}</b>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:9px;">
+          <div style="flex:1;height:7px;border-radius:99px;background:rgba(139,92,246,.14);overflow:hidden;">
+            <div style="width:${barPct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#EC4899);"></div>
+          </div>
+          <span style="font-size:10px;font-weight:700;color:var(--ios-purple);">${barPct}%</span>
+        </div>
+      </div>`}
+      <div style="font-size:10.5px;font-weight:600;margin-top:8px;color:${j.maxed ? '#16a34a' : j.lvAccBlocked ? '#d97706' : 'var(--ios-secondary-label)'};">${status}</div>
     </div>`;
   } catch (e) { return ''; }
 }
