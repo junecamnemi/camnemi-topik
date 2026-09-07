@@ -3272,6 +3272,17 @@ function recordResult(q, correct) {
   if (correct) p.correct += 1;
   prog[q.id] = p;
   lsSet(LS.progress, prog);
+  // today-solved registry: every answer (daily 10, AI TOPIK sections, mock, AI Redo,
+  // review) funnels through recordResult, so mark the question on today's date here.
+  // Keeps existing daily.done values (real answer picks) intact; only fills blanks.
+  try {
+    const today = todayStr();
+    const dl = lsGet(LS.daily, {});
+    if (!dl[today] || typeof dl[today] !== 'object') dl[today] = { done: {} };
+    if (!dl[today].done) dl[today].done = {};
+    if (dl[today].done[q.id] === undefined) dl[today].done[q.id] = '✓';
+    lsSet(LS.daily, dl);
+  } catch (e) {}
   // XP: correct +10, wrong +3 · daily quest counter
   addXP(correct ? XP_RULES.correct : XP_RULES.wrong, 'answer:' + (correct ? 'c' : 'w'));
   bumpQuest('daily', 1);
