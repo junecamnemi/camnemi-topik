@@ -231,9 +231,16 @@ let _unitMeta = {};
 
 function describeUnits() {
   GLOWSIS_UNITS.length = 0;
-  const titles = ['Hangul First Steps','Hello!','I\'m a Singer','What is This?','Debut is in May','I Like Singing','Tteokbokki is Spicy','I\'m in the Practice Room','What Did You Do Yesterday?'];
-  const ens = ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'];
-  bookUnits().forEach((b) => GLOWSIS_UNITS.push({ id:b.id, no:(b.id===0?'준비':b.id), title:titles[b.id], en:ens[b.id] }));
+  // 1A units in glowsis-book.js carry no per-unit title, so keep a fallback map
+  // for 1A only. 1B / 2A units define their own title + en in data.
+  const fallbackTitles = ['Hangul First Steps','Hello!','I\'m a Singer','What is This?','Debut is in May','I Like Singing','Tteokbokki is Spicy','I\'m in the Practice Room','What Did You Do Yesterday?'];
+  const fallbackEns = ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'];
+  bookUnits().forEach((b) => GLOWSIS_UNITS.push({
+    id: b.id,
+    no: (b.id === 0 ? '준비' : b.id),
+    title: b.title || fallbackTitles[b.id] || ('Unit ' + b.id),
+    en: b.en || fallbackEns[b.id] || ''
+  }));
 }
 
 /* group a unit's raw sections into flip pages (natural book-like chunks).
