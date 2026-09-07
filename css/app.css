@@ -623,9 +623,9 @@ body.has-back .app-header .brand { margin-left: 34px; }
 }
 
 /* home: AI TOPIK + TextBook core tiles — tall stacked banners with video bg */
-.home-tiles { display: flex; flex-direction: row; gap: 14px; margin-top: 16px; }
+.home-tiles { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
 .home-tile {
-  position: relative; overflow: hidden; flex: 1; width: 0; min-height: 200px; border-radius: 20px;
+  position: relative; overflow: hidden; width: 100%; min-height: 230px; border-radius: 20px;
   display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer;
   border: none; padding: 0;
   font-family: var(--ios-font, system-ui); color: #fff;
