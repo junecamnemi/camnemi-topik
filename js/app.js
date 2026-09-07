@@ -2743,7 +2743,7 @@ function journeyCardHTML() {
     let status;
     if (j.maxed) status = '🏆 ' + j.lvReward;
     else if (j.lvAccBlocked) status = `🔒 보상 해금하려면 정답률 ${j.accGate}% 필요 (현재 ${j.acc}%)`;
-    else if (j.lv === 0) status = `${totalHStr}를 채워 데뷔팀 후보로!`;
+    else if (j.lv === 0) status = `${totalHStr} · ${j.totalQ}문제를 채워 데뷔팀 후보로!`;
     else status = `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}`;
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
