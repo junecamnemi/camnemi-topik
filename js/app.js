@@ -1178,6 +1178,7 @@ function viewHome() {
     <div class="home-bg-content">
     ${scene}
     ${levelCard}
+    ${journeyCardHTML()}
     <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
     ${aiRedoHome}
     <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2><span class="sub">${LANG==='ko'?'영역별로 풀기':'Practice by skill'}</span></div>
@@ -2639,6 +2640,73 @@ function accuracyStats() {
     })()
   };
 }
+
+/* ---------- Idol journey (아이돌 성장 여정) ---------- */
+/* 총 누적 공부 시간(분) — reading/listening/vocab/mock/aiRedo/book 전부.
+   (문제 푸는 시간도 reading/listening/vocab/mock으로 studyTime에 이미 기록됨) */
+function totalStudyMinutes() {
+  const all = lsGet(LS.studyTime, {});
+  let sum = 0;
+  Object.keys(all).forEach(d => {
+    const m = all[d] || {};
+    Object.keys(m).forEach(k => { const v = m[k]; if (typeof v === 'number' && v > 0) sum += v; });
+  });
+  return sum;
+}
+/* 총 누적 푼 문제 수 (progress의 total 합) */
+function totalSolvedQuestions() {
+  const prog = lsGet(LS.progress, {});
+  let n = 0;
+  Object.keys(prog).forEach(id => { const p = prog[id]; if (p && p.total) n += p.total; });
+  return n;
+}
+/* 현재 아이돌 여정 진행 — 실데이터 연결 */
+function currentJourney() {
+  try {
+    if (!window.IDOL_JOURNEY || !window.idolJourneyProgress) return null;
+    const hours = totalStudyMinutes() / 60;
+    const qs = totalSolvedQuestions();
+    const acc = (typeof accuracyStats === 'function' ? accuracyStats().overall : 0);
+    return window.idolJourneyProgress(hours, qs, acc);
+  } catch (e) { return null; }
+}
+/* 홈/여정에 쓰는 아이돌 성장 카드 HTML */
+function journeyCardHTML() {
+  try {
+    const j = currentJourney();
+    if (!j || !window.IDOL_JOURNEY) return '';
+    const J = window.IDOL_JOURNEY;
+    const L = J.levels[j.lv - 1];
+    const levelStars = '★'.repeat(j.lv) + '☆'.repeat(6 - j.lv);
+    // 진행바: 이 레벨에서 10단계 중 몇 단계까지
+    const stepPct = Math.round((j.stageIdx - 1) / 10 * 100);
+    const accOK = j.acc >= J.accGate;
+    const rewardLine = j.lvDone ? '🎉 ' + L.reward
+      : j.lvAccBlocked ? `🔒 ${L.reward} — 정답률 ${J.accGate}% 이상 필요 (현재 ${j.acc}%)`
+      : `다음 보상: ${L.reward}`;
+    return `<div class="app-card journey-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:26px;line-height:1;flex:none;">${j.lv >= 5 ? '🌍' : j.lv >= 3 ? '🎤' : '⭐'}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <b style="font-size:15px;">${esc(j.levelName)}</b>
+            <span style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;">${levelStars}</span>
+          </div>
+          <div style="font-size:12px;color:var(--ios-purple);font-weight:700;margin-top:1px;">${j.stageIdx}/10 · ${esc(j.stageName)}</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="openJourneyDetail()" style="font-size:11px;padding:5px 10px;color:var(--ios-purple);border:1px solid rgba(139,92,246,.4);flex:none;">상세</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+        <div style="flex:1;height:8px;border-radius:99px;background:rgba(139,92,246,.14);overflow:hidden;">
+          <div style="width:${stepPct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#EC4899);"></div>
+        </div>
+        <span style="font-size:10.5px;font-weight:700;color:var(--ios-purple);">${j.totalH}시간 · ${j.totalQ}문제</span>
+      </div>
+      <div style="font-size:11px;font-weight:600;margin-top:7px;color:${j.lvDone ? '#16a34a' : j.lvAccBlocked ? '#d97706' : 'var(--ios-label)'};">${rewardLine}</div>
+    </div>`;
+  } catch (e) { return ''; }
+}
+function openJourneyDetail() { go('my'); }
 
 /* 정답률 바 렌더 헬퍼 */
 function toggleTip(btn) {
