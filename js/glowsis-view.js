@@ -210,15 +210,19 @@ function openBookUnits(bookId) {
     <div class="bu-head">
       <button class="back-btn-mini" onclick="backToBookLevels()">← Levels</button>
       <h2>${m.ico} ${m.title}</h2>
-      <p class="bu-sub">유닛을 골라 공부를 시작하세요</p>
+      <p class="bu-sub">${LANG==='ko'?'유닛을 골라 공부를 시작하세요':'Pick a unit to start studying'}</p>
     </div>
     <div class="bu-list">
-      ${units.map(u => `
+      ${units.map(u => {
+        const ut = u.title || fallbackUnitTitle(m.id, u.id);
+        const ue = u.en || (m.id === '1a' ? ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'][u.id] : '');
+        const noLabel = (u.id === 0 && LANG === 'ko') ? '준비' : (u.id === 0 && LANG !== 'ko') ? 'Prep' : u.id;
+        return `
         <button class="bu-item" onclick="openUnit(${u.id},0,'${m.id}')">
-          <span class="bu-no">${u.id===0?'준비':u.id}</span>
-          <span class="bu-info"><b>${u.title}</b><small>${u.en||''}</small></span>
+          <span class="bu-no">${noLabel}</span>
+          <span class="bu-info"><b>${ut}</b><small>${ue}</small></span>
           <span class="bu-arr">→</span>
-        </button>`).join('')}
+        </button>`;}).join('')}
     </div>
   </div>`;
   window.scrollTo(0, 0);
@@ -241,6 +245,13 @@ function describeUnits() {
     title: b.title || fallbackTitles[b.id] || ('Unit ' + b.id),
     en: b.en || fallbackEns[b.id] || ''
   }));
+}
+/* Unit title for books whose data lacks per-unit titles (1A). En by default. */
+function fallbackUnitTitle(bookId, id) {
+  const en = ['Hangul First Steps','Hello!','I\'m a Singer','What is This?','Debut is in May','I Like Singing','Tteokbokki is Spicy','I\'m in the Practice Room','What Did You Do Yesterday?'][id];
+  if (bookId !== '1a') return 'Unit ' + id;
+  if (LANG === 'ko') return ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'][id] || ('Unit ' + id);
+  return en || ('Unit ' + id);
 }
 
 /* group a unit's raw sections into flip pages (natural book-like chunks).
