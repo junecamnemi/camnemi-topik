@@ -983,6 +983,7 @@ function tabHeroHTML(tab, overlay) {
     <video autoplay muted loop playsinline preload="metadata" style="object-position:${clip.pos}">
       <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
+    <button class="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}" style="bottom:34px;color:#fff;">✎ Edit</button>
   </div>`;
 }
 function capLabel(tab) {
