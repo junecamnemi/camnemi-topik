@@ -117,7 +117,8 @@ const GLOWSIS_BOOKS = [
   { id: '2a', title: 'Glowsis Korean 2A', ico: '🎧', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2A' },
   { id: '2b', title: 'Glowsis Korean 2B', ico: '🎧', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2B' },
   { id: '3a', title: 'Glowsis Korean 3A', ico: '🎤', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3A' },
-  { id: '3b', title: 'Glowsis Korean 3B', ico: '🎵', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3B' }
+  { id: '3b', title: 'Glowsis Korean 3B', ico: '🎵', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3B' },
+  { id: '4a', title: 'Glowsis Korean 4A', ico: '🎤', sub: 'Upper-Intermediate · 10 units', var: 'GLOWSIS_4A' }
 ];
 function bookMeta(id) { return GLOWSIS_BOOKS.find(b => b.id === id) || GLOWSIS_BOOKS[0]; }
 function bookUnits(id) { const m = bookMeta(id || _book.book); return (window[m.var] || []).slice(); }
