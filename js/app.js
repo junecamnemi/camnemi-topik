@@ -1178,12 +1178,13 @@ function viewHome() {
     <div class="home-bg-content">
     ${scene}
     ${levelCard}
-    ${statusCardHTML()}
     ${journeyCardHTML()}
     <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
     ${aiRedoHome}
     <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2><span class="sub">${LANG==='ko'?'영역별로 풀기':'Practice by skill'}</span></div>
     ${aiQuick}
+    <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
+    ${statusCardHTML()}
     ${studyCard}
     ${isNew ? '' : `
     <div class="sec-h"><h2>${ic('chart',15)} ${t('avg_acc')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
@@ -2718,7 +2719,7 @@ function currentJourney() {
     return window.idolJourneyProgress(hours, qs, acc);
   } catch (e) { return null; }
 }
-/* 홈 'My Status' 카드 — 오늘 진행 + 누적 요약 칩. 레벨(여정) 카드 위에 표시. */
+/* 홈 'My Status' 카드 — 오늘 진행 + 누적 요약 칩. 제목은 별도 섹션 헤더로. 각 칩 탭하면 설명 모달. */
 function statusCardHTML() {
   try {
     const today = todayStr ? todayStr() : new Date().toISOString().slice(0, 10);
@@ -2729,26 +2730,60 @@ function statusCardHTML() {
     const streak = lsGet(LS.streak, { count: 0 });
     const acc = (typeof accuracyStats === 'function' ? accuracyStats().overall : 0);
     const solvedToday = (ds && ds.solved) || 0;
+    const totalSolved = totalSolvedQuestions();
     const minStr = todayMin <= 0 ? '0m' : (todayMin >= 60 ? Math.floor(todayMin/60)+'h '+(todayMin%60)+'m' : todayMin+'m');
-    const chip = (ico, val, label) => `
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:4px 2px;">
-        <div style="font-size:9px;font-weight:800;letter-spacing:.4px;opacity:.55;">${ico} ${label}</div>
-        <b style="font-size:17px;font-weight:900;line-height:1.1;">${val}</b>
-      </div>`;
+    const ko = LANG === 'ko';
+    // (key, icon, value, label, descKo, descEn)
+    const items = [
+      ['today','📘', solvedToday, ko?'오늘':'Today', ko?'오늘 푼 문제 수예요.':'Questions solved today.'],
+      ['study','⏱️', minStr, ko?'공부':'Study', ko?'오늘 공부한 총 시간(문제 풀이 포함)이에요.':'Total study time today (incl. solving questions).'],
+      ['streak','🔥', streak.count, ko?'연속':'Streak', ko?'매일 문제를 푼 연속 일수예요. 하루라도 빠지면 0부터 다시 시작돼요.':'Days in a row you\'ve kept learning — miss a day and it resets.'],
+      ['acc','🎯', acc + '%', ko?'정답률':'Accuracy', ko?'전체 문제 중 맞힌 비율이에요.':'Your correct-answer rate across all questions.'],
+      ['solved','🧭', totalSolved, ko?'누적':'Solved', ko?'지금까지 푼 문제 총 개수예요.':'Total questions you\'ve solved so far.']
+    ];
+    const chip = (it) => `
+      <button onclick="showStatusInfo('${it[0]}')" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:6px 2px;background:none;border:none;cursor:pointer;border-radius:14px;color:var(--ios-label);-webkit-tap-highlight-color:transparent;">
+        <div style="font-size:15px;line-height:1;">${it[1]}</div>
+        <b style="font-size:17px;font-weight:900;line-height:1.15;">${it[2]}</b>
+        <div style="font-size:8.5px;font-weight:600;opacity:.6;margin-top:1px;">${it[3]}</div>
+      </button>`;
+    const chipsRow = items.map(chip).join('');
     return `<div class="app-card my-status-card">
-      <div style="display:flex;border-bottom:1px solid var(--ios-separator,rgba(0,0,0,.06));padding-bottom:6px;">
-        <b style="font-size:12.5px;font-weight:900;flex:1;">${LANG==='ko'?'My Status':'My Status'}</b>
-        <span style="font-size:10px;color:var(--ios-secondary-label);font-weight:600;">${solvedToday} today · ${minStr}</span>
-      </div>
-      <div style="display:flex;margin-top:8px;">
-        ${chip('📘', solvedToday, LANG==='ko'?'오늘 문제':'today')}
-        ${chip('⏱️', minStr, LANG==='ko'?'오늘 공부':'study')}
-        ${chip('🔥', streak.count, LANG==='ko'?'연속':'streak')}
-        ${chip('🎯', acc + '%', LANG==='ko'?'정답률':'acc.')}
-        ${chip('🧭', totalSolvedQuestions(), LANG==='ko'?'누적':'solved')}
-      </div>
+      <div style="display:flex;">${chipsRow}</div>
     </div>`;
   } catch (e) { return ''; }
+}
+/* My Status 아이콘 설명 모달 (경량 오버레이) */
+function showStatusInfo(key) {
+  const ko = LANG === 'ko';
+  const m = {
+    today:  ['📘', ko?'오늘 푼 문제':'Today solved', ko?'오늘 푼 문제 수예요.':'Questions you solved today.'],
+    study:  ['⏱️', ko?'오늘 공부 시간':'Study today', ko?'오늘 공부한 총 시간이에요. 문제를 푸는 시간도 포함돼요.':'Total study time today, including time solving questions.'],
+    streak: ['🔥', ko?'연속 학습':'Study streak', ko?'날마다 문제를 푼 연속 일수예요. 하루라도 빠지면 0부터 다시 시작돼요.':'Days in a row you have studied. Miss a day and it restarts from 0.'],
+    acc:    ['🎯', ko?'정답률':'Accuracy', ko?'전체 문제 중 맞힌 비율이에요. 70% 이상이면 다음 아이돌 보상을 해금해요.':'Share of questions you answered correctly. Reach 70%+ to unlock the next idol reward.'],
+    solved: ['🧭', ko?'누적 푼 문제':'Total solved', ko?'지금까지 푼 문제의 총 개수예요. 100문제마다 한 레벨씩 올라갑니다.':'Total questions you have solved. Every 100 questions you go up one level.']
+  }[key] || ['❔','',''];
+  try {
+    let box = document.getElementById('status-modal');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'status-modal';
+      box.style.cssText = 'position:fixed;inset:0;z-index:300;background:rgba(30,25,50,.42);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:28px;';
+      box.onclick = (e) => { if (e.target === box) closeStatusModal(); };
+      document.body.appendChild(box);
+    }
+    box.innerHTML = `<div style="background:var(--ios-card,#fff);max-width:340px;width:100%;border-radius:22px;padding:22px;box-shadow:0 18px 50px rgba(30,25,50,.35);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:26px;">${m[0]}</span>
+        <b style="font-size:17px;font-weight:900;flex:1;">${m[1]}</b>
+      </div>
+      <p style="font-size:14px;color:var(--ios-secondary-label);line-height:1.5;margin:12px 0 0;font-weight:500;">${m[2]}</p>
+      <button onclick="closeStatusModal()" style="margin-top:18px;width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;font-weight:800;font-size:15px;cursor:pointer;">${ko?'확인':'Got it'}</button>
+    </div>`;
+  } catch (e) { if (typeof toast === 'function') toast(m[0] + ' ' + m[1] + ' — ' + m[2]); }
+}
+function closeStatusModal() {
+  const b = document.getElementById('status-modal'); if (b) b.remove();
 }
 
 /* 홈 'My Level' 카드 — 현재 레벨과 다음 보상(다음 스테이지)까지 남은 조건 표시 */
