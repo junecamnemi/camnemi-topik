@@ -12,7 +12,7 @@ services:
       - key: CAMNEMI_APP_ROOT
         value: /opt/render/project/src
       - key: NOUS_MODEL
-        value: deepseek/deepseek-v4-pro
+        value: deepseek/deepseek-v4-flash-0731
       # Set NOUS_API_KEY in the Render dashboard (secrets) — NOT committed here
       - key: PYTHON_VERSION
         value: 3.11.0
