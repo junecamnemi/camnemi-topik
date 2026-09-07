@@ -24,17 +24,13 @@ const APP = {
    Priority:
    1. window.CAMNEMI_AI_BASE (set by js/config.js on the integrated tunnel server)
    2. Local dev (localhost / 127.0.0.1) -> ai_server.py on :9001
-   3. GitHub Pages (junecamnemi.github.io) -> cloudflared tunnel to the PC's ai_server
-   4. Anything else (tunnel URL itself) -> same-origin /api
-   NOTE: the Pages fallback tunnel URL changes whenever cloudflared restarts;
-   update TUNNEL_AI_BASE here when it does. */
-const TUNNEL_AI_BASE = 'https://jane-dam-been-voltage.trycloudflare.com';
+   3. Deployed (any remote) -> Render AI backend (always-on, HTTPS)
+   NOTE: Render free tier sleeps after ~15 min idle; first hit re-warms (~30-60s). */
+const TUNNEL_AI_BASE = 'https://camnemi-topik-ai.onrender.com';
 const AI_API_BASE = (window.CAMNEMI_AI_BASE || (
   /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname)
     ? 'http://127.0.0.1:9001'
-    : /github\.io$/.test(location.hostname)
-      ? TUNNEL_AI_BASE
-      : '/api'
+    : TUNNEL_AI_BASE   // deployed (github.io / any remote) → Render AI backend
 ));
 /* AI endpoint helper: base may already include /api (tunnel same-origin) or not (localhost/tunnel URL) */
 function aiUrl(path) {
