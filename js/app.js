@@ -735,6 +735,14 @@ function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
 function go(tab, noPush) {
+  // Bottom-tab navigation always escapes the AI Redo / level-test overlay.
+  // AI Redo is a short in-line solver; leaving via a main tab dismisses it
+  // (its result is not graded until you finish, so nothing is lost).
+  const MAIN_TABS = { home:1, book:1, daily:1, rank:1, my:1 };
+  if (MAIN_TABS[tab]) {
+    if (APP.aiRedo) { recordAIRedoTime(); APP.aiRedo = null; APP.aiRedoLoading = false; }
+    if (APP.lt) { APP.lt = null; }
+  }
   if (tab !== APP.tab) {
     if (!noPush) {
       APP.navStack.push(APP.tab);
@@ -1052,18 +1060,26 @@ function viewHome() {
       <span class="aq-redo-badge">×5</span>
       <span class="aq-arr">→</span>
     </button>`;
-  // Core feature tiles: AI TOPIK + Textbook, half / half (Textbook animated)
+  // Core feature tiles: AI TOPIK + Textbook, tall stacked banners with video backgrounds
   const featureTilesHTML = `
     <div class="home-tiles">
       <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
-        <span class="ht-ico">${ic('spark',30)}</span>
-        <span class="ht-t">AI TOPIK</span>
-        <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
+        <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <source src="assets/home_bg/aran_ai_gen_topik_silent.mp4" type="video/mp4"></video>
+        <span class="ht-cap">
+          <span class="ht-ico">${ic('spark',30)}</span>
+          <span class="ht-t">AI TOPIK</span>
+          <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
+        </span>
       </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
-        <span class="ht-ico">📖</span>
-        <span class="ht-t">Textbook</span>
-        <span class="ht-s">${LANG==='ko'?'아이돌과 함께 배워요':'Learn with your idols'}</span>
+        <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <source src="assets/home_bg/aran_study_room_silent.mp4" type="video/mp4"></video>
+        <span class="ht-cap">
+          <span class="ht-ico">📖</span>
+          <span class="ht-t">Textbook</span>
+          <span class="ht-s">${LANG==='ko'?'아이돌과 함께 배워요':'Learn with your idols'}</span>
+        </span>
       </button>
     </div>`;
   // Today's Schedule — compact 2×2 grid (clean)
