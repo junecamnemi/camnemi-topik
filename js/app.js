@@ -1062,7 +1062,7 @@ function viewHome() {
       <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
         <span class="ht-ico">${ic('spark',30)}</span>
         <span class="ht-t">AI TOPIK</span>
-        <span class="ht-s">${LANG==='ko'?'틀린 문제로 유사 5문제':'5 similar problems'}</span>
+        <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
       </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
         <span class="ht-ico">📖</span>

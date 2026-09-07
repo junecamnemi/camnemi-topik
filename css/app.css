@@ -635,13 +635,21 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile .ht-t { font-size: 16px; font-weight: 900; }
 .home-tile .ht-s { font-size: 11px; font-weight: 600; opacity: .88; line-height:1.3; }
 .home-tile:active { transform: scale(.97); }
-/* AI TOPIK tile — vibrant brand gradient, white text */
+/* AI TOPIK tile — vibrant animated brand gradient, white text, taller */
 .home-tile.ai-redo-tile {
-  background: linear-gradient(135deg, #6D28D9, #9333EA 35%, #DB2777 70%, #F59E0B);
+  background: linear-gradient(135deg, #6D28D9, #9333EA 25%, #DB2777 50%, #F59E0B 75%, #6D28D9);
+  background-size: 300% 300%;
   color: #fff; border: none; box-shadow: 0 8px 24px rgba(124,58,237,.32);
+  animation: aiTopikGrad 7s ease-in-out infinite;
+  padding: 34px 12px;
+}
+@keyframes aiTopikGrad {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
 }
 .home-tile.ai-redo-tile .ht-t { background: linear-gradient(90deg,#fff,#ffe9f6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-.home-tile.ai-redo-tile .ht-s { opacity: .92; }
+.home-tile.ai-redo-tile .ht-s { opacity: .94; }
 .home-tile.textbook-tile {
   background: linear-gradient(135deg, #eef4ff, #e9f7fb);
   animation: tbGlow 3s ease-in-out infinite;
