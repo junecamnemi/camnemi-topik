@@ -2735,7 +2735,7 @@ function statusCardHTML() {
         <div style="font-size:9px;font-weight:800;letter-spacing:.4px;opacity:.55;">${ico} ${label}</div>
         <b style="font-size:17px;font-weight:900;line-height:1.1;">${val}</b>
       </div>`;
-    return `<div class="app-card my-status-card" style="margin-top:16px;border:1px solid rgba(139,92,246,.16);background:var(--card,#fff);">
+    return `<div class="app-card my-status-card">
       <div style="display:flex;border-bottom:1px solid var(--ios-separator,rgba(0,0,0,.06));padding-bottom:6px;">
         <b style="font-size:12.5px;font-weight:900;flex:1;">${LANG==='ko'?'My Status':'My Status'}</b>
         <span style="font-size:10px;color:var(--ios-secondary-label);font-weight:600;">${solvedToday} today · ${minStr}</span>
