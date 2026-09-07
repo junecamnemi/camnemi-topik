@@ -1010,14 +1010,8 @@ function viewHome() {
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
           <p class="greet-s">${t('home_greet_sub')}</p>
         </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;z-index:2;">
-          <div class="greet-avatar ${glowUnlocked() ? 'glow-ring' : ''}" id="greet-avatar" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
-            ${crownUnlocked() ? '<span class="avatar-crown">👑</span>' : ''}
-            <span class="avatar-clip"><img id="greet-avatar-img" src="${charFace(mc)}" alt="mascot"></span>
-            <span class="avatar-edit">✎</span>
-          </div>
-        </div>
       </div>
+      <button class="char-edit-btn" id="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎ Edit</button>
       <div class="scene-meta">
         <span class="wx-chip" id="wx-chip">${wxc ? greetWxText(wxc) : (LANG === 'ko' ? '서울 · --°' : 'Seoul · --°')}</span>
         <span class="meta-dot">•</span>
@@ -1206,10 +1200,15 @@ function setLevel(lv) {
 function bindHome() {
   // fx face-swap cycle disabled: the avatar always shows the character's own
   // base portrait (new idol art). See startFxCycle below (kept for reference).
-  const im = $id('greet-avatar-img');
-  if (im) {
-    const mc = myChar();
-    im.src = (mc && mc.face) ? mc.face : (mc ? mc.img : '');
+  // Tapping the banner (character video area) opens the character picker.
+  const scene = $id('seoul-scene');
+  if (scene && typeof openCharPicker === 'function') {
+    scene.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.closest && t.closest('.char-edit-btn')) return;   // let the Edit button handle it
+      if (t && t.closest && t.closest('button, a')) return;        // don't hijack other controls
+      openCharPicker();
+    });
   }
 }
 /* Open the Tammy Library viewer (standalone page loading data/tammy-library.js).
