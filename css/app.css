@@ -161,6 +161,15 @@ body.has-back .app-header .brand { margin-left: 34px; }
 [data-theme="dark"] .back-btn { background: var(--ios-fill); color: var(--ios-label); }
 [data-theme="dark"] .app-header { background: rgba(14, 13, 23, .45); }
 .app-header .brand { font-size: 16px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ios-label); }
+/* Glowsis AI TOPIK — animated shimmer gradient wordmark (login-hero style, always shimmering) */
+.brand-glow {
+  background: linear-gradient(90deg,#7C3AED 0%,#A78BFA 20%,#EC4899 45%,#F59E0B 65%,#A78BFA 85%,#7C3AED 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: brandShift 4s linear infinite;
+}
+@keyframes brandShift { 0%{ background-position:0% center; } 100%{ background-position:220% center; } }
 .app-header .brand .logo {
   width: 30px; height: 30px; font-size: 14px; border-radius: 9px;
   background: var(--grad-brand); color: #fff;

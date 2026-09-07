@@ -1,7 +1,7 @@
 {
-  "name": "Camnemi TOPIK",
-  "short_name": "Camnemi TOPIK",
-  "description": "AI-powered TOPIK test prep: daily questions, mock tests, wrong-answer notes, weak-spot review, exam schedule by country.",
+  "name": "Glowsis AI TOPIK",
+  "short_name": "Glowsis TOPIK",
+  "description": "AI-powered TOPIK test prep with K-pop idols: daily questions, mock tests, wrong-answer notes, weak-spot review, exam schedule by country.",
   "start_url": "/camnemi-topik/app.html",
   "scope": "/camnemi-topik/",
   "display": "standalone",
