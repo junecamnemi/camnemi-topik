@@ -1065,7 +1065,7 @@ function viewHome() {
     <div class="home-tiles">
       <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
         <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-          <source src="assets/home_bg/aran_ai_gen_topik_silent.mp4" type="video/mp4"></video>
+          <source src="assets/home_bg/no_idol_ai_topik_silent.mp4" type="video/mp4"></video>
         <span class="ht-cap">
           <span class="ht-ico">${ic('spark',30)}</span>
           <span class="ht-t">AI TOPIK</span>
@@ -1074,11 +1074,11 @@ function viewHome() {
       </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
         <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-          <source src="assets/home_bg/aran_study_room_silent.mp4" type="video/mp4"></video>
+          <source src="assets/home_bg/no_idol_textbook_silent.mp4" type="video/mp4"></video>
         <span class="ht-cap">
           <span class="ht-ico">📖</span>
           <span class="ht-t">Textbook</span>
-          <span class="ht-s">${LANG==='ko'?'아이돌과 함께 배워요':'Learn with your idols'}</span>
+          <span class="ht-s">${LANG==='ko'?'교과서로 공부해요':'Study with the textbook'}</span>
         </span>
       </button>
     </div>`;
