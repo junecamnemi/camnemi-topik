@@ -2729,11 +2729,21 @@ function journeyCardHTML() {
     const accOK = j.acc >= j.accGate;
     // 진행바: 이번 레벨 구간(100h·100q) 진행률 — 시간 기준 + 정답률 표시
     const barPct = j.segPct;
+    // 남은 시간 → "X시간 Y분" (또는 분만)
+    const fmtH = (h) => {
+      if (h == null || isNaN(h)) return '0시간';
+      const total = Math.max(0, Math.ceil(h));  // 남은 건 올림(방금 1분이라도 남음)
+      const hh = Math.floor(total / 60), mm = total % 60;
+      if (hh <= 0) return mm + '분';
+      if (mm === 0) return hh + '시간';
+      return hh + '시간 ' + mm + '분';
+    };
+    const totalHStr = fmtH(j.totalH * 60); // 총 공부시간도 시간·분으로
     // 상태 텍스트
     let status;
     if (j.maxed) status = '🏆 ' + j.lvReward;
     else if (j.lvAccBlocked) status = `🔒 보상 해금하려면 정답률 ${j.accGate}% 필요 (현재 ${j.acc}%)`;
-    else if (j.lv === 0) status = `${j.totalH}시간 · ${j.totalQ}문제를 채워 데뷔팀 후보로!`;
+    else if (j.lv === 0) status = `${totalHStr}를 채워 데뷔팀 후보로!`;
     else status = `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}`;
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
@@ -2744,7 +2754,7 @@ function journeyCardHTML() {
           <div style="display:flex;align-items:center;gap:6px;">
             <b style="font-size:15px;">${esc(j.lvName)}</b>
           </div>
-          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${j.totalH}시간 · ${j.totalQ}문제</div>
+          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${totalHStr} · ${j.totalQ}문제</div>
         </div>
         <div style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;flex:none;">단계 ${j.stageIdx}/10</div>
       </div>
@@ -2757,7 +2767,7 @@ function journeyCardHTML() {
         <div style="display:flex;gap:8px;margin-top:7px;">
           <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
             <div style="font-size:9px;font-weight:700;opacity:.65;">남은 공부</div>
-            <b style="font-size:15px;">${j.remH}h</b>
+            <b style="font-size:15px;">${fmtH(j.remH * 60)}</b>
           </div>
           <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
             <div style="font-size:9px;font-weight:700;opacity:.65;">남은 문제</div>
