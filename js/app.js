@@ -1178,6 +1178,7 @@ function viewHome() {
     <div class="home-bg-content">
     ${scene}
     ${levelCard}
+    ${statusCardHTML()}
     ${journeyCardHTML()}
     <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
     ${aiRedoHome}
@@ -2717,6 +2718,39 @@ function currentJourney() {
     return window.idolJourneyProgress(hours, qs, acc);
   } catch (e) { return null; }
 }
+/* 홈 'My Status' 카드 — 오늘 진행 + 누적 요약 칩. 레벨(여정) 카드 위에 표시. */
+function statusCardHTML() {
+  try {
+    const today = todayStr ? todayStr() : new Date().toISOString().slice(0, 10);
+    const ds = dayStats ? dayStats(today) : null;
+    const allTime = lsGet(LS.studyTime, {});
+    const dayMin = (rec) => { const m = rec || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0); };
+    const todayMin = dayMin(allTime[today]);
+    const streak = lsGet(LS.streak, { count: 0 });
+    const acc = (typeof accuracyStats === 'function' ? accuracyStats().overall : 0);
+    const solvedToday = (ds && ds.solved) || 0;
+    const minStr = todayMin <= 0 ? '0m' : (todayMin >= 60 ? Math.floor(todayMin/60)+'h '+(todayMin%60)+'m' : todayMin+'m');
+    const chip = (ico, val, label) => `
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:4px 2px;">
+        <div style="font-size:9px;font-weight:800;letter-spacing:.4px;opacity:.55;">${ico} ${label}</div>
+        <b style="font-size:17px;font-weight:900;line-height:1.1;">${val}</b>
+      </div>`;
+    return `<div class="app-card my-status-card" style="margin-top:16px;border:1px solid rgba(139,92,246,.16);background:var(--card,#fff);">
+      <div style="display:flex;border-bottom:1px solid var(--ios-separator,rgba(0,0,0,.06));padding-bottom:6px;">
+        <b style="font-size:12.5px;font-weight:900;flex:1;">${LANG==='ko'?'My Status':'My Status'}</b>
+        <span style="font-size:10px;color:var(--ios-secondary-label);font-weight:600;">${solvedToday} today · ${minStr}</span>
+      </div>
+      <div style="display:flex;margin-top:8px;">
+        ${chip('📘', solvedToday, LANG==='ko'?'오늘 문제':'today')}
+        ${chip('⏱️', minStr, LANG==='ko'?'오늘 공부':'study')}
+        ${chip('🔥', streak.count, LANG==='ko'?'연속':'streak')}
+        ${chip('🎯', acc + '%', LANG==='ko'?'정답률':'acc.')}
+        ${chip('🧭', totalSolvedQuestions(), LANG==='ko'?'누적':'solved')}
+      </div>
+    </div>`;
+  } catch (e) { return ''; }
+}
+
 /* 홈 'My Level' 카드 — 현재 레벨과 다음 보상(다음 스테이지)까지 남은 조건 표시 */
 function journeyCardHTML() {
   try {
