@@ -882,6 +882,26 @@ function viewLevelTest() {
     </div>`;
 }
 
+let __videoPauseObs = null;
+function initVideoPauseOptimizer() {
+  const vids = Array.from(document.querySelectorAll('video[autoplay]'));
+  if (!vids.length) { if (__videoPauseObs) { __videoPauseObs.disconnect(); __videoPauseObs = null; } return; }
+  if (!('IntersectionObserver' in window)) return;   // graceful no-op fallback
+  if (!__videoPauseObs) {
+    __videoPauseObs = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        const v = en.target;
+        if (!v) return;
+        if (en.isIntersecting) { if (v.paused && !v.dataset.manual) { v.play().catch(() => {}); } }
+        else { if (!v.paused) { v.pause(); } }
+      });
+    }, { rootMargin: '40px' });
+  }
+  // observe the newly-rendered videos; drop ones no longer in the DOM
+  __videoPauseObs.disconnect();
+  vids.forEach(v => { if (v.isConnected) __videoPauseObs.observe(v); });
+}
+
 function render() {
   const s = $id('screen');
   if (!s) return;
@@ -927,6 +947,8 @@ function render() {
   updateBackBtn();
   // expression cycle only lives on the home tab
   if (APP.tab !== 'home') stopFxCycle();
+  // performance: pause autoplay bg videos that scroll out of view
+  initVideoPauseOptimizer();
 }
 
 /* ================= HOME ================= */
