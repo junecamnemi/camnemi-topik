@@ -1589,9 +1589,9 @@ select { font-family: var(--ios-font); }
 @keyframes arDot { 0%,60%,100%{ transform:translateY(0); opacity:.5;} 30%{ transform:translateY(-7px); opacity:1;} }
 
 /* ---------- Tab hero: full-bleed looping idol clip, home-style overlay ---------- */
-/* Tab heroes share the HOME hero design: full-bleed video behind content,
-   same rounded-bottom card, same soft border, content-driven height so every
-   banner (home + book/daily/rank/my) reads as one consistent banner style. */
+/* Tab heroes share the HOME hero design exactly: same full-bleed video behind
+   content, same padding profile and total banner height (~208px) as the home
+   .seoul-scene, so every banner reads identical in size. */
 .scene-hero.tab-hero {
   position: relative; overflow: hidden; width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -1600,28 +1600,27 @@ select { font-family: var(--ios-font); }
   border-radius: 0 0 16px 16px;    /* same as home */
   border: 1px solid rgba(167,139,250,.16);  /* same soft border as home scene */
   background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
-  min-height: 0;
+  height: 208px;                   /* exact same banner height as home (.seoul-scene) */
 }
-/* video fills the whole banner box (like home's scene-landmark) instead of a
-   fixed strip, so its height follows the banner's content */
+/* video fills the whole banner box (like home's scene-landmark) */
 .scene-hero.tab-hero video {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; pointer-events: none; user-select: none; opacity: .9;
 }
-/* light bottom scrim (like home) so the caption stays readable but the
-   character is not hidden behind a heavy dark overlay */
-.scene-hero.tab-hero::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
-  background: linear-gradient(180deg, rgba(247,244,255,.0), rgba(247,244,255,.06) 45%, rgba(120,100,200,.10)); }
-/* content block mirrors home's scene-top: clears the glass header, vertically
-   centers the caption, max-width aligns with the app column */
+/* content block mirrors home's scene-top: clears the glass header and centers
+   the caption in the same vertical area the home greeting occupies */
 .scene-hero.tab-hero .scene-overlay {
   position: relative; z-index: 2; max-width: 600px; margin: 0 auto;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 56px 22px 26px; color: var(--ios-label);
-  min-height: 96px; pointer-events: none; gap: 5px;
+  height: 100%; display: flex; flex-direction: column; align-items: center;
+  justify-content: flex-start; text-align: center;
+  padding: 56px 18px 10px;          /* same top/bottom padding as home seoul-scene */
+  color: var(--ios-label); box-sizing: border-box;
+  pointer-events: none; gap: 5px;
 }
-.scene-hero.tab-hero .tab-hero-cap { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.08; }
-.scene-hero.tab-hero .scene-hero-sub { font-size: 12.5px; font-weight: 700; opacity: .85; letter-spacing: .2px; }
+/* the caption sits where home's greeting row is (upper area under header) */
+.scene-hero.tab-hero .scene-overlay > * { margin-top: auto; margin-bottom: auto; }
+.scene-hero.tab-hero .tab-hero-cap { font-size: 23px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
+.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .85; letter-spacing: .2px; }
 /* on dark time-of-day scenes flip caption to white like home */
 .scene-hero.tab-hero.scene-midnight .scene-overlay,
 .scene-hero.tab-hero.scene-predawn .scene-overlay,
