@@ -2272,7 +2272,15 @@ function exitSection() {
   APP.navStack = [];
   go('home', true);
 }
-function bindMy() {}
+function bindMy() {
+  // tapping the hero character video opens the character picker
+  const vid = $id('screen') && $id('screen').querySelector('.scene-hero.tab-hero video');
+  if (vid && typeof openCharPicker === 'function') {
+    vid.style.pointerEvents = 'auto';
+    vid.style.cursor = 'pointer';
+    vid.addEventListener('click', () => { openCharPicker(); });
+  }
+}
 
 /* ================= MY (profile & hub) ================= */
 function viewMy() {
@@ -2354,10 +2362,10 @@ function viewMy() {
         <div style="display:flex;align-items:baseline;gap:6px;"><b style="font-size:24px;font-weight:900;line-height:1;">L${lvl.lv}</b><span style="font-size:11px;font-weight:700;opacity:.92;">${lvl.xp} XP</span></div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px;text-align:right;max-width:52%;">
-        <div style="display:flex;align-items:center;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="openCharPicker&&openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">
           <div style="text-align:right;min-width:0;">
             <div style="font-size:15px;font-weight:900;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(myCharName())}</div>
-            <div style="font-size:10px;opacity:.9;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
+            <div style="font-size:10px;opacity:.9;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${LANG==='ko'?'탭해서 바꾸기':LANG==='km'?'':'Tap to change'}</div>
           </div>
           <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.55);width:40px;height:40px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
         </div>
