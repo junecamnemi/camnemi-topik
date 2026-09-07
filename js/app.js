@@ -1056,12 +1056,12 @@ function viewHome() {
       <span class="aq-redo-badge">×5</span>
       <span class="aq-arr">→</span>
     </button>`;
-  // Core feature tiles: AI Redo + Textbook, half / half (Textbook animated)
+  // Core feature tiles: AI TOPIK + Textbook, half / half (Textbook animated)
   const featureTilesHTML = `
     <div class="home-tiles">
       <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
         <span class="ht-ico">${ic('spark',30)}</span>
-        <span class="ht-t">${t('home_ai_redo')}</span>
+        <span class="ht-t">AI TOPIK</span>
         <span class="ht-s">${LANG==='ko'?'틀린 문제로 유사 5문제':'5 similar problems'}</span>
       </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
