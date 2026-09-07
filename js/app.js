@@ -712,11 +712,6 @@ function explainBlock(q) {
       <a class="dx-glink" href="https://nuri.iksi.or.kr/front/main/main.do?language=ko" target="_blank" rel="noopener">세종한국어 E-book에서 문법 단원 열기 ↗</a>
     </div>`;
   }
-  // 전문 참고자료 — 국립국어원 사전 / 세종학당 교재 / TOPIK 공식
-  const refs = refsFor(q);
-  h += `<div class="dx dx-ref"><div class="dx-head"><b>📚 ${ko ? '전문 참고자료' : 'References'}</b></div><div class="dx-refs">` +
-    refs.map(r => `<a class="dx-ref-link" href="${escAttr(r.url)}" target="_blank" rel="noopener"><span class="dx-ref-src">${esc(r.src)}</span><span class="dx-ref-label">${esc(r.label)}</span><span class="dx-ref-go">↗</span></a>`).join('') +
-    `</div></div>`;
   return h;
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -2320,7 +2315,6 @@ function viewMy() {
     <div class="app-card" style="padding:6px 14px;">
       ${umRow('progress', t('menu_progress'), `go('progress')`)}
       ${umRow('notes', t('wrong_link') + ' (' + wrongN + ')', `go('wrong')`)}
-      ${umRow('learn', t('flash_title') + (due ? ` · ${due}` : ''), `go('learn')`)}
       ${umRow('schedule', t('menu_schedule'), `go('schedule')`)}
     </div>
     <div class="app-card" style="padding:6px 14px;">
