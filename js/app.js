@@ -1056,6 +1056,20 @@ function viewHome() {
       <span class="aq-redo-badge">×5</span>
       <span class="aq-arr">→</span>
     </button>`;
+  // Core feature tiles: AI Redo + Textbook, half / half (Textbook animated)
+  const featureTilesHTML = `
+    <div class="home-tiles">
+      <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
+        <span class="ht-ico">${ic('spark',30)}</span>
+        <span class="ht-t">${t('home_ai_redo')}</span>
+        <span class="ht-s">${LANG==='ko'?'틀린 문제로 유사 5문제':'5 similar problems'}</span>
+      </button>
+      <button class="home-tile textbook-tile" onclick="go('book')">
+        <span class="ht-ico">📖</span>
+        <span class="ht-t">Textbook</span>
+        <span class="ht-s">${LANG==='ko'?'아이돌과 함께 배워요':'Learn with your idols'}</span>
+      </button>
+    </div>`;
   // Today's Schedule — compact 2×2 grid (clean)
   const schedRows = [
     { time: '09:00', icon: 'learn', col: 'var(--ios-blue)', label: t('home_sch_reading'), go: `startSection('reading', myLevel())` },
@@ -1172,9 +1186,11 @@ function viewHome() {
     <div class="home-bg-content">
     ${scene}
     ${levelCard}
-    ${journeyCardHTML()}
-    <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
-    ${aiRedoHome}
+    <details class="home-mylevel-fold">
+      <summary>${ic('target',15)} ${LANG==='ko'?'My Level':'My Level'}</summary>
+      <div class="hmf-body">${journeyCardHTML()}</div>
+    </details>
+    ${featureTilesHTML}
     <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2><span class="sub">${LANG==='ko'?'영역별로 풀기':'Practice by skill'}</span></div>
     ${aiQuick}
     <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
