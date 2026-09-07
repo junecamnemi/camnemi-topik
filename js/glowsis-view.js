@@ -325,10 +325,15 @@ function recordBookStudy() {
   } catch (e) { /* non-fatal */ }
 }
 function renderFlip() {
-  // meta = the ACTIVE unit from the ACTIVE book (has id/title/en); 'no' defaults to id
-  const meta = bookUnits().find(x => x.id === _book.unit)
-    || { id: _book.unit, title: 'Unit ' + _book.unit, en: '', no: _book.unit };
-  if (meta.no == null) meta.no = meta.id;
+  // meta = the ACTIVE unit from the ACTIVE book (has id/title/en). 1A data lacks
+  // per-unit titles, so fill them from the fallback map when missing.
+  const raw = bookUnits().find(x => x.id === _book.unit) || { id: _book.unit };
+  const meta = {
+    id: raw.id,
+    no: (raw.no != null ? raw.no : (raw.id === 0 ? (LANG==='ko'?'준비':'Prep') : raw.id)),
+    title: raw.title || fallbackUnitTitle(_book.book, raw.id),
+    en: raw.en || ''
+  };
   const pages = _book.pages;
   const track = pages.map((p, i) => {
     const cls = i === _book.page ? 'active' : '';
@@ -366,7 +371,7 @@ function buildEndPage(meta) {
   const units = bookUnits().sort((a,b)=>a.id-b.id);
   const idx = units.findIndex(u => u.id === cur);
   const next = (idx >= 0 && idx < units.length-1) ? units[idx+1] : null;
-  const nMeta = next ? { id: next.id, title: next.title || ('Unit '+next.id), en: next.en || '' } : null;
+  const nMeta = next ? { id: next.id, no: (next.id === 0 ? (LANG==='ko'?'준비':'Prep') : next.id), title: next.title || fallbackUnitTitle(_book.book, next.id), en: next.en || '' } : null;
   const isLast = idx >= 0 && idx === units.length-1;
   return { type: 'end', blocks: [], endMeta: { next, nMeta, isLast } };
 }
