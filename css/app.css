@@ -658,6 +658,16 @@ details.home-mylevel-fold > summary {
   padding: 13px 16px; font-size: 13.5px; font-weight: 900; color: var(--ios-label);
   -webkit-tap-highlight-color: transparent;
 }
+details.home-mylevel-fold > summary .jsm-row { flex: 1; display: flex; align-items: center; gap: 11px; min-width: 0; }
+.jsm-row .jsm-lv {
+  flex: none; min-width: 44px; text-align: center; padding: 5px 8px; border-radius: 11px;
+  font-size: 13px; font-weight: 900; color: #fff; letter-spacing: .3px;
+  background: linear-gradient(135deg, #7C3AED, #EC4899); box-shadow: 0 3px 10px rgba(124,58,237,.3);
+}
+.jsm-row .jsm-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; line-height: 1.2; }
+.jsm-row .jsm-txt b { font-size: 13px; font-weight: 900; color: var(--ios-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jsm-row .jsm-txt em { font-style: normal; font-size: 11.5px; font-weight: 600; color: var(--ios-secondary-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jsm-row .jsm-meta { flex: none; font-size: 10.5px; font-weight: 700; color: var(--ios-purple); opacity:.9; }
 details.home-mylevel-fold > summary::-webkit-details-marker { display: none; }
 details.home-mylevel-fold > summary::after { content:'▾'; margin-left:auto; color: var(--ios-purple); transition: transform .18s; }
 details.home-mylevel-fold[open] > summary::after { transform: rotate(180deg); }

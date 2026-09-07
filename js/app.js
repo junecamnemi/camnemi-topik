@@ -1187,7 +1187,7 @@ function viewHome() {
     ${scene}
     ${levelCard}
     <details class="home-mylevel-fold">
-      <summary>${ic('target',15)} ${LANG==='ko'?'My Level':'My Level'}</summary>
+      <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
       <div class="hmf-body">${journeyCardHTML()}</div>
     </details>
     ${featureTilesHTML}
@@ -2824,6 +2824,34 @@ function closeStatusModal() {
 }
 
 /* 홈 'My Level' 카드 — 현재 레벨과 다음 보상(다음 스테이지)까지 남은 조건 표시 */
+/* 접힌 summary용 미니 요약: LV 배지 + 아이콘 + 한 줄 상태. 레벨테스트/공부 전
+   (Lv0)에는 '아직 오디션을 준비중이에요'를 보여준다. */
+function journeySummaryHTML() {
+  try {
+    const j = currentJourney();
+    if (!j || !window.IDOL_JOURNEY) return '';
+    const ko = LANG === 'ko';
+    const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
+    // collapsed one-liner per state
+    let state;
+    if (j.maxed) state = ko ? '데뷔 완료! 최고의 아이돌 🏆' : (j.lvRewardEn || j.lvReward);
+    else if (j.lvAccBlocked) state = ko ? `정답률 ${j.accGate}%+ 필요 (현재 ${j.acc}%)` : `Need ${j.accGate}%+ accuracy (now ${j.acc}%)`;
+    else if (j.lv === 0) state = ko ? '아직 오디션을 준비중이에요' : 'Preparing for the audition';
+    else if (j.lvDone) state = ko ? '보상 달성!' : 'Reward unlocked!';
+    else state = ko ? `${(j.stageName||'')} · 다음 단계로` : `Next stage`;
+    const fmtH0 = (h) => {
+      if (h == null || isNaN(h)) return ko ? '0시간' : '0m';
+      const total = Math.max(0, Math.ceil(h));
+      if (total < 60) return total + (ko ? '분' : 'm');
+      const hh = Math.floor(total / 60), mm = total % 60;
+      return mm === 0 ? hh + (ko ? '시간' : 'h') : hh + (ko ? '시간 ' : 'h ') + mm + (ko ? '분' : 'm');
+    };
+    const meta = `${fmtH0(j.totalH * 60)} · ${j.totalQ} ${ko?'문제':'Q'}`;
+    return `<span class="jsm-lv">${lvBadge}</span>
+      <span class="jsm-txt"><b>${esc(ko ? j.lvName : (j.lvNameEn || j.lvName))}</b><em>${esc(state)}</em></span>
+      <span class="jsm-meta">${meta}</span>`;
+  } catch (e) { return ''; }
+}
 function journeyCardHTML() {
   try {
     const j = currentJourney();
