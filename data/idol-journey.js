@@ -86,10 +86,12 @@ window.idolJourneyProgress = function (totalH, totalQ, acc) {
   return {
     lv: lv,
     lvName: L.stage,
+    lvNameEn: L.stageEn,
     lvReward: L.reward,
     nextStage: L.nextStage || null,
     stageIdx: step + 1,
     stageName: names[step],
+    stageNameEn: (EN_STAGES[lv] || [])[step] || names[step],
     segH: Math.round(segH), segQ: Math.round(segQ),
     segHNeed: J.levelUnitHours, segQNeed: J.levelUnitQs,
     // 다음 보상(Lv+1)까지 남은 것
@@ -102,4 +104,22 @@ window.idolJourneyProgress = function (totalH, totalQ, acc) {
     maxed: lv >= maxLv,
     nextLv: nextLv
   };
+};
+
+/* English 10-stage names per level (for en display) */
+var EN_STAGES = {
+  0: ['Audition entry','Paperwork','Skill check','First training','Breath work',
+      'Dance basics','Vocal lesson','Audition rehearsal','Stage ready','★ Debut hopeful'],
+  1: ['Audition passed','First practice room','Basics training','Finding rhythm','Learning choreo',
+      'Polishing vocals','Parts assigned','Leader chosen','Team name set','★ Team formed'],
+  2: ['Debut song picked','Choreo complete','Recording','Showcase practice','Concept locked',
+      'Costume fitting','MV shoot','Rehearsal','Debut rehearsal','★ Debut!'],
+  3: ['First music show','Chart entry','Fan reaction','Stage vlog','Comeback prep',
+      'Stronger choreo','2nd music show','Chart top 30','Chart top 15','★ Music-show top 10'],
+  4: ['Fan club grows','Strong chart run','Music-show top 5','Chart top 3','Fan signing',
+      'Big stage','Music-show top 2','#1 nominee','Fan vote #1','★ Music-show #1'],
+  5: ['Global fandom','Global SNS','Overseas interview','World tour prep','First overseas show',
+      'Global release','Overseas music show','Asia tour','Tokyo Dome booked','★ Tokyo Dome concert'],
+  6: ['World tour','Global #1 nominee','North America','Stadium tour','Global chart #1',
+      'World-class idol','Super stage','NFL booked','Halftime rehearsal','★ NFL halftime show']
 };

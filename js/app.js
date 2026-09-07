@@ -2757,54 +2757,52 @@ function journeyCardHTML() {
     const j = currentJourney();
     if (!j || !window.IDOL_JOURNEY) return '';
     const J = window.IDOL_JOURNEY;
-    // 레벨 라벨: Lv0 → "Lv0", Lv1..Lv6
+    const ko = LANG === 'ko';
+    const lvName = ko ? j.lvName : (j.lvNameEn || j.lvName);
     const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
-    const stageName = j.stageName || '';
-    const accOK = j.acc >= j.accGate;
-    // 진행바: 이번 레벨 구간(100h·100q) 진행률 — 시간 기준 + 정답률 표시
     const barPct = j.segPct;
-    // 남은 시간 → "X시간 Y분" (또는 분만)
     const fmtH = (h) => {
-      if (h == null || isNaN(h)) return '0시간';
-      const total = Math.max(0, Math.ceil(h));  // 남은 건 올림(방금 1분이라도 남음)
+      if (h == null || isNaN(h)) return ko ? '0시간' : '0m';
+      const total = Math.max(0, Math.ceil(h));
       const hh = Math.floor(total / 60), mm = total % 60;
-      if (hh <= 0) return mm + '분';
-      if (mm === 0) return hh + '시간';
-      return hh + '시간 ' + mm + '분';
+      if (hh <= 0) return mm + (ko ? '분' : 'm');
+      if (mm === 0) return hh + (ko ? '시간' : 'h');
+      return hh + (ko ? '시간 ' : 'h ') + mm + (ko ? '분' : 'm');
     };
-    const totalHStr = fmtH(j.totalH * 60); // 총 공부시간도 시간·분으로
-    // 상태 텍스트
+    const totalHStr = fmtH(j.totalH * 60);
     let status;
     if (j.maxed) status = '🏆 ' + j.lvReward;
-    else if (j.lvAccBlocked) status = `🔒 보상 해금하려면 정답률 ${j.accGate}% 필요 (현재 ${j.acc}%)`;
-    else if (j.lv === 0) status = `${totalHStr} · ${j.totalQ}문제를 채워 데뷔팀 후보로!`;
-    else status = `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}`;
+    else if (j.lvAccBlocked) status = ko ? `🔒 정답률 ${j.accGate}% 이상 필요 (현재 ${j.acc}%)` : `🔒 Need ${j.accGate}%+ accuracy to unlock (now ${j.acc}%)`;
+    else if (j.lv === 0) status = ko ? `${totalHStr} · ${j.totalQ}문제를 채워 데뷔팀 후보로!` : `Reach ${totalHStr} study & advance your debut!`;
+    else status = ko ? `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}` : `${lvName} unlocked! Next: ${j.nextStage || ''}`;
+    const accOK = j.acc >= j.accGate;
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
         <div class="ml-badge" style="flex:none;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:0 4px 14px rgba(124,58,237,.3);">
           <span style="font-size:16px;">${lvBadge}</span>
         </div>
         <div style="flex:1;min-width:0;">
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:1px;opacity:.55;">${ko?'My Level':'My Level'}</div>
           <div style="display:flex;align-items:center;gap:6px;">
-            <b style="font-size:15px;">${esc(j.lvName)}</b>
+            <b style="font-size:15px;">${esc(lvName)}</b>
           </div>
-          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${totalHStr} · ${j.totalQ}문제</div>
+          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${totalHStr} · ${j.totalQ} ${ko?'문제':'Q'}</div>
         </div>
-        <div style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;flex:none;">단계 ${j.stageIdx}/10</div>
+        <div style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;flex:none;">${ko?'단계':'Stage'} ${j.stageIdx}/10</div>
       </div>
       ${j.maxed ? '' : `
       <div class="ml-cond" style="margin-top:12px;border-top:1px dashed rgba(139,92,246,.25);padding-top:10px;">
         <div style="display:flex;justify-content:space-between;align-items:baseline;">
           <span style="font-size:11px;font-weight:800;color:var(--ios-purple);">NEXT · ${j.nextStage ? esc(j.nextStage.replace('Lv','Lv ')) : ''}</span>
-          <span style="font-size:11px;font-weight:700;">정답률 ${j.acc}% / ${j.accGate}%</span>
+          <span style="font-size:11px;font-weight:700;">${ko?'정답률':'Accuracy'} ${j.acc}% / ${j.accGate}%</span>
         </div>
         <div style="display:flex;gap:8px;margin-top:7px;">
           <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
-            <div style="font-size:9px;font-weight:700;opacity:.65;">남은 공부</div>
+            <div style="font-size:9px;font-weight:700;opacity:.65;">${ko?'남은 공부':'Study left'}</div>
             <b style="font-size:15px;">${fmtH(j.remH * 60)}</b>
           </div>
           <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
-            <div style="font-size:9px;font-weight:700;opacity:.65;">남은 문제</div>
+            <div style="font-size:9px;font-weight:700;opacity:.65;">${ko?'남은 문제':'Questions left'}</div>
             <b style="font-size:15px;">${j.remQ}</b>
           </div>
         </div>
