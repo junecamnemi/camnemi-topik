@@ -1640,11 +1640,16 @@ select { font-family: var(--ios-font); }
 .scene-hero.tab-hero[data-tab="daily"] .scene-overlay > * { text-align:center; }
 /* RANK: rank on the left, accuracy+solved on the right */
 .scene-hero.tab-hero[data-tab="rank"] .scene-overlay { justify-content:space-between; align-items:center; }
-/* MY: profile (photo+name) left / auth right on a top row; the stats row below is
-   positioned lower-center by its own container. */
+/* MY: profile + login on the right, stats stacked on the left. A soft dark
+   scrim behind the whole banner keeps the white text readable over the video. */
+.scene-hero.tab-hero[data-tab="my"] {
+  background: linear-gradient(120deg, rgba(46,24,92,.62), rgba(24,12,56,.40) 55%, rgba(124,58,237,.45));
+}
 .scene-hero.tab-hero[data-tab="my"] .scene-overlay {
-  flex-direction:column; justify-content:flex-start; align-items:stretch;
-  padding-top: 50px;
+  display:block; padding: 0 20px;
+}
+.scene-hero.tab-hero[data-tab="my"] .scene-overlay > div {
+  text-shadow: 0 2px 14px rgba(10,5,30,.8);
 }
 .scene-hero.tab-hero .tab-hero-cap { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
 .scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .92; letter-spacing: .2px; }

@@ -2347,20 +2347,22 @@ function viewMy() {
     </div>`;
   // Overlay account head + stats onto the hero video (home-style)
   const myOverlay = `
-    <div style="display:flex;justify-content:space-between;width:100%;height:100%;">
-      <div style="display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:left;">
-        <div style="display:flex;align-items:baseline;gap:7px;"><b style="font-size:26px;font-weight:900;line-height:1;">${streak.count}</b><span style="font-size:11px;font-weight:700;opacity:.9;">${t('menu_streak')}</span></div>
-        <div style="display:flex;align-items:baseline;gap:7px;"><b style="font-size:26px;font-weight:900;line-height:1;">${acc}%</b><span style="font-size:11px;font-weight:700;opacity:.9;">${t('menu_acc')}</span></div>
-        <div style="display:flex;align-items:baseline;gap:7px;"><b style="font-size:26px;font-weight:900;line-height:1;">L${lvl.lv}</b><span style="font-size:11px;font-weight:700;opacity:.9;">${lvl.xp} XP</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;height:100%;gap:10px;">
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:8px;text-align:left;">
+        <div style="display:flex;align-items:baseline;gap:6px;"><b style="font-size:24px;font-weight:900;line-height:1;">${streak.count}</b><span style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_streak')}</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px;"><b style="font-size:24px;font-weight:900;line-height:1;">${acc}%</b><span style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_acc')}</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px;"><b style="font-size:24px;font-weight:900;line-height:1;">L${lvl.lv}</b><span style="font-size:11px;font-weight:700;opacity:.92;">${lvl.xp} XP</span></div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:8px;text-align:right;">
-        <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);width:48px;height:48px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
-        <div style="font-size:17px;font-weight:900;line-height:1.15;">${esc(myCharName())}</div>
-        <div style="font-size:11px;opacity:.9;font-weight:600;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;">
-          <a class="btn btn-primary btn-sm" style="pointer-events:auto;" href="login.html">${t('menu_login')}</a>
-          ${authed ? `<button class="btn btn-ghost btn-sm" style="pointer-events:auto;border-color:rgba(255,255,255,.4);color:#fff;" onclick="doLogout()">${t('menu_logout')}</button>` : ''}
+      <div style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:6px;text-align:right;max-width:52%;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="text-align:right;min-width:0;">
+            <div style="font-size:15px;font-weight:900;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(myCharName())}</div>
+            <div style="font-size:10px;opacity:.9;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
+          </div>
+          <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.55);width:40px;height:40px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
         </div>
+        <a class="btn btn-primary btn-sm" style="pointer-events:auto;padding:6px 12px;font-size:12px;white-space:nowrap;" href="login.html">${t('menu_login')}</a>
+        ${authed ? `<button class="btn btn-ghost btn-sm" style="pointer-events:auto;padding:6px 10px;font-size:12px;border-color:rgba(255,255,255,.4);color:#fff;" onclick="doLogout()">${t('menu_logout')}</button>` : ''}
       </div>
     </div>`;
   return `${tabHeroHTML('my', myOverlay)}
