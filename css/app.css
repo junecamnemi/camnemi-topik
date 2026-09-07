@@ -1339,9 +1339,12 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .cal td {
   text-align: center; padding: 0; height: 44px; font-size: 12px;
   vertical-align: top; border: 0.5px solid var(--ios-separator);
-  position: relative;
+  position: relative; overflow: hidden; box-sizing: border-box;
 }
 .cal td.empty { background: var(--ios-fill); }
+.cal td.reg-bg { background: rgba(74,111,165,.10); }
+.cal td.test-bg { background: rgba(34,197,94,.10); }
+.cal td.result-bg { background: rgba(249,115,22,.10); }
 .cal td.today .day-num {
   background: var(--grad-brand); color: #fff;
   border-radius: 50%; width: 24px; height: 24px; line-height: 24px;
@@ -1349,8 +1352,8 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
   box-shadow: 0 3px 8px rgba(91, 91, 214, .35);
 }
 .cal td.past { color: var(--ios-tertiary-label); }
-.cal .day-num { display: block; padding-top: 3px; font-weight: 600; }
-.cal .mk { display: block; height: 4px; border-radius: 2px; margin: 1px 3px; }
+.cal .day-num { display: block; padding-top: 3px; font-weight: 600; position: relative; z-index: 1; }
+.cal .mk { display: block; height: 4px; border-radius: 2px; margin: 1px auto; width: 60%; position: relative; z-index: 1; }
 .cal .mk.reg { background: var(--ios-blue); }
 .cal .mk.test { background: var(--ios-green); }
 .cal .mk.result { background: var(--ios-orange); }

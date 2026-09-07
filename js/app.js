@@ -4331,8 +4331,12 @@ function viewSchedule() {
   rows.forEach(p => {
     const reg = parseReg(p.reg, p.date);
     if (reg) {
-      events.push({ date: reg.start, type: 'reg', label: sessionTh(p.session) + ' reg start' });
-      events.push({ date: reg.end, type: 'reg', label: sessionTh(p.session) + ' reg close' });
+      // mark the ENTIRE registration window (start..end inclusive), not just endpoints
+      const rs = new Date(reg.start + 'T00:00:00'), re = new Date(reg.end + 'T00:00:00');
+      for (let dt = new Date(rs); dt <= re; dt.setDate(dt.getDate() + 1)) {
+        const dd = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+        events.push({ date: dd, type: 'reg', label: sessionTh(p.session) });
+      }
     }
     events.push({ date: p.date, type: 'test', label: sessionTh(p.session) + ' test' });
     events.push({ date: p.result, type: 'result', label: sessionTh(p.session) + ' result' });
@@ -4451,12 +4455,17 @@ function calendarHTML(ym, events) {
   const today = todayStr();
   const evByDate = {};
   events.forEach(e => { (evByDate[e.date] = evByDate[e.date] || []).push(e.type); });
-  let html = `<table class="cal"><tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr><tr>`;
+  const weekDays = LANG === 'ko' ? ['일','월','화','수','목','금','토']
+    : LANG === 'km' ? ['អាទិត្យ','ចន្ទ','អង្គារ','ពុធ','ព្រហស្បតិ៍','សុក្រ','សៅរ៍']
+    : ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  let html = `<table class="cal"><tr>${weekDays.map(w => `<th>${w}</th>`).join('')}</tr><tr>`;
   for (let i = 0; i < startDow; i++) html += `<td class="empty"></td>`;
   for (let d = 1; d <= daysInMonth; d++) {
     const ds = `${ym}-${String(d).padStart(2, '0')}`;
-    const cls = [ds === today ? 'today' : '', ds < today ? 'past' : ''].join(' ');
-    const mks = (evByDate[ds] || []).slice(0, 3).map(t => `<span class="mk ${t}"></span>`).join('');
+    const evts = evByDate[ds] || [];
+    const cls = [ds === today ? 'today' : '', ds < today ? 'past' : '',
+      evts.includes('test') ? 'test-bg' : evts.includes('result') ? 'result-bg' : evts.includes('reg') ? 'reg-bg' : ''].join(' ').trim();
+    const mks = evts.slice(0, 3).map(t => `<span class="mk ${t}"></span>`).join('');
     html += `<td class="${cls}"><span class="day-num">${d}</span>${mks}</td>`;
     if ((startDow + d) % 7 === 0 && d < daysInMonth) html += `</tr><tr>`;
   }
