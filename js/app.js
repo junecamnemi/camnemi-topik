@@ -2759,6 +2759,7 @@ function journeyCardHTML() {
     const J = window.IDOL_JOURNEY;
     const ko = LANG === 'ko';
     const lvName = ko ? j.lvName : (j.lvNameEn || j.lvName);
+    const nextName = ko ? (j.nextStage || '') : (j.nextStageEn || j.nextStage || '');
     const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
     const barPct = j.segPct;
     const fmtH = (h) => {
@@ -2771,10 +2772,10 @@ function journeyCardHTML() {
     };
     const totalHStr = fmtH(j.totalH * 60);
     let status;
-    if (j.maxed) status = '🏆 ' + j.lvReward;
+    if (j.maxed) status = '🏆 ' + (ko ? j.lvReward : (j.lvRewardEn || j.lvReward));
     else if (j.lvAccBlocked) status = ko ? `🔒 정답률 ${j.accGate}% 이상 필요 (현재 ${j.acc}%)` : `🔒 Need ${j.accGate}%+ accuracy to unlock (now ${j.acc}%)`;
     else if (j.lv === 0) status = ko ? `${totalHStr} · ${j.totalQ}문제를 채워 데뷔팀 후보로!` : `Reach ${totalHStr} study & advance your debut!`;
-    else status = ko ? `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}` : `${lvName} unlocked! Next: ${j.nextStage || ''}`;
+    else status = ko ? `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}` : `${lvName} unlocked! Next: ${nextName || ''}`;
     const accOK = j.acc >= j.accGate;
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
@@ -2793,7 +2794,7 @@ function journeyCardHTML() {
       ${j.maxed ? '' : `
       <div class="ml-cond" style="margin-top:12px;border-top:1px dashed rgba(139,92,246,.25);padding-top:10px;">
         <div style="display:flex;justify-content:space-between;align-items:baseline;">
-          <span style="font-size:11px;font-weight:800;color:var(--ios-purple);">NEXT · ${j.nextStage ? esc(j.nextStage.replace('Lv','Lv ')) : ''}</span>
+          <span style="font-size:11px;font-weight:800;color:var(--ios-purple);">NEXT · ${nextName ? esc(nextName.replace(/^Lv\s?/,'Lv ')) : ''}</span>
           <span style="font-size:11px;font-weight:700;">${ko?'정답률':'Accuracy'} ${j.acc}% / ${j.accGate}%</span>
         </div>
         <div style="display:flex;gap:8px;margin-top:7px;">
