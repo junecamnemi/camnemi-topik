@@ -4006,10 +4006,16 @@ function showAIRedoLoading() {
   ov.innerHTML = `<div class="ar-ov-bg"></div>
     <div class="ar-ov-card">
       <div class="ar-ov-inner">
-        <div class="ar-ov-badge">${ic('spark',36)}</div>
-        <div class="ar-ov-t">${txt}</div>
-        <div class="ar-ov-s">${sub}</div>
-        <div class="ar-ov-dots"><span></span><span></span><span></span></div>
+        <div class="ar-ov-media"><video class="ar-ov-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+          <source src="assets/home_bg/aran_ai_gen_modal.mp4" type="video/mp4"></video>
+          <div class="ar-ov-media-shade"></div>
+          <div class="ar-ov-spark">${ic('spark',30)}</div>
+        </div>
+        <div class="ar-ov-txt">
+          <div class="ar-ov-t">${txt}</div>
+          <div class="ar-ov-s">${sub}</div>
+          <div class="ar-ov-dots"><span></span><span></span><span></span></div>
+        </div>
       </div>
     </div>`;
   ov.style.display='flex';
