@@ -1588,39 +1588,55 @@ select { font-family: var(--ios-font); }
 .ar-ov-dots span:nth-child(3){ animation-delay:.32s; background:#22d3ee; }
 @keyframes arDot { 0%,60%,100%{ transform:translateY(0); opacity:.5;} 30%{ transform:translateY(-7px); opacity:1;} }
 
-/* ---------- Tab hero: full-bleed looping idol clip, home-style overlay ---------- */
-/* Tab heroes share the HOME hero design exactly: same full-bleed video behind
-   content, same padding profile and total banner height (~208px) as the home
-   .seoul-scene, so every banner reads identical in size. */
+/* ---------- Tab hero: full-bleed looping idol clip, home-size banner ---------- */
 .scene-hero.tab-hero {
   position: relative; overflow: hidden; width: 100vw;
   margin-left: calc(50% - 50vw);
-  margin-top: -68px;               /* reach the very top like the home seoul-scene */
-  margin-bottom: 12px;             /* match home scene spacing */
-  border-radius: 0 0 16px 16px;    /* same as home */
-  border: 1px solid rgba(120,100,200,.35);  /* clearer violet border (home-style) */
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
-  background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
-  height: 208px;                   /* exact same banner height as home (.seoul-scene) */
+  margin-top: -68px;
+  margin-bottom: 12px;
+  border-radius: 0 0 16px 16px;
+  height: 208px;                     /* exact same height as home .seoul-scene */
+  background: linear-gradient(180deg, rgba(167,139,250,.12), rgba(120,100,210,.18));
 }
-/* video fills the whole banner box but stays BELOW the border */
+/* video fills the whole banner */
 .scene-hero.tab-hero video {
   position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; pointer-events: none; user-select: none; opacity: .9;
+  object-fit: cover; pointer-events: none; user-select: none;
 }
-/* content block: left-aligned so it doesn't sit over the character's centered
-   face — text goes to the left area, face stays visible on the right/center */
+/* visible border ring drawn ABOVE the video so it never disappears once the
+   video loads (z 1 = over video 0, under overlay 2) */
+.scene-hero.tab-hero::after {
+  content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  border-radius: 0 0 16px 16px;
+  border: 1px solid rgba(130,110,220,.55);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.22), inset 0 -14px 24px -10px rgba(20,10,50,.35);
+}
+/* content layer fills the whole banner so each tab lays its own content out.
+   Default: text over a soft scrim, readable on any video. */
 .scene-hero.tab-hero .scene-overlay {
-  position: absolute; left: 18px; right: 45%; top: 0; bottom: 0; z-index: 2;
-  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-  text-align: left; box-sizing: border-box;
-  color: var(--ios-label); pointer-events: none; gap: 4px;
-  text-shadow: 0 1px 6px rgba(255,255,255,.5);
+  position: absolute; inset: 0; z-index: 2; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px; color:#fff; pointer-events:none;
+  text-shadow: 0 1px 8px rgba(10,6,30,.6);
+}
+.scene-hero.tab-hero .scene-overlay > * { pointer-events:none; }
+/* ---------- per-tab placement ---------- */
+/* BOOK: title block pushed to the bottom of the banner */
+.scene-hero.tab-hero[data-tab="book"] .scene-overlay {
+  justify-content:center; align-items:flex-end; text-align:center;
+  padding: 0 18px 16px;
+}
+/* DAILY: level left, weak spot right, split across the banner */
+.scene-hero.tab-hero[data-tab="daily"] .scene-overlay { justify-content:space-between; align-items:center; }
+.scene-hero.tab-hero[data-tab="daily"] .scene-overlay > * { text-align:center; }
+/* RANK: rank on the left, accuracy+solved on the right */
+.scene-hero.tab-hero[data-tab="rank"] .scene-overlay { justify-content:space-between; align-items:center; }
+/* MY: profile (photo+name) left / auth right on a top row; the stats row below is
+   positioned lower-center by its own container. */
+.scene-hero.tab-hero[data-tab="my"] .scene-overlay {
+  flex-direction:column; justify-content:flex-start; align-items:stretch;
+  padding-top: 50px;
 }
 .scene-hero.tab-hero .tab-hero-cap { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
-.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .9; letter-spacing: .2px; }
-/* on dark time-of-day scenes flip caption to white like home */
-.scene-hero.tab-hero.scene-midnight .scene-overlay,
-.scene-hero.tab-hero.scene-predawn .scene-overlay,
-.scene-hero.tab-hero.scene-night .scene-overlay { color:#fff; text-shadow: 0 1px 10px rgba(10,8,30,.55); }
+.scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .92; letter-spacing: .2px; }
 

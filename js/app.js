@@ -985,7 +985,7 @@ function tabClip(tab) {
 function tabHeroHTML(tab, overlay) {
   const clip = tabClip(tab);
   const inner = overlay || `<span class="tab-hero-cap">${capLabel(tab)}</span>`;
-  return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" data-pos="${clip.pos}" aria-hidden="false">
+  return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" data-tab="${tab}" data-pos="${clip.pos}" aria-hidden="false">
     <video autoplay muted loop playsinline preload="metadata" style="object-position:${clip.pos}">
       <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
@@ -1769,18 +1769,15 @@ function viewDailySetup() {
   const weakName = weak ? esc(typeLabel(weak.k)) : (LANG==='ko'?'—':LANG==='km'?'—':'—');
   const weakPct = weak ? `${weak.p}%` : (LANG==='ko'?'풀면 표시돼요':LANG==='km'?'':'—');
   const overlay = `
-    <div style="display:flex;align-items:center;gap:14px;justify-content:center;text-align:left;">
-      <div style="text-align:center;">
-        <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.9;">${LANG==='ko'?'나의 레벨':LANG==='km'?'កម្រិត':'MY LEVEL'}</div>
-        <div style="font-size:44px;font-weight:900;line-height:1;">L${myLv}</div>
-        <div style="font-size:12px;font-weight:700;opacity:.92;">${lvGrade}</div>
-      </div>
-      <div style="width:1px;height:54px;background:rgba(255,255,255,.35);"></div>
-      <div style="text-align:center;">
-        <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.9;">🎯 ${LANG==='ko'?'약점':LANG==='km'?'':'WEAK SPOT'}</div>
-        <div style="font-size:26px;font-weight:900;line-height:1.1;margin-top:4px;">${weakName}</div>
-        <div style="font-size:13px;font-weight:700;opacity:.92;">${weakPct}</div>
-      </div>
+    <div style="text-align:left;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">${LANG==='ko'?'나의 레벨':LANG==='km'?'កម្រិត':'MY LEVEL'}</div>
+      <div style="font-size:46px;font-weight:900;line-height:1;">L${myLv}</div>
+      <div style="font-size:12px;font-weight:700;opacity:.9;">${lvGrade}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">🎯 ${LANG==='ko'?'약점':LANG==='km'?'':'WEAK SPOT'}</div>
+      <div style="font-size:26px;font-weight:900;line-height:1.15;margin-top:4px;">${weakName}</div>
+      <div style="font-size:13px;font-weight:700;opacity:.92;">${weakPct}</div>
     </div>`;
   const sections = [
     { k: 'reading', ico: 'learn', col: 'var(--ios-blue)',   label: t('nav_reading') },
@@ -2349,19 +2346,22 @@ function viewMy() {
       ${authed ? `<div class="um-item" onclick="syncUserData(this)">${ic('daily',19)}<span id="um-sync">${t('menu_sync')}</span><em>⇅</em></div>` : ''}
     </div>`;
   // Overlay account head + stats onto the hero video (home-style)
-  const myOverlay = `<div style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:340px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);width:52px;height:52px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
-        <div style="text-align:left;">
-          <div style="font-size:19px;font-weight:900;line-height:1.1;">${esc(myCharName())}</div>
-          <div style="font-size:12px;opacity:.9;font-weight:600;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
+  const myOverlay = `
+    <div style="display:flex;justify-content:space-between;align-items:center;flex:none;">
+      <div style="display:flex;align-items:center;gap:12px;text-align:left;">
+        <span class="um-avatar" style="overflow:hidden;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.5);width:46px;height:46px;flex:none;"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;"></span>
+        <div>
+          <div style="font-size:17px;font-weight:900;line-height:1.15;">${esc(myCharName())}</div>
+          <div style="font-size:11px;opacity:.9;font-weight:600;">${authed ? esc(u.email || t('menu_signed_in')) : (LANG==='ko'?'게스트':'Guest')}</div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;justify-content:center;">
+      <div style="display:flex;gap:8px;align-items:center;">
         <a class="btn btn-primary btn-sm" style="pointer-events:auto;" href="login.html">${t('menu_login')}</a>
         ${authed ? `<button class="btn btn-ghost btn-sm" style="pointer-events:auto;border-color:rgba(255,255,255,.4);color:#fff;" onclick="doLogout()">${t('menu_logout')}</button>` : ''}
       </div>
-      <div style="display:flex;gap:26px;justify-content:center;margin-top:2px;">
+    </div>
+    <div style="flex:1;display:flex;align-items:flex-end;justify-content:center;">
+      <div style="display:flex;gap:34px;justify-content:center;">
         <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">${streak.count}</div><div style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_streak')}</div></div>
         <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">${acc}%</div><div style="font-size:11px;font-weight:700;opacity:.92;">${t('menu_acc')}</div></div>
         <div style="text-align:center;"><div style="font-size:24px;font-weight:900;line-height:1;">L${lvl.lv}</div><div style="font-size:11px;font-weight:700;opacity:.92;">${lvl.xp} XP</div></div>
@@ -3528,14 +3528,21 @@ function rankMeOverlayHTML() {
       : _rankSort === 'level' ? `Lv.${me.level} · ${me.xp} XP`
       : `${me.acc}% ${t('rank_acc')}`;
     const top10 = meIdx !== -1 && meIdx < 10;
-    return `<div style="display:flex;align-items:center;gap:16px;">
-        ${top10 ? rankLightstick(place) : `<div style="font-size:64px;font-weight:900;line-height:.9;min-width:70px;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.5);">${place}</div>`}
-        <div style="text-align:left;">
-          <div style="font-size:13px;font-weight:800;letter-spacing:2px;opacity:.9;">${t('rank_title')}</div>
-          <div style="font-size:22px;font-weight:900;line-height:1.15;">${esc(me.name)}${place !== '–' ? ' · #'+place : ''}</div>
-          <div style="font-size:14px;font-weight:700;opacity:.95;">${metric}${place !== '–' ? ' · '+place+'/'+total : ''}</div>
-        </div>
-      </div>`;
+    const accTxt = (typeof me.acc === 'number') ? `${me.acc}%` : '–';
+    const solTxt = (typeof me.solved === 'number') ? `${me.solved}` : (me.solved!=null ? me.solved : '–');
+    return `
+    <div style="display:flex;align-items:center;gap:14px;text-align:left;">
+      ${top10 ? rankLightstick(place) : `<div style="font-size:58px;font-weight:900;line-height:.9;min-width:64px;text-align:center;text-shadow:0 4px 20px rgba(0,0,0,.5);">${place}</div>`}
+      <div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">${t('rank_title')}</div>
+        <div style="font-size:20px;font-weight:900;line-height:1.15;">${esc(me.name)}${place !== '–' ? ' · #'+place : ''}</div>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">ACCURACY</div>
+      <div style="font-size:34px;font-weight:900;line-height:1;">${accTxt}</div>
+      <div style="font-size:13px;font-weight:700;opacity:.92;">${t('rank_solved')} <b>${solTxt}</b></div>
+    </div>`;
   } catch (e) { return `<span class="tab-hero-cap">My Ranking</span>`; }
 }
 function viewRank() {
