@@ -848,7 +848,7 @@ function viewLevelTest() {
     return `
     <div class="lt-result">
       <div class="lt-badge">${t('lt_done')}</div>
-      <div class="lt-lvl" style="--lvl:${lvl}">L${lvl}</div>
+      <div class="lt-lvl" style="--lvl:${lvl}">T${lvl}</div>
       <div class="lt-grade">${grade}</div>
       <div class="lt-score">${c} / ${qs.length} · ${pct}%</div>
       <p class="lt-sub">${t('lt_rec_sub')}</p>
@@ -1107,7 +1107,7 @@ function viewHome() {
   // Core feature tiles: AI TOPIK + Textbook, tall stacked banners with video backgrounds
   const featureTilesHTML = `
     <div class="home-tiles">
-      <button class="home-tile ai-redo-tile" onclick="aiRedoGo()">
+      <button class="home-tile ai-redo-tile" onclick="go('daily')">
         <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
           <source src="assets/home_bg/no_idol_ai_topik_silent.mp4" type="video/mp4"></video>
         <span class="ht-cap">
@@ -1837,7 +1837,7 @@ function viewDaily() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.dailyIdx + 1} / ${qs.length} · DAILY${isAI ? ' ✨ AI' : ''}</span>
       <span class="q-type">${q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
-      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK T${q.level || myLevel()}</span>
       ${bookmarkBtn(q.id)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
@@ -1892,8 +1892,8 @@ function viewDailySetup() {
   const weakPct = weak ? `${weak.p}%` : (LANG==='ko'?'풀면 표시돼요':LANG==='km'?'':'—');
   const overlay = `
     <div style="text-align:left;">
-      <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">${LANG==='ko'?'나의 레벨':LANG==='km'?'កម្រិត':'MY LEVEL'}</div>
-      <div style="font-size:46px;font-weight:900;line-height:1;">L${myLv}</div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">${LANG==='ko'?'나의 TOPIK 레벨':'MY TOPIK'}</div>
+      <div style="font-size:46px;font-weight:900;line-height:1;">T${myLv}</div>
       <div style="font-size:12px;font-weight:700;opacity:.9;">${lvGrade}</div>
     </div>
     <div style="text-align:right;">
@@ -1919,6 +1919,14 @@ function viewDailySetup() {
       <span class="aq-redo-badge">×5</span>
       <span class="aq-arr">→</span>
     </button>
+    <div class="lv-auto-row" style="display:flex;align-items:center;gap:10px;margin:10px 0 2px;padding:10px 12px;background:var(--ios-fill,#f2f4f9);border-radius:14px;">
+      <div style="font-size:26px;font-weight:900;color:var(--ios-purple);line-height:1;">T${myLevel()}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:800;">${LANG==='ko'?'풀이 난이도':'Practice level'}</div>
+        <div style="font-size:10.5px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${myLevel()<=2?(LANG==='ko'?'TOPIK I · 초급':'TOPIK I'):(LANG==='ko'?'TOPIK II · 중·고급':'TOPIK II')} · ${LANG==='ko'?'문제 정답률로 자동 조정':'auto-tuned to your accuracy'}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="flex:none;border:1.5px solid var(--ios-purple);color:var(--ios-purple);" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
+    </div>
     <div class="sec-h" style="margin-top:18px;"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
     <div class="daily-secs">${secBtns}</div>
     <button class="btn btn-primary ds-start" onclick="startDaily()">${ic('daily',18)} ${LANG==='ko'?'시작':'Start'}</button>
@@ -2233,25 +2241,24 @@ function viewSection(sec) {
   });
   const acc = tried ? Math.round(corr / tried * 100) : null;
   const wrong = lsGet(LS.wrong, []).filter(w => { const q = qById(w.qid); return q && q.section === sec; }).length;
-  // per-level question counts
+  // per-level question counts (for a "T{n} 난이도로 시작" readout)
   const lvCounts = [1,2,3,4,5,6].map(lv => allQuestions().filter(q => q.section === sec && q.level === lv).length);
-  const lvBtns = [1,2,3,4,5,6].map(lv => `
-    <button class="lv-btn ${lv === selLv ? 'active' : ''}" style="--lv-col:${col};" onclick="setSectionLevel(${lv})">
-      <b>L${lv}</b><span>${lvCounts[lv-1]}</span>
-    </button>`).join('');
   return `
     <div class="sec-h"><h2 style="color:${col};">${ic(ico,18)} ${label}</h2><span class="sub">${t('nav_' + sec)} · TOPIK ${APP.level}</span></div>
-    <div class="lv-picker">${lvBtns}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin:2px 0 12px;padding:8px 12px;background:var(--ios-fill,#f2f4f9);border-radius:12px;">
+      <span style="font-size:20px;font-weight:900;color:${col};">T${selLv}</span>
+      <span style="font-size:11px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${LANG==='ko'?'나의 TOPIK 레벨로 자동 설정돼요':'auto set to your TOPIK level'}</span>
+    </div>
     <div class="app-card big-cta" style="border:1.5px solid ${col};">
       <div class="cta-ico" style="color:${col};">${ic(ico, 44)}</div>
-      <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })} <span class="sub">· L${selLv}</span></h2>
+      <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })} <span class="sub">· T${selLv}</span></h2>
       <p class="sub" style="line-height:1.6;">${t('sec_desc', { s: label })}</p>
       <div class="stat-row">
         <div class="stat-box"><b>${acc === null ? '—' : acc + '%'}</b><span>${t('menu_acc')}</span></div>
         <div class="stat-box"><b>${wrong}</b><span>${t('wrong_title')}</span></div>
         <div class="stat-box"><b>${lvCounts[selLv-1] || 10}</b><span>${t('sec_qs')}</span></div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · L${selLv}</button>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · T${selLv}</button>
       <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;color:${col};" onclick="generateAI('${sec}')">${ic('spark',15)} ${t('gen_ai')}</button>
     </div>
     ${wrong ? `<div class="app-card" onclick="go('wrong')" style="cursor:pointer;">
@@ -2259,19 +2266,39 @@ function viewSection(sec) {
     </div>` : ''}`;
 }
 function setSectionLevel(lv) {
-  APP.sectionLevel = lv;
+  // 남겨두되(코드 호환용), 진입 시 항상 auto TOPIK 레벨로 리셋
+  APP.sectionLevel = myLevel();
   render();
 }
 /* ---------- My level (default practice level, set in My tab) ---------- */
 function myLevel() {
+  // 나의 TOPIK 레벨 (T1~T6) — 자동 판정. 수동 L1~L6 선택은 제거됨.
+  // 값은 mylevel(1-6) 저장소에 두되, 모의고사/추정 결과로 자동 세팅.
   const v = parseInt(localStorage.getItem(LS.mylevel), 10);
   return (v >= 1 && v <= 6) ? v : 3;
 }
 function setMyLevel(n) {
-  localStorage.setItem(LS.mylevel, String(n));
-  toast(LANG === 'ko' ? `나의 레벨: L${n}` : LANG === 'km' ? `កម្រិតរបស់ខ្ញុំ: L${n}` : `My level: L${n}`);
+  localStorage.setItem(LS.mylevel, String(Math.max(1, Math.min(6, n))));
   render();
 }
+/* TOPIK 등급용 점수→레벨 헬퍼 (전역 util에서도 쓰는 estimatedScore와 동일 기준).
+   grade 1..6 = TOPIK T1..T6. TOPIK I는 최대 T2, TOPIK II는 T3~T6. */
+function topikGradeFromScore(score, maxScore) {
+  if (maxScore <= 200) { // TOPIK I (0~200): T2>=140, T1>=80
+    if (score >= 140) return 2;
+    if (score >= 80) return 1;
+    return 1;
+  }
+  // TOPIK II (0~300): T6>=230, T5>=190, T4>=150, T3>=120
+  if (score >= 230) return 6;
+  if (score >= 190) return 5;
+  if (score >= 150) return 4;
+  if (score >= 120) return 3;
+  return 3;
+}
+/* myLevel을 'TOPIK T레벨' 개념으로 표기하는 데 쓰는 라벨 */
+function topikLabel() { return 'T' + myLevel(); }
+
 function viewSectionCard() {
   const sec = APP.section;
   const qs = APP.sectionQs;
@@ -2286,7 +2313,7 @@ function viewSectionCard() {
     <div class="app-card">
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
       <span class="q-type">${APP.sectionType === 'vocab' || q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
-      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+      <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK T${q.level || myLevel()}</span>
       ${bookmarkBtn(q.id)}
       ${(sec === 'reading' || sec === 'listening') ? `<span id="sec-timer" class="mock-timer" style="font-weight:800;color:${_secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_secRemain)}</span>` : ''}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
@@ -2499,14 +2526,14 @@ function viewMy() {
       ${umRow('trophy', t('menu_best', { s: best || '—' }), `go('progress')`)}
     </div>`;
   const settings = `
-    <div class="sec-h"><h2>${t('my_level')}</h2></div>
-    <div class="app-card" style="padding:12px 14px;">
-      <div class="row"><b style="font-size:13px;">${t('my_level')}</b><span class="sub">L${myLevel()}</span></div>
-      <p class="sub" style="font-size:11.5px;margin:2px 0 8px;">${t('my_level_sub')}</p>
-      <div class="lv-picker" style="grid-template-columns:repeat(6,1fr);margin:0;">
-        ${[1,2,3,4,5,6].map(n => `<button class="lv-btn ${n === myLevel() ? 'active' : ''}" style="--lv-col:var(--ios-blue);" onclick="setMyLevel(${n})"><b>L${n}</b></button>`).join('')}
+    <div class="sec-h"><h2>${t('my_level')} · ${t('menu_level')}</h2></div>
+    <div class="app-card" style="padding:14px;">
+      <div class="row" style="align-items:center;">
+        <div style="font-size:40px;font-weight:900;line-height:1;color:var(--ios-purple);">T${myLevel()}</div>
+        <span class="lv-grade" style="font-size:12px;font-weight:800;color:var(--ios-secondary-label);">${myLevel() <= 2 ? (LANG==='ko'?'TOPIK I · 초급':LANG==='km'?'TOPIK I':'TOPIK I · Beginner') : (LANG==='ko'?'TOPIK II · 중·고급':LANG==='km'?'TOPIK II':'TOPIK II · Int-Adv')}</span>
+        <span class="sub" style="margin-left:auto;text-align:right;font-size:11px;">${LANG==='ko'?'레벨테스트·모의고사로<br>자동 판정돼요':'Auto-set from your<br>test & mock scores'}</span>
       </div>
-      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:10px;border:1.5px solid var(--ios-purple);color:var(--ios-purple);border-radius:12px;" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px;border:1.5px solid var(--ios-purple);color:var(--ios-purple);border-radius:12px;" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
     </div>
     <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
     <div class="app-card" style="padding:6px 14px;">
@@ -2585,6 +2612,10 @@ function finishDaily() {
     if (idx >= 0) scores[idx] = rec; else scores.push(rec);
     scores.sort((a, b) => a.date < b.date ? -1 : 1);
     lsSet(LS.scores, scores.slice(-30));
+    // 나의 TOPIK 레벨 자동 갱신: 이번 10문제 정답률 → 추정 점수 → T등급.
+    // 레벨테스트(수동)보다 실측이 우선 — 학습자가 '문제 수준'을 직접 고르지 않게.
+    const g = topikGradeFromScore(est.score, est.maxScore);
+    if (g !== myLevel()) setMyLevel(g);
   } catch (e) { /* non-fatal */ }
   render();
 }
@@ -3130,21 +3161,24 @@ const XP_LEVELS = (() => {
   return arr;
 })();
 const XP_RULES = { correct: 10, wrong: 3, daily_finish: 50, mock_finish: 100, flash: 5 };
-function xpTotal() { return (lsGet(LS.xp, {})).total || 0; }
-function xpLevel(xp) {
-  let lv = 1;
-  for (const l of XP_LEVELS) if (xp >= l.need) lv = l.lv;
-  return lv;
+/* Gamification level (게이미피케이션 레벨) = solved-question based, 1..100.
+   문제 10개당 1단계 (문제 10개 = L1, 20개 = L2 …). Level shows progress toward
+   the next 10-question step. Replaces the old XP-threshold curve. */
+function solvedCount() { return totalSolvedQuestions(); }
+function xpLevel(_xp) {
+  return gLevelBySolved(solvedCount());
 }
+function gLevelBySolved(solved) {
+  return Math.max(1, Math.min(100, Math.floor(solved / 10) + 1));
+}
+function xpTotal() { return (lsGet(LS.xp, {})).total || 0; }
 function xpProgress() {
-  const xp = xpTotal();
-  const lv = xpLevel(xp);
-  const cur = XP_LEVELS[lv - 1];
-  const next = XP_LEVELS[lv] || null;
-  if (!next) return { lv, xp, into: 1, need: 1, pct: 100, maxed: true };
-  const into = xp - cur.need;
-  const need = next.need - cur.need;
-  return { lv, xp, into, need, pct: Math.min(100, Math.round(into / need * 100)), maxed: false };
+  const solved = solvedCount();
+  const lv = xpLevel();
+  const into = solved % 10;
+  const need = 10;
+  const pct = lv >= 100 ? 100 : Math.min(100, Math.round(into / need * 100));
+  return { lv, xp: solved, into, need, pct, maxed: lv >= 100 };
 }
 function addXP(n, why) {
   const st = lsGet(LS.xp, { total: 0 });
@@ -3654,7 +3688,7 @@ function viewMockRun() {
       <button class="btn btn-ghost btn-sm" onclick="exitMock()">${t('exit')}</button></div>
       <div class="sub" style="margin:4px 0 8px;display:flex;align-items:center;gap:8px;">Q${APP.mockIdx + 1} / ${qs.length} · ${t('time_left')}
         <span class="q-type">${q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
-        <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK L${q.level || myLevel()}</span>
+        <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK T${q.level || myLevel()}</span>
       ${bookmarkBtn(q.id)}</div>
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
@@ -4082,7 +4116,7 @@ function showAIRedoLoading() {
     <div class="ar-ov-card">
       <div class="ar-ov-inner">
         <div class="ar-ov-media"><video class="ar-ov-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-          <source src="assets/home_bg/aran_ai_gen_modal.mp4" type="video/mp4"></video>
+          <source src="assets/home_bg/tabs/aran_book_sing.mp4" type="video/mp4"></video>
           <div class="ar-ov-media-shade"></div>
           <div class="ar-ov-spark">${ic('spark',30)}</div>
         </div>
