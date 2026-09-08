@@ -67,7 +67,7 @@ const LS = {
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
 const T = {
   en: {
-    nav_home: 'Home', nav_book: 'Textbook', nav_daily: 'AI TOPIK', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_rank: 'Ranking', nav_my: 'My',
+    nav_home: 'Home', nav_book: 'Textbook', nav_daily: 'AI TOPIK', nav_reading: 'Reading', nav_listening: 'Listening', nav_writing: 'Writing', nav_mock: 'Mock test', nav_rank: 'Ranking', nav_korea: 'Korea Life', nav_my: 'My',
     rank_title: 'Ranking', rank_sub: 'Learners ranked by accuracy · solved · level', rank_acc: 'Accuracy', rank_solved: 'Solved', rank_level: 'Level score', rank_me: 'You', rank_no_data: 'No ranking data yet — solve questions to join!', rank_top_of: 'Top {n} of {total} learners',
     home_sub: 'AI questions · daily mocks · weak-spot review',
     stat_streak: 'streak', stat_today: 'today', stat_mastered: 'mastered',
@@ -147,7 +147,7 @@ const T = {
     chal_title: 'Weak-spot challenge', chal_sub: 'Beat your weakest type in 5 minutes', chal_start: '⚔️ Start challenge', chal_time: 'Time', chal_correct: 'Correct', chal_conquer: '🏆 Conquered {t}!', chal_fail: 'Keep training — try again!', chal_reward: '+{n} XP bonus', chal_q: 'Question {i}/{n}', chal_done: 'Challenge finished', chal_conquered_before: 'Conquered {n}×', chal_again: 'Challenge again',
   },
   ko: {
-    nav_home: '홈', nav_book: '교재', nav_daily: 'AI TOPIK', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_rank: '랭킹', nav_my: 'MY',
+    nav_home: '홈', nav_book: '교재', nav_daily: 'AI TOPIK', nav_reading: '리딩', nav_listening: '리스닝', nav_writing: '라이팅', nav_mock: '모의고사', nav_rank: '랭킹', nav_korea: '한국 생활', nav_my: 'MY',
     rank_title: '랭킹', rank_sub: '정답률 · 푼 문제 · 레벨점수 순위', rank_acc: '정답률', rank_solved: '푼 문제', rank_level: '레벨점수', rank_me: '나', rank_no_data: '아직 랭킹 데이터가 없어요 — 문제를 풀어 참여하세요!', rank_top_of: '상위 {n}명 · 전체 {total}명',
     home_sub: 'AI 문제 · 매일 모의고사 · 취약점 복습',
     stat_streak: '연속', stat_today: '오늘', stat_mastered: '마스터',
@@ -227,7 +227,7 @@ const T = {
     chal_title: '약점 정복 챌린지', chal_sub: '5분 안에 가장 약한 유형을 정복하세요', chal_start: '⚔️ 챌린지 시작', chal_time: '시간', chal_correct: '정답', chal_conquer: '🏆 {t} 정복!', chal_fail: '더 연습하고 다시 도전하세요!', chal_reward: '+{n} XP 보너스', chal_q: '문제 {i}/{n}', chal_done: '챌린지 완료', chal_conquered_before: '{n}회 정복', chal_again: '다시 도전',
   },
   km: {
-    nav_home: 'ទំព័រដើម', nav_book: 'សៀវភៅ', nav_daily: 'AI TOPIK', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_rank: 'ចំណាត់ថ្នាក់', nav_my: 'ខ្ញុំ',
+    nav_home: 'ទំព័រដើម', nav_book: 'សៀវភៅ', nav_daily: 'AI TOPIK', nav_reading: 'អាន', nav_listening: 'ស្តាប់', nav_writing: 'សរសេរ', nav_mock: 'ប្រឡងសាក', nav_rank: 'ចំណាត់ថ្នាក់', nav_korea: 'ជីវិតកូរ៉េ', nav_my: 'ខ្ញុំ',
     rank_title: 'ចំណាត់ថ្នាក់', rank_sub: 'ចំណាត់ថ្នាក់តាម ភាពត្រឹមត្រូវ · សំណួរ · ពិន្ទុកម្រិត', rank_acc: 'ភាពត្រឹមត្រូវ', rank_solved: 'បានដោះស្រាយ', rank_level: 'ពិន្ទុកម្រិត', rank_me: 'អ្នក', rank_no_data: 'មិនទាន់មានទិន្នន័យ — ដោះស្រាយសំណួរដើម្បីចូលរួម!', rank_top_of: 'កំពូល {n} នៃ {total} នាក់',
     home_sub: 'សំណួរ AI · ប្រឡងសាកប្រចាំថ្ងៃ · ពិនិត្យចំណុចខ្សោយ',
     stat_streak: 'streak', stat_today: 'ថ្ងៃនេះ', stat_mastered: 'mastered',
