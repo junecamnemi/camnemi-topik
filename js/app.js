@@ -4023,9 +4023,10 @@ function viewKoreaLife() {
     <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
   const hero = tabHeroHTML('rank', rankMeOverlayHTML());
   const cards = [
-    { id:'why', icon:'🇰🇷', title: (kl.why&&kl.why.title)||'Why study in Korea?', sub:'Why Korea beats Australia, USA, China & Japan', grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
-    { id:'univs', icon:'🎓', title:(kl.univs&&kl.univs.title)||'Recommended universities', sub:'6 universities you can enter on IELTS / TOPIK', grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
-    { id:'live', icon:'🏠', title:'How to live in Korea', sub:'Daily life: transport, food, health, visa & more', grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
+    { id:'why', icon:'🇰🇷', title: (kl.why&&kl.why.title)||'Why Korea?', sub:'Beats AU, USA, CN & JP', grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
+    { id:'univs', icon:'🎓', title:'Universities', sub:'6 you can enter on IELTS / TOPIK', grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
+    { id:'apps', icon:'📱', title:'Recommend apps', sub:'Naver Map, Coupang, Baemin & more', grad:'linear-gradient(135deg,#F472B6,#FBBF24)' },
+    { id:'live', icon:'🏠', title:'How to live', sub:'Transport, food, health, visa & more', grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
   ];
   const grid = cards.map(c => `
     <button class="kl3-card" onclick="openKoreaSection('${c.id}')" style="--kg:${c.grad}">
@@ -4036,15 +4037,35 @@ function viewKoreaLife() {
     </button>`).join('');
   return `${hero}
     <div class="kl-home kl3-home">
-      <div class="kl-intro">${LANG==='ko'?'한국 유학의 첫걸음 — 왜, 어디로, 어떻게':'Your Korea journey — why, where, and how'}</div>
-      <div class="kl3-grid">${grid}</div>
+      <div class="kl-intro">${LANG==='ko'?'한국 유학의 첫걸음 — 왜, 어디로, 어떻게, 무엇으로':'Your Korea journey — why, where, how & what to use'}</div>
+      <div class="kl3-grid kl3-4">${grid}</div>
     </div>`;
 }
 function openKoreaSection(sec){
   _klStack = []; _klStack.push(()=>go('rank'));
   if(sec==='why') renderWhy();
   else if(sec==='univs') renderUnivs();
+  else if(sec==='apps') renderApps();
   else renderLiveHome();
+}
+function renderApps(){
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const a=window.KOREA_LIFE.apps;
+  const items=(a.items||[]).map(ap=>`
+    <div class="kl-block app-card">
+      <div class="app-head"><span class="app-ico">${ap.icon}</span>
+        <div><div class="app-name">${esc(ap.name)} <small>${esc(ap.kor||'')}</small></div>
+        <div class="app-cat">${esc(ap.cat)} · <span class="app-need">${esc(ap.need||'')}</span></div></div></div>
+      <p class="app-body">${esc(ap.body||'')}</p>
+      ${(ap.tips&&ap.tips.length)?`<div class="app-tips">${ap.tips.map(tp=>`<div>✓ ${esc(tp)}</div>`).join('')}</div>`:''}
+    </div>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">📱</span><div><div class="kl3-sec-title">Recommend apps</div><div class="kl3-sec-sub">${esc(a.intro||'')}</div></div></div>
+      <div class="kl-body" style="margin-top:8px;">${items}</div>
+    </div>`;
+  window.scrollTo(0,0);
 }
 function renderLiveHome(){
   const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
@@ -4108,7 +4129,7 @@ function renderUnivs(){
     </div>`;
   window.scrollTo(0,0);
 }
-window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderLiveHome=renderLiveHome;
+window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderApps=renderApps; window.renderLiveHome=renderLiveHome;
 let _klStack = [];
 function _klBackTarget(fn){ _klStack.push(fn); }
 function openKoreaCat(cid){

@@ -165,5 +165,36 @@ window.KOREA_LIFE = {
         note:"Vocational junior college — shorter, hands-on diplomas in hospitality, beauty & AI. All international students get a 30% tuition reduction every semester." }
     ]
   },
+  /* ============ RECOMMEND APPS ============ */
+  apps: {
+    title: "Recommend apps",
+    intro: "The apps every international student in Korea needs — navigation, delivery, shopping, banking and your phone carrier.",
+    items: [
+      { name:"Naver Map", kor:"네이버지도", icon:"🗺️", cat:"Navigation", need:"Essential — first app to install",
+        body:"Google Maps is unreliable for Korean public transport. Naver Map gives accurate walking, subway, bus and taxi routes with real-time arrivals, exit numbers and English mode.",
+        tips:["Switch to English in Settings → Language.","Search a place name, then tap Directions → shows metro/bus/walk.","Shows the exact subway exit number to leave by."] },
+      { name:"Coupang", kor:"쿠팡", icon:"📦", cat:"Shopping", need:"Rocket delivery",
+        body:"Korea's biggest online shopping app. Coupang Rocket (로켓배송) delivers most items by the next morning — groceries, snacks, electronics, household goods.",
+        tips:["Sign up needs a Korean phone number + address.","Rocket delivery is free over a small minimum.","Coupang Fresh delivers groceries same-day."] },
+      { name:"Baedal Minjok (Baemin)", kor:"배달의민족", icon:"🛵", cat:"Food delivery", need:"Order food to your door",
+        body:"The #1 Korean food-delivery app. Order from restaurants, convenience stores and cafes and pay by card or cash on delivery.",
+        tips:["Needs a Korean phone + address.","English UI is partial — use Papago for menus.","Rider calls you when arriving (배달 기사)."] },
+      { name:"JB BRAVO Korea", kor:"브라보코리아", icon:"🏦", cat:"Banking (foreigners)", need:"For Cambodian/foreign students",
+        body:"By JB Bank Cambodia — an all-in-one app for foreigners in Korea: Korean life tips, easy money transfer home, and simple banking in your language.",
+        tips:["Great for sending money back to Cambodia.","Includes K-Life tips for newcomers.","A Korean-life + finance platform made for you."] },
+      { name:"LG U+ (U+ Mobile)", kor:"LG유플러스", icon:"📶", cat:"Carrier / SIM", need:"Manage your Korean SIM",
+        body:"LG U+ is one of Korea's 3 mobile carriers. Their app (U+ 모바일) lets you check your data, pay your bill, top up and manage your Korean phone number.",
+        tips:["Get a prepaid or postpaid SIM at an LG U+ store with passport/ARC.","Use the app to monitor data usage & renew plans.","Public U+ WiFi is available in many places."] },
+      { name:"Kakao T", kor:"카카오T", icon:"🚕", cat:"Taxi", need:"Hail a taxi easily",
+        body:"Korea's standard taxi-hailing app. Call a regular or premium taxi, see the fare, and pay by card in the app — no need to speak Korean to the driver.",
+        tips:["Set pick-up by GPS or typing the address.","Choose 'General taxi' for the cheapest fare.","Can also book designated-driver late nights."] },
+      { name:"Papago", kor:"파파고", icon:"🈁", cat:"Translation", need:"Translate Korean instantly",
+        body:"Naver's translator is the best for Korean. Type, speak, or point your camera at menus, signs and documents for instant Korean→your language translation.",
+        tips:["Camera mode translates menus & signs live.","Works offline for key languages.","Better than Google for Korean."] },
+      { name:"KakaoTalk", kor:"카카오톡", icon:"💬", cat:"Messaging", need:"Everyone communicates here",
+        body:"Korea runs on KakaoTalk — how you message classmates, professors, landlords and friends. You need it for group chats and official university notices.",
+        tips:["Register with your Korean number after getting a SIM.","Universities & clubs share notices in KakaoTalk.","Voice/video calls are free between KakaoTalk users."] }
+    ]
+  },
   /* How to Live = the 10 categories above (cats) */
 };
