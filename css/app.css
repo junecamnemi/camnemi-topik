@@ -1300,6 +1300,58 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 
 /* ---------- Ranking ---------- */
 .rk-chips { display: flex; gap: 8px; margin: 2px 2px 12px; }
+/* ===== Korea Life (rank tab) ===== */
+.kl-home { padding: 2px 16px 14px; }
+.kl-intro { font-size:12.5px; color:var(--ios-secondary-label); font-weight:600; line-height:1.5; margin:10px 2px 14px; }
+.kl-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+.kl-card { display:flex; flex-direction:column; text-align:left; border:none; border-radius:18px; padding:14px 13px; cursor:pointer;
+  font-family:var(--ios-font,system-ui); background:#fff; border:1px solid #f0ecfb; box-shadow:0 3px 12px rgba(91,63,212,.06);
+  -webkit-tap-highlight-color:transparent; }
+.kl-card:active { transform:scale(.97); }
+.kl-ico { font-size:26px; margin-bottom:8px; }
+.kl-title { font-weight:900; font-size:14px; color:#2b2547; }
+.kl-sub { font-size:10.5px; color:#8a83a6; font-weight:600; margin-top:3px; line-height:1.35; }
+.kl-count { font-size:10px; font-weight:800; color:#c084fc; margin-top:8px; }
+/* category detail */
+.kl-detail-view { padding:0 16px 30px; }
+.kl-cat-hero { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid #f0ecfb; border-radius:18px;
+  padding:16px; box-shadow:0 3px 12px rgba(91,63,212,.06); margin-bottom:14px; }
+.kl-cat-ico { font-size:32px; }
+.kl-cat-title { font-weight:900; font-size:19px; color:#2b2547; }
+.kl-cat-sub { font-size:11.5px; color:#8a83a6; font-weight:600; margin-top:2px; }
+.kl-items { display:flex; flex-direction:column; gap:9px; }
+.kl-item { display:flex; align-items:center; gap:11px; border:none; background:#fff; border:1px solid #f0ecfb; border-radius:15px;
+  padding:12px; cursor:pointer; font-family:var(--ios-font,system-ui); text-align:left; -webkit-tap-highlight-color:transparent; }
+.kl-item:active { transform:scale(.99); }
+.kl-item-ico { font-size:22px; }
+.kl-item-body { flex:1; display:flex; flex-direction:column; }
+.kl-item-body b { font-size:13px; color:#2b2547; }
+.kl-item-sub { font-size:10.5px; color:#8a83a6; font-weight:600; margin-top:2px; }
+.kl-item-arr { color:#c9c2e8; font-size:20px; }
+/* item detail */
+.kl-item-hero { text-align:center; padding:18px 8px 8px; }
+.kl-item-ico.big { font-size:44px; display:block; margin-bottom:8px; }
+.kl-item-title { font-weight:900; font-size:20px; color:#2b2547; }
+.kl-item-sub { font-size:12.5px; color:#8a83a6; font-weight:600; margin-top:4px; }
+.kl-cost { text-align:center; font-size:12px; font-weight:800; color:#7b3ff2; background:#f3eeff; border-radius:999px;
+  padding:7px 14px; margin:10px auto 0; display:inline-block; }
+.kl-body { margin-top:14px; }
+.kl-block { background:#fff; border:1px solid #f0ecfb; border-radius:14px; padding:13px 15px; margin-bottom:10px; }
+.kl-bhead { display:block; font-size:12px; font-weight:900; color:#7b3ff2; margin-bottom:5px; }
+.kl-block p { font-size:13px; color:#4a3b78; line-height:1.6; margin:0; }
+.kl-tip { background:#fdf0f7; border-radius:13px; padding:11px 14px; margin-bottom:10px; }
+.kl-tip b { font-size:12px; color:#c026d3; }
+.kl-tip p { font-size:12.5px; color:#6b5aa8; line-height:1.55; margin:5px 0 0; }
+.kl-steps { background:#fff; border:1px solid #f0ecfb; border-radius:14px; padding:14px 20px 14px 32px; margin:0 0 10px; }
+.kl-steps li { font-size:13px; color:#4a3b78; line-height:1.65; margin-bottom:4px; }
+.kl-phrases { background:#faf7ff; border:1px solid #f0ecfb; border-radius:14px; padding:13px 15px; margin-top:10px; }
+.kl-ph-head { font-size:11px; font-weight:900; color:#a79bc9; letter-spacing:.4px; margin-bottom:8px; }
+.kl-ph-line { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px dashed #eee8fb; }
+.kl-ph-line:last-child { border-bottom:none; }
+.kl-ko { font-weight:800; font-size:14px; color:#2b2547; }
+.kl-en { font-size:12px; color:#8a83a6; font-weight:600; }
+.back-btn-mini { background:#f1edfb; border:none; border-radius:999px; padding:7px 14px; font-weight:800; font-size:12px;
+  color:#7b5cf6; cursor:pointer; font-family:var(--ios-font,system-ui); }
 /* ===== Idol Discovery (Rank tab) ===== */
 .idol-home { padding: 2px 16px 10px; }
 .rk-sort { display: flex; gap: 8px; margin: 2px 0 12px; }

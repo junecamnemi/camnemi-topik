@@ -4013,29 +4013,86 @@ function rankMeOverlayHTML() {
   } catch (e) { return `<span class="tab-hero-cap">My Ranking</span>`; }
 }
 function viewRank() {
-  return `${tabHeroHTML('rank', rankMeOverlayHTML())}
-    <div class="rk-chips">
-      <button class="rk-chip ${_rankSort === 'acc' ? 'on' : ''}" data-m="acc" onclick="setRankSort('acc')">${t('rank_acc')}</button>
-      <button class="rk-chip ${_rankSort === 'solved' ? 'on' : ''}" data-m="solved" onclick="setRankSort('solved')">${t('rank_solved')}</button>
-      <button class="rk-chip ${_rankSort === 'level' ? 'on' : ''}" data-m="level" onclick="setRankSort('level')">${t('rank_level')}</button>
-    </div>
-    <div id="rank-me">${rankMeCardHTML()}</div>
-    <div id="rank-list">${rankListHTML()}</div>
-    <div class="app-card rk-note">
-      <span class="sub">${LANG === 'ko' ? '랭킹은 내 학습 기록을 기준으로 해요 — 문제를 풀수록 순위가 올라가요!' : LANG === 'km' ? 'ចំណាត់ថ្នាក់ផ្អែកលើកំណត់ត្រារបស់អ្នក — ដោះស្រាយសំណួរកាន់តែច្រើន កាន់តែឡើងខ្ពស់!' : 'Ranking is based on your study record — the more you solve, the higher you climb!'}</span>
+  return viewKoreaLife();
+}
+function bindRank() { /* Korea Life is static — nothing to load */ }
+function viewKoreaLife() {
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const kl = window.KOREA_LIFE;
+  const cats = (kl && kl.cats) || [];
+  if (!cats.length) return `${tabHeroHTML('rank', rankMeOverlayHTML())}
+    <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
+  const hero = tabHeroHTML('rank', rankMeOverlayHTML());
+  const intro = kl.intro ? `<div class="rk-head-sub kl-intro">${esc(kl.intro)}</div>` : '';
+  const grid = cats.map(c => `
+    <button class="kl-card" onclick="openKoreaCat('${c.id}')">
+      <div class="kl-ico">${c.icon}</div>
+      <div class="kl-title">${esc(c.title)}</div>
+      <div class="kl-sub">${esc(c.sub)}</div>
+      <div class="kl-count">${(c.items||[]).length} tips</div>
+    </button>`).join('');
+  return `${hero}
+    <div class="kl-home">
+      ${intro}
+      <div class="kl-grid">${grid}</div>
     </div>`;
 }
-function bindRank() {
-  // lazily load other learners once, then re-render the list
-  if (_rankPeers === null) {
-    loadRankPeers().then(() => {
-      const list = $id('rank-list');
-      if (list) list.innerHTML = rankListHTML();
-      const meCard = $id('rank-me');
-      if (meCard) meCard.innerHTML = rankMeCardHTML();
-    });
-  }
+let _klStack = [];
+function openKoreaCat(cid){
+  const kl = window.KOREA_LIFE; const c = (kl.cats||[]).find(x=>x.id===cid); if(!c) return;
+  _klStack.push({view:'home'});
+  renderKoreaCat(c);
 }
+function renderKoreaCat(c){
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c2=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c2]));};
+  const items = (c.items||[]).map((it,i) => `
+    <button class="kl-item" onclick="openKoreaItem('${c.id}','${i}')">
+      <span class="kl-item-ico">${it.icon||c.icon}</span>
+      <span class="kl-item-body"><b>${esc(it.title||'')}</b><span class="kl-item-sub">${esc(it.sub||'')}</span></span>
+      <span class="kl-item-arr">›</span>
+    </button>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← ${LANG==='ko'?'전체':'Home'}</button></div>
+      <div class="kl-cat-hero"><span class="kl-cat-ico">${c.icon}</span><div><div class="kl-cat-title">${esc(c.title)}</div><div class="kl-cat-sub">${esc(c.sub||'')}</div></div></div>
+      <div class="kl-items">${items}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function openKoreaItem(cid, idx){
+  const kl = window.KOREA_LIFE; const c = (kl.cats||[]).find(x=>x.id===cid); const it=(c.items||[])[Number(idx)];
+  if(!c||!it) return;
+  _klStack.push({view:'cat', cid});
+  renderKoreaItem(c, it);
+}
+function renderKoreaItem(c, it){
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c2=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c2]));};
+  const body = (it.body||[]).map(b => {
+    if (b && b.tip) return `<div class="kl-tip"><b>💡 ${esc(b.t||'Tip')}</b><p>${esc(b.p||'')}</p></div>`;
+    return `<div class="kl-block">${b&&b.t?`<b class="kl-bhead">${esc(b.t)}</b>`:''}<p>${esc(b.p||'')}</p></div>`;
+  }).join('');
+  const steps = (it.steps&&it.steps.length)?`<ol class="kl-steps">${it.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>`:'';
+  const phrases = (it.phrases&&it.phrases.length)?
+    `<div class="kl-phrases"><div class="kl-ph-head">🈁 Useful Korean</div>${it.phrases.map(p=>`
+      <div class="kl-ph-line"><span class="kl-ko">${esc(p.ko)}</span><span class="kl-en">${esc(p.en)}</span></div>`).join('')}</div>`:'';
+  const cost = it.cost ? `<div class="kl-cost">💰 ${esc(it.cost)}</div>` : '';
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← ${LANG==='ko'?'뒤로':'Back'}</button></div>
+      <div class="kl-item-hero"><span class="kl-item-ico big">${it.icon||c.icon}</span><div class="kl-item-title">${esc(it.title||'')}</div><div class="kl-item-sub">${esc(it.sub||'')}</div></div>
+      ${cost}
+      <div class="kl-body">${body}${steps}${phrases}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function koreaBack(){
+  const prev = _klStack.pop();
+  if(!prev){ go('rank'); return; }
+  if(prev.view==='cat'){ const c=(window.KOREA_LIFE.cats||[]).find(x=>x.id===prev.cid); if(c) renderKoreaCat(c); }
+  else go('rank');
+}
+window.openKoreaCat=openKoreaCat; window.renderKoreaCat=renderKoreaCat; window.openKoreaItem=openKoreaItem;
+window.renderKoreaItem=renderKoreaItem; window.koreaBack=koreaBack; window.viewKoreaLife=viewKoreaLife;
 
 /* ================= WRONG / TYPE-WISE ================= */
 /* Read-only full question card (passage + question + all options with the answer
