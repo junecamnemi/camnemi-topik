@@ -319,6 +319,7 @@ function setLang(l) {
   LANG = l; localStorage.setItem(LS.lang, l);
   const sel = $id('lang-sel'); if (sel) sel.value = l;
   document.documentElement.dataset.lang = l;
+  document.documentElement.lang = (l === 'ko') ? 'ko' : (l === 'km') ? 'km' : 'en';
   // re-render nav labels + current screen
   document.querySelectorAll('[data-nav-label]').forEach(el => { el.textContent = t('nav_' + el.dataset.navLabel); });
   render();

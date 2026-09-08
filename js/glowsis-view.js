@@ -176,7 +176,7 @@ function viewBook() {
     if (!levelBooks.length) {
       return `<div class="book-level soon">
         <div class="bl-top"><span class="bl-lv">Lv ${l.lv}</span><span class="bl-label">${l.label}</span><span class="bl-coming">SOON</span></div>
-        <div class="bl-soon-txt">교재 준비 중입니다.</div>
+        <div class="bl-soon-txt">${LANG==='ko'?'교재 준비 중입니다.':LANG==='km'?'សៀវភៅកំពុងរៀបចំ។':'Textbook in preparation.'}</div>
       </div>`;
     }
     return `<div class="book-level ready ${l.lv === lastLv ? 'open' : ''}" data-lvl="${l.lv}">
@@ -446,23 +446,25 @@ function pageBody(p, i, meta) {
   if (cls === 'end') {
     const e = p.endMeta || {};
     const next = e.next, nMeta = e.nMeta;
+    const ko = LANG === 'ko', km = LANG === 'km';
+    const L = (kr, en, kmr) => ko ? kr : km ? kmr : en;
     const nextBtn = next
       ? `<button class="bk-next-btn" onclick="openUnit(${next.id})">
-          <span class="bk-next-t">다음 과로</span>
+          <span class="bk-next-t">${L('다음 과로','Next unit','វគ្គបន្ទាប់')}</span>
           <span class="bk-next-n">Unit ${nMeta.no} · ${nMeta.title}</span>
           <span class="bk-next-arr">→</span>
         </button>`
       : `<button class="bk-next-btn" onclick="openBookUnits()">
-          <span class="bk-next-t">완료! 📚</span>
-          <span class="bk-next-n">다른 Unit 고르기</span>
+          <span class="bk-next-t">${L('완료! 📚','Done! 📚','រួចរាល់! 📚')}</span>
+          <span class="bk-next-n">${L('다른 Unit 고르기','Pick another unit','ជ្រើសរើសវគ្គផ្សេង')}</span>
         </button>`;
     return `<div class="bk-page bk-end">
       <div class="bk-end-inner">
         <div class="bk-end-check">✓</div>
-        <div class="bk-end-title">Unit ${meta.no} 완료!</div>
-        <div class="bk-end-sub">${meta.title} 학습을 마쳤어요</div>
+        <div class="bk-end-title">Unit ${meta.no} ${L('완료!','Done!','រួចរាល់!')}</div>
+        <div class="bk-end-sub">${meta.title} — ${L('학습을 마쳤어요','completed','បានបញ្ចប់')}</div>
         ${nextBtn}
-        <button class="bk-units-btn" onclick="openBookUnits()">← 모든 Unit</button>
+        <button class="bk-units-btn" onclick="openBookUnits()">← ${L('모든 Unit','All units','វគ្គទាំងអស់')}</button>
       </div>
       <div class="bk-pageno">${i+1}</div>
     </div>`;
