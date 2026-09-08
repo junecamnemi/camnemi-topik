@@ -197,7 +197,13 @@ function viewBook() {
       </div>
     </div>`;
   }).join('');
-  return `${hero}<div class="book-home">
+  return `${hero}
+  <div class="book-stat-strip">
+    <div class="bss-cell"><span class="bss-k">${LANG==='ko'?'오늘 공부':'Today'}</span><span class="bss-v">${fmtStudyMin(todayStudyMinutes())}</span></div>
+    <div class="bss-div"></div>
+    <div class="bss-cell"><span class="bss-k">${LANG==='ko'?'누적 공부':'Total'}</span><span class="bss-v">${fmtStudyMin(totalStudyMinutes())}</span></div>
+  </div>
+  <div class="book-home">
     <div class="book-levels">
       ${levelsHTML}
     </div>

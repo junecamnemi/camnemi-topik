@@ -102,6 +102,17 @@
 .bl-b-t small { font-size: 11px; color: var(--ios-tertiary-label); margin-top: 2px; }
 .bl-b-arr { margin-left: auto; color: var(--ios-blue); font-weight: 800; font-size: 18px; position: relative; z-index: 1; }
 
+/* study-time strip under the Book hero: Today | Total */
+.book-stat-strip {
+  display:flex; align-items:center; gap:16px; justify-content:center;
+  margin: 10px 16px 2px; padding: 10px 16px; border-radius: 14px;
+  background: var(--ios-card); border:1px solid var(--ios-separator);
+}
+.bss-cell { display:flex; flex-direction:column; align-items:center; gap:1px; }
+.bss-k { font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--ios-tertiary-label); text-transform:uppercase; }
+.bss-v { font-size:18px; font-weight:900; color:var(--ios-label); }
+.bss-div { width:1px; height:30px; background:var(--ios-separator); }
+
 /* ---- unit list ---- */
 .book-units { padding: 8px 4px 20px; }
 .bu-head { margin-bottom: 14px; }
@@ -505,8 +516,8 @@
 .vocab-entry { background: linear-gradient(135deg,#fff6f4,#ffeef2); }
 .vocab-entry:active { transform: scale(.985); }
 .vocab-entry .vc-ico { font-size: 17px; font-weight: 900; color:#fff; font-family: Georgia, 'Times New Roman', serif; }
-.vocab-entry .vc-1 { background: rgba(255,111,145,.5); box-shadow: inset 0 0 0 1.5px rgba(255,111,145,.85); }
-.vocab-entry .vc-2 { background: rgba(124,108,246,.5); box-shadow: inset 0 0 0 1.5px rgba(124,108,246,.85); }
+.vocab-entry .vc-1 { background: linear-gradient(135deg,#ff5f7e,#ff8a5c); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4); }
+.vocab-entry .vc-2 { background: linear-gradient(135deg,#7c6cf6,#a35ce0); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.4); }
 
 .vb-screen { padding:0 0 30px; }
 .vb-lvl { display:flex; gap:8px; padding:14px 16px 0; }

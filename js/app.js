@@ -1006,14 +1006,19 @@ function tabClip(tab) {
 function tabHeroHTML(tab, overlay) {
   const clip = tabClip(tab);
   const inner = overlay || `<span class="tab-hero-cap">${capLabel(tab)}</span>`;
+  // The floating solved·time chip is shown on non-book tabs. Book shows its own
+  // Total/Today study strip below the hero instead (viewBook).
+  const chip = (tab === 'book')
+    ? ''
+    : `<div class="hero-stat-chip" aria-hidden="false">
+      <span>🧭 ${totalSolvedQuestions()}</span><i></i><span>⏱ ${fmtStudyMin(totalStudyMinutes())}</span>
+    </div>`;
   return `<div class="scene-hero tab-hero scene-${scenePartOfDay()}" data-tab="${tab}" data-pos="${clip.pos}" aria-hidden="false">
     <video autoplay muted loop playsinline preload="metadata" style="object-position:${clip.pos}">
       <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
     <button class="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎ Edit</button>
-    <div class="hero-stat-chip" aria-hidden="false">
-      <span>🧭 ${totalSolvedQuestions()}</span><i></i><span>⏱ ${fmtStudyMin(totalStudyMinutes())}</span>
-    </div>
+    ${chip}
   </div>`;
 }
 function capLabel(tab) {
@@ -2872,6 +2877,14 @@ function totalStudyMinutes() {
     const m = all[d] || {};
     Object.keys(m).forEach(k => { const v = m[k]; if (typeof v === 'number' && v > 0) sum += v; });
   });
+  return sum;
+}
+/* 오늘(UTC) 공부 시간(분) */
+function todayStudyMinutes() {
+  const today = new Date().toISOString().slice(0, 10);
+  const m = lsGet(LS.studyTime, {})[today] || {};
+  let sum = 0;
+  Object.keys(m).forEach(k => { const v = m[k]; if (typeof v === 'number' && v > 0) sum += v; });
   return sum;
 }
 /* 총 누적 푼 문제 수 (progress의 total 합) */
