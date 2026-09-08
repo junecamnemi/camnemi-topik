@@ -793,8 +793,8 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .seoul-scene::before {
   content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(18,12,42,.35), rgba(18,12,42,0) 45%),
-    linear-gradient(0deg,   rgba(18,12,42,.45), rgba(18,12,42,0) 40%);
+    linear-gradient(180deg, rgba(18,12,42,.18), rgba(18,12,42,0) 45%),
+    linear-gradient(0deg,   rgba(18,12,42,.22), rgba(18,12,42,0) 40%);
 }
 /* time-of-day tint over the constant AI art (8 scenes, 3h blocks) */
 .seoul-scene.scene-midnight .scene-landmark { filter: brightness(.92) saturate(1.15) hue-rotate(-8deg) contrast(1.02); }
