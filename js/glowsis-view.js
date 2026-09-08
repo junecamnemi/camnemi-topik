@@ -162,6 +162,9 @@ function viewBook() {
     const s = raw ? JSON.parse(raw) : null;
     if (s && s.book) lastBook = s.book;
   } catch (e) {}
+  // which level holds the last-studied book (that level opens by default)
+  const lbMeta = GLOWSIS_BOOKS.find(b => b.id === lastBook);
+  const lastLv = lbMeta ? lbMeta.lvl : 1;
   const overlay = `<span class="tab-hero-cap">TOPIK Levels 1–6</span>
     <span class="scene-hero-sub">Learn with Glowsis — pick a level to start studying</span>`;
   const hero = (typeof tabHeroHTML === 'function') ? tabHeroHTML('book', overlay) : '';
@@ -176,11 +179,12 @@ function viewBook() {
         <div class="bl-soon-txt">교재 준비 중입니다.</div>
       </div>`;
     }
-    return `<div class="book-level ready">
-      <div class="bl-top">
+    return `<div class="book-level ready ${l.lv === lastLv ? 'open' : ''}" data-lvl="${l.lv}">
+      <div class="bl-top" onclick="toggleBookLvl(${l.lv})">
         <span class="bl-lv">Lv ${l.lv}</span>
         <span class="bl-label">${l.label}</span>
         <span class="bl-ok">✓</span>
+        <span class="bl-caret">${l.lv === lastLv ? '▾' : '▸'}</span>
       </div>
       <div class="bl-books">
         ${levelBooks.map(m => `
@@ -194,19 +198,32 @@ function viewBook() {
     </div>`;
   }).join('');
   return `${hero}<div class="book-home">
-    <div class="vocab-entry" onclick="openVocab()">
-      <div class="ve-ico"><span>📔</span></div>
-      <div class="ve-txt">
-        <b>${LANG==='ko'?'어휘책':'Vocabulary Book'}</b>
-        <small>${LANG==='ko'?'TOPIK I 1,500 + TOPIK II 2,500 단어':'TOPIK I 1,500 + TOPIK II 2,500 words'}</small>
-      </div>
-      <span class="ve-count">4,000</span>
-      <span class="ve-arr">→</span>
-    </div>
     <div class="book-levels">
       ${levelsHTML}
     </div>
+    <div class="book-level ready vocab-book-block">
+      <div class="bl-top">
+        <span class="bl-lv vc">📔</span>
+        <span class="bl-label">${LANG==='ko'?'어휘책':'Vocabulary Book'}</span>
+        <span class="bl-ok"></span>
+      </div>
+      <div class="bl-books">
+        <button class="bl-book vocab-entry" onclick="openVocab()">
+          <span class="bl-b-ico vc-ico">🗂️</span>
+          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책':'Vocabulary Book'}</b><small>${LANG==='ko'?'TOPIK I 1,500 + TOPIK II 2,500 단어 · 총 4,000':'TOPIK I 1,500 + TOPIK II 2,500 words · 4,000 total'}</small></span>
+          <span class="bl-b-arr">→</span>
+        </button>
+      </div>
+    </div>
   </div>`;
+}
+/* Toggle a book level open/closed (accordion). */
+function toggleBookLvl(lv) {
+  const level = document.querySelector('.book-level[data-lvl="'+lv+'"]');
+  if (!level) return;
+  const open = level.classList.toggle('open');
+  const caret = level.querySelector('.bl-caret');
+  if (caret) caret.textContent = open ? '▾' : '▸';
 }
 function openBookUnits(bookId) {
   recordBookStudy();
