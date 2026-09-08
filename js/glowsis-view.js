@@ -153,36 +153,17 @@ function restoreBookSession() {
 function viewBook() {
   describeUnits();
   const ready = GLOWSIS_LEVELS[0];
-  // Book where the user left off (last study session) → highlight that book row.
+  // Book where the user left off (last study session) → highlight that book row
+  // in the level list below. (The "Where you left off" card is REMOVED from the
+  // hero per user; the book/unit highlight in the list is the resume cue.)
   let lastBook = '';
-  // Recently studied unit (last session) → gently glowing card over the hero
-  let recentHTML = '';
   try {
     const raw = localStorage.getItem(BOOK_SESSION_KEY);
     const s = raw ? JSON.parse(raw) : null;
-    // The book the learner last studied is shown by a moving-gradient border on
-    // its row in the level list — set this from the session book regardless of
-    // whether the exact unit is resolvable.
     if (s && s.book) lastBook = s.book;
-    const unit = s && GLOWSIS_UNITS.find(x => x.id === s.unit);
-    if (unit) {
-      const pageNo = (s.page || 0) + 1;
-      const bId = lastBook;
-      recentHTML = `
-        <button class="book-recent-glow" onclick="openUnit(${unit.id}, ${(s.page||0)||0}, '${bId}')">
-          <div class="brg-ico">🎤</div>
-          <div class="brg-txt">
-            <div class="brg-label">${LANG && LANG==='ko' ? '최근 공부한 곳' : LANG && LANG==='km' ? 'កន្លែងសិក្សាចុងក្រោយ' : 'Where you left off'}</div>
-            <div class="brg-title">Glowsis Korean 1A · ${unit.no==='준비'?'준비':('Unit '+unit.no)} — ${unit.title}</div>
-            <div class="brg-sub">${LANG && LANG==='ko' ? '계속 공부하기 · 페이지 '+pageNo : LANG && LANG==='km' ? 'បន្តសិក្សា · ទំព័រ '+pageNo : 'Tap to continue · page '+pageNo}</div>
-          </div>
-          <span class="brg-arr">→</span>
-        </button>`;
-    }
   } catch (e) {}
-  const fallback = `<span class="tab-hero-cap">TOPIK Levels 1–6</span>
+  const overlay = `<span class="tab-hero-cap">TOPIK Levels 1–6</span>
     <span class="scene-hero-sub">Learn with Glowsis — pick a level to start studying</span>`;
-  const overlay = recentHTML || fallback;
   const hero = (typeof tabHeroHTML === 'function') ? tabHeroHTML('book', overlay) : '';
   // build the available books list: any book whose global data array is non-empty
   const avail = GLOWSIS_BOOKS.filter(m => (window[m.var] || []).length);
