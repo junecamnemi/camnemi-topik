@@ -270,8 +270,9 @@ function openBookUnits(bookId) {
     </div>
   </div>`;
   window.scrollTo(0, 0);
+  if (typeof updateBackBtn === 'function') updateBackBtn();
 }
-function backToBookLevels() { recordBookStudy(); clearBookSession(); document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); }
+function backToBookLevels() { recordBookStudy(); clearBookSession(); document.getElementById('screen').innerHTML = viewBook(); window.scrollTo(0, 0); if (typeof updateBackBtn === 'function') updateBackBtn(); }
 
 /* ==================== BOOK: FLIP-PAGE VIEWER ==================== */
 const GLOWSIS_UNITS = []; // filled from data below
@@ -406,6 +407,7 @@ function renderFlip() {
   setTimeout(() => glowBindUnit(document.getElementById('flip-wrap')), 0);
   window.scrollTo(0,0);
   wireSwipe();
+  if (typeof updateBackBtn === 'function') updateBackBtn();
 }
 /* build a "unit end → next unit" page appended after the last real page.
    meta is the unit we are currently finishing — we advance to the NEXT unit by

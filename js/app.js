@@ -758,6 +758,13 @@ function go(tab, noPush) {
 }
 /* Back navigation — pops the tab stack (used by the header back button AND the Android hardware back via popstate) */
 function goBack() {
+  // ---- Book sub-screens: route contextually, not via the tab stack ----
+  if (APP.tab === 'book') {
+    // inside the unit viewer (책 내용) → back to that book's unit list
+    if (document.getElementById('flip-wrap') || document.querySelector('.flip-wrap')) { if (typeof openBookUnits === 'function' && typeof _book !== 'undefined') { openBookUnits(_book.book); window.scrollTo(0, 0); return; } }
+    // inside a book's unit list → back to the book-select (levels) page
+    if (document.querySelector('.book-units')) { if (typeof backToBookLevels === 'function') { backToBookLevels(); return; } }
+  }
   // if we're mid-section (solving questions), back exits the flow first
   if (APP.sectionQs || APP.sectionLoading) { exitSection(); return; }
   // mid mock test → exit to the mock list first (stack survives so a second back leaves the tab)
@@ -775,7 +782,10 @@ function goBack() {
 function updateBackBtn() {
   const btn = $id('back-btn');
   if (!btn) return;
-  const show = APP.navStack.length > 0;
+  // Book sub-screens (unit list / viewer) also show the header back button even
+  // when the tab stack is empty, since goBack routes them contextually.
+  const inBookSub = (APP.tab === 'book') && (document.querySelector('.flip-wrap') || document.querySelector('.book-units'));
+  const show = (APP.navStack.length > 0) || inBookSub;
   btn.style.display = show ? 'inline-flex' : 'none';
   document.body.classList.toggle('has-back', show);
 }
