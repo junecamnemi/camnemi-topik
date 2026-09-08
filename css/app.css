@@ -635,9 +635,10 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile::after { content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
   background: linear-gradient(180deg, rgba(8,5,24,.28), rgba(8,5,24,.45) 55%, rgba(8,5,24,.68)); }
 .home-tile .ht-cap { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
-.home-tile .ht-ico { font-size: 30px; line-height: 1; }
-.home-tile .ht-t { font-size: 18px; font-weight: 900; letter-spacing: .2px; white-space: nowrap; }
-.home-tile .ht-s { font-size: 11px; font-weight: 600; opacity: .95; line-height:1.25; max-width: 150px; }
+.home-tile .ht-ico { font-size: 26px; line-height: 1; }
+.home-tile .ht-t { font-size: 17px; font-weight: 900; letter-spacing: .2px; white-space: nowrap; }
+.home-tile .ht-stat { font-size: 13px; font-weight: 800; color:#fff; background:rgba(0,0,0,.25); padding:2px 9px; border-radius:999px; margin-top:2px; white-space:nowrap; }
+.home-tile .ht-s { font-size: 10.5px; font-weight: 600; opacity: .92; line-height:1.2; max-width: 150px; }
 .home-tile:active { transform: scale(.985); }
 .home-tile.ai-redo-tile { box-shadow: 0 10px 28px rgba(124,58,237,.35); }
 .home-tile.ai-redo-tile .ht-t { background: linear-gradient(90deg,#fff,#ffe9f6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
@@ -1723,6 +1724,17 @@ select { font-family: var(--ios-font); }
   text-shadow: 0 1px 8px rgba(10,6,30,.6);
 }
 .scene-hero.tab-hero .scene-overlay > * { pointer-events:none; }
+/* shared "solved · study-time" chip — pinned to the visible banner bottom-center
+   (Edit button is bottom-right; overlay text is vertically centered) */
+.scene-hero.tab-hero .hero-stat-chip {
+  position:absolute; bottom:10px; left:50%; transform:translateX(-50%); z-index:3;
+  display:inline-flex; align-items:center; gap:7px;
+  padding:3px 12px; border-radius:999px; pointer-events:none;
+  background:rgba(12,8,34,.42); border:1px solid rgba(255,255,255,.25);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  color:#fff; font-size:11px; font-weight:700; white-space:nowrap;
+}
+.scene-hero.tab-hero .hero-stat-chip i { width:1px; height:12px; background:rgba(255,255,255,.35); display:inline-block; }
 /* ---------- per-tab placement ---------- */
 /* BOOK: title block pushed to the bottom of the banner */
 .scene-hero.tab-hero[data-tab="book"] .scene-overlay {

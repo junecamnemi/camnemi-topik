@@ -1010,6 +1010,9 @@ function tabHeroHTML(tab, overlay) {
       <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
     <button class="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎ Edit</button>
+    <div class="hero-stat-chip" aria-hidden="false">
+      <span>🧭 ${totalSolvedQuestions()}</span><i></i><span>⏱ ${fmtStudyMin(totalStudyMinutes())}</span>
+    </div>
   </div>`;
 }
 function capLabel(tab) {
@@ -1113,6 +1116,7 @@ function viewHome() {
         <span class="ht-cap">
           <span class="ht-ico">${ic('spark',30)}</span>
           <span class="ht-t">AI TOPIK</span>
+          <span class="ht-stat">${totalSolvedQuestions()} ${LANG==='ko'?'문제':LANG==='km'?'':'questions'} · ${overallAccuracy()}%</span>
           <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
         </span>
       </button>
@@ -1122,6 +1126,7 @@ function viewHome() {
         <span class="ht-cap">
           <span class="ht-ico">📖</span>
           <span class="ht-t">Textbook</span>
+          <span class="ht-stat">${fmtStudyMin(totalStudyMinutes())}</span>
           <span class="ht-s">${LANG==='ko'?'교과서로 공부해요':'Study with the textbook'}</span>
         </span>
       </button>
@@ -2863,6 +2868,20 @@ function totalSolvedQuestions() {
   let n = 0;
   Object.keys(prog).forEach(id => { const p = prog[id]; if (p && p.total) n += p.total; });
   return n;
+}
+/* compact study-time label (ko/en) from total minutes, e.g. 95 → "1h 35m"/"1시간 35분" */
+function fmtStudyMin(mins) {
+  const ko = LANG === 'ko';
+  const total = Math.max(0, Math.round(mins || 0));
+  if (total <= 0) return ko ? '0분' : '0m';
+  const h = Math.floor(total / 60), m = total % 60;
+  if (h <= 0) return m + (ko ? '분' : 'm');
+  if (m === 0) return h + (ko ? '시간' : 'h');
+  return h + (ko ? '시간 ' : 'h ') + m + (ko ? '분' : 'm');
+}
+/* overall accuracy % (0-100) */
+function overallAccuracy() {
+  try { return accuracyStats().overall; } catch (e) { return 0; }
 }
 /* 현재 아이돌 여정 진행 — 실데이터 연결 */
 function currentJourney() {
