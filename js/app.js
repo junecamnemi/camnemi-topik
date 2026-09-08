@@ -4058,7 +4058,7 @@ function renderApps(){
         <div class="app-cat">${esc(ap.cat)} · <span class="app-need">${esc(ap.need||'')}</span></div></div></div>
       <p class="app-body">${esc(ap.body||'')}</p>
       ${(ap.tips&&ap.tips.length)?`<div class="app-tips">${ap.tips.map(tp=>`<div>✓ ${esc(tp)}</div>`).join('')}</div>`:''}
-      ${ap.play?`<a class="app-store-btn" href="${esc(ap.play)}" target="_blank" rel="noopener">▶ Get it on Google Play</a>`:''}
+      ${ap.play||ap.apple?`<div class="app-store-row">${ap.play?`<a class="app-store-btn gplay" href="${esc(ap.play)}" target="_blank" rel="noopener">▶ Google Play</a>`:''}${ap.apple?`<a class="app-store-btn appst" href="${esc(ap.apple)}" target="_blank" rel="noopener"> App Store</a>`:''}</div>`:''}
     </div>`).join('');
   document.getElementById('screen').innerHTML = `
     <div class="kl-detail-view">
