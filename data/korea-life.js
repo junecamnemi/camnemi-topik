@@ -100,5 +100,70 @@ window.KOREA_LIFE = {
       {"icon":"🌦️","title":"Weather & seasons — how to dress","sub":"Four distinct seasons, monsoon, and very hot summers","body":[{"p": "Korea has four clear seasons and dressing smartly makes a big difference to comfort. Check a weather app (Naver/Kakao weather or the Korean Meteorological Administration) before heading out."},{"t": "Spring (Mar–May)", "p": "Warm days, chilly mornings and evenings, plus yellow-dust and fine-dust days from China. Best to layer: a light jacket over a T-shirt. Carry a mask on high fine-dust days (check the air-quality score in your weather app)."},{"t": "Summer (Jun–Aug)", "p": "Hot and humid, often 30°C+ with heavy rain. The monsoon season (장마, jangma) hits roughly late June to late July with days of continuous rain — carry a compact umbrella. Air conditioning is everywhere, so bring a light layer for cold indoor A/C."},{"t": "Autumn (Sep–Nov)", "p": "Clear, cool, and pleasant — many say it is the best season. Great for trips and outdoor activities. Days cool off fast in November, so bring a warm jacket as the season ends."},{"t": "Winter (Dec–Feb)", "p": "Cold and dry, often below freezing, occasionally -10°C or lower with wind. Indoor heating (floor heating, 온돌) is strong, so the key is a heavy outer coat over lighter layers — you take the coat off indoors. Warm coat, scarf, gloves and a beanie are essentials."},{"t": "Regional differences", "p": "Busan and the south stay warmer; Jeju is windy and rainy; Seoul winters are harsher. Check the forecast for your city, not just \"Korea.\""},{"t": "Tip", "tip": true, "p": "Buy cold-weather gear in Korea — down jackets, padded coats, and heated tech (like the self-heating pads) are high quality and widely available in autumn/winter. Do not overpack coats from home."}],"steps":["Install a weather app and check temperature and fine-dust daily.", "Spring & autumn: layer; summer: umbrella for monsoon; winter: heavy coat.", "Carry a mask for high fine-dust days (spring).", "Buy winter gear (down jacket, scarf, gloves) after you arrive in autumn."],"phrases":[{"ko": "오늘 날씨 어때요?", "en": "How is the weather today?"}, {"ko": "비가 와요", "en": "It is raining."}, {"ko": "춥다 / 덥다", "en": "It's cold / It's hot."}, {"ko": "미세먼지 많아요?", "en": "Is the fine dust bad today?"}],"cost":"Weather apps are free; winter gear purchased in Korea (down coat ~₩100,000+ depending on brand)."},
       {"icon":"📱","title":"Must-have apps for daily life","sub":"The Korean app stack every student needs","body":[{"p": "Certain Korean apps are essentially required for everyday life — from directions to messaging to ordering. Install these in your first week and daily tasks become dramatically easier."},{"t": "Navigation: Naver Map or Kakao Map", "p": "Google Maps is weak for Korean public transport. Naver Map (네이버지도) and Kakao Map (카카오맵) give accurate walking, bus, subway and taxi directions, with real-time arrivals and exit numbers. Both have an English interface you can switch to in Settings."},{"t": "Messaging: KakaoTalk", "p": "KakaoTalk (카카오톡) is how everyone in Korea communicates — classmates, professors, clubs, landlords and stores. You need it for group chats and official notices. Register with your Korean number once you have a SIM."},{"t": "Translation: Papago", "p": "Naver's Papago (파파고) does the best Korean translations, including live voice and camera translate — point it at menus and signs. Keep Google Translate as a backup."},{"t": "Payment & banking", "p": "You will likely use a Korean bank card, but apps like KakaoPay, Toss and Naver Pay appear all over online shopping and even offline stores. See the Payment & Banking category for details."},{"t": "Subway & delivery", "p": "For trains, apps like Kakao Metro or \"Subway Korea\" show routes and times offline. For food, Baedal Minjok (배달의민족) and Coupang Eats dominate delivery — see the Food & Delivery category."},{"t": "Tip", "tip": true, "p": "Start with just three: a map app, KakaoTalk, and Papago. That covers 90% of daily life. Add delivery, payment, and taxi apps (Kakao T) as you need them."}],"steps":["Install Naver Map (or Kakao Map) and switch it to English.", "Install KakaoTalk and sign up once you have a Korean number.", "Install Papago for translations and menus.", "Add Kakao T (taxis), Baemin (food delivery) and Toss/KakaoPay as needed."],"phrases":[{"ko": "앱 깔았어요?", "en": "Have you installed the app?"}, {"ko": "앱으로 찾을게요", "en": "I'll look it up on the app."}, {"ko": "카톡 보내 주세요", "en": "Please send it on KakaoTalk."}],"cost":"All core apps are free; delivery/payment apps need your Korean bank card or account."},
     ] },
-  ]
+  ],
+  /* ============ WHY STUDY IN KOREA ============ */
+  why: {
+    title: "Why study in Korea?",
+    intro: "For a Cambodian student, Korea combines world-class education, affordable tuition, generous scholarships, strong career ties with home, and a safe, modern society. Here is how it stacks up against the other big study destinations.",
+    benefits: [
+      { icon:"💰", title:"Affordable tuition", body:"National & regional universities cost about ₩2-3 million (≈US$1,500-2,200) per semester — a fraction of the US, Australia or UK. Scholarships can cut even that in half or waive it entirely.", korea:"~₩2.0-5.0M/yr national & private" },
+      { icon:"🎓", title:"Top-ranked universities", body:"Korea ranks 2nd in Asia for universities in global rankings (Seoul National #1 in Korea). Degrees are recognised worldwide and are growing fast in prestige.", korea:"SNU/Yonsei/KAIST among Asia's best" },
+      { icon:"🏅", title:"Scholarships for foreigners", body:"TOPIC/IELTS-based scholarships give real money: e.g. JBNU waives 100% tuition for TOPIK 6 or IELTS 8, Sejong gives 30-100% by TOPIK level, and many unis fund the first semester.", korea:"Up to 100% tuition waivers" },
+      { icon:"✈️", title:"Close to home & growing ties", body:"Cambodia-Korea ties are strong: many Korean firms hire in Cambodia, K-pop/K-drama make Korean skills valuable, and Korea is only ~5-6h from Phnom Penh.", korea:"~5-6h flight, strong Cambodia-Korea links" },
+      { icon:"🛡️", title:"Safe & convenient", body:"Korea is one of the world's safest countries, with 24h convenience stores, fast public transport, excellent internet, and a well-organised public health system for students.", korea:"Very low crime, world-class infra" }
+    ],
+    compareTitle: "How Korea compares by cost & access",
+    compare: {
+      cols: ["Cost / year (int'l student)", "Language barrier", "Scholarship ease", "Job / stay after study"],
+      rows: [
+        { country:"🇰🇷 Korea", cost:"₩3-9M (~US$2,200-6,500)", lang:"Moderate (한국어 track) or None (English track)", sch:"High — TOPIK/IELTS scholarships", job:"Growing; strong Cambodia links" },
+        { country:"🇦🇺 Australia", cost:"A$25-45K (~US$16-30K)+", lang:"English (native)", sch:"Limited", job:"Post-study work visa but costly" },
+        { country:"🇺🇸 USA", cost:"US$25-60K+", lang:"English (native)", sch:"Limited for undergrad", job:"Work visas hard after study" },
+        { country:"🇯🇵 Japan", cost:"¥500K-1M (~US$3,300-6,600)", lang:"Japanese required (mostly)", sch:"Moderate", job:"Possible, Japanese needed" },
+        { country:"🇨🇳 China", cost:"US$3-10K", lang:"Chinese (or English-medium)", sch:"Moderate (CSC)", job:"Varies" }
+      ]
+    },
+    whyTip: "The biggest advantage for Cambodian students: you can enter an English-taught (IELTS-only) track with NO Korean requirement, at a tuition far below Western countries — and still earn scholarships and learn Korean on the side."
+  },
+  /* ============ RECOMMENDED UNIVERSITIES (KB data) ============ */
+  univs: {
+    title: "Recommended universities",
+    intro: "These universities accept international students on IELTS or TOPIK. Data is from the verified 2027 foreign-admission knowledge base. All are reachable for a Cambodian student.",
+    items: [
+      { name:"서울대학교", en:"Seoul National University", icon:"🎓", rank:"#1 in Korea", loc:"Seoul",
+        ielts:"IELTS 6.0 / TOEFL iBT 80 / TEPS 269", topik:"TOPIK 3 (or English test)", track:"Korean & English tracks",
+        tuition:"₩2,442,000–₩5,038,000 / semester", majors:"All faculties — 57 majors",
+        period:"2025.3.1 ~ 2027.2.28", sch:"—",
+        note:"Korea's #1 university. Highly selective; apply with strong grades. The top-prestige option if your record is excellent." },
+      { name:"전북대학교", en:"Jeonbuk National University (JBNU)", icon:"🏛️", rank:"National flagship", loc:"Jeonju",
+        ielts:"IELTS 5.5 / TEPS 600", topik:"TOPIK 2", track:"English track (4-yr English lectures)",
+        tuition:"₩2,016,000–₩2,779,000 / semester", majors:"Int'l Engineering (English) / Int'l Studies",
+        period:"2026 early: R1 9.22-10.3 / R2 11.5-19",
+        sch:"신입생 성적우수: TOPIK 6 or IELTS 8 → 100% tuition; TOPIK 5 or IELTS 7.5 → 50%",
+        note:"Recommended pick: national university, English-taught degree, the lowest tuition on this list, and real IELTS-based scholarships." },
+      { name:"경운대학교", en:"Kyungwoon University", icon:"🏫", rank:"Regional", loc:"Gyeongsangbuk-do",
+        ielts:"IELTS 5.5 / TOEFL iBT 71", topik:"TOPIK 3", track:"Korean track (many options)",
+        tuition:"₩3,030,000–₩4,865,000 / semester", majors:"Broad range",
+        period:"2026-1: round 1 (Nov-Dec) / round 2 (Jan)",
+        sch:"입학장학: TOPIK 5 → 100%; TOPIK 4 → 70%; TOPIK 3 / IELTS 6.5 → 50%; IELTS 5.5 → 20%",
+        note:"Strong entry scholarships — a TOPIK 3 or IELTS 5.5 student can start with 20-50% off the first semester." },
+      { name:"세종대학교", en:"Sejong University", icon:"🏙️", rank:"#19 in Korea", loc:"Seoul",
+        ielts:"IELTS 5.5", topik:"TOPIK 3", track:"English & Korean tracks",
+        tuition:"₩4,556,000–₩6,237,000 / semester", majors:"AI data science / Computer / Software",
+        period:"2025.9.8-9.19", sch:"어학능력장학: TOPIK 3 → 30% / 4 → 50% / 5 → 70% / 6 → 100%",
+        note:"Seoul location with strong tech/AI programs. TOPIK scholarships scale up to full tuition." },
+      { name:"연세대학교", en:"Yonsei University", icon:"🌟", rank:"#2 in Korea", loc:"Seoul",
+        ielts:"No minimum (any IELTS/TOEFL band accepted)", topik:"TOPIK 5", track:"Korean & English tracks",
+        tuition:"₩3,809,000 / semester", majors:"Global talent, Econ, Business, Computer, AI",
+        period:"2026 Round 1: 9.1-9.17",
+        sch:"성적우수/연구 장학 by school policy",
+        note:"Top-2 private university. For English-track, no set IELTS minimum — but competition is fierce, so aim high (IELTS 6+ / strong TOPIK)." },
+      { name:"장안대학교", en:"Jangan University", icon:"🎨", rank:"Junior college (2-3yr)", loc:"Gyeonggi-do",
+        ielts:"IELTS 5.5", topik:"TOPIK 3 / own test", track:"Korean track",
+        tuition:"(2-3yr program)", majors:"Hotel/Tourism, Culinary, Beauty, Design, AI Computing (English), Business, Police, K-Model",
+        period:"—", sch:"유학생장학금: 30% off each semester (all int'l students)",
+        note:"Vocational junior college — shorter, hands-on diplomas in hospitality, beauty & AI. All international students get a 30% tuition reduction every semester." }
+    ]
+  },
+  /* How to Live = the 10 categories above (cats) */
 };

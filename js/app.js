@@ -4019,28 +4019,101 @@ function bindRank() { /* Korea Life is static — nothing to load */ }
 function viewKoreaLife() {
   const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const kl = window.KOREA_LIFE;
-  const cats = (kl && kl.cats) || [];
-  if (!cats.length) return `${tabHeroHTML('rank', rankMeOverlayHTML())}
+  if (!kl) return `${tabHeroHTML('rank', rankMeOverlayHTML())}
     <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
   const hero = tabHeroHTML('rank', rankMeOverlayHTML());
-  const intro = kl.intro ? `<div class="rk-head-sub kl-intro">${esc(kl.intro)}</div>` : '';
-  const grid = cats.map(c => `
-    <button class="kl-card" onclick="openKoreaCat('${c.id}')">
-      <div class="kl-ico">${c.icon}</div>
-      <div class="kl-title">${esc(c.title)}</div>
-      <div class="kl-sub">${esc(c.sub)}</div>
-      <div class="kl-count">${(c.items||[]).length} tips</div>
+  const cards = [
+    { id:'why', icon:'🇰🇷', title: (kl.why&&kl.why.title)||'Why study in Korea?', sub:'Why Korea beats Australia, USA, China & Japan', grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
+    { id:'univs', icon:'🎓', title:(kl.univs&&kl.univs.title)||'Recommended universities', sub:'6 universities you can enter on IELTS / TOPIK', grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
+    { id:'live', icon:'🏠', title:'How to live in Korea', sub:'Daily life: transport, food, health, visa & more', grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
+  ];
+  const grid = cards.map(c => `
+    <button class="kl3-card" onclick="openKoreaSection('${c.id}')" style="--kg:${c.grad}">
+      <div class="kl3-ico">${c.icon}</div>
+      <div class="kl3-title">${esc(c.title)}</div>
+      <div class="kl3-sub">${esc(c.sub)}</div>
+      <div class="kl3-go">${LANG==='ko'?'열기':'Open'} →</div>
     </button>`).join('');
   return `${hero}
-    <div class="kl-home">
-      ${intro}
-      <div class="kl-grid">${grid}</div>
+    <div class="kl-home kl3-home">
+      <div class="kl-intro">${LANG==='ko'?'한국 유학의 첫걸음 — 왜, 어디로, 어떻게':'Your Korea journey — why, where, and how'}</div>
+      <div class="kl3-grid">${grid}</div>
     </div>`;
 }
+function openKoreaSection(sec){
+  _klStack = []; _klStack.push(()=>go('rank'));
+  if(sec==='why') renderWhy();
+  else if(sec==='univs') renderUnivs();
+  else renderLiveHome();
+}
+function renderLiveHome(){
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const kl=window.KOREA_LIFE, cats=(kl&&kl.cats)||[];
+  const grid=cats.map(c=>`<button class="kl-card" onclick="openKoreaCat('${c.id}')">
+      <div class="kl-ico">${c.icon}</div><div class="kl-title">${esc(c.title)}</div><div class="kl-sub">${esc(c.sub)}</div>
+      <div class="kl-count">${(c.items||[]).length} tips</div></button>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">🏠</span><div><div class="kl3-sec-title">How to live in Korea</div><div class="kl3-sec-sub">Daily life in 10 practical topics</div></div></div>
+      <div class="kl-grid" style="margin-top:4px;">${grid}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function renderWhy(){
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const w=window.KOREA_LIFE.why;
+  const ben=(w.benefits||[]).map(b=>`<div class="kl-block" style="display:flex;gap:12px;align-items:flex-start;">
+      <span class="kl-why-ico">${b.icon}</span><div><b class="kl-bhead">${esc(b.title)}</b><p>${esc(b.body)}</p>
+      <div class="kl-why-korea">🇰🇷 ${esc(b.korea||'')}</div></div></div>`).join('');
+  const cols=w.compare.cols;
+  const rows=(w.compare.rows||[]).map(r=>`<tr>
+      <td class="kc-country">${esc(r.country)}</td><td>${esc(r.cost)}</td><td>${esc(r.lang)}</td><td>${esc(r.sch)}</td><td>${esc(r.job)}</td></tr>`).join('');
+  const tip = w.whyTip?`<div class="kl-tip"><b>💡 The Korea advantage</b><p>${esc(w.whyTip)}</p></div>`:'';
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">🇰🇷</span><div><div class="kl3-sec-title">Why study in Korea?</div><div class="kl3-sec-sub">The smart choice for a Cambodian student</div></div></div>
+      <div class="kl-body" style="margin-top:6px;">${ben}</div>
+      <div class="kl-compare-wrap"><div class="kl-compare-title">${esc(w.compareTitle||'')}</div>
+        <div class="kl-compare-scroll"><table class="kl-compare"><thead><tr><th>Country</th>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div></div>
+      ${tip}
+    </div>`;
+  window.scrollTo(0,0);
+}
+function renderUnivs(){
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const u=window.KOREA_LIFE.univs;
+  const items=(u.items||[]).map(uni=>`
+    <div class="kl-block univ-card">
+      <div class="univ-head"><span class="univ-ico">${uni.icon}</span>
+        <div><div class="univ-name">${esc(uni.name)}</div><div class="univ-en">${esc(uni.en)} · ${esc(uni.rank)}</div></div></div>
+      <div class="univ-loc">📍 ${esc(uni.loc)}</div>
+      <div class="univ-rows">
+        <div><b>🗣 Entry</b><span>${esc(uni.ielts)}</span></div>
+        <div><b>🇰🇷 TOPIK</b><span>${esc(uni.topik)}</span></div>
+        <div><b>🎓 Track</b><span>${esc(uni.track)}</span></div>
+        <div><b>💰 Tuition</b><span>${esc(uni.tuition)}</span></div>
+        <div><b>📚 Majors</b><span>${esc(uni.majors)}</span></div>
+        <div><b>📅 Apply</b><span>${esc(uni.period)}</span></div>
+        ${uni.sch&&uni.sch!=='—'?`<div><b>🏅 Scholarship</b><span>${esc(uni.sch)}</span></div>`:''}
+      </div>
+      ${uni.note?`<div class="univ-note">💬 ${esc(uni.note)}</div>`:''}
+    </div>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">🎓</span><div><div class="kl3-sec-title">Recommended universities</div><div class="kl3-sec-sub">${esc(u.intro||'')}</div></div></div>
+      <div class="kl-body" style="margin-top:8px;">${items}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderLiveHome=renderLiveHome;
 let _klStack = [];
+function _klBackTarget(fn){ _klStack.push(fn); }
 function openKoreaCat(cid){
   const kl = window.KOREA_LIFE; const c = (kl.cats||[]).find(x=>x.id===cid); if(!c) return;
-  _klStack.push({view:'home'});
+  _klStack.push(()=>renderLiveHome());
   renderKoreaCat(c);
 }
 function renderKoreaCat(c){
@@ -4053,7 +4126,7 @@ function renderKoreaCat(c){
     </button>`).join('');
   document.getElementById('screen').innerHTML = `
     <div class="kl-detail-view">
-      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← ${LANG==='ko'?'전체':'Home'}</button></div>
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← ${LANG==='ko'?'뒤로':'Back'}</button></div>
       <div class="kl-cat-hero"><span class="kl-cat-ico">${c.icon}</span><div><div class="kl-cat-title">${esc(c.title)}</div><div class="kl-cat-sub">${esc(c.sub||'')}</div></div></div>
       <div class="kl-items">${items}</div>
     </div>`;
@@ -4062,7 +4135,7 @@ function renderKoreaCat(c){
 function openKoreaItem(cid, idx){
   const kl = window.KOREA_LIFE; const c = (kl.cats||[]).find(x=>x.id===cid); const it=(c.items||[])[Number(idx)];
   if(!c||!it) return;
-  _klStack.push({view:'cat', cid});
+  _klStack.push(()=>renderKoreaCat(c));
   renderKoreaItem(c, it);
 }
 function renderKoreaItem(c, it){
@@ -4086,10 +4159,9 @@ function renderKoreaItem(c, it){
   window.scrollTo(0,0);
 }
 function koreaBack(){
-  const prev = _klStack.pop();
-  if(!prev){ go('rank'); return; }
-  if(prev.view==='cat'){ const c=(window.KOREA_LIFE.cats||[]).find(x=>x.id===prev.cid); if(c) renderKoreaCat(c); }
-  else go('rank');
+  const fn = _klStack.pop();
+  if (fn) { fn(); }
+  else { go('rank'); }
 }
 window.openKoreaCat=openKoreaCat; window.renderKoreaCat=renderKoreaCat; window.openKoreaItem=openKoreaItem;
 window.renderKoreaItem=renderKoreaItem; window.koreaBack=koreaBack; window.viewKoreaLife=viewKoreaLife;
