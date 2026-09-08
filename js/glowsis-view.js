@@ -204,13 +204,18 @@ function viewBook() {
     <div class="book-level ready vocab-book-block">
       <div class="bl-top">
         <span class="bl-lv vc">📔</span>
-        <span class="bl-label">${LANG==='ko'?'어휘책':'Vocabulary Book'}</span>
+        <span class="bl-label">${LANG==='ko'?'어휘책':'Vocabulary'}</span>
         <span class="bl-ok"></span>
       </div>
       <div class="bl-books">
-        <button class="bl-book vocab-entry" onclick="openVocab()">
-          <span class="bl-b-ico vc-ico">🗂️</span>
-          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책':'Vocabulary Book'}</b><small>${LANG==='ko'?'TOPIK I 1,500 + TOPIK II 2,500 단어 · 총 4,000':'TOPIK I 1,500 + TOPIK II 2,500 words · 4,000 total'}</small></span>
+        <button class="bl-book vocab-entry" onclick="openVocab('1')">
+          <span class="bl-b-ico vc-ico vc-1">Ⅰ</span>
+          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책 1 · TOPIK I':'Vocabulary 1 · TOPIK I'}</b><small>${LANG==='ko'?'초급 1,635단어':'Beginner · 1,635 words'}</small></span>
+          <span class="bl-b-arr">→</span>
+        </button>
+        <button class="bl-book vocab-entry" onclick="openVocab('2')">
+          <span class="bl-b-ico vc-ico vc-2">Ⅱ</span>
+          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책 2 · TOPIK II':'Vocabulary 2 · TOPIK II'}</b><small>${LANG==='ko'?'중급 2,651단어':'Intermediate · 2,651 words'}</small></span>
           <span class="bl-b-arr">→</span>
         </button>
       </div>
@@ -551,8 +556,8 @@ function openVocabWord(k) {
   window.scrollTo(0,0);
 }
 
-function openVocab() {
-  _vb = { lvl:'1', cat:'food', page:0, q:'' };
+function openVocab(lvl) {
+  _vb = { lvl: lvl === '2' ? '2' : '1', cat:'food', page:0, q:'' };
   renderVocabView();
 }
 function renderVocabView() {

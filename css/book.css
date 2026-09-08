@@ -89,13 +89,14 @@
   display: flex; align-items: center; justify-content: center;
   background: #fff; box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
 }
-/* per-level accent: A & B at the same level share a solid opaque hue */
-.bl-b-ico.lvl-1 { background: linear-gradient(135deg,#ff6b9a,#ff8e6e); }
-.bl-b-ico.lvl-2 { background: linear-gradient(135deg,#ffb64d,#ff8a3d); }
-.bl-b-ico.lvl-3 { background: linear-gradient(135deg,#34d399,#2bb0a5); }
-.bl-b-ico.lvl-4 { background: linear-gradient(135deg,#5b8cff,#7c6cf6); }
-.bl-b-ico.lvl-5 { background: linear-gradient(135deg,#a06bff,#e25bce); }
-.bl-b-ico.lvl-6 { background: linear-gradient(135deg,#ff5fa2,#ff7ac8); }
+/* per-level accent: A & B at the same level share a hue; ~50% translucent so the
+   tile reads as a soft tinted chip against the card (unified CSS style) */
+.bl-b-ico.lvl-1 { background: rgba(255,107,154,.32); box-shadow: inset 0 0 0 1.5px rgba(255,107,154,.6); }
+.bl-b-ico.lvl-2 { background: rgba(255,166,77,.32); box-shadow: inset 0 0 0 1.5px rgba(255,150,60,.6); }
+.bl-b-ico.lvl-3 { background: rgba(52,211,153,.32); box-shadow: inset 0 0 0 1.5px rgba(45,180,160,.6); }
+.bl-b-ico.lvl-4 { background: rgba(91,140,255,.32); box-shadow: inset 0 0 0 1.5px rgba(120,108,246,.6); }
+.bl-b-ico.lvl-5 { background: rgba(160,107,255,.32); box-shadow: inset 0 0 0 1.5px rgba(200,90,220,.6); }
+.bl-b-ico.lvl-6 { background: rgba(255,95,162,.32); box-shadow: inset 0 0 0 1.5px rgba(255,122,200,.6); }
 .bl-b-t { display: flex; flex-direction: column; position: relative; z-index: 1; }
 .bl-b-t b { font-size: 15px; color: var(--ios-label); }
 .bl-b-t small { font-size: 11px; color: var(--ios-tertiary-label); margin-top: 2px; }
@@ -503,7 +504,9 @@
 .bl-lv.vc { background: linear-gradient(135deg,#ff9a76,#ff6f91); font-size: 15px; padding: 3px 8px; }
 .vocab-entry { background: linear-gradient(135deg,#fff6f4,#ffeef2); }
 .vocab-entry:active { transform: scale(.985); }
-.vocab-entry .vc-ico { background: linear-gradient(135deg,#ff9a76,#ff6f91); }
+.vocab-entry .vc-ico { font-size: 17px; font-weight: 900; color:#fff; font-family: Georgia, 'Times New Roman', serif; }
+.vocab-entry .vc-1 { background: rgba(255,111,145,.5); box-shadow: inset 0 0 0 1.5px rgba(255,111,145,.85); }
+.vocab-entry .vc-2 { background: rgba(124,108,246,.5); box-shadow: inset 0 0 0 1.5px rgba(124,108,246,.85); }
 
 .vb-screen { padding:0 0 30px; }
 .vb-lvl { display:flex; gap:8px; padding:14px 16px 0; }
