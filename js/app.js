@@ -1026,17 +1026,29 @@ function viewHome() {
   const nm = myCharName();
   const mc = myChar();
   const wxc = wxCached();
-  // Home hero carousel: cycle Aran's everyday scenes (home/library/acceptance/park/goods).
-  // Home clip is the default; the others are the 4 tab-hero scenes, browsable by swipe.
+  // Home hero carousel: cycle ALL of Aran's clips — the current everyday scenes
+  // (home/library/acceptance/park/goods shopping) PLUS the earlier concert-stage
+  // clips (saved under tabs_concert/), browsable by swipe/arrows.
   const heroKey = heroCharKey();
-  const HERO_SCENES = (CHAR_TAB_VID[heroKey] || CHAR_TAB_VID.aran);
-  const _scenes = ['home','book','daily','rank','my'];
+  const CS = (CHAR_TAB_VID[heroKey] || CHAR_TAB_VID.aran);
+  // order: home, everyday (book/daily/rank/my), then concert versions of the same 4
+  const _scenes = [
+    { k:'home',   v: CS.home.v,                  pos: CS.home.pos },
+    { k:'book',   v: CS.book.v,                  pos: CS.book.pos },
+    { k:'daily',  v: CS.daily.v,                 pos: CS.daily.pos },
+    { k:'rank',   v: CS.rank.v,                  pos: CS.rank.pos },
+    { k:'my',     v: CS.my.v,                    pos: CS.my.pos },
+    { k:'c_book', v:'assets/home_bg/tabs_concert/aran_book_sing.mp4', pos:'center 33%' },
+    { k:'c_daily',v:'assets/home_bg/tabs_concert/aran_test_ending.mp4', pos:'center 33%' },
+    { k:'c_rank', v:'assets/home_bg/tabs_concert/aran_rank_fight.mp4', pos:'center 33%' },
+    { k:'c_my',   v:'assets/home_bg/tabs_concert/aran_settings_music.mp4', pos:'center 33%' },
+  ];
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene" data-hero-scenes="1">
-      ${_scenes.map((tk, i) => `
-        <video class="scene-landmark ${i===0?'is-active':''}" data-scene-video="${tk}" autoplay muted loop playsinline preload="metadata"
-          style="object-position:${(HERO_SCENES[tk]||HERO_SCENES.home).pos}" aria-hidden="true">
-          <source src="${(HERO_SCENES[tk]||HERO_SCENES.home).v}" type="video/mp4"></video>`).join('')}
+      ${_scenes.map((s, i) => `
+        <video class="scene-landmark ${i===0?'is-active':''}" data-scene-video="${s.k}" autoplay muted loop playsinline preload="metadata"
+          style="object-position:${s.pos}" aria-hidden="true">
+          <source src="${s.v}" type="video/mp4"></video>`).join('')}
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <button class="scene-carousel-nav prev" id="scene-caro-prev" onclick="homeCarousel(-1)" aria-label="prev">‹</button>
       <button class="scene-carousel-nav next" id="scene-caro-next" onclick="homeCarousel(1)" aria-label="next">›</button>
