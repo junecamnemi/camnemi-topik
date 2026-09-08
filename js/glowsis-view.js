@@ -206,6 +206,15 @@ function viewBook() {
     </div>`;
   }).join('');
   return `${hero}<div class="book-home">
+    <div class="vocab-entry" onclick="openVocab()">
+      <div class="ve-ico">📚</div>
+      <div class="ve-txt">
+        <b>${LANG==='ko'?'어휘책':'Vocabulary'}</b>
+        <small>${LANG==='ko'?'TOPIK I 1,500 + TOPIK II 2,500 단어':'TOPIK I 1,500 + TOPIK II 2,500 words'}</small>
+      </div>
+      <span class="ve-count">4,000</span>
+      <span class="ve-arr">→</span>
+    </div>
     <div class="book-levels">
       ${levelsHTML}
     </div>
