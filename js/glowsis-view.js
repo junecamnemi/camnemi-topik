@@ -112,18 +112,18 @@ const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { book, unit, page } �
    Each book's units live in its own global (window.GLOWSIS_BOOK = 1A; future books
    add window.GLOWSIS_1B, GLOWSIS_2A, …). bookUnits() returns the ACTIVE book's units. */
 const GLOWSIS_BOOKS = [
-  { id: '1a', title: 'Glowsis Korean 1A', ico: '🎤', sub: 'Beginner · 9 units', var: 'GLOWSIS_BOOK' },
-  { id: '1b', title: 'Glowsis Korean 1B', ico: '🎵', sub: 'Beginner · 12 units', var: 'GLOWSIS_1B' },
-  { id: '2a', title: 'Glowsis Korean 2A', ico: '🎧', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2A' },
-  { id: '2b', title: 'Glowsis Korean 2B', ico: '🎧', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2B' },
-  { id: '3a', title: 'Glowsis Korean 3A', ico: '🎤', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3A' },
-  { id: '3b', title: 'Glowsis Korean 3B', ico: '🎵', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3B' },
-  { id: '4a', title: 'Glowsis Korean 4A', ico: '🎤', sub: 'Upper-Intermediate · 10 units', var: 'GLOWSIS_4A' },
-  { id: '4b', title: 'Glowsis Korean 4B', ico: '🎵', sub: 'Upper-Intermediate · 10 units', var: 'GLOWSIS_4B' },
-  { id: '5a', title: 'Glowsis Korean 5A', ico: '🎤', sub: 'Advanced · 10 units', var: 'GLOWSIS_5A' },
-  { id: '5b', title: 'Glowsis Korean 5B', ico: '🎵', sub: 'Advanced · 10 units', var: 'GLOWSIS_5B' },
-  { id: '6a', title: 'Glowsis Korean 6A', ico: '🎤', sub: 'Advanced+ · 10 units', var: 'GLOWSIS_6A' },
-  { id: '6b', title: 'Glowsis Korean 6B', ico: '🎵', sub: 'Advanced+ · 10 units', var: 'GLOWSIS_6B' }
+  { id: '1a', title: 'Glowsis Korean 1A', ico: '👋', sub: 'Beginner · 9 units', var: 'GLOWSIS_BOOK', lvl: 1 },
+  { id: '1b', title: 'Glowsis Korean 1B', ico: '🍚', sub: 'Beginner · 12 units', var: 'GLOWSIS_1B', lvl: 1 },
+  { id: '2a', title: 'Glowsis Korean 2A', ico: '🗺', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2A', lvl: 2 },
+  { id: '2b', title: 'Glowsis Korean 2B', ico: '🗣', sub: 'Beginner+ · 10 units', var: 'GLOWSIS_2B', lvl: 2 },
+  { id: '3a', title: 'Glowsis Korean 3A', ico: '📚', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3A', lvl: 3 },
+  { id: '3b', title: 'Glowsis Korean 3B', ico: '🌟', sub: 'Intermediate · 10 units', var: 'GLOWSIS_3B', lvl: 3 },
+  { id: '4a', title: 'Glowsis Korean 4A', ico: '🎤', sub: 'Upper-Intermediate · 10 units', var: 'GLOWSIS_4A', lvl: 4 },
+  { id: '4b', title: 'Glowsis Korean 4B', ico: '🤝', sub: 'Upper-Intermediate · 10 units', var: 'GLOWSIS_4B', lvl: 4 },
+  { id: '5a', title: 'Glowsis Korean 5A', ico: '🔥', sub: 'Advanced · 10 units', var: 'GLOWSIS_5A', lvl: 5 },
+  { id: '5b', title: 'Glowsis Korean 5B', ico: '🎬', sub: 'Advanced · 10 units', var: 'GLOWSIS_5B', lvl: 5 },
+  { id: '6a', title: 'Glowsis Korean 6A', ico: '🏆', sub: 'Advanced+ · 10 units', var: 'GLOWSIS_6A', lvl: 6 },
+  { id: '6b', title: 'Glowsis Korean 6B', ico: '👑', sub: 'Advanced+ · 10 units', var: 'GLOWSIS_6B', lvl: 6 }
 ];
 function bookMeta(id) { return GLOWSIS_BOOKS.find(b => b.id === id) || GLOWSIS_BOOKS[0]; }
 function bookUnits(id) { const m = bookMeta(id || _book.book); return (window[m.var] || []).slice(); }
@@ -186,7 +186,7 @@ function viewBook() {
         ${levelBooks.map(m => `
           <button class="bl-book ${m.id === lastBook ? 'is-current' : ''}" onclick="openBookUnits('${m.id}')">
             ${m.id === lastBook ? `<span class="bl-cont">${LANG && LANG==='ko' ? '이어서' : LANG && LANG==='km' ? 'បន្ត' : 'Continue'}</span>` : ''}
-            <span class="bl-b-ico">${m.ico}</span>
+            <span class="bl-b-ico lvl-${m.lvl || 1}">${m.ico}</span>
             <span class="bl-b-t"><b>${m.title}</b><small>${m.sub}</small></span>
             <span class="bl-b-arr">→</span>
           </button>`).join('')}
@@ -195,9 +195,9 @@ function viewBook() {
   }).join('');
   return `${hero}<div class="book-home">
     <div class="vocab-entry" onclick="openVocab()">
-      <div class="ve-ico">📚</div>
+      <div class="ve-ico"><span>📔</span></div>
       <div class="ve-txt">
-        <b>${LANG==='ko'?'어휘책':'Vocabulary'}</b>
+        <b>${LANG==='ko'?'어휘책':'Vocabulary Book'}</b>
         <small>${LANG==='ko'?'TOPIK I 1,500 + TOPIK II 2,500 단어':'TOPIK I 1,500 + TOPIK II 2,500 words'}</small>
       </div>
       <span class="ve-count">4,000</span>
