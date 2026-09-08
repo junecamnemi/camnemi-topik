@@ -160,9 +160,12 @@ function viewBook() {
   try {
     const raw = localStorage.getItem(BOOK_SESSION_KEY);
     const s = raw ? JSON.parse(raw) : null;
+    // The book the learner last studied is shown by a moving-gradient border on
+    // its row in the level list — set this from the session book regardless of
+    // whether the exact unit is resolvable.
+    if (s && s.book) lastBook = s.book;
     const unit = s && GLOWSIS_UNITS.find(x => x.id === s.unit);
     if (unit) {
-      lastBook = (s && s.book) || _book.book || '1a';
       const pageNo = (s.page || 0) + 1;
       const bId = lastBook;
       recentHTML = `
