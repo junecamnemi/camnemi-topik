@@ -470,11 +470,68 @@ let _vb = { lvl: '1', cat: 'food', page: 0, q: '' };
 const VB_ICONS = { food:'🍜', place:'🏫', person:'👨‍👩‍👧', time:'🕐', weather:'🌦', body:'🩺', animal:'🌳',
   object:'📦', action:'🏃', emotion:'💜', number:'🔢', money:'💰', school:'🎓', transport:'🚌',
   clothes:'👕', hobby:'🎮', direction:'🧭', question:'💬', etc:'📌' };
+const CAT_NAME = { food:'Food & Drink', place:'Places', person:'People & Family', time:'Time & Date',
+  weather:'Weather & Seasons', body:'Body & Health', animal:'Animals, Plants & Nature', object:'Everyday Objects',
+  action:'Actions & Verbs', emotion:'Feelings & Character', number:'Numbers & Counting', money:'Money & Shopping',
+  school:'School & Study', transport:'Transport & Travel', clothes:'Clothes & Appearance', hobby:'Hobbies & Leisure',
+  direction:'Direction & Location', question:'Question & Communication', etc:'More Words' };
+const POS_LABEL = { n:'noun', v:'verb', a:'adjective', adv:'adverb', num:'number', pron:'pronoun',
+  det:'determiner', part:'particle', interj:'interjection', conj:'conjunction' };
 const VB_PER = 24;
 
 function vocabImg(k) {
   try { const f = (window.KW_IMG||{})[k]; if (f) return 'assets/vocab/'+f+'.webp'; } catch(e){}
   return null;
+}
+function vocabDict(k) {
+  try { return (window.VOCAB_DICT||[]).find(w=>w.k===k); } catch(e){ return null; }
+}
+function openVocabWord(k) {
+  const w = vocabDict(k);
+  if (!w) { toast('Not found'); return; }
+  _vb.hist = _vb.hist || [];
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const stars = '★'.repeat(Math.max(1,Math.min(3,w.star||1)));
+  const catName = CAT_NAME[w.cat] || w.cat;
+  const img = vocabImg(k);
+  const pic = img ? `<div class="vd-pic"><img src="${img}" alt="${esc(k)}"></div>` : '';
+  // clickable relation chips
+  const chip = (arr,label) => arr && arr.length ? `<div class="vd-sec">
+    <div class="vd-sec-label">${label}</div>
+    <div class="vd-tags">${arr.map(x=>{const t=(x||'').trim(); if(!t)return''; return `<button class="vd-tag" onclick="openVocabWord('${t.replace(/'/g,"\\'")}')">${esc(t)}</button>`;}).join('')}</div>
+  </div>` : '';
+  const backBtn = `<button class="back-btn-mini" onclick="renderVocabView()">← ${LANG==='ko'?'목록':'List'}</button>`;
+  const usg = w.usg ? `<div class="vd-usg">${esc(w.usg)}</div>` : '';
+  const def = w.def ? `<div class="vd-def">${esc(w.def)}</div>` : '';
+  const ex = w.ex ? `<div class="vd-ex"><div class="vd-ex-ko">${esc(w.ex)}</div><div class="vd-ex-en">${esc(w.exE||'')}</div></div>` : '';
+  const posLabel = POS_LABEL[w.pos] || w.pos || '';
+  document.getElementById('screen').innerHTML = `
+    <div class="book-units vb-screen vd-screen">
+      <div class="bu-head">
+        ${backBtn}
+      </div>
+      <div class="vd-card">
+        ${pic}
+        <div class="vd-main">
+          <div class="vd-head">
+            <span class="vd-ko">${esc(k)}</span>
+            ${stars?`<span class="vd-star">${stars}</span>`:''}
+          </div>
+          <div class="vd-rom">${esc(w.r||'')}${posLabel?' · '+esc(posLabel):''}${w.sub?' · '+esc(w.sub):''}${w.form?' · '+esc(w.form):''}</div>
+          ${usg}
+          <div class="vd-e">${esc(w.e||'')}</div>
+          ${def}
+          ${ex}
+          <div class="vd-cat">${esc(catName)}</div>
+        </div>
+        <div class="vd-relations">
+          ${chip(w.syn, LANG==='ko'?'유의어':'Synonyms')}
+          ${chip(w.ant, LANG==='ko'?'반의어':'Antonyms')}
+          ${chip(w.rel, LANG==='ko'?'함께 쓰는 말 · 관련어':'Related words')}
+        </div>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
 }
 
 function openVocab() {
@@ -504,14 +561,17 @@ function renderVocabView() {
   const pageWs = ws.slice(_vb.page*VB_PER, (_vb.page+1)*VB_PER);
   const cards = pageWs.map(w=>{
     const img = vocabImg(w.k);
+    const d = vocabDict(w.k);
     const pic = img ? `<div class="vwb-pic"><img src="${img}" alt="${esc(w.k)}" loading="lazy"></div>` : '';
-    return `<div class="vwb-card">
+    const star = (d&&d.star) ? '<span class="vwb-star">'+'★'.repeat(Math.max(1,Math.min(3,d.star)))+'</span>' : '';
+    const pos = (d&&d.pos) ? `<span class="vwb-pos">${POS_LABEL[d.pos]||d.pos}</span>` : '';
+    return `<button class="vwb-card" onclick="openVocabWord('${(w.k).replace(/'/g,"\\'")}')">
       ${pic}
       <div class="vwb-info">
-        <div class="vwb-ko">${esc(w.k)}</div>
-        <div class="vwb-en">${esc(w.e)}</div>
+        <div class="vwb-ko">${esc(w.k)} ${star}${pos}</div>
+        <div class="vwb-en">${esc(d&&d.e?d.e:w.e)}</div>
       </div>
-    </div>`;
+    </button>`;
   }).join('') || `<div class="vb-empty">${LANG==='ko'?'단어가 없습니다':'No words found'}</div>`;
   const pager = pages>1 ? `<div class="vb-pager">
     <button ${_vb.page===0?'disabled':''} onclick="vbPage(${_vb.page-1})">←</button>
@@ -539,5 +599,5 @@ function setVbLvl(l){ _vb.lvl=l; _vb.cat=(window.VOCAB_BOOK[l]||[]).find(c=>c.co
 function setVbCat(c){ _vb.cat=c; _vb.page=0; renderVocabView(); }
 function setVbQ(v){ _vb.q=v; _vb.page=0; renderVocabView(); }
 function vbPage(p){ if(p<0)return; _vb.page=p; renderVocabView(); }
-window.openVocab=openVocab; window.setVbLvl=setVbLvl; window.setVbCat=setVbCat; window.setVbQ=setVbQ; window.vbPage=vbPage;
+window.openVocab=openVocab; window.openVocabWord=openVocabWord; window.setVbLvl=setVbLvl; window.setVbCat=setVbCat; window.setVbQ=setVbQ; window.vbPage=vbPage;
 
