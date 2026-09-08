@@ -153,6 +153,8 @@ function restoreBookSession() {
 function viewBook() {
   describeUnits();
   const ready = GLOWSIS_LEVELS[0];
+  // Book where the user left off (last study session) → highlight that book row.
+  let lastBook = '';
   // Recently studied unit (last session) → gently glowing card over the hero
   let recentHTML = '';
   try {
@@ -160,8 +162,9 @@ function viewBook() {
     const s = raw ? JSON.parse(raw) : null;
     const unit = s && GLOWSIS_UNITS.find(x => x.id === s.unit);
     if (unit) {
+      lastBook = (s && s.book) || _book.book || '1a';
       const pageNo = (s.page || 0) + 1;
-      const bId = (s && s.book) || _book.book || '1a';
+      const bId = lastBook;
       recentHTML = `
         <button class="book-recent-glow" onclick="openUnit(${unit.id}, ${(s.page||0)||0}, '${bId}')">
           <div class="brg-ico">🎤</div>
@@ -197,7 +200,8 @@ function viewBook() {
       </div>
       <div class="bl-books">
         ${levelBooks.map(m => `
-          <button class="bl-book" onclick="openBookUnits('${m.id}')">
+          <button class="bl-book ${m.id === lastBook ? 'is-current' : ''}" onclick="openBookUnits('${m.id}')">
+            ${m.id === lastBook ? `<span class="bl-cont">${LANG && LANG==='ko' ? '이어서' : LANG && LANG==='km' ? 'បន្ត' : 'Continue'}</span>` : ''}
             <span class="bl-b-ico">${m.ico}</span>
             <span class="bl-b-t"><b>${m.title}</b><small>${m.sub}</small></span>
             <span class="bl-b-arr">→</span>
