@@ -1282,6 +1282,64 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 
 /* ---------- Ranking ---------- */
 .rk-chips { display: flex; gap: 8px; margin: 2px 2px 12px; }
+/* ===== Idol Discovery (Rank tab) ===== */
+.idol-home { padding: 2px 16px 10px; }
+.rk-sort { display: flex; gap: 8px; margin: 2px 0 12px; }
+.rk-sort button { flex:1; padding:9px 0; border:none; border-radius:12px; font-weight:800; font-size:12.5px;
+  background:#f1edfb; color:#7b5cf6; cursor:pointer; font-family:var(--ios-font,system-ui); }
+.rk-sort button.on { background:linear-gradient(115deg,#7b3ff2,#c026d3); color:#fff; box-shadow:0 4px 12px rgba(124,58,237,.3); }
+.rk-search input { width:100%; box-sizing:border-box; padding:11px 14px; border-radius:13px; border:1px solid var(--ios-separator);
+  background:var(--ios-card); color:var(--ios-label); font-size:14px; font-family:var(--ios-font,system-ui); outline:none; }
+.rk-head-sub { font-size:12px; color:var(--ios-secondary-label); font-weight:600; margin:10px 2px 12px; }
+.idol-g-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.idol-g-card { display:flex; flex-direction:column; text-align:left; border:none; border-radius:18px; padding:12px; cursor:pointer;
+  font-family:var(--ios-font,system-ui); color:#2b2547; background:#fff; border:1px solid #f0ecfb; overflow:hidden; position:relative;
+  box-shadow:0 3px 12px rgba(91,63,212,.06); -webkit-tap-highlight-color:transparent; }
+.idol-g-card:active { transform:scale(.97); }
+.idol-g-card::before { content:''; position:absolute; inset:0 0 auto 0; height:4px; background:var(--gc,#c084fc); }
+.idol-g-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.idol-g-en { font-weight:900; font-size:16px; letter-spacing:.3px; }
+.idol-g-count { font-size:10px; font-weight:800; color:#fff; background:var(--gc,#c084fc); border-radius:999px; padding:2px 7px; }
+.idol-g-avatars { display:flex; gap:4px; margin-bottom:8px; }
+.idol-g-avatars img { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,.15); }
+.idol-g-name { font-size:14px; font-weight:900; color:#2b2547; }
+.idol-g-meta { font-size:10px; color:#8a83a6; font-weight:600; display:flex; flex-direction:column; gap:2px; margin-top:6px; }
+.idol-g-go { margin-top:9px; font-size:11px; font-weight:800; color:var(--gc,#c084fc); }
+/* group view */
+.idol-group-view { padding:0 16px 30px; }
+.idol-gv-head { display:flex; align-items:center; margin:10px 0; }
+.idol-gv-hero { border-radius:20px; padding:20px 16px; color:#fff; background:linear-gradient(135deg, var(--gc,#c084fc), #3a2a6b);
+  box-shadow:0 8px 22px rgba(0,0,0,.18); position:relative; overflow:hidden; }
+.igvh-title { font-size:26px; font-weight:900; letter-spacing:.5px; }
+.igvh-title span { font-size:14px; font-weight:700; opacity:.9; margin-left:6px; }
+.igvh-meta { font-size:12px; font-weight:600; opacity:.95; margin-top:4px; }
+.igvh-avatars { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+.igvh-avatars img { width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,.55); }
+.idol-gv-sub { font-size:12px; color:var(--ios-secondary-label); font-weight:600; margin:14px 2px 10px; }
+.idol-m-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.idol-m-card { display:flex; align-items:center; gap:10px; background:#fff; border:1px solid #f0ecfb; border-radius:16px; padding:10px; cursor:pointer;
+  font-family:var(--ios-font,system-ui); color:inherit; text-align:left; -webkit-tap-highlight-color:transparent; box-shadow:0 2px 8px rgba(91,63,212,.05); }
+.idol-m-card:active { transform:scale(.97); }
+.idol-m-card img { width:52px; height:52px; border-radius:50%; object-fit:cover; }
+.im-name { font-weight:800; font-size:14px; color:#2b2547; }
+.im-name small { color:#a79bc9; font-weight:700; margin-left:4px; }
+.im-pos { font-size:10px; color:#8b5cf6; font-weight:700; margin-top:2px; }
+/* member detail */
+.im-detail { margin-top:6px; }
+.imd-hero img { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #fff; box-shadow:0 6px 18px rgba(91,63,212,.25);
+  display:block; margin:0 auto 16px; }
+.imd-body { background:#fff; border:1px solid #f0ecfb; border-radius:20px; padding:18px; box-shadow:0 3px 12px rgba(91,63,212,.06); }
+.imd-name { font-size:24px; font-weight:900; color:#2b2547; text-align:center; }
+.imd-name span { font-size:14px; font-weight:700; color:#a79bc9; margin-left:6px; }
+.imd-pos { text-align:center; font-size:13px; font-weight:800; color:#7b3ff2; margin-top:4px; }
+.imd-group { text-align:center; font-size:12px; color:#8a83a6; font-weight:700; margin-top:2px; }
+.imd-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+.imd-cell { background:#faf7ff; border-radius:12px; padding:10px 12px; }
+.imd-cell b { display:block; font-size:10px; color:#a79bc9; letter-spacing:.4px; text-transform:uppercase; margin-bottom:3px; }
+.imd-cell span { font-size:13px; font-weight:800; color:#2b2547; }
+.imd-charm { margin-top:14px; font-size:14px; font-weight:800; color:#c026d3; background:#fdf0f7; padding:10px 12px; border-radius:12px; }
+.imd-intro { margin-top:8px; font-size:12.5px; color:#6b5aa8; font-weight:600; line-height:1.5; }
+
 .rk-chip {
   flex: 1; border: none; cursor: pointer; padding: 9px 8px; border-radius: 12px;
   font-size: 12.5px; font-weight: 800; color: var(--ios-secondary-label);

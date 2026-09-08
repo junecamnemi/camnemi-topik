@@ -4013,29 +4013,136 @@ function rankMeOverlayHTML() {
   } catch (e) { return `<span class="tab-hero-cap">My Ranking</span>`; }
 }
 function viewRank() {
-  return `${tabHeroHTML('rank', rankMeOverlayHTML())}
-    <div class="rk-chips">
-      <button class="rk-chip ${_rankSort === 'acc' ? 'on' : ''}" data-m="acc" onclick="setRankSort('acc')">${t('rank_acc')}</button>
-      <button class="rk-chip ${_rankSort === 'solved' ? 'on' : ''}" data-m="solved" onclick="setRankSort('solved')">${t('rank_solved')}</button>
-      <button class="rk-chip ${_rankSort === 'level' ? 'on' : ''}" data-m="level" onclick="setRankSort('level')">${t('rank_level')}</button>
-    </div>
-    <div id="rank-me">${rankMeCardHTML()}</div>
-    <div id="rank-list">${rankListHTML()}</div>
-    <div class="app-card rk-note">
-      <span class="sub">${LANG === 'ko' ? '랭킹은 내 학습 기록을 기준으로 해요 — 문제를 풀수록 순위가 올라가요!' : LANG === 'km' ? 'ចំណាត់ថ្នាក់ផ្អែកលើកំណត់ត្រារបស់អ្នក — ដោះស្រាយសំណួរកាន់តែច្រើន កាន់តែឡើងខ្ពស់!' : 'Ranking is based on your study record — the more you solve, the higher you climb!'}</span>
+  // Idol Discovery — browse the 10 fictional groups, search & sort
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const groups = (window.IDOL_PROFILES || []).slice();
+  if (!groups.length) return `${tabHeroHTML('rank', rankMeOverlayHTML())}
+    <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading idols…</span></div>`;
+  const q = (_iq = _iq||{}).q || '';
+  const sort = (_iq = _iq||{}).sort || 'fandom';
+  let list = groups.filter(g => (g.en+' '+g.ko+' '+g.fandom).toLowerCase().includes(q.toLowerCase()));
+  if (sort === 'debut') list = list.sort((a,b)=>(a.debut||'')>(b.debut||'')?-1:1);      // newest debut first
+  else if (sort === 'name') list = list.sort((a,b)=>a.en.localeCompare(b.en));
+  else list = list.sort((a,b)=>(b.fandomSize||0)-(a.fandomSize||0));                       // fandom big first
+  const hero = tabHeroHTML('rank', rankMeOverlayHTML());
+  const chips = `<div class="rk-sort">
+      <button class="${sort==='fandom'?'on':''}" data-m="fandom" onclick="_iq.sort='fandom';go('rank')">${LANG==='ko'?'팬덤 많은 순':'Fandom'}</button>
+      <button class="${sort==='debut'?'on':''}" data-m="debut" onclick="_iq.sort='debut';go('rank')">${LANG==='ko'?'최근 데뷔 순':'Newest debut'}</button>
+      <button class="${sort==='name'?'on':''}" data-m="name" onclick="_iq.sort='name';go('rank')">${LANG==='ko'?'가나다순':'A–Z'}</button>
     </div>`;
+  const search = `<div class="rk-search"><input placeholder="${LANG==='ko'?'그룹 검색…':'Search groups…'}" value="${esc(q)}" oninput="_iq.q=this.value;renderIdolList()"></div>`;
+  const grid = list.map(g => `
+    <button class="idol-g-card" onclick="openIdolGroup('${g.id}')" style="--gc:${g.color}">
+      <div class="idol-g-top">
+        <span class="idol-g-en">${esc(g.en)}</span>
+        <span class="idol-g-count">${g.members.length}</span>
+      </div>
+      <div class="idol-g-avatars">${g.members.slice(0,4).map(m=>`<img src="${esc(m.img||('assets/img/chars/'+m.id+'.webp'))}" alt="${esc(m.name_en)}">`).join('')}</div>
+      <div class="idol-g-name">${esc(g.ko)}</div>
+      <div class="idol-g-meta">
+        <span>🎤 ${esc(g.concept)}</span>
+        <span>📅 ${fmtDebut(g.debut)}</span>
+        <span>💜 ${esc(g.fandom)} · ${fmtFan(g.fandomSize)}</span>
+      </div>
+      <div class="idol-g-go">${LANG==='ko'?'멤버 보기':'Members'} →</div>
+    </button>`).join('') || `<div class="rk-note app-card" style="margin:16px;"><span class="sub">${LANG==='ko'?'그룹이 없습니다':'No groups found'}</span></div>`;
+  return `${hero}
+    <div class="idol-home">
+      ${chips}
+      ${search}
+      <div class="rk-head-sub">${LANG==='ko'?'아이돌 그룹을 둘러보고 퀴즈로 만나보세요':'Explore idol groups & meet them in quizzes'}</div>
+      <div class="idol-g-grid" id="idol-grid">${grid}</div>
+    </div>
+    <div class="app-card rk-note"><span class="sub">${LANG==='ko'?'가상 아이돌 그룹 — 학습용 캐릭터입니다':'Fictional idol groups — study characters'}</span></div>`;
 }
-function bindRank() {
-  // lazily load other learners once, then re-render the list
-  if (_rankPeers === null) {
-    loadRankPeers().then(() => {
-      const list = $id('rank-list');
-      if (list) list.innerHTML = rankListHTML();
-      const meCard = $id('rank-me');
-      if (meCard) meCard.innerHTML = rankMeCardHTML();
-    });
-  }
+let _iq = { q:'', sort:'fandom' };
+function fmtDebut(d){ if(!d) return ''; const p=String(d).split('-'); return p[0]+'.'+p[1]+'.'+p[2]; }
+function fmtFan(m){ if(m==null) return ''; return m>=1 ? (Number.isInteger(m)? m : m.toFixed(1)).toString()+'M' : Math.round(m*100)+'0K'; }
+function renderIdolList(){
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const groups = (window.IDOL_PROFILES || []).slice();
+  const q = (_iq.q||'').trim().toLowerCase();
+  const sort = _iq.sort||'fandom';
+  let list = groups.filter(g => (g.en+' '+g.ko+' '+g.fandom+' '+(g.concept||'')).toLowerCase().includes(q));
+  if (sort === 'debut') list = list.sort((a,b)=>(a.debut||'')>(b.debut||'')?-1:1);
+  else if (sort === 'name') list = list.sort((a,b)=>a.en.localeCompare(b.en));
+  else list = list.sort((a,b)=>(b.fandomSize||0)-(a.fandomSize||0));
+  const grid = list.map(g => `
+    <button class="idol-g-card" onclick="openIdolGroup('${g.id}')" style="--gc:${g.color}">
+      <div class="idol-g-top"><span class="idol-g-en">${esc(g.en)}</span><span class="idol-g-count">${g.members.length}</span></div>
+      <div class="idol-g-avatars">${g.members.slice(0,4).map(m=>`<img src="${esc(m.img||('assets/img/chars/'+m.id+'.webp'))}" alt="${esc(m.name_en)}">`).join('')}</div>
+      <div class="idol-g-name">${esc(g.ko)}</div>
+      <div class="idol-g-meta"><span>🎤 ${esc(g.concept)}</span><span>📅 ${fmtDebut(g.debut)}</span><span>💜 ${esc(g.fandom)} · ${fmtFan(g.fandomSize)}</span></div>
+      <div class="idol-g-go">${LANG==='ko'?'멤버 보기':'Members'} →</div>
+    </button>`).join('') || `<div class="rk-note app-card" style="margin:16px;"><span class="sub">${LANG==='ko'?'그룹이 없습니다':'No groups found'}</span></div>`;
+  const el = document.getElementById('idol-grid');
+  if (el) el.innerHTML = grid;
 }
+function openIdolGroup(id){
+  const g = (window.IDOL_PROFILES||[]).find(x=>x.id===id); if(!g) return;
+  renderIdolGroupView(g);
+}
+function renderIdolGroupView(g){
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const cards = g.members.map(m => `
+    <div class="idol-m-card" onclick="openIdolMember('${g.id}','${m.id}')">
+      <img src="${esc(m.img||('assets/img/chars/'+m.id+'.webp'))}" alt="${esc(m.name_en)}">
+      <div class="im-info">
+        <div class="im-name">${esc(m.name_en)} <small>${esc(m.name_ko)}</small></div>
+        <div class="im-pos">${esc(m.position||'')}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="idol-group-view">
+      <div class="idol-gv-head">
+        <button class="back-btn-mini" onclick="go('rank')">← ${LANG==='ko'?'그룹':'Groups'}</button>
+      </div>
+      <div class="idol-gv-hero" style="--gc:${g.color}">
+        <div class="igvh-title">${esc(g.en)} <span>${esc(g.ko)}</span></div>
+        <div class="igvh-meta">🎤 ${esc(g.concept)}</div>
+        <div class="igvh-meta">📅 Debut ${fmtDebut(g.debut)} · 💜 ${esc(g.fandom)} ${fmtFan(g.fandomSize)}</div>
+        <div class="igvh-avatars">${g.members.map(m=>`<img src="${esc(m.img||('assets/img/chars/'+m.id+'.webp'))}" alt="${esc(m.name_en)}">`).join('')}</div>
+      </div>
+      <div class="idol-gv-sub">${LANG==='ko'?'멤버를 눌러 프로필을 보세요':'Tap a member to see their profile'}</div>
+      <div class="idol-m-grid">${cards}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function openIdolMember(gid, mid){ openMemberDetail(gid, mid); }
+function openMemberDetail(gid, mid){
+  const g=(window.IDOL_PROFILES||[]).find(x=>x.id===gid); if(!g) return;
+  const m=g.members.find(x=>x.id===mid); if(!m) return;
+  const esc=window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  document.getElementById('screen').innerHTML = `
+    <div class="idol-group-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="openIdolGroup('${g.id}')">← ${esc(g.en)}</button></div>
+      <div class="im-detail">
+        <div class="imd-hero" style="--gc:${g.color}"><img src="${esc(m.img||('assets/img/chars/'+m.id+'.webp'))}" alt="${esc(m.name_en)}"></div>
+        <div class="imd-body">
+          <div class="imd-name">${esc(m.name_en)} <span>${esc(m.name_ko)}</span></div>
+          <div class="imd-pos">${esc(m.position||'')}</div>
+          <div class="imd-group">${esc(g.en)} · ${esc(g.fandom)} ${fmtFan(g.fandomSize)}</div>
+          <div class="imd-grid">
+            <div class="imd-cell"><b>${LANG==='ko'?'본명':'Stage'}</b><span>${esc(m.name_ko)}</span></div>
+            <div class="imd-cell"><b>Birth</b><span>${esc(m.birthday||'')}</span></div>
+            <div class="imd-cell"><b>Blood</b><span>${esc(m.blood||'')}</span></div>
+            <div class="imd-cell"><b>MBTI</b><span>${esc(m.mbti||'')}</span></div>
+            <div class="imd-cell"><b>Nationality</b><span>${esc(m.nationality||'')}</span></div>
+            <div class="imd-cell"><b>Height</b><span>${m.height?m.height+'cm':''}</span></div>
+            <div class="imd-cell"><b>Specialty</b><span>${esc(m.specialty||'')}</span></div>
+            <div class="imd-cell"><b>Hobby</b><span>${esc(m.hobby||'')}</span></div>
+          </div>
+          <div class="imd-charm">✨ ${esc(m.charm||'')}</div>
+          <div class="imd-intro">${esc(m.intro||'')}</div>
+        </div>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+window.openIdolMember=openIdolMember; window.openMemberDetail=openMemberDetail; window.renderIdolGroupView=renderIdolGroupView;
+window._iq=_iq; window.renderIdolList=renderIdolList; window.openIdolGroup=openIdolGroup;
+window.fmtDebut=fmtDebut; window.fmtFan=fmtFan;
+function bindRank() { /* idol screen needs no async peer load */ }
 
 /* ================= WRONG / TYPE-WISE ================= */
 /* Read-only full question card (passage + question + all options with the answer
