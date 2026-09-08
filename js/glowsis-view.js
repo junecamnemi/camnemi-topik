@@ -226,6 +226,12 @@ function viewBook() {
 }
 function openBookUnits(bookId) {
   recordBookStudy();
+  // remember the unit the learner was on in THIS book (before clearing the session)
+  let lastUnit = null;
+  try {
+    const raw = localStorage.getItem(BOOK_SESSION_KEY);
+    if (raw) { const s = JSON.parse(raw); if (s && s.book === bookId) lastUnit = s.unit; }
+  } catch (e) {}
   clearBookSession();
   const m = bookMeta(bookId);
   _book.book = m.id;
@@ -241,8 +247,10 @@ function openBookUnits(bookId) {
         const ut = u.title || fallbackUnitTitle(m.id, u.id);
         const ue = u.en || (m.id === '1a' ? ['한글 기초','인사 · 이에요/예요','자기소개 · 은/는','사물 · 이/그/저','숫자 · 날짜 · 요일','좋아요 · 을/를','음식 · 안/못','위치 · 에/에서','과거 시제'][u.id] : '');
         const noLabel = (u.id === 0 && LANG === 'ko') ? '준비' : (u.id === 0 && LANG !== 'ko') ? 'Prep' : u.id;
+        const cur = (u.id === lastUnit);
         return `
-        <button class="bu-item" onclick="openUnit(${u.id},0,'${m.id}')">
+        <button class="bu-item ${cur ? 'is-current' : ''}" onclick="openUnit(${u.id},0,'${m.id}')">
+          ${cur ? `<span class="bu-cont">${LANG && LANG==='ko' ? '이어서' : LANG && LANG==='km' ? 'បន្ត' : 'Continue'}</span>` : ''}
           <span class="bu-no">${noLabel}</span>
           <span class="bu-info"><b>${ut}</b><small>${ue}</small></span>
           <span class="bu-arr">→</span>
@@ -472,3 +480,80 @@ function wireSwipe() {
 /* init unit meta once data ready */
 function glowEnsureReady() { describeUnits(); }
 if (typeof window.toast !== 'function') window.toast = function (m) { try { alert(m); } catch (e) {} };
+
+/* ==================== VOCABULARY BOOK (보케책) ==================== */
+let _vb = { lvl: '1', cat: 'food', page: 0, q: '' };
+const VB_ICONS = { food:'🍜', place:'🏫', person:'👨‍👩‍👧', time:'🕐', weather:'🌦', body:'🩺', animal:'🌳',
+  object:'📦', action:'🏃', emotion:'💜', number:'🔢', money:'💰', school:'🎓', transport:'🚌',
+  clothes:'👕', hobby:'🎮', direction:'🧭', question:'💬', etc:'📌' };
+const VB_PER = 24;
+
+function vocabImg(k) {
+  try { const f = (window.KW_IMG||{})[k]; if (f) return 'assets/vocab/'+f+'.webp'; } catch(e){}
+  return null;
+}
+
+function openVocab() {
+  _vb = { lvl:'1', cat:'food', page:0, q:'' };
+  renderVocabView();
+}
+function renderVocabView() {
+  const bk = (window.VOCAB_BOOK||{})[_vb.lvl] || [];
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+  // level toggle
+  const lvlRow = `<div class="vb-lvl">
+    <button class="${_vb.lvl==='1'?'on':''}" onclick="setVbLvl('1')">TOPIK I</button>
+    <button class="${_vb.lvl==='2'?'on':''}" onclick="setVbLvl('2')">TOPIK II</button>
+  </div>`;
+  // category chips
+  const chips = bk.map(c => `<button class="vb-chip ${_vb.cat===c.id?'on':''}" onclick="setVbCat('${c.id}')">
+    ${c.icon||VB_ICONS[c.id]||'📌'} <span>${_vb.lvl==='1'?catShort(c.name):catShort(c.name)}</span> <i>${c.count}</i></button>`).join('');
+  // search
+  const srch = `<div class="vb-search"><input id="vb-q" placeholder="${LANG==='ko'?'단어 검색…':'Search words…'}" value="${esc(_vb.q)}" oninput="setVbQ(this.value)"></div>`;
+  // words for current cat (filtered by q)
+  const cat = bk.find(c=>c.id===_vb.cat) || bk[0] || {words:[]};
+  let ws = cat.words || [];
+  if (_vb.q) { const q=_vb.q.trim().toLowerCase(); ws = ws.filter(w=>w.k.includes(_vb.q) || w.e.toLowerCase().includes(q)); }
+  const total = ws.length;
+  const pages = Math.max(1, Math.ceil(total/VB_PER));
+  if (_vb.page>=pages) _vb.page=0;
+  const pageWs = ws.slice(_vb.page*VB_PER, (_vb.page+1)*VB_PER);
+  const cards = pageWs.map(w=>{
+    const img = vocabImg(w.k);
+    const pic = img ? `<div class="vwb-pic"><img src="${img}" alt="${esc(w.k)}" loading="lazy"></div>` : '';
+    return `<div class="vwb-card">
+      ${pic}
+      <div class="vwb-info">
+        <div class="vwb-ko">${esc(w.k)}</div>
+        <div class="vwb-en">${esc(w.e)}</div>
+      </div>
+    </div>`;
+  }).join('') || `<div class="vb-empty">${LANG==='ko'?'단어가 없습니다':'No words found'}</div>`;
+  const pager = pages>1 ? `<div class="vb-pager">
+    <button ${_vb.page===0?'disabled':''} onclick="vbPage(${_vb.page-1})">←</button>
+    <span>${_vb.page+1} / ${pages}</span>
+    <button ${_vb.page>=pages-1?'disabled':''} onclick="vbPage(${_vb.page+1})">→</button>
+  </div>` : '';
+  document.getElementById('screen').innerHTML = `
+    <div class="book-units vb-screen">
+      <div class="bu-head">
+        <button class="back-btn-mini" onclick="document.getElementById('screen').innerHTML=viewBook();window.scrollTo(0,0);">← Levels</button>
+        <h2>📚 ${LANG==='ko'?'어휘책':'Vocabulary'}</h2>
+        <p class="bu-sub">${LANG==='ko'?'TOPIK I 1,635 + TOPIK II 2,651 단어':'TOPIK I 1,635 + TOPIK II 2,651 words'}</p>
+      </div>
+      ${lvlRow}
+      <div class="vb-search">${srch}</div>
+      <div class="vb-chips">${chips}</div>
+      <div class="vb-cat-title">${esc(cat.icon||VB_ICONS[cat.id]||'📌')} ${esc(cat.name)} <small>${total} ${LANG==='ko'?'단어':'words'}</small></div>
+      <div class="vwb-grid">${cards}</div>
+      ${pager}
+    </div>`;
+  window.scrollTo(0,0);
+}
+function catShort(n){ return n; }
+function setVbLvl(l){ _vb.lvl=l; _vb.cat=(window.VOCAB_BOOK[l]||[]).find(c=>c.count>0)?((window.VOCAB_BOOK[l]||[]).find(c=>c.count>0).id):'etc'; _vb.page=0; _vb.q=''; renderVocabView(); }
+function setVbCat(c){ _vb.cat=c; _vb.page=0; renderVocabView(); }
+function setVbQ(v){ _vb.q=v; _vb.page=0; renderVocabView(); }
+function vbPage(p){ if(p<0)return; _vb.page=p; renderVocabView(); }
+window.openVocab=openVocab; window.setVbLvl=setVbLvl; window.setVbCat=setVbCat; window.setVbQ=setVbQ; window.vbPage=vbPage;
+

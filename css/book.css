@@ -435,33 +435,69 @@
 .pt-note-body b.hl { color:#E8930C; }
 .pt-note-body .pt-ko { font-weight:800; color:#3a2e63; }
 
-/* ---------- Book hero: recently-studied unit (soft AI glow card) ---------- */
+/* ---------- Book hero: recently-studied unit (plain frosted card, no border ring) ---------- */
 .book-recent-glow {
   display: flex; align-items: center; gap: 14px; text-align: left;
   max-width: 330px; width: 100%;
   font-family: var(--ios-font, system-ui); color: #fff; cursor: pointer;
   padding: 12px 16px; border-radius: 18px;
-  background: rgba(255,255,255,.13);
-  border: 2px solid transparent;
+  background: rgba(20,16,42,.30);
+  border: 1px solid rgba(255,255,255,.14);
   position: relative;
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 24px rgba(167,139,250,.35), 0 0 60px rgba(236,72,153,.18);
-  animation: brgBreathe 3.2s ease-in-out infinite;
-}
-/* gradient border ring around the "continue" card */
-.book-recent-glow::before {
-  content: ''; position: absolute; inset: 0; border-radius: 18px;
-  padding: 2px;
-  background: linear-gradient(120deg, #8b5cf6, #ec4899 45%, #fbbf24);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  pointer-events: none;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 18px rgba(0,0,0,.18);
 }
 .book-recent-glow:active { transform: scale(.98); }
-@keyframes brgBreathe { 0%,100%{ box-shadow:0 0 18px rgba(167,139,250,.35), inset 0 1px 0 rgba(255,255,255,.2);} 50%{ box-shadow:0 0 34px rgba(167,139,250,.7), 0 0 70px rgba(236,72,153,.35), inset 0 1px 0 rgba(255,255,255,.3);} }
 .book-recent-glow .brg-ico { font-size: 26px; flex: none; filter: drop-shadow(0 0 8px rgba(255,255,255,.6)); }
 .book-recent-glow .brg-txt { display:flex; flex-direction:column; gap:2px; min-width:0; flex:1; }
 .book-recent-glow .brg-label { font-size: 10.5px; font-weight: 800; letter-spacing: 2px; opacity:.92; text-transform:uppercase; }
 .book-recent-glow .brg-title { font-size: 15.5px; font-weight: 900; line-height:1.2; text-shadow:0 1px 6px rgba(0,0,0,.4); }
 .book-recent-glow .brg-sub { font-size: 12px; font-weight:700; opacity:.95; }
 .book-recent-glow .brg-arr { flex:none; font-size:18px; font-weight:800; opacity:.9; }
+
+/* ==================== Vocabulary book (보케책) ==================== */
+.vocab-entry {
+  display:flex; align-items:center; gap:12px; cursor:pointer;
+  margin: 14px 16px 4px; padding:13px 14px; border-radius:18px;
+  background:linear-gradient(115deg,#7b3ff2,#c026d3 55%,#f0a1c8);
+  color:#fff; box-shadow:0 6px 18px rgba(124,58,237,.25);
+  -webkit-tap-highlight-color:transparent;
+}
+.vocab-entry:active { transform:scale(.985); }
+.vocab-entry .ve-ico { font-size:24px; flex:none; }
+.vocab-entry .ve-txt { display:flex; flex-direction:column; gap:1px; flex:1; min-width:0; }
+.vocab-entry .ve-txt b { font-size:15px; font-weight:900; }
+.vocab-entry .ve-txt small { font-size:10.5px; opacity:.92; font-weight:600; }
+.vocab-entry .ve-count { font-size:11px; font-weight:800; background:rgba(255,255,255,.2); padding:3px 8px; border-radius:999px; }
+.vocab-entry .ve-arr { font-size:18px; font-weight:800; }
+
+.vb-screen { padding:0 0 30px; }
+.vb-lvl { display:flex; gap:8px; padding:14px 16px 0; }
+.vb-lvl button { flex:1; padding:10px 0; border:none; border-radius:14px; font-weight:900; font-size:14px;
+  background:#f1edfb; color:#7b5cf6; cursor:pointer; font-family:var(--ios-font,system-ui); }
+.vb-lvl button.on { background:linear-gradient(115deg,#7b3ff2,#c026d3); color:#fff; box-shadow:0 4px 12px rgba(124,58,237,.3); }
+.vb-search { padding:12px 16px 0; }
+.vb-search input { width:100%; box-sizing:border-box; padding:11px 14px; border-radius:13px; border:1px solid var(--ios-separator);
+  background:var(--ios-card); color:var(--ios-label); font-size:14px; font-family:var(--ios-font,system-ui); outline:none; }
+.vb-chips { display:flex; flex-wrap:wrap; gap:7px; padding:12px 16px 4px; }
+.vb-chip { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--ios-separator); background:var(--ios-card);
+  border-radius:999px; padding:6px 10px; font-size:11.5px; font-weight:700; color:var(--ios-label); cursor:pointer;
+  font-family:var(--ios-font,system-ui); -webkit-tap-highlight-color:transparent; }
+.vb-chip.on { border-color:#7b3ff2; background:#f3eeff; color:#7b3ff2; }
+.vb-chip i { font-style:normal; font-size:10px; background:#eee8fb; border-radius:999px; padding:1px 6px; }
+.vb-chip.on i { background:#7b3ff2; color:#fff; }
+.vb-cat-title { font-size:14px; font-weight:900; color:var(--ios-label); padding:12px 16px 6px; }
+.vb-cat-title small { font-weight:600; color:var(--ios-secondary-label); margin-left:4px; }
+.vwb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; padding:4px 16px 8px; }
+.vwb-card { background:#fff; border:1px solid #f0ecfb; border-radius:16px; overflow:hidden; box-shadow:0 3px 10px rgba(91,63,212,.06); }
+.vwb-pic { aspect-ratio:1/1; background:#fdf8fb; }
+.vwb-pic img { width:100%; height:100%; object-fit:cover; display:block; }
+.vwb-info { padding:8px 10px 10px; }
+.vwb-ko { font-size:15px; font-weight:800; color:#2b2547; }
+.vwb-en { font-size:11px; color:#6b5aa8; font-weight:600; margin-top:1px; line-height:1.3; }
+.vb-empty { text-align:center; color:var(--ios-secondary-label); padding:40px 0; font-size:14px; }
+.vb-pager { display:flex; align-items:center; justify-content:center; gap:14px; padding:14px 0 4px; }
+.vb-pager button { border:none; background:#f1edfb; color:#7b5cf6; width:36px; height:36px; border-radius:50%; font-size:16px; font-weight:800; cursor:pointer; }
+.vb-pager button:disabled { opacity:.35; }
+.vb-pager span { font-size:13px; font-weight:700; color:var(--ios-secondary-label); }
+
