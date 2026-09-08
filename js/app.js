@@ -4053,11 +4053,12 @@ function renderApps(){
   const a=window.KOREA_LIFE.apps;
   const items=(a.items||[]).map(ap=>`
     <div class="kl-block app-card">
-      <div class="app-head"><span class="app-ico">${ap.icon}</span>
+      <div class="app-head">${ap.img?`<img class="app-ico-img" src="${esc(ap.img)}" alt="${esc(ap.name)}">`:`<span class="app-ico">${ap.icon}</span>`}
         <div><div class="app-name">${esc(ap.name)} <small>${esc(ap.kor||'')}</small></div>
         <div class="app-cat">${esc(ap.cat)} · <span class="app-need">${esc(ap.need||'')}</span></div></div></div>
       <p class="app-body">${esc(ap.body||'')}</p>
       ${(ap.tips&&ap.tips.length)?`<div class="app-tips">${ap.tips.map(tp=>`<div>✓ ${esc(tp)}</div>`).join('')}</div>`:''}
+      ${ap.play?`<a class="app-store-btn" href="${esc(ap.play)}" target="_blank" rel="noopener">▶ Get it on Google Play</a>`:''}
     </div>`).join('');
   document.getElementById('screen').innerHTML = `
     <div class="kl-detail-view">
@@ -4107,7 +4108,7 @@ function renderUnivs(){
   const u=window.KOREA_LIFE.univs;
   const items=(u.items||[]).map(uni=>`
     <div class="kl-block univ-card">
-      <div class="univ-head"><span class="univ-ico">${uni.icon}</span>
+      <div class="univ-head">${uni.logo?`<img class="univ-logo-img" src="${esc(uni.logo)}" alt="${esc(uni.en)}">`:`<span class="univ-ico">${uni.icon}</span>`}
         <div><div class="univ-name">${esc(uni.name)}</div><div class="univ-en">${esc(uni.en)} · ${esc(uni.rank)}</div></div></div>
       <div class="univ-loc">📍 ${esc(uni.loc)}</div>
       <div class="univ-rows">
