@@ -243,7 +243,7 @@ function charGridHTML(g) {
     const locked = !isCharUnlocked(c.id);
     const needLv = charUnlockLevel(c.id);
     return `
-    <div class="char-cell ${c.id === cur ? 'sel' : ''} ${locked ? 'locked' : ''}" ${locked ? '' : `onclick="selectChar('${c.id}')"`} title="${locked ? (LANG === 'ko' ? `Lv ${needLv}에 해제` : LANG === 'km' ? `ដោះសោនៅ Lv ${needLv}` : `Unlocks at Lv ${needLv}`) : ''}">
+    <div class="char-cell ${c.id === cur ? 'sel' : ''} ${locked ? 'locked' : ''}" ${locked ? '' : `onclick="viewCharProfile('${c.id}')"`} title="${locked ? (LANG === 'ko' ? `Lv ${needLv}에 해제` : LANG === 'km' ? `ដោះសោនៅ Lv ${needLv}` : `Unlocks at Lv ${needLv}`) : ''}">
       <div class="char-face"><img src="${charFace(c)}" alt="${esc(c.name)}" loading="lazy" ${locked ? 'style="filter:grayscale(1) brightness(.55);"' : ''}>
         ${locked ? `<span class="char-lock">🔒<em>Lv ${needLv}</em></span>` : ''}
         ${crownUnlocked() && c.id === cur ? '<span class="char-crown">👑</span>' : ''}
@@ -252,6 +252,37 @@ function charGridHTML(g) {
     </div>`;
   }).join('');
 }
+function viewCharProfile(id) {
+  const c = (window.CHAR_LIST || []).find(x => x.id === id); if (!c) return;
+  const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,v=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[v]));};
+  // look up extended profile from idol-profiles if available
+  const ext = (window.IDOL_MEMBER||{})[id] || null;
+  const g = ext && (window.IDOL_PROFILES||[]).find(x=>x.id===ext.group);
+  const pos = ext && ext.position ? `<div class="cp-pos">${esc(ext.position)}</div>` : '';
+  const groupLine = g ? `<div class="cp-group">${esc(g.en)} ${esc(g.ko)} · 💜 ${esc(g.fandom)}</div>` : '';
+  const meta = ext ? `
+    <div class="cp-meta">
+      <span>🎂 ${esc(ext.birthday||'')}</span><span>🩸 ${esc(ext.blood||'')}</span><span>🧠 ${esc(ext.mbti||'')}</span>
+      <span>🌏 ${esc(ext.nationality||'')}</span><span>📏 ${ext.height?ext.height+'cm':''}</span>
+    </div>` : '';
+  const charm = ext && ext.charm ? `<div class="cp-charm">✨ ${esc(ext.charm)}</div>` : '';
+  const intro = ext && ext.intro ? `<div class="cp-intro">${esc(ext.intro)}</div>` : '';
+  const specialty = ext && ext.specialty ? `<div class="cp-spec">🎯 ${esc(ext.specialty)} · ${esc(ext.hobby||'')}</div>` : '';
+  const cur = myCharId() === id;
+  const btn = cur
+    ? `<button class="btn btn-primary" disabled style="width:100%;margin-top:14px;">✓ ${LANG==='ko'?'현재 캐릭터':'Current'}</button>`
+    : `<button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="selectChar('${id}')">${LANG==='ko'?'이 캐릭터 선택':'Select'}</button>`;
+  document.getElementById('char-profile').innerHTML = `
+    <div class="cp-card">
+      <button class="cp-close" onclick="closeCharProfile()">✕</button>
+      <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
+      <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
+      ${pos}${groupLine}${meta}${charm}${spec}${intro}
+      ${btn}
+    </div>`;
+  const pf = $id('char-profile'); if (pf) pf.classList.add('open');
+}
+function closeCharProfile(){ const pf=$id('char-profile'); if(pf) pf.classList.remove('open'); }
 function selectChar(id) {
   if (typeof isCharUnlocked === 'function' && !isCharUnlocked(id)) {
     const needLv = charUnlockLevel(id);
