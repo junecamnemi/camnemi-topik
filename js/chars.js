@@ -277,7 +277,7 @@ function viewCharProfile(id) {
       <button class="cp-close" onclick="closeCharProfile()">✕</button>
       <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
       <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
-      ${pos}${groupLine}${meta}${charm}${spec}${intro}
+      ${pos}${groupLine}${meta}${charm}${specialty}${intro}
       ${btn}
     </div>`;
   const pf = $id('char-profile'); if (pf) pf.classList.add('open');
