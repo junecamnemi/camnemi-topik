@@ -134,7 +134,7 @@
 .app-header {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 60;
-  background: rgba(247, 244, 255, .55);
+  background: rgba(247, 244, 255, .35);
   -webkit-backdrop-filter: saturate(150%) blur(8px);
   backdrop-filter: saturate(150%) blur(8px);
   border-bottom: 0.5px solid var(--ios-separator);
@@ -159,7 +159,7 @@
 .app-header .brand { transition: margin-left .2s; }
 body.has-back .app-header .brand { margin-left: 34px; }
 [data-theme="dark"] .back-btn { background: var(--ios-fill); color: var(--ios-label); }
-[data-theme="dark"] .app-header { background: rgba(14, 13, 23, .45); }
+[data-theme="dark"] .app-header { background: rgba(14, 13, 23, .28); }
 .app-header .brand { font-size: 16px; display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ios-label); }
 /* Glowsis AI TOPIK — animated shimmer gradient wordmark (login-hero style, always shimmering) */
 .brand-glow {
