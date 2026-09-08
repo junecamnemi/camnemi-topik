@@ -95,6 +95,15 @@ function glowVocabAll() {
 window.glowVocab = glowVocab;
 window.glowVocabAll = glowVocabAll;
 
+// Vocab cards are image-first: tapping a card toggles the hidden word/meaning.
+document.addEventListener('click', function (e) {
+  const card = e.target && e.target.closest ? e.target.closest('.vw-card') : null;
+  if (!card) return;
+  // don't toggle when tapping the 🔊 button (it plays audio only)
+  if (e.target.closest && e.target.closest('.vw-tts')) return;
+  card.classList.toggle('reveal');
+});
+
 /* ==================== BOOK: LEVELS ==================== */
 const GLOWSIS_LEVELS = [
   { lv: 1, label: 'TOPIK I · Beginner', book: { id: 'glowsis-1a', title: 'Glowsis Korean 1A', sub: 'Learn beginner Korean with your idols · 9 units' } },
