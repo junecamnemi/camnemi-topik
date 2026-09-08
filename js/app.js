@@ -4051,14 +4051,21 @@ function openKoreaSection(sec){
 function renderApps(){
   const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const a=window.KOREA_LIFE.apps;
-  const items=(a.items||[]).map(ap=>`
+  const items=(a.items||[]).map((ap,i)=>`
     <div class="kl-block app-card">
-      <div class="app-head">${ap.img?`<img class="app-ico-img" src="${esc(ap.img)}" alt="${esc(ap.name)}">`:`<span class="app-ico">${ap.icon}</span>`}
-        <div><div class="app-name">${esc(ap.name)} <small>${esc(ap.kor||'')}</small></div>
-        <div class="app-cat">${esc(ap.cat)} · <span class="app-need">${esc(ap.need||'')}</span></div></div></div>
-      <p class="app-body">${esc(ap.body||'')}</p>
-      ${(ap.tips&&ap.tips.length)?`<div class="app-tips">${ap.tips.map(tp=>`<div>✓ ${esc(tp)}</div>`).join('')}</div>`:''}
-      ${ap.play||ap.apple?`<div class="app-store-row">${ap.play?`<a class="app-store-btn gplay" href="${esc(ap.play)}" target="_blank" rel="noopener">▶ Google Play</a>`:''}${ap.apple?`<a class="app-store-btn appst" href="${esc(ap.apple)}" target="_blank" rel="noopener"> App Store</a>`:''}</div>`:''}
+      <div class="app-collapse" onclick="toggleApp(${i})">
+        <div class="app-head" style="margin:0;">
+          ${ap.img?`<img class="app-ico-img" src="${esc(ap.img)}" alt="${esc(ap.name)}">`:`<span class="app-ico">${ap.icon}</span>`}
+          <div style="flex:1;"><div class="app-name">${esc(ap.name)} <small>${esc(ap.kor||'')}</small></div>
+          <div class="app-cat">${esc(ap.cat)}</div></div>
+          <span class="app-chevron" id="app-ch-${i}">▾</span>
+        </div>
+      </div>
+      <div class="app-detail" id="app-d-${i}" style="display:none;">
+        <p class="app-body">${esc(ap.body||'')}</p>
+        ${(ap.tips&&ap.tips.length)?`<div class="app-tips">${ap.tips.map(tp=>`<div>✓ ${esc(tp)}</div>`).join('')}</div>`:''}
+        ${ap.play||ap.apple?`<div class="app-store-row">${ap.play?`<a class="app-store-btn gplay" href="${esc(ap.play)}" target="_blank" rel="noopener">▶ Google Play</a>`:''}${ap.apple?`<a class="app-store-btn appst" href="${esc(ap.apple)}" target="_blank" rel="noopener"> App Store</a>`:''}</div>`:''}
+      </div>
     </div>`).join('');
   document.getElementById('screen').innerHTML = `
     <div class="kl-detail-view">
@@ -4067,6 +4074,15 @@ function renderApps(){
       <div class="kl-body" style="margin-top:8px;">${items}</div>
     </div>`;
   window.scrollTo(0,0);
+}
+function toggleApp(i){
+  const d=document.getElementById('app-d-'+i);
+  const ch=document.getElementById('app-ch-'+i);
+  if(!d) return;
+  const open = d.style.display==='block';
+  d.style.display = open?'none':'block';
+  if(ch) ch.textContent = open?'▾':'▴';
+  ch.style.transform='';
 }
 function renderLiveHome(){
   const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
@@ -4130,7 +4146,7 @@ function renderUnivs(){
     </div>`;
   window.scrollTo(0,0);
 }
-window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderApps=renderApps; window.renderLiveHome=renderLiveHome;
+window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderApps=renderApps; window.renderLiveHome=renderLiveHome; window.toggleApp=toggleApp;
 let _klStack = [];
 function _klBackTarget(fn){ _klStack.push(fn); }
 function openKoreaCat(cid){

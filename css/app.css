@@ -1353,6 +1353,8 @@ table.kl-compare { border-collapse:collapse; width:100%; min-width:640px; backgr
 [data-theme="dark"] .univ-note { color:var(--ios-label); }
 /* app cards */
 .app-card { padding:15px; }
+.app-collapse { cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.app-chevron { font-size:14px; color:var(--ios-secondary-label); flex-shrink:0; padding:2px 2px 0 6px; }
 .app-ico-img { width:44px; height:44px; border-radius:10px; object-fit:contain; flex-shrink:0; }
 .app-store-row { display:flex; gap:8px; margin-top:10px; }
 .app-store-btn { display:inline-flex; align-items:center; font-size:12px; font-weight:800; color:#fff;
