@@ -60,7 +60,8 @@ const LS = {
   studyTime:'camnemi_topik_study_time', // { 'YYYY-MM-DD': { reading:min, listening:min, vocab:min, mock:min } }
   ltResult: 'camnemi_topik_lt_result',  // { lvl, at, bands:[{band,pct}], weak:band }
   bookmarks:'camnemi_topik_bookmarks',  // [ {qid, at} ] — saved questions for review
-  aibank:   'camnemi_topik_aibank'       // [ question ] — accumulated AI-written questions
+  aibank:   'camnemi_topik_aibank',       // [ question ] — accumulated AI-written questions
+  heroScene:'camnemi_topik_hero_scene'    // int — home hero carousel scene the user last viewed
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -1046,16 +1047,25 @@ function viewHome() {
     { k:'c_rank', v:'assets/home_bg/tabs_concert/aran_rank_fight.mp4', pos:'center 33%' },
     { k:'c_my',   v:'assets/home_bg/tabs_concert/aran_settings_music.mp4', pos:'center 33%' },
   ];
+  // Start the hero carousel on the scene the user last viewed (persisted in LS).
+  let initIdx = 0;
+  try { const saved = parseInt(localStorage.getItem(LS.heroScene), 10); if (saved >= 0 && saved < _scenes.length) initIdx = saved; } catch (e) {}
+  __homeSceneIdx = initIdx;
   const scene = `
     <div class="seoul-scene scene-${scenePartOfDay()}" id="seoul-scene" data-hero-scenes="1">
-      ${_scenes.map((s, i) => `
-        <video class="scene-landmark ${i===0?'is-active':''}" data-scene-video="${s.k}" autoplay muted loop playsinline preload="metadata"
+      ${_scenes.map((s, i) => {
+        const act = (i === initIdx);
+        // Only the ACTIVE hero video autoplays+preloads; the rest are lazy (no
+        // autoplay, preload none) so they only fetch when the user swipes to them.
+        // The two home tiles (AI TOPIK/Textbook) stay preload=auto for first paint.
+        return `<video class="scene-landmark ${act?'is-active':''}" data-scene-video="${s.k}" ${act?'autoplay':' '} muted loop playsinline ${act?'preload="auto"':'preload="none"'}
           style="object-position:${s.pos}" aria-hidden="true">
-          <source src="${s.v}" type="video/mp4"></video>`).join('')}
+          <source src="${s.v}" type="video/mp4"></video>`;
+      }).join('')}
       <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <button class="scene-carousel-nav prev" id="scene-caro-prev" onclick="homeCarousel(-1)" aria-label="prev">‹</button>
       <button class="scene-carousel-nav next" id="scene-caro-next" onclick="homeCarousel(1)" aria-label="next">›</button>
-      <div class="scene-dots" id="scene-dots">${_scenes.map((_, i) => `<span class="scene-dot ${i===0?'on':''}" data-dot="${i}"></span>`).join('')}</div>
+      <div class="scene-dots" id="scene-dots">${_scenes.map((_, i) => `<span class="scene-dot ${i===initIdx?'on':''}" data-dot="${i}"></span>`).join('')}</div>
       <div class="scene-top">
         <div class="scene-txt">
           <h1 class="greet-h">${t('home_greet', { name: esc(nm) })}</h1>
@@ -1111,7 +1121,7 @@ function viewHome() {
   const featureTilesHTML = `
     <div class="home-tiles">
       <button class="home-tile ai-redo-tile" onclick="go('daily')">
-        <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <video class="ht-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
           <source src="assets/home_bg/no_idol_ai_topik_silent.mp4" type="video/mp4"></video>
         <span class="ht-cap">
           <span class="ht-ico">${ic('spark',30)}</span>
@@ -1121,7 +1131,7 @@ function viewHome() {
         </span>
       </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
-        <video class="ht-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <video class="ht-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
           <source src="assets/home_bg/no_idol_textbook_silent.mp4" type="video/mp4"></video>
         <span class="ht-cap">
           <span class="ht-ico">📖</span>
@@ -1312,10 +1322,12 @@ function homeCarousel(dir) {
   const vids = Array.from(scene.querySelectorAll('video.scene-landmark'));
   if (vids.length < 2) return;
   __homeSceneIdx = (__homeSceneIdx + dir + vids.length) % vids.length;
+  // remember which hero scene the user is on so the next visit resumes there
+  try { localStorage.setItem(LS.heroScene, String(__homeSceneIdx)); } catch (e) {}
   vids.forEach((v, i) => {
     v.classList.toggle('is-active', i === __homeSceneIdx);
-    if (i === __homeSceneIdx) { v.currentTime = 0; v.play().catch(() => {}); }
-    else { v.pause(); v.currentTime = 0; }
+    if (i === __homeSceneIdx) { v.preload = 'auto'; v.load(); v.play().catch(() => {}); }  // lazy hero: load on demand
+    else { v.preload = 'none'; v.pause(); }
   });
   scene.querySelectorAll('.scene-dot').forEach((d, i) => d.classList.toggle('on', i === __homeSceneIdx));
 }
