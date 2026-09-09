@@ -718,15 +718,9 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 }
 
 
-/* ---------- Main headline + My Status + My Level (one card under hero) ---------- */
-.hm-level-block {
-  margin-top: 14px; border-radius: 22px; overflow: hidden;
-  background: linear-gradient(180deg, rgba(139,92,246,.10), rgba(249,168,212,.08));
-  border: 1px solid rgba(139,92,246,.16);
-  padding: 16px 14px 6px;
-}
-.hm-main-msg { text-align:center; margin-bottom: 10px; }
-.hmm-title { font-size: 17px; font-weight: 900; letter-spacing: -.2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* ---------- Hero message text (standalone under hero) ---------- */
+.hm-main-msg { text-align:center; padding: 16px 16px 2px; }
+.hmm-title { font-size: 18px; font-weight: 900; letter-spacing: -.2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hmm-a { color: var(--ios-label); }
 .hmm-sep { color: var(--ios-secondary-label); }
 .hmm-b {
@@ -735,10 +729,19 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   -webkit-text-fill-color: transparent; color: transparent;
 }
 .hmm-sub { font-size: 11px; color: var(--ios-secondary-label); font-weight: 700; margin-top: 2px; }
-/* inner sections are flat inside the one card — no nested card containers */
+/* ---------- My Study Record (card under the hero message) ---------- */
+.hm-record-block {
+  margin-top: 10px; border-radius: 22px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(139,92,246,.10), rgba(249,168,212,.08));
+  border: 1px solid rgba(139,92,246,.16);
+  padding: 12px 14px 6px;
+}
+.hm-record-block .sec-h { margin: 0 0 6px; }
+.hm-record-block .sec-h h2 { font-size: 16px; }
+/* inner sections are flat inside the card — no nested card containers */
 .hm-status { margin: 0 -2px; }
-.hm-level-block .home-mylevel-fold,
-.hm-level-block .lt-home-card { margin-top: 0; border:none; background:transparent; border-radius:0; }
+.hm-record-block .home-mylevel-fold,
+.hm-record-block .lt-home-card { margin-top: 4px; border:none; background:transparent; border-radius:0; }
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
 .greet-h { font-size: 19px; font-weight: 800; color: #FFFFFF; line-height: 1.25; text-shadow: 0 1px 8px rgba(15,10,40,.55); }
