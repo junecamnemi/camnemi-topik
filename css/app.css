@@ -683,7 +683,7 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile {
   position: relative; overflow: hidden; flex: 1; width: 0; min-height: 200px; border-radius: 20px;
   display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer;
-  border: 1.5px solid rgba(255,255,255,.55); box-shadow: 0 8px 22px rgba(60,40,120,.14);
+  border: 1px solid rgba(255,255,255,.4); box-shadow: 0 8px 22px rgba(60,40,120,.12);
   padding: 0;
   font-family: var(--ios-font, system-ui); color: #fff;
   -webkit-tap-highlight-color: transparent;
@@ -2082,3 +2082,16 @@ body.has-back .app-header .brand { margin-left: 0; }
 /* typing dots (bot composing) */
 .bubble-typing .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; animation: chatBlink 1.2s infinite; margin-right: 3px; }
 @keyframes chatBlink { 0%,60%,100%{opacity:.25} 30%{opacity:1} }
+
+/* ---------- Home Korea Life quick row ---------- */
+.home-korea-row { display: flex; gap: 10px; overflow-x: auto; margin-top: 4px; padding: 2px 1px 6px; scrollbar-width: none; }
+.home-korea-row::-webkit-scrollbar { display: none; }
+.home-korea-card {
+  flex: 0 0 auto; min-width: 128px; border: none; cursor: pointer; text-align: left;
+  padding: 14px 12px; border-radius: 18px; color: #fff;
+  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  font-family: var(--ios-font); box-shadow: 0 8px 20px rgba(60,40,120,.18);
+  -webkit-tap-highlight-color: transparent;
+}
+.home-korea-card .hk-ico { font-size: 24px; line-height: 1; margin-bottom: 18px; }
+.home-korea-card .hk-t { font-size: 13px; font-weight: 900; letter-spacing: -.2px; }

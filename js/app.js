@@ -1059,11 +1059,6 @@ function viewHome() {
       <div class="hmm-title"><span class="hmm-a">Studying Korean with your Idol</span></div>
       <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
     </div>
-    <button class="chat-launch" onclick="go('chat')">
-      <span class="chat-launch-ico">${ic('chat', 18) || '💬'}</span>
-      <span class="chat-launch-t"><b>${LANG==='ko'?'캐릭터와 채팅':'Chat with your character'}</b><small>${LANG==='ko'?'궁금한 걸 물어보세요':'Ask me anything'}</small></span>
-      <span class="chat-launch-arr">→</span>
-    </button>
     <div class="sec-h hm-record-h"><h2>${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
     <div class="hm-record-block">
       <div class="hm-status">${statusCardHTML(true)}</div>
@@ -1074,8 +1069,23 @@ function viewHome() {
     </div>
     <div class="sec-h" style="margin-top:20px;"><h2>${LANG==='ko'?'한국어 공부':'Study Korean Language'}</h2></div>
     ${featureTilesHTML}
+    <div class="sec-h" style="margin-top:24px;"><h2>🇰🇷 Korea Life</h2><span class="sub" style="cursor:pointer;" onclick="go('rank')">${LANG==='ko'?'전체 보기':'View all'} →</span></div>
+    <div class="home-korea-row">${homeKoreaLifeHTML()}</div>
     </div>
   `;
+}
+function homeKoreaLifeHTML() {
+  const cards = [
+    { id:'why', icon:'🇰🇷', title:(LANG==='ko'?'왜 한국?':'Why Korea?'), grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
+    { id:'univs', icon:'🎓', title:(LANG==='ko'?'추천 대학':'Universities'), grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
+    { id:'apps', icon:'📱', title:(LANG==='ko'?'추천 앱':'Apps'), grad:'linear-gradient(135deg,#F472B6,#FBBF24)' },
+    { id:'live', icon:'🏠', title:(LANG==='ko'?'한국 생활':'How to live'), grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
+  ];
+  return cards.map(c => `
+    <button class="home-korea-card" onclick="openKoreaSection('${c.id}')" style="--kg:${c.grad}">
+      <div class="hk-ico">${c.icon}</div>
+      <div class="hk-t">${esc(c.title)}</div>
+    </button>`).join('');
 }
 function setLevel(lv) {
   APP.level = lv;
