@@ -1078,7 +1078,7 @@ function viewHome() {
 }
 function homeKoreaLifeHTML() {
   const cards = [
-    { id:'why',   title:(LANG==='ko'?'왜 한국?':'Why Korea?'),   v:'assets/korea_bg/why_l.mp4'   },
+    { id:'why',   title:(LANG==='ko'?'한국에서 공부하는 이유':'Why Study in Korea'),   v:'assets/korea_bg/why_l.mp4'   },
     { id:'univs', title:(LANG==='ko'?'추천 대학':'Universities'), v:'assets/korea_bg/univs_l.mp4' },
     { id:'apps',  title:(LANG==='ko'?'추천 앱':'Apps'),          v:'assets/korea_bg/apps_l.mp4'  },
     { id:'live',  title:(LANG==='ko'?'한국 생활':'How to live'), v:'assets/korea_bg/live_l.mp4'  }
@@ -1688,6 +1688,7 @@ function viewDaily() {
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
+      ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:15px;line-height:1.5;margin:6px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
         ? `<textarea class="q-write" id="write-ans" placeholder="${LANG==='ko'?'여기에 답을 쓰세요…':'Write your answer here…'}">${picked && picked.w ? esc(picked.w) : ''}</textarea>
@@ -2079,6 +2080,7 @@ function viewSectionCard() {
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
+      ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:15px;line-height:1.5;margin:6px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
         ? `<textarea class="q-write" id="write-ans" placeholder="${LANG==='ko'?'여기에 답을 쓰세요…':'Write your answer here…'}">${picked && picked.w ? esc(picked.w) : ''}</textarea>
@@ -3140,6 +3142,7 @@ function viewChallenge() {
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       <div class="q-kr">${q.q}</div>
+      ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:15px;line-height:1.5;margin:6px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.options.map((o, i) => `
         <button class="q-opt ${picked === i ? 'correct' : ''}" onclick="pickChallenge(${i})">
@@ -3561,6 +3564,7 @@ function viewMockRun() {
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
+      ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:15px;line-height:1.5;margin:6px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
       ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
       ${q.section === 'writing'
         ? `<textarea class="q-write" id="mock-write">${picked && picked.w ? esc(picked.w) : ''}</textarea><button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="submitMockWriting()">${t('save')}</button>
@@ -4054,6 +4058,7 @@ function reviewCard(q, opts) {
     </div>` : '');
   return `<div class="app-card wrong-item">${head}${passage}
     <div class="q-kr" style="font-size:14px;margin:8px 0;">${q.q}</div>
+    ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:14.5px;line-height:1.5;margin:4px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
     ${q.qGl ? `<div class="q-gloss">📝 ${esc(q.qGl)}</div>` : ''}
     ${optsHtml}${explain}</div>`;
 }
