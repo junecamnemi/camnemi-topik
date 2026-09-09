@@ -2985,8 +2985,8 @@ function showStatusInfo(key) {
     today:  ['📘', ko?'오늘 푼 문제':'Today solved', ko?'오늘 푼 문제 수예요.':'Questions you solved today.'],
     study:  ['⏱️', ko?'오늘 공부 시간':'Study today', ko?'오늘 공부한 총 시간이에요. 문제를 푸는 시간도 포함돼요.':'Total study time today, including time solving questions.'],
     streak: ['🔥', ko?'연속 학습':'Study streak', ko?'날마다 문제를 푼 연속 일수예요. 하루라도 빠지면 0부터 다시 시작돼요.':'Days in a row you have studied. Miss a day and it restarts from 0.'],
-    acc:    ['🎯', ko?'정답률':'Accuracy', ko?'전체 문제 중 맞힌 비율이에요. 70% 이상이면 다음 아이돌 보상을 해금해요.':'Share of questions you answered correctly. Reach 70%+ to unlock the next idol reward.'],
-    solved: ['🧭', ko?'누적 푼 문제':'Total solved', ko?'지금까지 푼 문제의 총 개수예요. 100문제마다 한 레벨씩 올라갑니다.':'Total questions you have solved. Every 100 questions you go up one level.']
+    acc:    ['🎯', ko?'정답률':'Accuracy', ko?'전체 문제 중 맞힌 비율이에요.':'Share of questions you answered correctly.'],
+    solved: ['🧭', ko?'누적 푼 문제':'Total solved', ko?'지금까지 푼 문제의 총 개수예요.':'Total questions you have solved so far.']
   }[key] || ['❔','',''];
   try {
     let box = document.getElementById('status-modal');
