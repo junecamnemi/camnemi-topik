@@ -739,12 +739,9 @@ function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
 function go(tab, noPush) {
-  // Bottom-tab navigation always escapes the AI Redo / level-test overlay.
-  // AI Redo is a short in-line solver; leaving via a main tab dismisses it
-  // (its result is not graded until you finish, so nothing is lost).
+  // Bottom-tab navigation always escapes the level-test overlay.
   const MAIN_TABS = { home:1, book:1, daily:1, rank:1, my:1 };
   if (MAIN_TABS[tab]) {
-    if (APP.aiRedo) { recordAIRedoTime(); APP.aiRedo = null; APP.aiRedoLoading = false; }
     if (APP.lt) { APP.lt = null; }
   }
   if (tab !== APP.tab) {
@@ -932,8 +929,6 @@ function render() {
   }
   // Level test takes over the whole screen while active
   if (APP.lt) { s.innerHTML = viewLevelTest(); renderSchedBanner(); updateBackBtn(); stopFxCycle(); return; }
-  // AI Redo solver takes over the active screen while a set is being solved
-  if (APP.aiRedo) { s.innerHTML = (viewAIRedo() || ''); return; }
   // Leaving the book reader → record book study time (if a unit was open)
   if (APP.tab !== 'book' && typeof recordBookStudy === 'function') { try { recordBookStudy(); } catch (e) {} }
   switch (APP.tab) {
@@ -1102,13 +1097,6 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  const aiRedoHome = `
-    <button class="aq-redo aq-gborder" onclick="aiRedoGo()">
-      <span class="aq-redo-ico">${ic('spark',18)}</span>
-      <span class="aq-txt"><b>${t('home_ai_redo')}</b><span class="aq-sub">${t('home_ai_redo_sub')}</span></span>
-      <span class="aq-redo-badge">×5</span>
-      <span class="aq-arr">→</span>
-    </button>`;
   // Core feature tiles: AI TOPIK + Textbook, tall stacked banners with video backgrounds
   const featureTilesHTML = `
     <div class="home-tiles">
@@ -1529,7 +1517,7 @@ function weekCalendarHTML(weekOffset) {
   const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const allTime = lsGet(LS.studyTime, {});
   // sum minutes for a given date string
-  const dayMin = (ds) => { const m = allTime[ds] || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0); };
+  const dayMin = (ds) => { const m = allTime[ds] || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.book||0)+(m.book||0); };
   const cells = days.map((d, i) => {
     const dt = new Date(sun); dt.setDate(sun.getDate() + i);
     const ds = dateKey(dt);
@@ -1570,11 +1558,10 @@ function dayStudyDetailHTML(dateStr) {
   const m = all[dateStr] || {};
   const dt = new Date(dateStr + 'T00:00:00');
   const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
-  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0);
+  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.book||0)+(m.book||0);
   const row = (k, lab, col) => { const v = m[k]||0; return v ? `<div class="wc-daystat"><span style="color:${col};">${lab}</span><b>${v}m</b></div>` : ''; };
   return total ? `
     <div class="wc-stat"><b>${total}m</b> ${label}</div>
-    ${row('aiRedo', 'AI Redo', 'var(--ios-purple)')}
     ${row('reading', t('nav_reading'), 'var(--ios-blue)')}
     ${row('listening', t('nav_listening'), 'var(--ios-teal)')}
     ${row('vocab', t('home_task_vocab'), 'var(--ios-orange)')}
@@ -1597,11 +1584,10 @@ function showDayStudy(dateStr, el) {
   const m = all[dateStr] || {};
   const dt = new Date(dateStr + 'T00:00:00');
   const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
-  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0);
+  const total = (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.book||0)+(m.book||0);
   const row = (k, lab, col) => { const v = m[k]||0; return v ? `<div class="wc-daystat"><span style="color:${col};">${lab}</span><b>${v}m</b></div>` : ''; };
   det.innerHTML = total ? `
     <div class="wc-stat"><b>${total}m</b> ${label}</div>
-    ${row('aiRedo', (LANG==='ko'?'AI Redo':'AI Redo'), 'var(--ios-purple)')}
     ${row('reading', t('nav_reading'), 'var(--ios-blue)')}
     ${row('listening', t('nav_listening'), 'var(--ios-teal)')}
     ${row('vocab', t('home_task_vocab'), 'var(--ios-orange)')}
@@ -1906,13 +1892,6 @@ function viewDailySetup() {
       ${ic(s.ico,20)}<b>${s.label}</b>
     </button>`).join('');
   return `${tabHeroHTML('daily', overlay)}
-    <div class="sec-h" style="margin-top:18px;"><h2 style="color:var(--ios-purple);">✨ ${LANG==='ko'?'AI 복습 · 유사문제':LANG==='km'?'':'AI Redo'}</h2></div>
-    <button class="aq-redo aq-gborder aq-redo-compact" onclick="aiRedoGo()">
-      <span class="aq-redo-ico">${ic('spark',18)}</span>
-      <span class="aq-txt"><b>${t('home_ai_redo')}</b><span class="aq-sub">${t('home_ai_redo_sub')}</span></span>
-      <span class="aq-redo-badge">×5</span>
-      <span class="aq-arr">→</span>
-    </button>
     <div class="lv-auto-row" style="display:flex;align-items:center;gap:10px;margin:10px 0 2px;padding:10px 12px;background:var(--ios-fill,#f2f4f9);border-radius:14px;">
       <div style="font-size:26px;font-weight:900;color:var(--ios-purple);line-height:1;">T${myLevel()}</div>
       <div style="flex:1;min-width:0;">
@@ -1983,91 +1962,6 @@ function stopDaily() {
   APP.dailyStarted = false;
   APP.daily = []; APP.dailyIdx = 0; APP.dailyAnswers = {}; APP.dailyDone = false; APP.dailyResult = null;
   render();
-}
-/* ---------- AI question generation (streaming: 1st question fast, rest in background) ---------- */
-async function generateAI(optType) {
-  // find the triggering button safely (no reliance on global `event`)
-  const btn = document.querySelector('[onclick^="generateAI"]') || null;
-  const status = $id('ai-status');
-  const SECTIONS = ['reading', 'listening', 'writing'];
-  const sec = SECTIONS.includes(optType) ? optType : null;   // section practice call
-  const setBtn = (txt, dis) => { if (btn) { btn.disabled = dis; if (txt !== undefined) btn.textContent = txt; } };
-  try {
-    if (sec) {
-      // ---- section practice: fetch 1 question now, start the quiz, generate the other 9 while you solve ----
-      setBtn('✨ ' + (LANG === 'ko' ? '첫 문제 생성 중…' : 'Making Q1…'), true);
-      if (status) status.textContent = LANG === 'ko' ? '✨ AI가 첫 문제를 만들고 있습니다…' : '✨ AI is writing your first question…';
-      const body1 = { level: APP.level, count: 1, section: sec };
-      const res1 = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body1) });
-      const d1 = await res1.json();
-      if (!res1.ok || !d1.questions || !d1.questions.length) throw new Error(d1.error || 'AI server error');
-      const q1 = d1.questions[0];
-      APP.section = sec;
-      APP.sectionQs = [q1];
-      APP.sectionIdx = 0;
-      APP.sectionAnswers = {};
-      APP.sectionDone = false;
-      APP.sectionAI = true;
-      APP.sectionLoading = true;   // more questions are on the way
-      const all = lsGet(LS.section, {});
-      all[sec] = { qids: [q1.id], done: {}, ai: true, loading: true };
-      lsSet(LS.section, all);
-      if (status) status.textContent = '';
-      setBtn('✨ ' + (LANG === 'ko' ? '나머지 생성 중…' : 'Making more…'), true);
-      go(sec);   // switch to the section tab so the quiz card renders
-      // ---- background: fetch the remaining 9 ----
-      try {
-        const bodyN = { level: APP.level, count: 9, section: sec };
-        const resN = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bodyN) });
-        const dN = await resN.json();
-        if (!resN.ok || !dN.questions || !dN.questions.length) throw new Error(dN.error || 'AI server error');
-        // append only if the user is still on this section quiz
-        if (APP.section === sec && !APP.sectionDone) {
-          const existing = new Set(APP.sectionQs.map(q => q.id));
-          const fresh = dN.questions.filter(q => !existing.has(q.id));
-          APP.sectionQs = APP.sectionQs.concat(fresh).slice(0, 10);
-          APP.sectionLoading = false;
-          const all2 = lsGet(LS.section, {});
-          if (all2[sec]) { all2[sec].qids = APP.sectionQs.map(q => q.id); all2[sec].loading = false; }
-          lsSet(LS.section, all2);
-          toast(LANG === 'ko' ? `✨ 나머지 ${fresh.length}문제가 준비됐어요!` : `✨ ${fresh.length} more questions ready!`);
-          render();
-        }
-      } catch (e2) {
-        APP.sectionLoading = false;
-        toast(LANG === 'ko' ? '⚠ 나머지 문제 생성 실패 — 1문제로 계속하세요.' : '⚠ Could not make the rest — keep going with Q1.');
-      }
-      setBtn(undefined, false);
-      return;
-    }
-    // ---- daily / smart-rec: fetch all 10 at once (no quiz in progress yet) ----
-    setBtn('✨ Generating… (AI)', true);
-    if (status) status.textContent = '✨ AI가 문제를 만들고 있습니다…';
-    const body = { level: APP.level, count: 10, section: 'all' };
-    if (optType) body.type = optType;   // smart rec: generate the weak type
-    const res = await fetch(aiUrl('/generate'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (!res.ok || !data.questions) throw new Error(data.error || 'AI server error');
-    const qs = data.questions;
-    if (!qs.length) throw new Error('AI returned no questions');
-    // store as today's AI set (full question objects so it survives reload)
-    const today = todayStr();
-    const all = lsGet(LS.daily, {});
-    all[today] = { questions: qs, done: {}, ai: true, aiType: optType || '' };
-    lsSet(LS.daily, all);
-    APP.daily = qs;
-    APP.dailyIdx = 0;
-    APP.dailyAnswers = {};
-    APP.aiMode = true;
-    APP.dailyDone = false;   // fresh set → back to questions
-    render();
-    if (status) status.textContent = '';
-    setBtn(undefined, false);
-  } catch (e) {
-    if (status) status.textContent = '⚠ ' + e.message;
-    toast('AI generation failed: ' + e.message);
-    if (btn) { btn.disabled = false; btn.textContent = '✨ Generate with AI'; }
-  }
 }
 function pickDaily(i) {
   const q = APP.daily[APP.dailyIdx];
@@ -2253,7 +2147,6 @@ function viewSection(sec) {
         <div class="stat-box"><b>${lvCounts[selLv-1] || 10}</b><span>${t('sec_qs')}</span></div>
       </div>
       <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · T${selLv}</button>
-      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:8px;color:${col};" onclick="generateAI('${sec}')">${ic('spark',15)} ${t('gen_ai')}</button>
     </div>
     ${wrong ? `<div class="app-card" onclick="go('wrong')" style="cursor:pointer;">
       <div class="row"><div>${ic('notes',20)} <b>${t('wrong_title')} (${wrong})</b></div><span style="color:var(--ios-green);">→</span></div>
@@ -2399,14 +2292,14 @@ function navSection(d) {
 /* Record study minutes for a type (reading/listening/vocab/mock) on today's date. */
 function addStudyTime(type, mins) {
   try {
-    if (!mins || !['reading', 'listening', 'vocab', 'mock', 'aiRedo', 'book'].includes(type)) return;
+    if (!mins || !['reading', 'listening', 'vocab', 'mock', 'book'].includes(type)) return;
     // Textbook minutes only count toward the level for logged-in users (guests
     // can study, but don't accumulate book-level progress).
     if (type === 'book' && typeof isAuthed === 'function' && !isAuthed()) return;
     const before = (type === 'book') ? totalBookMin() : 0;
     const today = new Date().toISOString().slice(0, 10);
     const all = lsGet(LS.studyTime, {});
-    all[today] = all[today] || { reading: 0, listening: 0, vocab: 0, mock: 0, aiRedo: 0, book: 0 };
+    all[today] = all[today] || { reading: 0, listening: 0, vocab: 0, mock: 0, book: 0 };
     all[today][type] = (all[today][type] || 0) + mins;
     lsSet(LS.studyTime, all);
     // Textbook reward level: every 60 book-minutes = +1 level. Detect crossing.
@@ -2532,7 +2425,6 @@ function viewMy() {
       ${umRow('schedule', t('menu_schedule'), `go('schedule')`)}
     </div>
     <div class="app-card" style="padding:6px 14px;">
-      ${umRow('spark', LANG==='ko'?'✨ 유사문제 AI 다시 풀기 (5개)':LANG==='km'?'':'✨ AI Redo — similar problems (5)', `aiRedoFromMy()`)}
     </div>
     <div class="app-card" style="padding:6px 14px;">
       ${umRow('target', t('xp_level') + ' ' + jn.lv + ' (' + t('xp_to_next', { n: jn.maxed ? 0 : jn.lv + 1, l: jn.lv + 1 }) + ')', `go('progress')`)}
@@ -2708,10 +2600,12 @@ function viewDailyResult() {
   `;
 }
 function continueAfterFinish() {
+  // New set: rebuild from the static question bank (no AI generation)
   APP.dailyDone = false;
   APP.dailyIdx = 0;
+  APP.daily = []; APP.dailyAnswers = {}; APP.dailyResult = null;
+  buildDaily();
   render();
-  generateAI();
 }
 
 /* ---------- shared result recording ---------- */
@@ -2824,7 +2718,6 @@ function smartRecCard(acc) {
       <div><b style="font-size:14px;color:var(--ios-label);">${t('smart_weak', { t: label })}</b>
       <div class="sub" style="font-size:12.5px;margin-top:3px;">${t('smart_weak_pct', { p: weak.p, c: weak.c, n: weak.n })}</div></div>
     </div>
-    <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="generateAI('${escAttr(weak.k)}')">${ic('spark',15)} ${t('smart_btn', { t: label })}</button>
     <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;color:var(--ios-orange);border:1.5px solid var(--ios-orange);border-radius:10px;" onclick="startChallenge('${escAttr(weak.k)}')">${t('chal_start')}</button>
   </div>`;
 }
@@ -2859,7 +2752,7 @@ function accuracyStats() {
 }
 
 /* ---------- Idol journey (아이돌 성장 여정) ---------- */
-/* 총 누적 공부 시간(분) — reading/listening/vocab/mock/aiRedo/book 전부.
+/* 총 누적 공부 시간(분) — reading/listening/vocab/mock/book 전부.
    (문제 푸는 시간도 reading/listening/vocab/mock으로 studyTime에 이미 기록됨) */
 function totalStudyMinutes() {
   const all = lsGet(LS.studyTime, {});
@@ -2949,7 +2842,7 @@ function statusCardHTML(bare) {
     const today = todayStr ? todayStr() : new Date().toISOString().slice(0, 10);
     const ds = dayStats ? dayStats(today) : null;
     const allTime = lsGet(LS.studyTime, {});
-    const dayMin = (rec) => { const m = rec || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.aiRedo||0)+(m.book||0); };
+    const dayMin = (rec) => { const m = rec || {}; return (m.reading||0)+(m.listening||0)+(m.vocab||0)+(m.mock||0)+(m.book||0)+(m.book||0); };
     const todayMin = dayMin(allTime[today]);
     const streak = lsGet(LS.streak, { count: 0 });
     const acc = (typeof accuracyStats === 'function' ? accuracyStats().overall : 0);
@@ -4268,13 +4161,6 @@ function viewWrong() {
   const bmRows = groupedReviewItems(bookmarks.map(w=>w.qid), {});
   const srcCount = (lsGet(LS.wrong,[]).length) + (lsGet(LS.bookmarks,[]).length);
   return `
-    <div class="ai-cta">
-      <div class="ai-cta-txt">
-        <b>${ic('spark',16)} ${L('오답 & 북마크로 유사문제 다시 풀기','AI Redo — similar problems from your wrong & bookmarked','')}</b>
-        <p class="sub">${L('틀렸거나 북마크한 문제를 바탕으로 AI가 비슷한 문제 5개를 만들어요.','AI writes 5 fresh questions just like the ones you missed or saved.',km?'':'')}</p>
-      </div>
-      <button class="btn btn-primary" style="flex-shrink:0;" onclick="startAIRedo()" ${srcCount? '':'disabled'}>✨ ${L('5문제 다시 풀기','Redo 5','')}</button>
-    </div>
     <div class="sec-h"><h2>📊 ${t('wrong_title')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
     <div class="app-card">
       <b style="font-size:13px;color:var(--ios-blue);">${t('wrong_by_type')}</b>
@@ -4343,160 +4229,6 @@ function groupedReviewItems(qids, opts) {
   return { types: order, html: typeHtml.join('') };
 }
 
-/* ---------- AI Redo: similar problems from wrong + bookmarked ---------- */
-/* Full-screen loading overlay (animated gradient) shown while AI writes the set. */
-function showAIRedoLoading() {
-  const ko = LANG==='ko', km = LANG==='km';
-  const txt = km ? 'កំពុងបង្កើតសំណួរស្រដៀង…' : (ko ? 'AI가 비슷한 문제를 생성하고 있어요…' : 'Generating similar problems…');
-  const sub = km ? '' : (ko ? '틀린·북마크 문제를 분석하는 중이에요' : 'Analyzing your wrong & saved questions');
-  let ov = $id('ai-redo-ov');
-  if (!ov) { ov = document.createElement('div'); ov.id='ai-redo-ov'; document.body.appendChild(ov); }
-  ov.innerHTML = `<div class="ar-ov-bg"></div>
-    <div class="ar-ov-card">
-      <div class="ar-ov-inner">
-        <div class="ar-ov-media"><video class="ar-ov-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-          <source src="assets/home_bg/tabs/aran_book_sing.mp4" type="video/mp4"></video>
-          <div class="ar-ov-media-shade"></div>
-          <div class="ar-ov-spark">${ic('spark',30)}</div>
-        </div>
-        <div class="ar-ov-txt">
-          <div class="ar-ov-t">${txt}</div>
-          <div class="ar-ov-s">${sub}</div>
-          <div class="ar-ov-dots"><span></span><span></span><span></span></div>
-        </div>
-      </div>
-    </div>`;
-  ov.style.display='flex';
-}
-function hideAIRedoLoading() { const ov = $id('ai-redo-ov'); if (ov) ov.style.display='none'; }
-/* Entry used by home + daily cards → show a short (~2s) loading moment, then pull
-   similar problems straight from the local question bank (no network needed). */
-function aiRedoGo() {
-  const wrong = lsGet(LS.wrong, []); const bms = lsGet(LS.bookmarks, []);
-  const ids = []; [...bms, ...wrong].forEach(w => { if (!ids.includes(w.qid)) ids.push(w.qid); });
-  const src = ids.map(qById).filter(Boolean).slice(0, 20);
-  const ko = LANG === 'ko';
-  if (!src.length) { toast(ko?'먼저 틀리거나 북마크한 문제가 있어야 해요.':'Save or miss some questions first.'); return; }
-  // reset any previous redo + show a short loading overlay
-  APP.aiRedo = null;
-  showAIRedoLoading();
-  // pick similar questions from the bank by matching source type + section + level
-  const chosen = pickSimilarFromBank(src, 5);
-  setTimeout(() => {
-    APP.aiRedo = { qs: chosen, idx: 0, answers: {}, rec: {}, done: false, from: APP.tab };
-    _redoStart = Date.now();   // track AI Redo study time
-    hideAIRedoLoading();
-    toast(chosen.length ? (ko ? `✨ 비슷한 문제 ${chosen.length}개를 찾았어요!` : `✨ Found ${chosen.length} similar questions!`) : (ko ? '비슷한 문제가 없어요' : 'No similar questions found'));
-    render();
-  }, 2000);
-}
-/* Pick up to n similar questions, excluding already-solved ones, preferring the
-   accumulated AI bank first then the static bank (same type/section/level). */
-function pickSimilarFromBank(src, n) {
-  const srcTypes = [...new Set(src.map(q => q.type || q.section).filter(Boolean))];
-  const srcSections = [...new Set(src.map(q => q.section).filter(Boolean))];
-  const solved = _bankFreshQids();
-  const skip = new Set(src.map(q => q.id));
-  const cand = [];
-  const seen = new Set(skip);
-  const pushU = arr => arr.forEach(q => { if (cand.length < n*3 && !seen.has(q.id)) { seen.add(q.id); cand.push(q); } });
-  // 1) AI bank: matching section/type (fresh written)
-  pushU(aiBankQuestions().filter(q => (srcSections.includes(q.section) || srcTypes.includes(q.type)) && !solved.has(q.id)));
-  // 2) static bank: matching type AND section
-  pushU(allQuestions().filter(q => srcTypes.includes(q.type) && srcSections.includes(q.section) && !solved.has(q.id)));
-  // 3) static: matching type only
-  pushU(allQuestions().filter(q => srcTypes.includes(q.type) && !solved.has(q.id)));
-  // 4) any unsolved
-  pushU(allQuestions().filter(q => !solved.has(q.id)));
-  // fallback: allow solved only if nothing else (still avoid exact source)
-  if (cand.length < n) pushU(allQuestions().filter(q => !skip.has(q.id)));
-  // shuffle so it feels fresh
-  for (let i = cand.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [cand[i], cand[j]] = [cand[j], cand[i]]; }
-  return cand.slice(0, n);
-}
-/* Full-screen loader with a "skip" option in case generation is slow (safety). */
-function cancelAIRedo() { APP.aiRedoLoading = false; hideAIRedoLoading(); render(); }
-function aiRedoFromMy() { APP.aiRedo = null; go('wrong'); setTimeout(()=> aiRedoGo && aiRedoGo(), 0); }
-/* AI Redo study-time tracking */
-let _redoStart = null;
-function recordAIRedoTime() {
-  try {
-    if (_redoStart) {
-      const mins = Math.max(1, Math.round((Date.now() - _redoStart) / 60000));
-      addStudyTime('aiRedo', mins);
-      _redoStart = null;
-    }
-  } catch (e) { /* non-fatal */ }
-}
-function exitAIRedo() { recordAIRedoTime(); APP.aiRedo = null; render(); }
-
-/* Inline AI-redo solver — rendered over whatever tab is active when APP.aiRedo is set. */
-function viewAIRedo() {
-  const r = APP.aiRedo;
-  const ko = LANG === 'ko', km = LANG === 'km';
-  const L = (a,b,c)=> km?c:(ko?a:b);
-  if (!r) return '';
-  if (r.done) {
-    const total = r.qs.length;
-    const correct = r.qs.filter(q=> r.answers[q.id]===q.correct).length;
-    return `
-      <div class="sec-h"><h2>✨ ${L('AI 유사문제 결과','AI Redo result','')}</h2></div>
-      <div class="app-card big-cta" style="text-align:center;">
-        <div style="font-size:40px;font-weight:800;color:var(--ios-purple);">${correct}/${total}</div>
-        <p class="sub">${L('비슷한 문제를 다시 풀었어요. 맞춘 문제는 오답노트에서 정리됐어요.','You retried similar problems.','')}</p>
-        <button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="exitAIRedo()">${L('목록으로 돌아가기','Back','')}</button>
-        <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:6px;" onclick="aiRedoGo()">✨ ${L('새 유사문제 5개','New 5 similar','')}</button>
-      </div>`;
-  }
-  const q = r.qs[r.idx];
-  if (!q) return '';
-  const picked = r.answers[q.id];
-  const answered = picked !== undefined;
-  const letters = '①②③④⑤';
-  const optsHtml = (q.options||[]).map((o,i)=>{
-    let cls='q-opt';
-    if (answered){ if(i===q.correct) cls+=' correct'; else if(picked===i) cls+=' wrong'; else cls+=' dim'; }
-    return `<button class="${cls}" onclick="aiRedoPick(${i})"><span style="font-weight:700;">${letters[i]}</span> ${esc(o.t)}${o.gl?`<span class="opt-gloss"> · ${esc(o.gl)}</span>`:''}</button>`;
-  }).join('');
-  const passage = q.passage ? `<div class="q-passage">${q.passage}</div>` : '';
-  const gloss = q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : '';
-  const audioBtn = q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this,'${escAttr(q.q)}')">${ic('listen',15)} ${L('듣기','Listen','')}</button>` : '';
-  const lvlTag = q.level ? (q.level<=2 ? 'L'+q.level : 'TOPIK II L'+q.level) : levelOf(q);
-  const hasTip = !!(q.tip || q.tipEn);
-  return `
-    <div class="sec-h"><h2>✨ ${L('AI 유사문제 다시 풀기','AI Similar Redo','')}</h2><span class="sub">${(r.idx+1)} / ${r.qs.length} · <button class="btn btn-ghost btn-sm" style="padding:0 2px;color:var(--ios-red);" onclick="exitAIRedo()">${L('그만','exit','')}</button></span></div>
-    <div class="app-card">
-      <div class="row" style="margin:0 0 6px;"><span class="q-type">${q.section === 'listening' ? '🎧' : '📖'} ${esc(typeLabel(q.type||'reading'))}</span> <span class="q-level" style="padding:1px 7px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);font-size:11px;font-weight:800;">${lvlTag}</span> ${bookmarkBtn(q.id)}</div>
-      ${passage}${gloss}${audioBtn}
-      <div class="q-kr" style="font-size:15px;">${q.q}</div>
-      ${optsHtml}
-      <div class="q-meta" style="margin-top:10px;">${freqBadge(q)}</div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        ${hasTip ? `<button class="btn btn-ghost btn-sm q-tip-toggle" style="flex:1;color:var(--ios-orange);" onclick="toggleTip(this)">${ic('tip',15)} ${t('tip')}</button>` : ''}
-        <button class="btn btn-ghost btn-sm q-ex-toggle" style="flex:1;color:${picked===q.correct?'var(--ios-purple)':'var(--ios-secondary-label)'};background:${picked===q.correct?'transparent':'var(--ios-fill)'};opacity:${picked===q.correct?'1':'.6'};" onclick="${picked===q.correct?'toggleExplain(this)':''}" ${picked===q.correct?'':'disabled'}>💬 ${LANG==='ko'?'해설':'Explanation'}</button>
-      </div>
-      <div class="q-explain" style="display:none;">
-        ${answered ? explainBlock(q) : ''}
-      </div>
-    </div>
-    <div style="display:flex;gap:8px;">
-      <button class="btn btn-ghost" ${r.idx===0?'disabled style="opacity:.4"':''} onclick="APP.aiRedo.idx--;render()">${L('이전','Prev','')}</button>
-      <button class="btn btn-primary" style="flex:1;" ${answered?'':'disabled style="opacity:.4"'} onclick="aiRedoNext()">${r.idx>=r.qs.length-1 ? L('결과 보기','See result','') : L('다음','Next','')}</button>
-    </div>`;
-}
-function aiRedoPick(i) {
-  const r = APP.aiRedo; if (!r) return;
-  const q = r.qs[r.idx]; if (!q) return;
-  r.answers[q.id] = i;
-  if (!r.rec[q.id]) { r.rec[q.id]=true; recordResult(q, i===q.correct); }
-  render();
-}
-function aiRedoNext() {
-  const r = APP.aiRedo; if (!r) return;
-  if (r.idx >= r.qs.length-1) r.done = true; else r.idx++;
-  render();
-}
-
 /* ================= LEARN (weak → vocab/grammar) ================= */
 const LEARN_CONTENT = {
   grammar: [
@@ -4549,7 +4281,6 @@ function viewLearn() {
           </div>`).join('')}
       </div>` : ''}
 
-    ${practiceType ? `<button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="generateAI('${escAttr(practiceType)}')">${ic('spark',15)} ${t('learn_practice')}</button>` : ''}
   `;
 }
 function bindLearn() {}
@@ -4603,7 +4334,7 @@ function viewProgress() {
   if (doneCount < 10) todos.push({ ico: 'daily', label: t('prog_todo_daily', { d: doneCount }), act: "go('daily')", btn: t('prog_btn_daily') });
   // 2. weak type (>=2 attempts, <70%)
   const weak = (acc.byType || []).filter(r => r.n >= 2 && r.p < 70)[0];
-  if (weak) todos.push({ ico: 'target', label: t('prog_todo_weak', { t: typeLabel(weak.k), p: weak.p }), act: `generateAI('${escAttr(weak.k)}')`, btn: t('prog_btn_weak', { t: typeLabel(weak.k) }) });
+  if (weak) todos.push({ ico: 'target', label: t('prog_todo_weak', { t: typeLabel(weak.k), p: weak.p }), act: `startSection('reading', myLevel(), '${weak.k}')`, btn: t('prog_btn_weak', { t: typeLabel(weak.k) }) });
   // 3. wrong answers to review
   if (wrong.length) todos.push({ ico: 'notes', label: t('prog_todo_wrong', { n: wrong.length }), act: "go('wrong')", btn: t('prog_btn_wrong') });
   // 4. next exam / reg deadline (Korea schedule)
@@ -5028,7 +4759,7 @@ function doLogout() {
 /* ---------- boot ---------- */
 // expose for tests / debugging
 window.APP = APP;
-window.generateAI = generateAI;
+
 document.addEventListener('DOMContentLoaded', () => {
   // init header selectors (country first so the D-day strip renders)
   initCountrySel();
