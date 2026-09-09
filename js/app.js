@@ -1729,10 +1729,12 @@ function viewDailySetup() {
     <div class="lv-auto-row" style="display:flex;align-items:center;gap:10px;margin:10px 0 2px;padding:10px 12px;background:var(--ios-fill,#f2f4f9);border-radius:14px;">
       <div style="font-size:26px;font-weight:900;color:var(--ios-purple);line-height:1;">T${myLevel()}</div>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:12px;font-weight:800;">${LANG==='ko'?'풀이 난이도':'Practice level'}</div>
-        <div style="font-size:10.5px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${myLevel()<=2?(LANG==='ko'?'TOPIK I · 초급':'TOPIK I'):(LANG==='ko'?'TOPIK II · 중·고급':'TOPIK II')} · ${LANG==='ko'?'My에서 직접 설정':'set in My'}</div>
+        <div style="font-size:12px;font-weight:800;">${t('menu_level')} · ${LANG==='ko'?'풀이 난이도':'Practice level'}</div>
+        <div style="font-size:10.5px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${myLevel()<=2?(LANG==='ko'?'TOPIK I · 초급':'TOPIK I'):(LANG==='ko'?'TOPIK II · 중·고급':'TOPIK II')} · ${LANG==='ko'?'Reading·Listening·Voca 적용':'Reading·Listening·Voca'}</div>
       </div>
-      <button class="btn btn-ghost btn-sm" style="flex:none;border:1.5px solid var(--ios-purple);color:var(--ios-purple);" onclick="go('my')">${LANG==='ko'?'변경':'Change'}</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 2px;">
+      ${[1,2,3,4,5,6].map(n => `<button class="btn ${n===myLevel()?'btn-primary':'btn-ghost'}" style="padding:8px 0;font-weight:800;${n===myLevel()?'background:var(--ios-purple);border-color:var(--ios-purple);':''}" onclick="setMyLevel(${n})">T${n}</button>`).join('')}
     </div>
     <div class="sec-h" style="margin-top:18px;"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
     <div class="daily-secs">${secBtns}</div>
@@ -2266,17 +2268,6 @@ function viewMy() {
       ${umRow('trophy', t('menu_best', { s: best || '—' }), `go('progress')`)}
     </div>`;
   const settings = `
-    <div class="sec-h"><h2>${t('my_level')} · ${t('menu_level')}</h2></div>
-    <div class="app-card" style="padding:14px;">
-      <div class="row" style="align-items:center;">
-        <div style="font-size:40px;font-weight:900;line-height:1;color:var(--ios-purple);">T${myLevel()}</div>
-        <span class="lv-grade" style="font-size:12px;font-weight:800;color:var(--ios-secondary-label);">${myLevel() <= 2 ? (LANG==='ko'?'TOPIK I · 초급':LANG==='km'?'TOPIK I':'TOPIK I · Beginner') : (LANG==='ko'?'TOPIK II · 중·고급':LANG==='km'?'TOPIK II':'TOPIK II · Int-Adv')}</span>
-        <span class="sub" style="margin-left:auto;text-align:right;font-size:11px;">${LANG==='ko'?'Reading·Listening·Voca에<br>적용돼요':'Applies to<br>Reading·Listening·Voca'}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:12px;">
-        ${[1,2,3,4,5,6].map(n => `<button class="btn ${n===myLevel()?'btn-primary':'btn-ghost'}" style="padding:8px 0;font-weight:800;${n===myLevel()?'background:var(--ios-purple);border-color:var(--ios-purple);':''}" onclick="setMyLevel(${n})">T${n}</button>`).join('')}
-      </div>
-    </div>
     <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
     <div class="app-card" style="padding:6px 14px;">
       <div class="um-item" onclick="cycleTheme();render()">${ic('learn',19)}<span>${t('menu_theme')}</span><em>${THEME_ICONS[THEME] || '🌗'}</em></div>
