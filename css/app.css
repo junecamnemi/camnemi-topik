@@ -1967,3 +1967,22 @@ select { font-family: var(--ios-font); }
 .scene-hero.tab-hero .tab-hero-cap { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.1; }
 .scene-hero.tab-hero .scene-hero-sub { font-size: 13px; font-weight: 700; opacity: .92; letter-spacing: .2px; }
 
+/* ============ PERFORMANCE (reduce jank) ============ */
+/* 1) Promote the two always-on chrome layers (header, tab bar) to their own
+      GPU layers so backdrop blur / shadow never trigger re-layout on scroll. */
+.app-header, .tab-bar {
+  will-change: transform;
+  transform: translateZ(0);
+}
+/* 2) Only let the element actually in view run its infinite animation.
+      Pausing off-screen animations (fx cycle, glows, drift) removes the
+      biggest compositor load on long screens. */
+.scene-landmark, .greet-avatar, .scene-hero video,
+.home-tile, .aq-bg, .plane-wrap, .avatar-crown, .brand-glow {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+/* 4) Images decode on their own GPU layer (no main-thread decode jank). */
+img { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+
+
