@@ -683,7 +683,7 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile {
   position: relative; overflow: hidden; flex: 1; width: 0; min-height: 200px; border-radius: 20px;
   display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer;
-  border: 1px solid rgba(255,255,255,.4); box-shadow: 0 8px 22px rgba(60,40,120,.12);
+  border: 1px solid rgba(255,255,255,.22); box-shadow: 0 8px 22px rgba(60,40,120,.12);
   padding: 0;
   font-family: var(--ios-font, system-ui); color: #fff;
   -webkit-tap-highlight-color: transparent;
@@ -697,9 +697,9 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile .ht-stat { font-size: 13px; font-weight: 800; color:#fff; background:rgba(0,0,0,.25); padding:2px 9px; border-radius:999px; margin-top:2px; white-space:nowrap; }
 .home-tile .ht-s { font-size: 10.5px; font-weight: 600; opacity: .92; line-height:1.2; max-width: 150px; }
 .home-tile:active { transform: scale(.985); }
-.home-tile.ai-redo-tile { box-shadow: 0 10px 28px rgba(124,58,237,.35); }
+.home-tile.ai-redo-tile { box-shadow: 0 8px 20px rgba(124,58,237,.20); }
 .home-tile.ai-redo-tile .ht-t { background: linear-gradient(90deg,#fff,#ffe9f6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
-.home-tile.textbook-tile { box-shadow: 0 10px 24px rgba(37,99,235,.22); }
+.home-tile.textbook-tile { box-shadow: 0 8px 18px rgba(37,99,235,.14); }
 .home-tile.textbook-tile .ht-t { background: linear-gradient(90deg,#fff,#e8f2ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
 
 .home-tile.textbook-tile::before {
@@ -800,13 +800,13 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   overflow: hidden;
   /* full-bleed hero: flush with the very top (under the glass header) and both sides */
   border-radius: 0 0 16px 16px;        /* only the bottom corners stay rounded */
+  border: none;                         /* match tab heroes — no outline border */
   width: 100vw;
   margin-left: calc(50% - 50vw);       /* edge-to-edge regardless of the content column */
   margin-top: -68px;                   /* reach the very top of the screen */
   margin-bottom: 12px;
   padding: 56px 18px 10px;             /* top padding clears the floating glass header */
   background: linear-gradient(180deg, rgba(167,139,250,.10), rgba(249,168,212,.06) 60%, rgba(167,139,250,.12));
-  border: 1px solid rgba(167,139,250,.16);
   min-height: 0;
 }
 /* center the greeting + avatar vertically in the hero banner */
@@ -2083,17 +2083,19 @@ body.has-back .app-header .brand { margin-left: 0; }
 .bubble-typing .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; animation: chatBlink 1.2s infinite; margin-right: 3px; }
 @keyframes chatBlink { 0%,60%,100%{opacity:.25} 30%{opacity:1} }
 
-/* ---------- Home Korea Life quick row ---------- */
-.home-korea-row { display: flex; gap: 10px; overflow-x: auto; margin-top: 4px; padding: 2px 1px 6px; scrollbar-width: none; }
-.home-korea-row::-webkit-scrollbar { display: none; }
+/* ---------- Home Korea Life — full-width stacked cards (video bg) ---------- */
+.home-korea-row { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
 .home-korea-card {
-  flex: 0 0 auto; min-width: 148px; border: none; cursor: pointer; text-align: left;
-  padding: 0; border-radius: 18px; color: #fff; overflow: hidden; position: relative;
-  font-family: var(--ios-font); box-shadow: 0 8px 20px rgba(60,40,120,.18);
+  position: relative; width: 100%; border: none; cursor: pointer; text-align: left;
+  padding: 0; border-radius: 20px; color: #fff; overflow: hidden;
+  font-family: var(--ios-font); box-shadow: 0 8px 22px rgba(60,40,120,.18);
   -webkit-tap-highlight-color: transparent;
 }
 .home-korea-card .hk-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-.home-korea-card::after { content:''; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,5,24,.15), rgba(8,5,24,.55)); }
-.home-korea-card .hk-body { position: relative; z-index: 2; min-height: 108px; padding: 12px; display:flex; flex-direction:column; justify-content:flex-end; }
-.home-korea-card .hk-ico { font-size: 22px; line-height: 1; margin-bottom: 6px; filter: none; }
-.home-korea-card .hk-t { font-size: 14px; font-weight: 900; letter-spacing: -.2px; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+.home-korea-card::after { content:''; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,5,24,.25), rgba(8,5,24,.55)); }
+.home-korea-card .hk-body {
+  position: relative; z-index: 2; min-height: 150px; padding: 16px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 4px;
+}
+.home-korea-card .hk-t { font-size: 22px; font-weight: 900; letter-spacing: -.3px; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
+.home-korea-card .hk-go { font-size: 12px; font-weight: 700; opacity: .95; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.22); text-shadow: 0 1px 4px rgba(0,0,0,.4); }
