@@ -197,6 +197,25 @@ function viewBook() {
       </div>
     </div>`;
   }).join('');
+  const vocabBlocks = [
+    { lv: 1, ico: 'Ⅰ', title: LANG==='ko'?'어휘책 1 · TOPIK I':(LANG==='km'?'វចនានុក្រម 1 · TOPIK I':'Vocabulary 1 · TOPIK I'), sub: LANG==='ko'?'초급 · 1,635단어':(LANG==='km'?'កម្រិតដំបូង · 1,635':'Beginner · 1,635 words'), open: 'vocab1' },
+    { lv: 2, ico: 'Ⅱ', title: LANG==='ko'?'어휘책 2 · TOPIK II':(LANG==='km'?'វចនានុក្រម 2 · TOPIK II':'Vocabulary 2 · TOPIK II'), sub: LANG==='ko'?'중급 · 2,651단어':(LANG==='km'?'កម្រិតមធ្យម · 2,651':'Intermediate · 2,651 words'), open: 'vocab2' }
+  ].map(v => `
+    <div class="book-level ready vocab-level" data-open="${v.open}">
+      <div class="bl-top" onclick="toggleVocabLvl('${v.open}')">
+        <span class="bl-lv">${v.ico === 'Ⅰ' ? 'Lv 1' : 'Lv 2'}</span>
+        <span class="bl-label">${LANG==='ko'?'어휘':'Vocabulary'}</span>
+        <span class="bl-ok">✓</span>
+        <span class="bl-caret">▸</span>
+      </div>
+      <div class="bl-books">
+        <button class="bl-book" onclick="openVocab('${v.open==='vocab1'?'1':'2'}')">
+          <span class="bl-b-ico vc-ico ${v.open==='vocab1'?'vc-1':'vc-2'}">${v.ico}</span>
+          <span class="bl-b-t"><b>${v.title}</b><small>${v.sub}</small></span>
+          <span class="bl-b-arr">→</span>
+        </button>
+      </div>
+    </div>`).join('');
   return `${hero}
   <div class="book-stat-strip">
     <div class="bss-cell"><span class="bss-k">${LANG==='ko'?'오늘 공부':'Today'}</span><span class="bss-v">${fmtStudyMin(todayStudyMinutes())}</span></div>
@@ -206,31 +225,21 @@ function viewBook() {
   <div class="book-home">
     <div class="book-levels">
       ${levelsHTML}
-    </div>
-    <div class="book-level ready vocab-book-block">
-      <div class="bl-top">
-        <span class="bl-lv vc">📔</span>
-        <span class="bl-label">${LANG==='ko'?'어휘책':'Vocabulary'}</span>
-        <span class="bl-ok"></span>
-      </div>
-      <div class="bl-books">
-        <button class="bl-book vocab-entry" onclick="openVocab('1')">
-          <span class="bl-b-ico vc-ico vc-1">Ⅰ</span>
-          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책 1 · TOPIK I':'Vocabulary 1 · TOPIK I'}</b><small>${LANG==='ko'?'초급 1,635단어':'Beginner · 1,635 words'}</small></span>
-          <span class="bl-b-arr">→</span>
-        </button>
-        <button class="bl-book vocab-entry" onclick="openVocab('2')">
-          <span class="bl-b-ico vc-ico vc-2">Ⅱ</span>
-          <span class="bl-b-t"><b>${LANG==='ko'?'어휘책 2 · TOPIK II':'Vocabulary 2 · TOPIK II'}</b><small>${LANG==='ko'?'중급 2,651단어':'Intermediate · 2,651 words'}</small></span>
-          <span class="bl-b-arr">→</span>
-        </button>
-      </div>
+      ${vocabBlocks}
     </div>
   </div>`;
 }
 /* Toggle a book level open/closed (accordion). */
 function toggleBookLvl(lv) {
   const level = document.querySelector('.book-level[data-lvl="'+lv+'"]');
+  if (!level) return;
+  const open = level.classList.toggle('open');
+  const caret = level.querySelector('.bl-caret');
+  if (caret) caret.textContent = open ? '▾' : '▸';
+}
+/* Toggle a vocab book level open/closed (accordion) — same behavior as book levels. */
+function toggleVocabLvl(key) {
+  const level = document.querySelector('.book-level[data-open="'+key+'"]');
   if (!level) return;
   const open = level.classList.toggle('open');
   const caret = level.querySelector('.bl-caret');
