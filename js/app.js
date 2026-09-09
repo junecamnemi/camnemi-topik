@@ -1056,7 +1056,7 @@ function viewHome() {
       <div class="home-bg-content">
       ${scene}
     <div class="hm-main-msg">
-      <div class="hmm-title"><span class="hmm-a">Studying Korean with your Idol</span></div>
+      <div class="hmm-title"><span class="hmm-a">Study Korean /w Your Idol</span></div>
       <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
     </div>
     <div class="sec-h hm-record-h"><h2>${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
