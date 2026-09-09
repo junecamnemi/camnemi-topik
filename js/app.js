@@ -1078,10 +1078,9 @@ function viewHome() {
 }
 function homeKoreaLifeHTML() {
   const cards = [
-    { id:'why',   title:(LANG==='ko'?'왜 한국?':'Why Korea?'),   v:'assets/korea_bg/why.mp4'   },
-    { id:'univs', title:(LANG==='ko'?'추천 대학':'Universities'), v:'assets/korea_bg/univs.mp4' },
-    { id:'apps',  title:(LANG==='ko'?'추천 앱':'Apps'),          v:'assets/korea_bg/apps.mp4'  },
-    { id:'live',  title:(LANG==='ko'?'한국 생활':'How to live'), v:'assets/korea_bg/live.mp4'  }
+    { id:'why',   title:(LANG==='ko'?'왜 한국?':'Why Korea?'),   v:'assets/korea_bg/why_l.mp4'   },
+    { id:'univs', title:(LANG==='ko'?'추천 대학':'Universities'), v:'assets/korea_bg/univs_l.mp4' },
+    { id:'live',  title:(LANG==='ko'?'한국 생활':'How to live'), v:'assets/korea_bg/live_l.mp4'  }
   ];
   return cards.map(c => `
     <button class="home-korea-card" onclick="openKoreaSection('${c.id}')">
@@ -3829,10 +3828,9 @@ function viewKoreaLife() {
     <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
   const hero = tabHeroHTML('rank', rankMeOverlayHTML());
   const cards = [
-    { id:'why',   title:(kl.why&&kl.why.title)||'Why Korea?',   sub:(LANG==='ko'?'한국의 봄·여름·가을·겨울':'Korea in all four seasons'), v:'assets/korea_bg/why.mp4' },
-    { id:'univs', title:'Universities',                          sub:(LANG==='ko'?'IELTS·TOPIK으로 갈 수 있는 대학':'6 you can enter on IELTS / TOPIK'), v:'assets/korea_bg/univs.mp4' },
-    { id:'apps',  title:'Recommend apps',                        sub:(LANG==='ko'?'나를 살게 해주는 한국 앱들':'Naver Map, Coupang, Baemin & more'), v:'assets/korea_bg/apps.mp4' },
-    { id:'live',  title:'How to live',                           sub:(LANG==='ko'?'교통·음식·건강·비자 등':'Transport, food, health, visa & more'), v:'assets/korea_bg/live.mp4' }
+    { id:'why',   title:(kl.why&&kl.why.title)||'Why Korea?',   sub:(LANG==='ko'?'한국 대표 풍경':'Scenery of Korea'),   v:'assets/korea_bg/why_l.mp4' },
+    { id:'univs', title:'Universities',                          sub:(LANG==='ko'?'고려대 · 대학 생활':'KU campus & study'), v:'assets/korea_bg/univs_l.mp4' },
+    { id:'live',  title:'How to live',                           sub:(LANG==='ko'?'교통·음식·건강·비자 등':'Transport, food, health, visa & more'), v:'assets/korea_bg/live_l.mp4' }
   ];
   const grid = cards.map(c => `
     <button class="kl3-tile" onclick="openKoreaSection('${c.id}')">
