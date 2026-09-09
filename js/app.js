@@ -1260,9 +1260,9 @@ function viewHome() {
         <div class="hmf-body">${journeyCardHTML()}</div>
       </details>
     </div>
-    ${featureTilesHTML}
     <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
     ${statusCardHTML()}
+    ${featureTilesHTML}
     </div>
   `;
 }
