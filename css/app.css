@@ -238,6 +238,9 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .char-profile { position: fixed; inset: 0; z-index: 340; display: flex; align-items: center; justify-content: center;
   background: rgba(18,12,42,.5); opacity: 0; pointer-events: none; transition: opacity .2s; }
 .char-profile.open { opacity: 1; pointer-events: auto; }
+.cpf-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.cpf-veil { position: absolute; inset: 0; z-index: 1; background: rgba(14,8,30,.45); }
+.char-profile .cp-card { position: relative; z-index: 2; }
 .cp-card { background: #fff; border-radius: 22px; padding: 22px; width: min(320px, 86vw); max-height: 80vh; overflow-y: auto;
   position: relative; box-shadow: 0 12px 40px rgba(0,0,0,.25); text-align: center; }
 .cp-close { position: absolute; top: 10px; right: 14px; font-size: 16px; color: #a79bc9; background: none; border: none; cursor: pointer; }

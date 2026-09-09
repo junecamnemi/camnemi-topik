@@ -288,7 +288,14 @@ function viewCharProfile(id) {
   const btn = cur
     ? `<button class="btn btn-primary" disabled style="width:100%;margin-top:14px;">✓ ${LANG==='ko'?'현재 캐릭터':'Current'}</button>`
     : `<button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="selectChar('${id}')">${LANG==='ko'?'이 캐릭터 선택':'Select'}</button>`;
+  // group stage-video backdrop: show the member's group dance video behind the card.
+  // Only a girl-group stage clip exists for now → GLOWSIS & others fall back to it.
+  const grpId = (ext && ext.group) || '';
+  const grpVideo = (grpId === 'glowsis') ? 'assets/home_bg/chars/group.mp4' : 'assets/home_bg/chars/group.mp4';
   document.getElementById('char-profile').innerHTML = `
+    <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="${grpVideo}" type="video/mp4"></video>
+    <div class="cpf-veil"></div>
     <div class="cp-card">
       <button class="cp-close" onclick="closeCharProfile()">✕</button>
       <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
@@ -298,7 +305,10 @@ function viewCharProfile(id) {
     </div>`;
   const pf = $id('char-profile'); if (pf) pf.classList.add('open');
 }
-function closeCharProfile(){ const pf=$id('char-profile'); if(pf) pf.classList.remove('open'); }
+function closeCharProfile(){
+  const pf=$id('char-profile'); if(pf) pf.classList.remove('open');
+  const bg = pf && pf.querySelector('video.cpf-bg'); if (bg) { try { bg.pause(); } catch(e){} }
+}
 function selectChar(id) {
   if (typeof isCharUnlocked === 'function' && !isCharUnlocked(id)) {
     const needLv = charUnlockLevel(id);
