@@ -2109,9 +2109,9 @@ body.has-home-bg .home-scene-bg { display: block; }
   background-size: cover; background-position: center;
   opacity: 0; animation: hsbFade 24s infinite;
 }
-.home-scene-bg .hsb-img:nth-child(1) { background-image: url('assets/korea_bg/seongsu.webp'); animation-delay: 0s; }
-.home-scene-bg .hsb-img:nth-child(2) { background-image: url('assets/korea_bg/seokchon.webp'); animation-delay: 8s; }
-.home-scene-bg .hsb-img:nth-child(3) { background-image: url('assets/korea_bg/hangang.webp');  animation-delay: 16s; }
+.home-scene-bg .hsb-img:nth-child(1) { background-image: url('../assets/korea_bg/seongsu.webp'); animation-delay: 0s; }
+.home-scene-bg .hsb-img:nth-child(2) { background-image: url('../assets/korea_bg/seokchon.webp'); animation-delay: 8s; }
+.home-scene-bg .hsb-img:nth-child(3) { background-image: url('../assets/korea_bg/hangang.webp');  animation-delay: 16s; }
 /* bright scrim so content stays legible over the art */
 .home-scene-bg::after {
   content: ''; position: absolute; inset: 0; z-index: 1;
