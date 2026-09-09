@@ -1643,6 +1643,7 @@ function viewDaily() {
       <div class="row"><span class="q-num">Q${APP.dailyIdx + 1} / ${qs.length} · DAILY${isAI ? ' ✨ AI' : ''}</span>
       <span class="q-type">${q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
       <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK T${q.level || myLevel()}</span>
+      ${unitChip(q.id)}
       ${bookmarkBtn(q.id)}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
@@ -2026,6 +2027,7 @@ function viewSectionCard() {
       <div class="row"><span class="q-num">Q${APP.sectionIdx + 1} / ${qs.length} · ${label.toUpperCase()}</span>
       <span class="q-type">${APP.sectionType === 'vocab' || q.type === 'vocab' ? t('home_task_vocab') : typeLabel(q.type)}</span>
       <span class="q-level" style="font-weight:800;font-size:12px;padding:2px 8px;border-radius:999px;background:var(--ios-fill);color:var(--ios-label);">TOPIK T${q.level || myLevel()}</span>
+      ${unitChip(q.id)}
       ${bookmarkBtn(q.id)}
       ${(sec === 'reading' || sec === 'listening') ? `<span id="sec-timer" class="mock-timer" style="font-weight:800;color:${_secRemain < 60 ? 'var(--ios-red)' : 'var(--ios-green)'};font-size:14px;">⏱ ${fmtTime(_secRemain)}</span>` : ''}</div>
       <div class="daily-progress"><div style="width:${pct}%"></div></div>
@@ -3287,6 +3289,50 @@ function bookmarkBtn(qid) {
   const on = isBookmarked(qid);
   const ico = `<svg viewBox="0 0 24 24" width="16" height="16" fill="${on ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`;
   return `<button class="bookmark-btn ${on ? 'on' : ''}" onclick="toggleBookmark('${escAttr(qid)}')" title="${LANG==='ko'?'북마크':'Bookmark'}">${ico} ${on ? `<span class="sub">${LANG==='ko'?'저장됨':LANG==='km'?'បានរក្សា':'Saved'}</span>` : ''}</button>`;
+}
+/* ---------- Question → textbook unit mapping ----------
+   Each TOPIK-level question is linked to the Glowsis textbook book of the same
+   level (L1→1A, L2→2A, …, L6→6A). Within the book, the unit is derived from the
+   question's grammar type, falling back to a representative unit (1 = the book's
+   main dialogue/grammar opener). Returns {book, unit, bookTitle, unitTitle} or null. */
+function unitForQuestion(q) {
+  if (!q) return null;
+  const lvl = Math.max(1, Math.min(6, q.level || myLevel() || 1));
+  // book id by TOPIK level: L1→1a, L2→2a, … L6→6a (Glowsis books are lvl-keyed)
+  const bookId = lvl + 'a';
+  const book = (window.GLOWSIS_BOOKS || []).find(b => b.id === bookId) || null;
+  // map common question types → a representative unit number (1-based)
+  const typeUnit = {
+    grammar: 1, vocab: 2, notice: 3, reply: 3, place: 4, topic: 5,
+    intent: 5, detail: 5, main_idea: 5, comprehension: 6, sentence_pos: 7,
+    order: 7, blank_fill: 8, same_content: 8, insert_sentence: 8,
+    attitude: 9, headline_desc: 9, long: 10, purpose: 10
+  };
+  const unit = Math.min(10, typeUnit[q.type] || 1);
+  return { book: bookId, unit, bookTitle: (book && book.title) || ('Glowsis Korean ' + lvl + 'A'), unitTitle: 'Unit ' + unit };
+}
+/* Navigate to a question's textbook unit in the Book tab. */
+function goToQuestionUnit(qid) {
+  const q = qById(qid);
+  const m = unitForQuestion(q);
+  if (!m) return;
+  // open the book tab, then open that unit
+  if (typeof openBookUnits === 'function' && typeof openUnit === 'function') {
+    go('book');
+    setTimeout(() => {
+      try {
+        if (typeof openBookUnits === 'function') openBookUnits(m.book);
+        setTimeout(() => { try { if (typeof openUnit === 'function') openUnit(Math.max(1, m.unit - 1), 0, m.book); } catch (e) {} }, 30);
+      } catch (e) {}
+    }, 50);
+  }
+}
+/* Small chip showing which textbook unit a question maps to + a link into the book. */
+function unitChip(qid) {
+  const m = unitForQuestion(qById(qid));
+  if (!m) return '';
+  const ko = LANG === 'ko';
+  return `<button class="q-unit" onclick="goToQuestionUnit('${escAttr(qid)}')" title="${ko?'해당 단원으로 이동':'Go to this unit'}" style="margin-left:auto;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--ios-purple,.12);color:var(--ios-purple);border:1px solid var(--ios-purple,.25);cursor:pointer;">📖 ${ko ? m.book.toUpperCase()+' U'+m.unit : m.book.toUpperCase()+' · Unit '+m.unit} →</button>`;
 }
 /* SRS: due cards for review */
 function dueCards() {
