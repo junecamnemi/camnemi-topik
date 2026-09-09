@@ -291,15 +291,17 @@ function viewCharProfile(id) {
   const grpId = (ext && ext.group) || '';
   const grpVideo = 'assets/cpbg/glowsis_anime_lo.mp4';
   document.getElementById('char-profile').innerHTML = `
-    <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-      <source src="${grpVideo}" type="video/mp4"></video>
-    <div class="cpf-veil"></div>
-    <div class="cp-card">
-      <button class="cp-close" onclick="closeCharProfile()">✕</button>
-      <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
-      <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
-      ${pos}${groupLine}${meta}${charm}${specialty}${intro}
-      ${btn}
+    <div class="cp-modal">
+      <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="${grpVideo}" type="video/mp4"></video>
+      <div class="cpf-veil"></div>
+      <div class="cp-card">
+        <button class="cp-close" onclick="closeCharProfile()">✕</button>
+        <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
+        <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
+        ${pos}${groupLine}${meta}${charm}${specialty}${intro}
+        ${btn}
+      </div>
     </div>`;
   const pf = $id('char-profile'); if (pf) pf.classList.add('open');
 }
