@@ -718,12 +718,15 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 }
 
 
-/* ---------- Main headline + My Level (flows under the hero, no 2nd card) ---------- */
+/* ---------- Main headline + My Status + My Level (one card under hero) ---------- */
 .hm-level-block {
-  padding: 14px 2px 2px;
+  margin-top: 14px; border-radius: 22px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(139,92,246,.12), rgba(249,168,212,.10));
+  border: 1px solid rgba(139,92,246,.2);
+  padding: 18px 16px 6px;
 }
-.hm-main-msg { text-align:center; margin-bottom: 10px; }
-.hmm-title { font-size: 22px; font-weight: 900; letter-spacing: -.3px; line-height: 1.2; }
+.hm-main-msg { text-align:center; margin-bottom: 12px; }
+.hmm-title { font-size: 23px; font-weight: 900; letter-spacing: -.3px; line-height: 1.2; }
 .hmm-a { color: var(--ios-label); }
 .hmm-sep { color: var(--ios-secondary-label); }
 .hmm-b {
@@ -732,12 +735,13 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   -webkit-text-fill-color: transparent; color: transparent;
 }
 .hmm-sub { font-size: 11.5px; color: var(--ios-secondary-label); font-weight: 700; margin-top: 4px; }
+.hm-status { background: var(--ios-card); border-radius: 16px; padding: 6px 6px; margin-bottom: 12px; }
 .hm-level-block .home-mylevel-fold {
-  margin-top: 0; border-radius: 16px;
-  background: linear-gradient(135deg, rgba(139,92,246,.07), rgba(236,72,153,.05));
-  border: 1px solid rgba(139,92,246,.18);
+  margin-top: 0; border-radius: 14px;
+  background: var(--ios-card);
+  border: 1px solid rgba(139,92,246,.16);
 }
-.hm-level-block .lt-home-card { margin-top: 10px; }
+.hm-level-block .lt-home-card { margin-top: 12px; }
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
 .greet-h { font-size: 19px; font-weight: 800; color: #FFFFFF; line-height: 1.25; text-shadow: 0 1px 8px rgba(15,10,40,.55); }

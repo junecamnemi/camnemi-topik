@@ -1100,12 +1100,6 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // Main headline message under the hero, above My Level
-  const mainMsg = `
-    <div class="hm-main-msg">
-      <div class="hmm-title"><span class="hmm-a">Studying Korean</span><span class="hmm-sep">,</span> <span class="hmm-b">Unlock Your Idol</span></div>
-      <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
-    </div>`;
   const aiRedoHome = `
     <button class="aq-redo aq-gborder" onclick="aiRedoGo()">
       <span class="aq-redo-ico">${ic('spark',18)}</span>
@@ -1253,15 +1247,17 @@ function viewHome() {
     <div class="home-bg-content">
     ${scene}
     <div class="hm-level-block">
-      ${mainMsg}
+      <div class="hm-main-msg">
+        <div class="hmm-title"><span class="hmm-a">Studying Korean</span><span class="hmm-sep">,</span> <span class="hmm-b">Unlock Your Idol</span></div>
+        <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
+      </div>
+      <div class="hm-status">${statusCardHTML(true)}</div>
       ${levelCard}
       <details class="home-mylevel-fold">
         <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
         <div class="hmf-body">${journeyCardHTML()}</div>
       </details>
     </div>
-    <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
-    ${statusCardHTML()}
     ${featureTilesHTML}
     </div>
   `;
@@ -2902,7 +2898,7 @@ function currentJourney() {
   } catch (e) { return null; }
 }
 /* 홈 'My Status' 카드 — 오늘 진행 + 누적 요약 칩. 제목은 별도 섹션 헤더로. 각 칩 탭하면 설명 모달. */
-function statusCardHTML() {
+function statusCardHTML(bare) {
   try {
     const today = todayStr ? todayStr() : new Date().toISOString().slice(0, 10);
     const ds = dayStats ? dayStats(today) : null;
@@ -2930,9 +2926,8 @@ function statusCardHTML() {
         <div style="font-size:8.5px;font-weight:600;opacity:.6;margin-top:1px;">${it[3]}</div>
       </button>`;
     const chipsRow = items.map(chip).join('');
-    return `<div class="app-card my-status-card">
-      <div style="display:flex;">${chipsRow}</div>
-    </div>`;
+    const row = `<div style="display:flex;">${chipsRow}</div>`;
+    return bare ? row : `<div class="app-card my-status-card">${row}</div>`;
   } catch (e) { return ''; }
 }
 /* My Status 아이콘 설명 모달 (경량 오버레이) */
