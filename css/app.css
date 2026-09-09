@@ -776,7 +776,9 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 .greet-s { font-size: 10.5px; color: rgba(255,255,255,.92); font-weight: 600; margin-top: 1px; opacity: .95; text-shadow: 0 1px 5px rgba(15,10,40,.5); }
 /* ---------- Seoul scene card (Namsan landmark + weather/time) ---------- */
 .seoul-scene {
-  position: relative; overflow: hidden;
+  /* pins to the very top under the translucent glass header (matches tab heroes) */
+  position: sticky; top: 0; z-index: 30;
+  overflow: hidden;
   /* full-bleed hero: flush with the very top (under the glass header) and both sides */
   border-radius: 0 0 16px 16px;        /* only the bottom corners stay rounded */
   width: 100vw;
@@ -2003,3 +2005,18 @@ select { font-family: var(--ios-font); }
 img { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 
 
+
+/* ---------- Back button: floating at bottom-left, above the bottom tab bar ----------
+   The user wanted it off the header and near the bottom bar's left for thumb reach. */
+#back-btn {
+  position: fixed; top: auto; left: 16px; right: auto;
+  bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+  transform: none; width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,.92); color: var(--ios-label);
+  box-shadow: 0 6px 20px rgba(30,20,60,.25);
+  z-index: 210; display: inline-flex !important;
+}
+#back-btn[style*="display:none"] { display: none !important; }
+[data-theme="dark"] #back-btn { background: rgba(24,22,34,.92); color:#fff; }
+/* keep brand margin only when back is actually inside header (not used now) */
+body.has-back .app-header .brand { margin-left: 0; }
