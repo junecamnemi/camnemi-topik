@@ -730,8 +730,9 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 }
 .hmm-sub { font-size: 11px; color: var(--ios-secondary-label); font-weight: 700; margin-top: 2px; }
 /* ---------- My Study Record (card under the hero message) ---------- */
+.hm-record-h { margin-top: 18px !important; }
 .hm-record-block {
-  margin-top: 10px; border-radius: 22px; overflow: hidden;
+  margin-top: 6px; border-radius: 22px; overflow: hidden;
   background: linear-gradient(180deg, rgba(139,92,246,.10), rgba(249,168,212,.08));
   border: 1px solid rgba(139,92,246,.16);
   padding: 12px 14px 6px;
