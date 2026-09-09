@@ -518,9 +518,26 @@ function vocabImg(k) {
 function vocabDict(k) {
   try { return (window.VOCAB_DICT||[]).find(w=>w.k===k); } catch(e){ return null; }
 }
+/* lazy-load the big vocab dictionary (1.7MB) only when the vocab screen opens */
+let _vocabDictLoaded = false, _vocabDictLoading = false, _vocabDictWaiters = [];
+function ensureVocabDict(cb){
+  if (window.VOCAB_DICT && _vocabDictLoaded) { if(cb)cb(true); return; }
+  if (_vocabDictLoading){ if(cb)_vocabDictWaiters.push(cb); return; }
+  _vocabDictLoading = true;
+  const s = document.createElement('script');
+  s.src = 'data/vocab-dict.js?v=vd-2';
+  s.onload = function(){ _vocabDictLoaded = true; _vocabDictLoading=false;
+    const w=_vocabDictWaiters; _vocabDictWaiters=[]; w.forEach(f=>{try{f(true);}catch(e){}}); if(cb)cb(true); };
+  s.onerror = function(){ _vocabDictLoading=false; if(cb)cb(false); };
+  document.head.appendChild(s);
+}
 function openVocabWord(k) {
   const w = vocabDict(k);
-  if (!w) { toast('Not found'); return; }
+  if (!w) {
+    // dict not loaded yet (shouldn't happen since openVocab ensures it) — try loading then retry
+    if (typeof toast === 'function') toast('...');
+    return;
+  }
   _vb.hist = _vb.hist || [];
   const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const stars = '★'.repeat(Math.max(1,Math.min(3,w.star||1)));
@@ -568,6 +585,8 @@ function openVocabWord(k) {
 
 function openVocab(lvl) {
   _vb = { lvl: lvl === '2' ? '2' : '1', cat:'food', page:0, q:'' };
+  // vocab cards show star/pos from the big dict — lazy-load it once, in background
+  ensureVocabDict(function(){ if ($id('screen') && _vb) renderVocabView(); });
   renderVocabView();
 }
 function renderVocabView() {

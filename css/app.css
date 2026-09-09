@@ -99,16 +99,15 @@
     radial-gradient(26% 36% at 72% 68%, hsla(var(--ai-h2), 92%, 82%, calc(var(--ai-a2) * .85)), transparent 65%),
     linear-gradient(125deg, hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h2), 85%, 72%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h3), 90%, 78%, calc(var(--ai-a2) * .85)), hsla(var(--ai-h1), 80%, 66%, calc(var(--ai-a2) * .85)));
   background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 280% 280%;
-  animation: aiDrift 13s ease-in-out infinite;
+  /* perf: transform-only drift (GPU-composited) instead of repainting a
+     full-screen background-position every frame */
+  animation: aiDriftT 22s ease-in-out infinite;
   transition: opacity .6s;
+  will-change: transform; transform: translateZ(0);
 }
-@keyframes aiDrift {
-  0%   { background-position: 12% 8%, 88% 20%, 50% 104%, 30% 55%, 72% 68%, 0% 50%; }
-  20%  { background-position: 22% 14%, 74% 32%, 60% 90%, 42% 46%, 60% 74%, 22% 62%; }
-  40%  { background-position: 34% 18%, 64% 10%, 70% 80%, 56% 38%, 48% 82%, 55% 20%; }
-  60%  { background-position: 24% 24%, 70% 26%, 62% 92%, 40% 52%, 64% 66%, 82% 38%; }
-  80%  { background-position: 16% 16%, 80% 34%, 56% 100%, 26% 60%, 78% 58%, 38% 78%; }
-  100% { background-position: 12% 8%, 88% 20%, 50% 104%, 30% 55%, 72% 68%, 0% 50%; }
+@keyframes aiDriftT {
+  0%,100% { transform: translate3d(0,0,0) scale(1); }
+  50%     { transform: translate3d(-1.5%,1.2%,0) scale(1.04); }
 }
 /* soft ambient color blobs behind content — promote to their own GPU layer so
    the big blur isn't recomputed on every scroll frame */
