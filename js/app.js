@@ -100,7 +100,7 @@ const T = {
     prog_week: 'This Week', prog_study_time: 'Study Time', prog_tasks_done: 'Tasks Done', prog_focus_sess: 'Focus Sessions', prog_subjects: 'Subjects',
     goal_reading: 'Reading', goal_listening: 'Listening', goal_vocab: 'Vocabulary',
     goal_start: 'Start', goal_done: 'Done', my_level: 'My level', my_level_sub: 'Default level for practice & AI questions', my_char: 'My Character', my_char_change: 'Change', my_char_rename: 'Rename',
-    listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →',
+    listen: '🔊 Listen', tip: '💡 TIP', tip_hide: '🙈 Hide TIP', prev: '← Prev', next: 'Next →', finish: 'Finish →', q_given: 'Given sentence',
     submit: 'Submit answer', save: 'Save',
     sec_reading: '📖 Reading', sec_listening: '🎧 Listening', sec_writing: '✍️ Writing',
     sec_practice: 'Practice {s}', sec_desc: 'Solve {s} questions generated from past-exam patterns — the AI keeps analyzing your weak spots.', sec_start: 'Start practice', sec_qs: 'questions',
@@ -180,7 +180,7 @@ const T = {
     prog_week: '이번 주', prog_study_time: '학습 시간', prog_tasks_done: '완료한 할 일', prog_focus_sess: '집중 세션', prog_subjects: '영역별 진도',
     goal_reading: '리딩', goal_listening: '리스닝', goal_vocab: '보케블러리',
     goal_start: '시작', goal_done: '완료', my_level: '나의 레벨', my_level_sub: '연습·AI 문제의 기본 레벨', my_char: '내 캐릭터', my_char_change: '바꾸기', my_char_rename: '이름 변경',
-    listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →',
+    listen: '🔊 듣기 재생', tip: '💡 TIP', tip_hide: '🙈 TIP 숨기기', prev: '← 이전', next: '다음 →', finish: '완료 →', q_given: '주어진 문장',
     submit: '답 제출', save: '저장',
     sec_reading: '📖 읽기', sec_listening: '🎧 듣기', sec_writing: '✍️ 쓰기',
     sec_practice: '{s} 연습', sec_desc: '기출 유형을 분석한 {s} 문제를 풀어보세요 — AI가 계속해서 약점을 분석합니다.', sec_start: '연습 시작', sec_qs: '문제',
@@ -260,7 +260,7 @@ const T = {
     prog_week: 'សប្តាហ៍នេះ', prog_study_time: 'ពេលសិក្សា', prog_tasks_done: 'កិច្ចការរួច', prog_focus_sess: 'វគ្គផ្តោត', prog_subjects: 'មុខវិជ្ជា',
     goal_reading: 'អាន', goal_listening: 'ស្តាប់', goal_vocab: 'វាក្យសព្ទ',
     goal_start: 'ចាប់ផ្តើម', goal_done: 'រួចរាល់', my_level: 'កម្រិតរបស់ខ្ញុំ', my_level_sub: 'កម្រិតលំនាំដើមសម្រាប់ការអនុវត្ត និងសំណួរ AI', my_char: 'តួអង្គរបស់ខ្ញុំ', my_char_change: 'ផ្លាស់ប្តូរ', my_char_rename: 'ប្តូរឈ្មោះ',
-    listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →',
+    listen: '🔊 ស្តាប់', tip: '💡 TIP', tip_hide: '🙈 លាក់ TIP', prev: '← ថយក្រោយ', next: 'បន្ទាប់ →', finish: 'បញ្ចប់ →', q_given: 'ប្រយោគដែលបានផ្តល់',
     submit: 'ដាក់ស្នើចម្លើយ', save: 'រក្សាទុក',
     sec_reading: '📖 អាន', sec_listening: '🎧 ស្តាប់', sec_writing: '✍️ សរសេរ',
     sec_practice: 'អនុវត្ត {s}', sec_desc: 'ដោះស្រាយសំណួរ {s} ដែលបង្កើតពីលំនាំប្រឡងមុន — AI វិភាគចំណុចខ្សោយរបស់អ្នកជាបន្ត។', sec_start: 'ចាប់ផ្តើមអនុវត្ត', sec_qs: 'សំណួរ',
@@ -1685,6 +1685,7 @@ function viewDaily() {
       ${isAI ? `<div style="margin:4px 0;"><span style="font-size:11px;color:var(--ios-green);font-weight:800;">✨ ${t('ai_badge')}</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);\">📌 ${t('q_given')}: ${q.given}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -2077,6 +2078,7 @@ function viewSectionCard() {
       ${APP.sectionLoading ? `<div style="margin:6px 0;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ios-blue);font-weight:700;">${ic('spark',13)} ${LANG==='ko'?'AI가 나머지 문제를 만들고 있어요…':'AI is making more questions…'}<span class="sub"> (${qs.length}/10)</span></div>` : ''}
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);\">📌 ${t('q_given')}: ${q.given}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -3140,6 +3142,7 @@ function viewChallenge() {
       <div class="daily-progress"><div style="width:${Math.round((ch.idx + 1) / qs.length * 100)}%;background:var(--ios-orange);"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);\">📌 ${t('q_given')}: ${q.given}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       <div class="q-kr">${q.q}</div>
       ${q.subq ? `<div class="q-subq" style="font-weight:800;font-size:15px;line-height:1.5;margin:6px 0 2px;color:var(--ios-label);">${q.subq}</div>` : ''}
@@ -3561,6 +3564,7 @@ function viewMockRun() {
       <div class="daily-progress"><div style="width:${Math.round(APP.mockIdx / qs.length * 100)}%"></div></div>
       ${q.passage ? `<div class="q-passage">${q.passage}</div>` : ''}
       ${q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : ''}
+      ${q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);\">📌 ${t('q_given')}: ${q.given}</div>` : ''}
       ${q.section === 'listening' ? `<button class="btn btn-primary btn-sm" style="margin:4px 0 8px;width:100%;" onclick="playListening(this, '${escAttr(q.q)}')">${ic('listen',15)} ${t('listen')}</button>` : ''}
       ${q.audioHint ? `<div class="sub" style="font-size:12px;margin-bottom:6px;">🎧 ${q.audioHint}</div>` : ''}
       <div class="q-kr">${q.q}</div>
@@ -4038,7 +4042,9 @@ function reviewCard(q, opts) {
     ${opts.onBookmark ? `<button class="bookmark-btn on" style="margin-left:auto;" onclick="toggleBookmark('${escAttr(q.id)}')"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.8" style="display:inline-block;vertical-align:-3px;"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>` : ''}
   </div>`;
   const passage = (q.passage ? `<div class="q-passage">${q.passage}</div>` : '')
-    + (q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : '');
+    + (q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : '')
+    + (q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);">📌 ${t('q_given')}: ${q.given}</div>` : '')
+    + (q.dialogue && q.section === 'listening' ? `<div class="q-dialogue" style="font-weight:700;font-size:14px;line-height:1.6;margin:6px 0 4px;padding:9px 11px;background:var(--ios-card);border-left:3px solid var(--ios-blue-2);border-radius:8px;color:var(--ios-label);">${q.dialogue}</div>` : '');
   // options (read-only; correct one highlighted green, wrong answers plain)
   let optsHtml = '';
   if (q.section === 'writing') {
