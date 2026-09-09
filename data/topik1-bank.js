@@ -385,7 +385,7 @@ window.TOPIK1_BANK = [
   { id: "R006", section: "reading", type: "synonym", level: 3, points: 3,
     freq: "3", qGl: "Choose the word with the same meaning as the underlined part.", freqNote: "읽기 43~45 · 매 회차 3문항",
     q: "밑줄 친 부분과 의미가 같은 것을 고르십시오.",
-    passage: "이 식당은 음식이 맛있고 값이 싸요.", passageGl: "This restaurant’s food is delicious and the prices are cheap.",
+    passage: "이 식당은 음식이 맛있고 값이 <u>싸요</u>.", passageGl: "This restaurant’s food is delicious and the prices are cheap.",
     options: [
       { t: "음식이 없어요", gl: "there is no food" },
       { t: "음식이 나빠요", gl: "the food is bad" },

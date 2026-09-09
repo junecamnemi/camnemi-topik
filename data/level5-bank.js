@@ -262,7 +262,7 @@ window.LEVEL5_BANK = [
   { id: "LV5R10", section: "reading", type: "synonym", level: 5, points: 3,
     qGl: "Choose the word closest in meaning to the underlined word.",
     q: "다음을 읽고 밑줄 친 부분과 의미가 가장 비슷한 것을 고르십시오.",
-    passage: "이번 조사는 전국 성인 남녀 1,500명을 대상으로 실시되었으며, 응답자의 절반 이상이 생활비 부담을 가장 크게 느끼는 것으로 나타났다. 특히 20대와 30대에서 이러한 부담감이 두드러졌다.",
+    passage: "이번 조사는 전국 성인 남녀 1,500명을 대상으로 실시되었으며, 응답자의 절반 이상이 생활비 부담을 가장 크게 느끼는 것으로 나타났다. 특히 20대와 30대에서 이러한 부담감이 <u>두드러졌다</u>.",
     passageGl: "This survey was conducted on 1,500 adult men and women nationwide, and more than half of the respondents were found to feel the burden of living costs most strongly. This burden was especially prominent among people in their 20s and 30s.",
     options: [
       { t: "뚜렷했다", gl: "was distinct/clear" },

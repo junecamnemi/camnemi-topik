@@ -109,7 +109,7 @@ window.LEVEL3_BANK = [
   },
   { id: 'LV3R05', section: 'reading', type: 'vocab', level: 3, points: 3, qGl: 'Choose the word closest in meaning to the underlined word.',
     q: '다음을 읽고 물음에 답하십시오. 밑줄 친 부분과 의미가 가장 비슷한 것을 고르십시오.',
-    passage: '새로 이사한 집은 지하철역에서 가까워서 정말 편리하다. 출근할 때 버스를 타지 않아도 되니까 매일 아침 여유 있게 집을 나설 수 있다.',
+    passage: '새로 이사한 집은 지하철역에서 가까워서 정말 편리하다. 출근할 때 버스를 타지 않아도 되니까 매일 아침 <u>여유 있게</u> 집을 나설 수 있다.',
     passageGl: 'My newly moved house is close to the subway station, so it is really convenient. Because I do not have to take the bus to work, I can leave home every morning with plenty of time.',
     options: [
       { t: '급하게', gl: 'hurriedly' },
