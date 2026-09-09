@@ -2087,42 +2087,13 @@ body.has-back .app-header .brand { margin-left: 0; }
 .home-korea-row { display: flex; gap: 10px; overflow-x: auto; margin-top: 4px; padding: 2px 1px 6px; scrollbar-width: none; }
 .home-korea-row::-webkit-scrollbar { display: none; }
 .home-korea-card {
-  flex: 0 0 auto; min-width: 128px; border: none; cursor: pointer; text-align: left;
-  padding: 14px 12px; border-radius: 18px; color: #fff;
-  background: linear-gradient(135deg, #7C3AED, #EC4899);
+  flex: 0 0 auto; min-width: 148px; border: none; cursor: pointer; text-align: left;
+  padding: 0; border-radius: 18px; color: #fff; overflow: hidden; position: relative;
   font-family: var(--ios-font); box-shadow: 0 8px 20px rgba(60,40,120,.18);
   -webkit-tap-highlight-color: transparent;
 }
-.home-korea-card .hk-ico { font-size: 24px; line-height: 1; margin-bottom: 18px; }
-.home-korea-card .hk-t { font-size: 13px; font-weight: 900; letter-spacing: -.2px; }
-
-/* content must sit ABOVE the ambient background (which is fixed z0) */
-.home-bg-content { position: relative; z-index: 1; }
-/* ---------- Home: Korean-trend ambient background (crossfade cycle) ----------
-   Shown only on the home tab (body.has-home-bg). Sits fixed behind content,
-   under a bright scrim so cards stay readable. */
-body.has-home-bg .home-scene-bg { display: block; }
-.home-scene-bg {
-  display: none; position: fixed; inset: 0; z-index: 0; overflow: hidden;
-  pointer-events: none;
-}
-.home-scene-bg .hsb-img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  background-size: cover; background-position: center;
-  opacity: 0; animation: hsbFade 24s infinite;
-}
-.home-scene-bg .hsb-img:nth-child(1) { background-image: url('../assets/korea_bg/seongsu.webp'); animation-delay: 0s; }
-.home-scene-bg .hsb-img:nth-child(2) { background-image: url('../assets/korea_bg/seokchon.webp'); animation-delay: 8s; }
-.home-scene-bg .hsb-img:nth-child(3) { background-image: url('../assets/korea_bg/hangang.webp');  animation-delay: 16s; }
-/* bright scrim so content stays legible over the art */
-.home-scene-bg::after {
-  content: ''; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.62) 45%, rgba(247,244,255,.86));
-}
-@keyframes hsbFade {
-  0%   { opacity: 0; }
-  4%   { opacity: 1; }
-  29%  { opacity: 1; }
-  33%  { opacity: 0; }
-  100% { opacity: 0; }
-}
+.home-korea-card .hk-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.home-korea-card::after { content:''; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,5,24,.15), rgba(8,5,24,.55)); }
+.home-korea-card .hk-body { position: relative; z-index: 2; min-height: 108px; padding: 12px; display:flex; flex-direction:column; justify-content:flex-end; }
+.home-korea-card .hk-ico { font-size: 22px; line-height: 1; margin-bottom: 6px; filter: none; }
+.home-korea-card .hk-t { font-size: 14px; font-weight: 900; letter-spacing: -.2px; text-shadow: 0 1px 6px rgba(0,0,0,.5); }

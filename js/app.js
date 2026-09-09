@@ -816,15 +816,13 @@ function render() {
   // the transparent glass header so every tab's header matches home.
   const heroTabs = { home:1, book:1, daily:1, rank:1, my:1 };
   const hasHero = (APP.tab in heroTabs);
-  document.body.classList.toggle('has-hero', hasHero);
-  // Korean-trend ambient background appears only on the home tab
-  document.body.classList.toggle('has-home-bg', APP.tab === 'home' && !APP.lt);
-  if (APP.tab === 'home') {
-    const pod = scenePartOfDay();
-    document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
-  } else {
-    document.body.classList.remove('has-hero-dark');
-  }
+    document.body.classList.toggle('has-hero', hasHero);
+    if (APP.tab === 'home') {
+      const pod = scenePartOfDay();
+      document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
+    } else {
+      document.body.classList.remove('has-hero-dark');
+    }
   // Leaving the book reader → record book study time (if a unit was open)
   if (APP.tab !== 'book' && typeof recordBookStudy === 'function') { try { recordBookStudy(); } catch (e) {} }
   switch (APP.tab) {
@@ -1055,9 +1053,8 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   return `
-    <div class="home-scene-bg" aria-hidden="true"><i class="hsb-img"></i><i class="hsb-img"></i><i class="hsb-img"></i></div>
-    <div class="home-bg-content">
-    ${scene}
+      <div class="home-bg-content">
+      ${scene}
     <div class="hm-main-msg">
       <div class="hmm-title"><span class="hmm-a">Studying Korean with your Idol</span></div>
       <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
@@ -1079,15 +1076,18 @@ function viewHome() {
 }
 function homeKoreaLifeHTML() {
   const cards = [
-    { id:'why', icon:'🇰🇷', title:(LANG==='ko'?'왜 한국?':'Why Korea?'), grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
-    { id:'univs', icon:'🎓', title:(LANG==='ko'?'추천 대학':'Universities'), grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
-    { id:'apps', icon:'📱', title:(LANG==='ko'?'추천 앱':'Apps'), grad:'linear-gradient(135deg,#F472B6,#FBBF24)' },
-    { id:'live', icon:'🏠', title:(LANG==='ko'?'한국 생활':'How to live'), grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
+    { id:'why',   icon:'🇰🇷', img:'assets/korea_bg/seongsu.webp',  title:(LANG==='ko'?'왜 한국?':'Why Korea?') },
+    { id:'univs', icon:'🎓', img:'assets/korea_bg/campus.webp',   title:(LANG==='ko'?'추천 대학':'Universities') },
+    { id:'apps',  icon:'📱', img:'assets/korea_bg/seokchon.webp', title:(LANG==='ko'?'추천 앱':'Apps') },
+    { id:'live',  icon:'🏠', img:'assets/korea_bg/hangang.webp',  title:(LANG==='ko'?'한국 생활':'How to live') }
   ];
   return cards.map(c => `
-    <button class="home-korea-card" onclick="openKoreaSection('${c.id}')" style="--kg:${c.grad}">
-      <div class="hk-ico">${c.icon}</div>
-      <div class="hk-t">${esc(c.title)}</div>
+    <button class="home-korea-card" onclick="openKoreaSection('${c.id}')">
+      <img class="hk-bg" src="${esc(c.img)}" alt="" loading="lazy">
+      <span class="hk-body">
+        <span class="hk-ico">${c.icon}</span>
+        <span class="hk-t">${esc(c.title)}</span>
+      </span>
     </button>`).join('');
 }
 function setLevel(lv) {
