@@ -739,11 +739,6 @@ function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
 function go(tab, noPush) {
-  // Bottom-tab navigation always escapes the level-test overlay.
-  const MAIN_TABS = { home:1, book:1, daily:1, rank:1, my:1 };
-  if (MAIN_TABS[tab]) {
-    if (APP.lt) { APP.lt = null; }
-  }
   if (tab !== APP.tab) {
     if (!noPush) {
       APP.navStack.push(APP.tab);
@@ -792,106 +787,6 @@ window.addEventListener('popstate', () => {
   // Android / browser hardware back — mimic the on-screen back button
   goBack();
 });
-/* ================= LEVEL TEST (placement quiz) ================= */
-/* APP.lt = null | { i: current q index, ans: {band: [correct?]}, done: bool }
-   The quiz lives in data/level-test.js as window.QUIZ (12 q, bands 1-6 ×2). */
-function startLevelTest() {
-  APP.lt = { i: 0, picks: {}, done: false };
-  render();
-}
-function exitLevelTest() { APP.lt = null; render(); }
-function pickLevelTest(oi) {
-  const lt = APP.lt; if (!lt) return;
-  const q = window.QUIZ[lt.i]; if (!q) return;
-  lt.picks[q.band] = lt.picks[q.band] || [];
-  lt.picks[q.band].push(oi === q.correct);
-  lt.i++;
-  if (lt.i >= window.QUIZ.length) lt.done = true;
-  render();
-}
-/* recommended level: highest band where both answers were correct; a band
-   with exactly one correct is a "borderline pass" → we stay at that level. */
-function ltRecommended() {
-  const picks = (APP.lt && APP.lt.picks) || {};
-  let lvl = 1;
-  for (let b = 1; b <= 6; b++) {
-    const arr = picks[b] || [];
-    const c = arr.filter(Boolean).length;
-    if (c >= 2) lvl = b + 1;        // fully passed this band → can try next
-    else if (c === 1) { lvl = Math.max(lvl, b); break; }  // borderline → land here
-    else break;                      // failed the band → stop
-  }
-  return Math.min(6, Math.max(1, lvl));
-}
-function applyLevelTestResult() {
-  const lvl = ltRecommended();
-  // save level-test result: band-by-band correctness → derive weak points
-  try {
-    const picks = (APP.lt && APP.lt.picks) || {};
-    // per-band accuracy
-    const bands = [];
-    for (let b = 1; b <= 6; b++) {
-      const arr = picks[b] || [];
-      if (!arr.length) continue;
-      const c = arr.filter(Boolean).length;
-      bands.push({ band: b, pct: Math.round(c / arr.length * 100) });
-    }
-    // weakest = lowest band accuracy (band with <=50% first, else lowest overall)
-    const weak = [...bands].sort((a, b) => a.pct - b.pct)[0] || null;
-    lsSet(LS.ltResult, { lvl, at: Date.now(), bands, weak: weak ? weak.band : null });
-  } catch (e) {}
-  setMyLevel(lvl);
-  exitLevelTest();
-}
-function viewLevelTest() {
-  const lt = APP.lt;
-  const qs = window.QUIZ || [];
-  if (!lt || !qs.length) return '';
-  const ko = LANG === 'ko';
-  // ---- result screen ----
-  if (lt.done) {
-    const lvl = ltRecommended();
-    const grade = lvl <= 2 ? (ko ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner')
-              : lvl <= 4 ? (ko ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate')
-              : (ko ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
-    let c = 0; Object.values(lt.picks).forEach(a => a.forEach(x => { if (x) c++; }));
-    const pct = Math.round(c / qs.length * 100);
-    return `
-    <div class="lt-result">
-      <div class="lt-badge">${t('lt_done')}</div>
-      <div class="lt-lvl" style="--lvl:${lvl}">T${lvl}</div>
-      <div class="lt-grade">${grade}</div>
-      <div class="lt-score">${c} / ${qs.length} · ${pct}%</div>
-      <p class="lt-sub">${t('lt_rec_sub')}</p>
-      <button class="btn btn-primary lt-cta" onclick="applyLevelTestResult()">${t('lt_set')} →</button>
-      <button class="btn btn-ghost lt-ghost" onclick="startLevelTest()">↻ ${t('lt_retake')}</button>
-      <p class="lt-note">${t('lt_note')}</p>
-    </div>`;
-  }
-  // ---- question screen ----
-  const q = qs[lt.i];
-  const picked = lt.picks[q.band] ? lt.picks[q.band][lt.i % 2] : undefined; // not used before pick
-  const pct = Math.round(lt.i / qs.length * 100);
-  return `
-    <div class="lt-card">
-      <div class="lt-top">
-        <span class="lt-title">🎓 ${t('lt_title')}</span>
-        <span class="lt-q">${t('lt_q', { i: lt.i + 1 })}</span>
-      </div>
-      <div class="lt-progress"><div style="width:${pct}%"></div></div>
-      <div class="lt-band">TOPIK ${q.band <= 2 ? 'I' : 'II'} · Band ${q.band}</div>
-      <div class="lt-question">${esc(q.q)}</div>
-      <div class="lt-opts">
-        ${q.options.map((o, i) => `
-          <button class="lt-opt" onclick="pickLevelTest(${i})">
-            <span class="lt-letter">${'①②③'[i] || i + 1}</span>
-            <span class="lt-t">${esc(o.t)}</span>
-            ${o.gl ? `<span class="lt-gl">${esc(o.gl)}</span>` : ''}
-          </button>`).join('')}
-      </div>
-      <div class="lt-tip">💡 ${ko ? '정답을 고르면 바로 다음 문제로 넘어가요.' : LANG === 'km' ? 'ជ្រើសរើសចម្លើយ បន្ទាប់មកទៅសំណួរបន្ទាប់។' : 'Pick an answer — the next question comes right after.'}</div>
-    </div>`;
-}
 
 let __videoPauseObs = null;
 function initVideoPauseOptimizer() {
@@ -919,16 +814,14 @@ function render() {
   // full-bleed hero: tabs with a hero banner (home scene OR tab hero clips) get
   // the transparent glass header so every tab's header matches home.
   const heroTabs = { home:1, book:1, daily:1, rank:1, my:1 };
-  const hasHero = (APP.tab in heroTabs) && !APP.lt;
+  const hasHero = (APP.tab in heroTabs);
   document.body.classList.toggle('has-hero', hasHero);
-  if (APP.tab === 'home' && !APP.lt) {
+  if (APP.tab === 'home') {
     const pod = scenePartOfDay();
     document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
   } else {
     document.body.classList.remove('has-hero-dark');
   }
-  // Level test takes over the whole screen while active
-  if (APP.lt) { s.innerHTML = viewLevelTest(); renderSchedBanner(); updateBackBtn(); stopFxCycle(); return; }
   // Leaving the book reader → record book study time (if a unit was open)
   if (APP.tab !== 'book' && typeof recordBookStudy === 'function') { try { recordBookStudy(); } catch (e) {} }
   switch (APP.tab) {
@@ -1155,74 +1048,6 @@ function viewHome() {
     ${weekCalendarHTML()}
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
-  const ltDone = localStorage.getItem(LS.mylevel) != null;
-  // Level guidance card is built near the END (after levelWeakCard is defined)
-  // because it references levelWeakCard when the level test was already taken.
-  // This week's study calendar (Sunday start) + weekly total, navigable by week
-  const studyCard = `
-    <div class="sec-h"><h2>${ic('schedule',15)} ${t('prog_study_time')}</h2></div>
-    ${weekCalendarHTML(APP.studyWeek || 0)}`;
-  // Level + weak points from the level test (sample test) — so just taking the
-  // sample test already reveals your level AND your weak spots.
-  const ltRes = lsGet(LS.ltResult, null);
-  const myLv = myLevel();
-  const lvLabel = 'L' + myLv;
-  const lvGrade = myLv <= 2 ? (LANG === 'ko' ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner')
-            : myLv <= 4 ? (LANG === 'ko' ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate')
-            : (LANG === 'ko' ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced');
-  // weak bands from level-test result (bands under 100%, lowest first)
-  const ltBands = (ltRes && ltRes.bands) || [];
-  const bandName = (b) => {
-    const n = b.band;
-    const ko = LANG === 'ko';
-    if (n <= 2) return ko ? '초급' : LANG === 'km' ? 'ថ្នាក់ដំបូង' : 'Beginner';
-    if (n <= 4) return ko ? '중급' : LANG === 'km' ? 'ថ្នាក់កណ្តាល' : 'Intermediate';
-    return ko ? '고급' : LANG === 'km' ? 'ថ្នាក់ខ្ពស់' : 'Advanced';
-  };
-  const weakBands = ltBands.filter(b => b.pct < 100).sort((a, b) => a.pct - b.pct).slice(0, 3);
-  const weakBarHTML = weakBands.length
-    ? weakBands.map(b => `
-        <div class="lw-row">
-          <span class="lw-name">${bandName(b)}</span>
-          <span class="lw-bar"><span style="width:${b.pct}%;"></span></span>
-          <span class="lw-pct">${b.pct}%</span>
-        </div>`).join('')
-    : `<p class="sub" style="margin-top:6px;color:var(--ios-green);">${LANG === 'ko' ? '🎉 모든 레벨을 통과했어요!' : LANG === 'km' ? '🎉 អ្នកបានឆ្លងគ្រប់កម្រិត!' : '🎉 All levels passed!'}</p>`;
-  // Type-wise weak spots — lowest-accuracy question types (from real solved progress)
-  const typeWeak = (acc.byType || [])
-    .filter(s => s.n > 0 && s.p < 100)
-    .sort((a, b) => a.p - b.p)
-    .slice(0, 3);
-  const typeWeakHTML = typeWeak.length
-    ? typeWeak.map(s => `
-        <div class="lw-row">
-          <span class="lw-name">${esc(typeLabel(s.k))}</span>
-          <span class="lw-bar"><span style="width:${s.p}%;"></span></span>
-          <span class="lw-pct">${s.p}%</span>
-        </div>`).join('')
-    : `<p class="sub" style="margin-top:6px;color:var(--ios-green);">${t('no_weak')}</p>`;
-  const levelWeakCard = `
-    <div class="sec-h"><h2>${ic('target',15)} ${LANG === 'ko' ? 'My Level' : LANG === 'km' ? 'កម្រិតរបស់ខ្ញុំ' : 'My Level'}</h2></div>
-    <div class="app-card lw-card">
-      <div class="lw-top">
-        <div class="lw-level">
-          <div class="lw-lvl" style="--lvl:${myLv}">${lvLabel}</div>
-          <div class="lw-grade">${lvGrade}</div>
-        </div>
-        <div class="lw-weak">
-          <div class="lw-weak-label">🎯 ${t('rec_weak')}</div>
-          ${weakBarHTML}
-        </div>
-      </div>
-      <div class="lw-divider"></div>
-      <div class="lw-weak">
-        <div class="lw-weak-label">🧩 ${t('weak_spots')}</div>
-        ${typeWeakHTML}
-      </div>
-    </div>`;
-  // Level guidance card — top card. Before the level test it's a prompt to take
-  // it. After, the journey card (below) is the "My Level" showing next-stage
-  // conditions; per-question performance lives in the AI TOPIK tab instead.
   return `
     <div class="home-bg-content">
     ${scene}
@@ -1896,9 +1721,9 @@ function viewDailySetup() {
       <div style="font-size:26px;font-weight:900;color:var(--ios-purple);line-height:1;">T${myLevel()}</div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:12px;font-weight:800;">${LANG==='ko'?'풀이 난이도':'Practice level'}</div>
-        <div style="font-size:10.5px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${myLevel()<=2?(LANG==='ko'?'TOPIK I · 초급':'TOPIK I'):(LANG==='ko'?'TOPIK II · 중·고급':'TOPIK II')} · ${LANG==='ko'?'문제 정답률로 자동 조정':'auto-tuned to your accuracy'}</div>
+        <div style="font-size:10.5px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${myLevel()<=2?(LANG==='ko'?'TOPIK I · 초급':'TOPIK I'):(LANG==='ko'?'TOPIK II · 중·고급':'TOPIK II')} · ${LANG==='ko'?'My에서 직접 설정':'set in My'}</div>
       </div>
-      <button class="btn btn-ghost btn-sm" style="flex:none;border:1.5px solid var(--ios-purple);color:var(--ios-purple);" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
+      <button class="btn btn-ghost btn-sm" style="flex:none;border:1.5px solid var(--ios-purple);color:var(--ios-purple);" onclick="go('my')">${LANG==='ko'?'변경':'Change'}</button>
     </div>
     <div class="sec-h" style="margin-top:18px;"><h2>${LANG==='ko'?'어떤 유형을 풀까요?':'Choose a section'}</h2></div>
     <div class="daily-secs">${secBtns}</div>
@@ -2135,7 +1960,7 @@ function viewSection(sec) {
     <div class="sec-h"><h2 style="color:${col};">${ic(ico,18)} ${label}</h2><span class="sub">${t('nav_' + sec)} · TOPIK ${APP.level}</span></div>
     <div style="display:flex;align-items:center;gap:8px;margin:2px 0 12px;padding:8px 12px;background:var(--ios-fill,#f2f4f9);border-radius:12px;">
       <span style="font-size:20px;font-weight:900;color:${col};">T${selLv}</span>
-      <span style="font-size:11px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${LANG==='ko'?'나의 TOPIK 레벨로 자동 설정돼요':'auto set to your TOPIK level'}</span>
+      <span style="font-size:11px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${LANG==='ko'?'My에서 직접 설정한 레벨':'level set in My'}</span>
     </div>
     <div class="app-card big-cta" style="border:1.5px solid ${col};">
       <div class="cta-ico" style="color:${col};">${ic(ico, 44)}</div>
@@ -2159,8 +1984,8 @@ function setSectionLevel(lv) {
 }
 /* ---------- My level (default practice level, set in My tab) ---------- */
 function myLevel() {
-  // 나의 TOPIK 레벨 (T1~T6) — 자동 판정. 수동 L1~L6 선택은 제거됨.
-  // 값은 mylevel(1-6) 저장소에 두되, 모의고사/추정 결과로 자동 세팅.
+  // 나의 TOPIK 레벨 (T1~T6) — 사용자가 My 탭에서 직접 선택.
+  // Reading·Listening·Voca 문제 난이도의 기준이 됩니다.
   const v = parseInt(localStorage.getItem(LS.mylevel), 10);
   return (v >= 1 && v <= 6) ? v : 3;
 }
@@ -2436,9 +2261,11 @@ function viewMy() {
       <div class="row" style="align-items:center;">
         <div style="font-size:40px;font-weight:900;line-height:1;color:var(--ios-purple);">T${myLevel()}</div>
         <span class="lv-grade" style="font-size:12px;font-weight:800;color:var(--ios-secondary-label);">${myLevel() <= 2 ? (LANG==='ko'?'TOPIK I · 초급':LANG==='km'?'TOPIK I':'TOPIK I · Beginner') : (LANG==='ko'?'TOPIK II · 중·고급':LANG==='km'?'TOPIK II':'TOPIK II · Int-Adv')}</span>
-        <span class="sub" style="margin-left:auto;text-align:right;font-size:11px;">${LANG==='ko'?'레벨테스트·모의고사로<br>자동 판정돼요':'Auto-set from your<br>test & mock scores'}</span>
+        <span class="sub" style="margin-left:auto;text-align:right;font-size:11px;">${LANG==='ko'?'Reading·Listening·Voca에<br>적용돼요':'Applies to<br>Reading·Listening·Voca'}</span>
       </div>
-      <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px;border:1.5px solid var(--ios-purple);color:var(--ios-purple);border-radius:12px;" onclick="startLevelTest()">🎓 ${t('lt_retake')}</button>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:12px;">
+        ${[1,2,3,4,5,6].map(n => `<button class="btn ${n===myLevel()?'btn-primary':'btn-ghost'}" style="padding:8px 0;font-weight:800;${n===myLevel()?'background:var(--ios-purple);border-color:var(--ios-purple);':''}" onclick="setMyLevel(${n})">T${n}</button>`).join('')}
+      </div>
     </div>
     <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
     <div class="app-card" style="padding:6px 14px;">
@@ -2517,10 +2344,6 @@ function finishDaily() {
     if (idx >= 0) scores[idx] = rec; else scores.push(rec);
     scores.sort((a, b) => a.date < b.date ? -1 : 1);
     lsSet(LS.scores, scores.slice(-30));
-    // 나의 TOPIK 레벨 자동 갱신: 이번 10문제 정답률 → 추정 점수 → T등급.
-    // 레벨테스트(수동)보다 실측이 우선 — 학습자가 '문제 수준'을 직접 고르지 않게.
-    const g = topikGradeFromScore(est.score, est.maxScore);
-    if (g !== myLevel()) setMyLevel(g);
   } catch (e) { /* non-fatal */ }
   render();
 }
