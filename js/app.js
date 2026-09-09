@@ -1076,17 +1076,18 @@ function viewHome() {
 }
 function homeKoreaLifeHTML() {
   const cards = [
-    { id:'why',   icon:'🇰🇷', img:'assets/korea_bg/seongsu.webp',  title:(LANG==='ko'?'왜 한국?':'Why Korea?') },
-    { id:'univs', icon:'🎓', img:'assets/korea_bg/campus.webp',   title:(LANG==='ko'?'추천 대학':'Universities') },
-    { id:'apps',  icon:'📱', img:'assets/korea_bg/seokchon.webp', title:(LANG==='ko'?'추천 앱':'Apps') },
-    { id:'live',  icon:'🏠', img:'assets/korea_bg/hangang.webp',  title:(LANG==='ko'?'한국 생활':'How to live') }
+    { id:'why',   title:(LANG==='ko'?'왜 한국?':'Why Korea?'),   v:'assets/korea_bg/why.mp4'   },
+    { id:'univs', title:(LANG==='ko'?'추천 대학':'Universities'), v:'assets/korea_bg/univs.mp4' },
+    { id:'apps',  title:(LANG==='ko'?'추천 앱':'Apps'),          v:'assets/korea_bg/apps.mp4'  },
+    { id:'live',  title:(LANG==='ko'?'한국 생활':'How to live'), v:'assets/korea_bg/live.mp4'  }
   ];
   return cards.map(c => `
     <button class="home-korea-card" onclick="openKoreaSection('${c.id}')">
-      <img class="hk-bg" src="${esc(c.img)}" alt="" loading="lazy">
+      <video class="hk-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <source src="${c.v}" type="video/mp4"></video>
       <span class="hk-body">
-        <span class="hk-ico">${c.icon}</span>
         <span class="hk-t">${esc(c.title)}</span>
+        <span class="hk-go">${LANG==='ko'?'바로가기':'Open'} →</span>
       </span>
     </button>`).join('');
 }
@@ -2631,11 +2632,11 @@ function totalSolvedQuestions() {
 function fmtStudyMin(mins) {
   const ko = LANG === 'ko';
   const total = Math.max(0, Math.round(mins || 0));
-  if (total <= 0) return ko ? '0분' : '0m';
+  if (total <= 0) return ko ? '0분' : '0 min';
   const h = Math.floor(total / 60), m = total % 60;
-  if (h <= 0) return m + (ko ? '분' : 'm');
-  if (m === 0) return h + (ko ? '시간' : 'h');
-  return h + (ko ? '시간 ' : 'h ') + m + (ko ? '분' : 'm');
+  if (h <= 0) return m + (ko ? '분' : ' min');
+  if (m === 0) return h + (ko ? '시간' : ' hr');
+  return h + (ko ? '시간 ' : ' hr ') + m + (ko ? '분' : ' min');
 }
 /* overall accuracy % (0-100) */
 function overallAccuracy() {
