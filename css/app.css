@@ -2096,6 +2096,8 @@ body.has-back .app-header .brand { margin-left: 0; }
 .home-korea-card .hk-ico { font-size: 24px; line-height: 1; margin-bottom: 18px; }
 .home-korea-card .hk-t { font-size: 13px; font-weight: 900; letter-spacing: -.2px; }
 
+/* content must sit ABOVE the ambient background (which is fixed z0) */
+.home-bg-content { position: relative; z-index: 1; }
 /* ---------- Home: Korean-trend ambient background (crossfade cycle) ----------
    Shown only on the home tab (body.has-home-bg). Sits fixed behind content,
    under a bright scrim so cards stay readable. */
