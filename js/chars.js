@@ -363,10 +363,6 @@ function renderCharPicker() {
     </div>
     ${unlocked < 60 ? `<div class="cp-status-sub">${LANG === 'ko' ? `다음 캐릭터는 Lv ${nextLv}에 해제돼요` : LANG === 'km' ? `តួអង្គបន្ទាប់ ដោះសោនៅ Lv ${nextLv}` : `Next character unlocks at Lv ${nextLv}`}</div>` : ''}`;
   ov.innerHTML = `
-    <video class="cp-bg" id="cp-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-      <source src="assets/home_bg/chars/group.mp4" type="video/mp4"></video>
-    <div class="cp-scrim"></div>
-    <div class="cp-scroll">
     <div class="cp-head">
       <b>${LANG === 'ko' ? '캐릭터 선택' : LANG === 'km' ? 'ជ្រើសរើសតួអង្គ' : 'Choose character'}</b>
       <span class="cp-x" onclick="closeCharPicker()">✕</span>
@@ -381,8 +377,7 @@ function renderCharPicker() {
       <button class="ctab ${g === 'f' ? 'on' : ''}" data-g="f" onclick="setCharTab('f')">👧 ${LANG === 'ko' ? '여자' : 'Female'}</button>
       <button class="ctab ${g === 'm' ? 'on' : ''}" data-g="m" onclick="setCharTab('m')">👦 ${LANG === 'ko' ? '남자' : 'Male'}</button>
     </div>
-    <div class="cp-grid" id="char-grid">${charGridHTML(g)}</div>
-    </div>`;
+    <div class="cp-grid" id="char-grid">${charGridHTML(g)}</div>`;
 }
 function saveCharName() {
   const inp = $id('cp-name-input');
