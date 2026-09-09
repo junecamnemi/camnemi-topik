@@ -1291,7 +1291,7 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 /* ---------- Ranking ---------- */
 .rk-chips { display: flex; gap: 8px; margin: 2px 2px 12px; }
 /* ===== Korea Life (rank tab) — theme-aware (matches app pastel design) ===== */
-.kl-home { padding: 2px 16px 14px; }
+.kl-home { padding: 2px 0 14px; }
 /* 3-section home cards */
 .kl3-grid { display:flex; flex-direction:column; gap:13px; }
 .kl3-grid.kl3-4 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
@@ -1377,7 +1377,7 @@ table.kl-compare { border-collapse:collapse; width:100%; min-width:640px; backgr
 .kl-sub { font-size:10.5px; color:var(--ios-secondary-label); font-weight:600; margin-top:3px; line-height:1.35; }
 .kl-count { font-size:10px; font-weight:800; color:var(--ios-purple,#8B5CF6); margin-top:8px; }
 /* category detail */
-.kl-detail-view { padding:0 16px 30px; }
+.kl-detail-view { padding: 0 0 30px; }
 .kl-cat-hero { display:flex; align-items:center; gap:14px; background:var(--ios-card); border:1px solid rgba(255,255,255,.55);
   border-radius:20px; padding:16px; box-shadow:0 6px 22px var(--ios-shadow); margin-bottom:14px; }
 .kl-cat-ico { font-size:32px; }
