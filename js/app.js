@@ -1252,24 +1252,17 @@ function viewHome() {
   return `
     <div class="home-bg-content">
     ${scene}
-    ${mainMsg}
-    ${levelCard}
-    <details class="home-mylevel-fold">
-      <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
-      <div class="hmf-body">${journeyCardHTML()}</div>
-    </details>
+    <div class="hm-level-block">
+      ${mainMsg}
+      ${levelCard}
+      <details class="home-mylevel-fold">
+        <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
+        <div class="hmf-body">${journeyCardHTML()}</div>
+      </details>
+    </div>
     ${featureTilesHTML}
     <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
     ${statusCardHTML()}
-    ${studyCard}
-    ${isNew ? '' : `
-    <div class="sec-h"><h2>${ic('chart',15)} ${t('avg_acc')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
-    <div class="app-card filled">
-      <b style="font-size:13px;color:var(--ios-blue);">${t('by_level')}</b>
-      ${acc.byLevel.length
-        ? acc.byLevel.map(r => accBar(r.k <= 2 ? '★'.repeat(r.k) : 'L' + r.k + ' ★'.repeat(Math.max(1, r.k - 2)), r.p, qSub(r.c, r.n))).join('')
-        : `<p class="sub" style="margin-top:6px;">${t('level_empty')}</p>`}
-    </div>`}
     </div>
   `;
 }
