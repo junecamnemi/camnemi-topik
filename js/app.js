@@ -817,6 +817,8 @@ function render() {
   const heroTabs = { home:1, book:1, daily:1, rank:1, my:1 };
   const hasHero = (APP.tab in heroTabs);
   document.body.classList.toggle('has-hero', hasHero);
+  // Korean-trend ambient background appears only on the home tab
+  document.body.classList.toggle('has-home-bg', APP.tab === 'home' && !APP.lt);
   if (APP.tab === 'home') {
     const pod = scenePartOfDay();
     document.body.classList.toggle('has-hero-dark', pod === 'midnight' || pod === 'predawn' || pod === 'night');
@@ -1053,6 +1055,7 @@ function viewHome() {
     <div class="app-card ht-card">${homeTasksHTML()}</div>
     ${streakCardHTML()}`;
   return `
+    <div class="home-scene-bg" aria-hidden="true"><i class="hsb-img"></i><i class="hsb-img"></i><i class="hsb-img"></i></div>
     <div class="home-bg-content">
     ${scene}
     <div class="hm-main-msg">

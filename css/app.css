@@ -2095,3 +2095,32 @@ body.has-back .app-header .brand { margin-left: 0; }
 }
 .home-korea-card .hk-ico { font-size: 24px; line-height: 1; margin-bottom: 18px; }
 .home-korea-card .hk-t { font-size: 13px; font-weight: 900; letter-spacing: -.2px; }
+
+/* ---------- Home: Korean-trend ambient background (crossfade cycle) ----------
+   Shown only on the home tab (body.has-home-bg). Sits fixed behind content,
+   under a bright scrim so cards stay readable. */
+body.has-home-bg .home-scene-bg { display: block; }
+.home-scene-bg {
+  display: none; position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  pointer-events: none;
+}
+.home-scene-bg .hsb-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  background-size: cover; background-position: center;
+  opacity: 0; animation: hsbFade 24s infinite;
+}
+.home-scene-bg .hsb-img:nth-child(1) { background-image: url('assets/korea_bg/seongsu.webp'); animation-delay: 0s; }
+.home-scene-bg .hsb-img:nth-child(2) { background-image: url('assets/korea_bg/seokchon.webp'); animation-delay: 8s; }
+.home-scene-bg .hsb-img:nth-child(3) { background-image: url('assets/korea_bg/hangang.webp');  animation-delay: 16s; }
+/* bright scrim so content stays legible over the art */
+.home-scene-bg::after {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.62) 45%, rgba(247,244,255,.86));
+}
+@keyframes hsbFade {
+  0%   { opacity: 0; }
+  4%   { opacity: 1; }
+  29%  { opacity: 1; }
+  33%  { opacity: 0; }
+  100% { opacity: 0; }
+}
