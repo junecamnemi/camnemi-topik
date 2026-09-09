@@ -1917,7 +1917,9 @@ select { font-family: var(--ios-font); }
 
 /* ---------- Tab hero: full-bleed looping idol clip, home-size banner ---------- */
 .scene-hero.tab-hero {
-  position: sticky; top: 52px; z-index: 30;
+  /* hero pins to the very top; the translucent glass header floats OVER it
+     (header z60 > hero z30), matching home. Content scrolls beneath. */
+  position: sticky; top: 0; z-index: 30;
   overflow: hidden; width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-top: -68px;
