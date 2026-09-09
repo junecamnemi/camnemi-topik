@@ -654,6 +654,24 @@ body.has-back .app-header .brand { margin-left: 34px; }
   transition: transform .13s, filter .15s;
 }
 .aq-redo:active { transform: scale(.985); }
+/* Reading / Listening / Voca section start card — reuse the drifting diagonal
+   gradient so selecting a section has the same lively AI-Redo feel. */
+.sec-redo-card {
+  position: relative; overflow: hidden; color: #fff;
+  border: none !important;
+  background: linear-gradient(115deg, #6d3cf0 0%, #a040d6 18%, #ec4a9e 38%, #f59e0b 55%, #22d3ee 74%, #3b82d6 90%, #6d3cf0 100%);
+  background-size: 260% 260%;
+  background-position: 0% 50%;
+  animation: aqRedoDrift 7s linear infinite;
+  box-shadow: 0 6px 22px rgba(124,58,237,.30);
+}
+.sec-redo-card .cta-ico { color: #fff !important; opacity: .95; }
+.sec-redo-card h2 { color: #fff; }
+.sec-redo-card .sub { color: rgba(255,255,255,.92); }
+.sec-redo-card .stat-box { background: rgba(255,255,255,.16); color:#fff; }
+.sec-redo-card .stat-box b { color:#fff; }
+.sec-redo-card .stat-box span { color: rgba(255,255,255,.85); }
+.sec-redo-card .btn-primary { background: rgba(255,255,255,.22); box-shadow:none; border:1px solid rgba(255,255,255,.55); color:#fff; }
 /* slow diagonal drift (keeps speed in the same ballpark as before) */
 @keyframes aqRedoDrift {
   0%   { background-position: 0% 50%; }

@@ -1962,8 +1962,8 @@ function viewSection(sec) {
       <span style="font-size:20px;font-weight:900;color:${col};">T${selLv}</span>
       <span style="font-size:11px;color:var(--ios-secondary-label,#6b7280);font-weight:600;">${LANG==='ko'?'My에서 직접 설정한 레벨':'level set in My'}</span>
     </div>
-    <div class="app-card big-cta" style="border:1.5px solid ${col};">
-      <div class="cta-ico" style="color:${col};">${ic(ico, 44)}</div>
+    <div class="app-card big-cta sec-redo-card">
+      <div class="cta-ico">${ic(ico, 44)}</div>
       <h2 style="font-size:21px;margin:8px 0 4px;">${t('sec_practice', { s: label })} <span class="sub">· T${selLv}</span></h2>
       <p class="sub" style="line-height:1.6;">${t('sec_desc', { s: label })}</p>
       <div class="stat-row">
@@ -1971,7 +1971,7 @@ function viewSection(sec) {
         <div class="stat-box"><b>${wrong}</b><span>${t('wrong_title')}</span></div>
         <div class="stat-box"><b>${lvCounts[selLv-1] || 10}</b><span>${t('sec_qs')}</span></div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:14px;background:${col};box-shadow:0 6px 18px ${col}55;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · T${selLv}</button>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="startSection('${sec}', ${selLv})">${ic('daily',17)} ${t('sec_start')} · T${selLv}</button>
     </div>
     ${wrong ? `<div class="app-card" onclick="go('wrong')" style="cursor:pointer;">
       <div class="row"><div>${ic('notes',20)} <b>${t('wrong_title')} (${wrong})</b></div><span style="color:var(--ios-green);">→</span></div>
