@@ -1235,16 +1235,6 @@ function viewHome() {
   // Level guidance card — top card. Before the level test it's a prompt to take
   // it. After, the journey card (below) is the "My Level" showing next-stage
   // conditions; per-question performance lives in the AI TOPIK tab instead.
-  const levelCard = !ltDone
-    ? `<div class="app-card lt-home-card" style="margin-top:16px;">
-      <div class="lt-home-ico">🎓</div>
-      <div class="lt-home-txt">
-        <b>${t('lt_home_card')}</b>
-        <span class="sub">${t('lt_home_card_sub')}</span>
-      </div>
-      <button class="btn btn-primary btn-sm" onclick="startLevelTest()">${t('lt_start')} →</button>
-    </div>`
-    : '';
   return `
     <div class="home-bg-content">
     ${scene}
@@ -1255,7 +1245,6 @@ function viewHome() {
     <div class="sec-h hm-record-h"><h2>${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
     <div class="hm-record-block">
       <div class="hm-status">${statusCardHTML(true)}</div>
-      ${levelCard}
       <details class="home-mylevel-fold">
         <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
         <div class="hmf-body">${journeyCardHTML()}</div>
