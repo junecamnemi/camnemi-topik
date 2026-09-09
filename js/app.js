@@ -1100,30 +1100,11 @@ function viewHome() {
     const chip = $id('wx-chip'); if (chip) chip.textContent = greetWxText(wx);
   });
   tickClock();
-  // Quick start — four big pretty one-tap test cards, each with a distinct
-  // rotating radial (conic) gradient background.
-  const aiQuick = `
-    <div class="aq-4">
-      <button class="aq-cell aq-r aq-spin" style="--aq-c1:#4A6FA5;--aq-c2:#7FB5E8;--aq-c3:#FFD6E8;" onclick="startSection('reading', myLevel())">
-        <span class="aq-star">✦</span>
-        <span class="aq-txt"><b>${t('nav_reading')}</b><span class="aq-sub">${t('home_ai_read')}</span></span>
-        <span class="aq-arr">→</span>
-      </button>
-      <button class="aq-cell aq-l aq-spin" style="--aq-c1:#14B8A6;--aq-c2:#5EEAD4;--aq-c3:#FDE68A;" onclick="startSection('listening', myLevel())">
-        <span class="aq-star">✦</span>
-        <span class="aq-txt"><b>${t('nav_listening')}</b><span class="aq-sub">${t('home_ai_listen')}</span></span>
-        <span class="aq-arr">→</span>
-      </button>
-      <button class="aq-cell aq-v aq-spin" style="--aq-c1:#F59E0B;--aq-c2:#FBBF24;--aq-c3:#FB923C;" onclick="startSection('reading', myLevel(), 'vocab')">
-        <span class="aq-star">✦</span>
-        <span class="aq-txt"><b>${t('home_task_vocab')}</b><span class="aq-sub">${t('home_sch_vocab')}</span></span>
-        <span class="aq-arr">→</span>
-      </button>
-      <button class="aq-cell aq-m aq-spin" style="--aq-c1:#EC4899;--aq-c2:#F472B6;--aq-c3:#A78BFA;" onclick="go('mock')">
-        <span class="aq-star">✦</span>
-        <span class="aq-txt"><b>${t('home_task_mock')}</b><span class="aq-sub">${t('home_sch_mock')}</span></span>
-        <span class="aq-arr">→</span>
-      </button>
+  // Main headline message under the hero, above My Level
+  const mainMsg = `
+    <div class="hm-main-msg">
+      <div class="hmm-title"><span class="hmm-a">Studying Korean</span><span class="hmm-sep">,</span> <span class="hmm-b">Unlock Your Idol</span></div>
+      <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
     </div>`;
   const aiRedoHome = `
     <button class="aq-redo aq-gborder" onclick="aiRedoGo()">
@@ -1271,14 +1252,13 @@ function viewHome() {
   return `
     <div class="home-bg-content">
     ${scene}
+    ${mainMsg}
     ${levelCard}
     <details class="home-mylevel-fold">
       <summary><span class="jsm-row">${journeySummaryHTML() || (ic('target',15) + ' ' + (LANG==='ko'?'My Level':'My Level'))}</span></summary>
       <div class="hmf-body">${journeyCardHTML()}</div>
     </details>
     ${featureTilesHTML}
-    <div class="sec-h" style="margin-top:18px;"><h2>${ic('spark',15)} AI Questions</h2><span class="sub">${LANG==='ko'?'영역별로 풀기':'Practice by skill'}</span></div>
-    ${aiQuick}
     <div class="sec-h" style="margin-top:18px;"><h2>📊 ${LANG==='ko'?'My Status':'My Status'}</h2><span class="sub">${LANG==='ko'?'아이콘을 눌러 의미를 보세요':'Tap an icon to see what it means'}</span></div>
     ${statusCardHTML()}
     ${studyCard}
