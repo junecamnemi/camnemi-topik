@@ -2411,6 +2411,9 @@ function navSection(d) {
 function addStudyTime(type, mins) {
   try {
     if (!mins || !['reading', 'listening', 'vocab', 'mock', 'aiRedo', 'book'].includes(type)) return;
+    // Textbook minutes only count toward the level for logged-in users (guests
+    // can study, but don't accumulate book-level progress).
+    if (type === 'book' && typeof isAuthed === 'function' && !isAuthed()) return;
     const before = (type === 'book') ? totalBookMin() : 0;
     const today = new Date().toISOString().slice(0, 10);
     const all = lsGet(LS.studyTime, {});
@@ -2913,6 +2916,12 @@ function currentJourney() {
   // textbook.  Weighted problem progress P: wrong +1 · correct +1.2 · each
   // consecutive correct +0.1 → problem level = floor(P/10).  Textbook: every
   // 60 minutes of book study = +1 level.  Idol level = problem + textbook.
+  // Guests don't level up or unlock characters — they show 0 progress.
+  if (typeof isAuthed !== 'function' || !isAuthed()) {
+    return { lv:0, qLv:0, bLv:0, lvName:'Lv0', lvNameEn:'Lv0', stageName:'', stageNameEn:'', stageIdx:1,
+      qInto:0, qNeed:10, bInto:0, bNeed:60, qSegPct:0, bSegPct:0, segPct:0, P:0, bookMin:0,
+      maxed:false, lvDone:false, lvAccBlocked:false, acc:0, accGate:0, nextLv:null };
+  }
   try {
     const qp = lsGet(LS.qprog, { P: 0, cur: 0 });
     const P = Math.max(0, qp.P || 0);
@@ -3496,7 +3505,8 @@ function recordResult(q, correct) {
   lsSet(LS.progress, prog);
   // Weighted problem progress (new reward model): wrong +1 · correct +1.2
   // (20% bonus) · consecutive correct adds +0.1 each. Problem level = floor(P/10).
-  try {
+  // Only accumulates for logged-in users — guests can solve but don't level up.
+  if (typeof isAuthed === 'function' && isAuthed()) try {
     const qp = lsGet(LS.qprog, { P: 0, cur: 0 });
     let qp2;
     if (correct) {
@@ -5036,6 +5046,18 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   applyCharTheme();
   refreshUserBtn();
+  // Guests don't persist levels/unlocks: wipe guest local progress once per day
+  // (session resets daily) so stale guest level/character data never carries over.
+  try {
+    if (!(typeof isAuthed === 'function' && isAuthed())) {
+      const today = new Date().toISOString().slice(0, 10);
+      const lastGuest = localStorage.getItem('camnemi_topik_guest_reset');
+      if (lastGuest !== today) {
+        ['camnemi_topik_progress','camnemi_topik_daily','camnemi_topik_study_time','camnemi_topik_qprog','camnemi_topik_wrong','camnemi_topik_srs','camnemi_topik_streak','camnemi_topik_quests','camnemi_topik_challenge','camnemi_topik_conquered','camnemi_topik_bookmarks','camnemi_topik_section','camnemi_topik_mylevel','camnemi_topik_lt_result'].forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+        localStorage.setItem('camnemi_topik_guest_reset', today);
+      }
+    }
+  } catch (e) {}
   // start automatic learner-data sync (push-on-change + pull-on-login)
   if (window.SYNC && typeof window.SYNC.init === 'function') { try { window.SYNC.init(); } catch (e) {} }
   // auth → refresh user button + pull synced data when signed in
