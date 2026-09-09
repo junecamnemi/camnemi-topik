@@ -3340,7 +3340,7 @@ function unitChip(qid) {
   const m = unitForQuestion(qById(qid));
   if (!m) return '';
   const ko = LANG === 'ko';
-  return `<button class="q-unit" onclick="goToQuestionUnit('${escAttr(qid)}')" title="${ko?'해당 단원으로 이동':'Go to this unit'}" style="margin-left:auto;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--ios-purple,.12);color:var(--ios-purple);border:1px solid var(--ios-purple,.25);cursor:pointer;">📖 ${ko ? m.book.toUpperCase()+' U'+m.unit : m.book.toUpperCase()+' · Unit '+m.unit} →</button>`;
+  return `<button class="q-unit" onclick="goToQuestionUnit('${escAttr(qid)}')" title="${ko?'해당 단원으로 이동':'Go to this unit'}" style="flex:none;white-space:nowrap;font-size:10px;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(124,58,237,.12);color:#7C3AED;border:1px solid rgba(124,58,237,.25);cursor:pointer;">📖 ${m.book.toUpperCase()} · Unit ${m.unit} →</button>`;
 }
 /* SRS: due cards for review */
 function dueCards() {
