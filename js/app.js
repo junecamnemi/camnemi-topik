@@ -1078,7 +1078,6 @@ function viewHome() {
           style="object-position:${s.pos}" aria-hidden="true">
           <source src="${s.v}" type="video/mp4"></video>`;
       }).join('')}
-      <img class="scene-plane" id="scene-plane" src="assets/img/plane.png" alt="" draggable="false" aria-hidden="true">
       <button class="scene-carousel-nav prev" id="scene-caro-prev" onclick="homeCarousel(-1)" aria-label="prev">‹</button>
       <button class="scene-carousel-nav next" id="scene-caro-next" onclick="homeCarousel(1)" aria-label="next">›</button>
       <div class="scene-dots" id="scene-dots">${_scenes.map((_, i) => `<span class="scene-dot ${i===initIdx?'on':''}" data-dot="${i}"></span>`).join('')}</div>
