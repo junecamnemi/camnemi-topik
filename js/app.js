@@ -1080,18 +1080,22 @@ function homeKoreaLifeHTML() {
   const cards = [
     { id:'why',   title:(LANG==='ko'?'왜 한국?':'Why Korea?'),   v:'assets/korea_bg/why_l.mp4'   },
     { id:'univs', title:(LANG==='ko'?'추천 대학':'Universities'), v:'assets/korea_bg/univs_l.mp4' },
-    { id:'apps',  title:(LANG==='ko'?'추천 앱':'Apps'),          v:'assets/korea_bg/apps_l.mp4'  },
+    { id:'apps',  title:(LANG==='ko'?'추천 앱':'Apps'),          img:'assets/korea_bg/apps_still.webp' },
     { id:'live',  title:(LANG==='ko'?'한국 생활':'How to live'), v:'assets/korea_bg/live_l.mp4'  }
   ];
-  return cards.map(c => `
+  return cards.map(c => {
+    const bg = c.img
+      ? `<img class="hk-bg" src="${c.img}" alt="" loading="lazy">`
+      : `<video class="hk-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="${c.v}" type="video/mp4"></video>`;
+    return `
     <button class="home-korea-card" onclick="openKoreaSection('${c.id}')">
-      <video class="hk-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="${c.v}" type="video/mp4"></video>
+      ${bg}
       <span class="hk-body">
         <span class="hk-t">${esc(c.title)}</span>
         <span class="hk-go">${LANG==='ko'?'바로가기':'Open'} →</span>
       </span>
-    </button>`).join('');
+    </button>`;
+  }).join('');
 }
 function setLevel(lv) {
   APP.level = lv;
@@ -3831,18 +3835,23 @@ function viewKoreaLife() {
   const cards = [
     { id:'why',   title:(kl.why&&kl.why.title)||'Why Korea?',   sub:(LANG==='ko'?'한국 대표 풍경':'Scenery of Korea'),   v:'assets/korea_bg/why_l.mp4' },
     { id:'univs', title:'Universities',                          sub:(LANG==='ko'?'고려대 · 대학 생활':'KU campus & study'), v:'assets/korea_bg/univs_l.mp4' },
-    { id:'apps',  title:'Recommend apps',                        sub:(LANG==='ko'?'나를 살게 해주는 한국 앱들':'Naver Map, Coupang, Baemin & more'), v:'assets/korea_bg/apps_l.mp4' },
+    { id:'apps',  title:'Recommend apps',                        sub:(LANG==='ko'?'나를 살게 해주는 한국 앱들':'Naver Map, Coupang, Baemin & more'), img:'assets/korea_bg/apps_still.webp' },
     { id:'live',  title:'How to live',                           sub:(LANG==='ko'?'교통·음식·건강·비자 등':'Transport, food, health, visa & more'), v:'assets/korea_bg/live_l.mp4' }
   ];
-  const grid = cards.map(c => `
+  const grid = cards.map(c => {
+    const bg = c.img
+      ? `<img class="kl3-bg" src="${c.img}" alt="" loading="lazy">`
+      : `<video class="kl3-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="${c.v}" type="video/mp4"></video>`;
+    return `
     <button class="kl3-tile" onclick="openKoreaSection('${c.id}')">
-      <video class="kl3-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="${c.v}" type="video/mp4"></video>
+      ${bg}
       <span class="kl3-cap">
         <span class="kl3-title">${esc(c.title)}</span>
         <span class="kl3-sub">${esc(c.sub)}</span>
         <span class="kl3-go">${LANG==='ko'?'열기':'Open'} →</span>
       </span>
-    </button>`).join('');
+    </button>`;
+  }).join('');
   return `${hero}
     <div class="kl-home kl3-home">
       <div class="kl-intro">${LANG==='ko'?'한국 유학의 첫걸음 — 왜, 어디로, 어떻게, 무엇으로':'Your Korea journey — why, where, how & what to use'}</div>
