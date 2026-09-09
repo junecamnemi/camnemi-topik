@@ -193,7 +193,10 @@ window.KOREA_LIFE = {
         tips:["Camera mode translates menus & signs live.","Works offline for key languages.","Better than Google for Korean."] },
       { name:"KakaoTalk", kor:"카카오톡", icon:"💬", "img":"assets/korea/kakaotalk.webp", "play":"https://play.google.com/store/apps/details?id=com.kakao.talk", "apple":"https://apps.apple.com/kr/app/id362057947", cat:"Messaging", need:"Everyone communicates here",
         body:"Korea runs on KakaoTalk — how you message classmates, professors, landlords and friends. You need it for group chats and official university notices.",
-        tips:["Register with your Korean number after getting a SIM.","Universities & clubs share notices in KakaoTalk.","Voice/video calls are free between KakaoTalk users."] }
+        tips:["Register with your Korean number after getting a SIM.","Universities & clubs share notices in KakaoTalk.","Voice/video calls are free between KakaoTalk users."] },
+      { name:"MUSINSA", kor:"무신사", icon:"👟", "img":"assets/korea/musinsa.webp", "play":"https://play.google.com/store/apps/details?id=com.musinsa.store", "apple":"https://apps.apple.com/kr/app/id1003139529", cat:"Fashion shopping", need:"Korean streetwear & sneakers",
+        body:"Korea's #1 online fashion store for streetwear, sneakers and K-fashion brands. Great for buying clothes, shoes and accessories at student-friendly prices, with frequent sales.",
+        tips:["Filter by size and brand — Korean sizing runs small, check the size guide.","Lots of student discounts and seasonal sales.","You can browse and compare many streetwear brands in one place."] }
     ]
   },
   /* How to Live = the 10 categories above (cats) */
