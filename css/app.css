@@ -408,16 +408,16 @@ body.has-back .app-header .brand { margin-left: 34px; }
   position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   width: calc(100% - 28px); max-width: 540px; z-index: 200;
-  background: rgba(255, 255, 255, .92);
-  border: 1px solid rgba(255, 255, 255, .6);
+  background: rgba(255, 255, 255, .97);
+  border: 1px solid rgba(255, 255, 255, .7);
   border-radius: 26px;
   box-shadow: 0 12px 40px rgba(91, 91, 214, .18), 0 2px 8px rgba(23, 21, 34, .06);
   display: flex; justify-content: space-around;
   padding: 8px 6px;
 }
 [data-theme="dark"] .tab-bar {
-  background: rgba(30, 28, 48, .8);
-  border-color: rgba(245, 244, 255, .08);
+  background: rgba(30, 28, 48, .95);
+  border-color: rgba(245, 244, 255, .12);
   box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
 }
 .tab-item {
