@@ -81,10 +81,13 @@
 [data-theme="dark"] .grade-card span { background: var(--ios-card); }
 
 /* ---------- App shell (ambient gradient blobs) ---------- */
+/* NOTE: overflow-x must NOT sit on .app-shell — a non-root ancestor with
+   overflow breaks position:sticky for the hero video. It lives on body instead. */
+body { overflow-x: hidden; }
 .app-shell {
   display: flex; flex-direction: column; min-height: 100vh;
   background: var(--ios-bg);
-  position: relative; overflow-x: hidden;
+  position: relative;
 }
 @supports (min-height: 100dvh) { .app-shell { min-height: 100dvh; } }
 /* whole-app ambient AI gradient — tinted by the current character's hue,
