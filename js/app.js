@@ -432,7 +432,8 @@ function allQuestions() {
   const t1 = (window.TOPIK1_BANK || []);
   const t2 = (window.TOPIK2_BANK || []);
   const lv = [1,2,3,4,5,6].flatMap(n => window['LEVEL' + n + '_BANK'] || []);
-  return t1.concat(t2, lv);
+  const gen = (window.GEN_BANK || []);  // persistent AI-generated bank
+  return t1.concat(t2, lv, gen);
 }
 function qById(id) { return allQuestions().find(q => q.id === id); }
 
