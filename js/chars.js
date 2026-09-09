@@ -286,10 +286,16 @@ function viewCharProfile(id) {
   const btn = cur
     ? `<button class="btn btn-primary" disabled style="width:100%;margin-top:14px;">✓ ${LANG==='ko'?'현재 캐릭터':'Current'}</button>`
     : `<button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="selectChar('${id}')">${LANG==='ko'?'이 캐릭터 선택':'Select'}</button>`;
-  // group stage-video backdrop: show the whole group's ANIME dance stage behind the card.
-  // Low-res vertical anime clip keeps the full group in frame & loads light.
+  // group stage-video backdrop: show the character's GROUP dance video behind the card.
+  // Map the completed group stage clips; groups still being produced fall back to
+  // the GLOWSIS anime stage clip so the backdrop is never empty.
+  const GROUP_STAGE = {
+    glowsis:  'assets/cpbg/glowsis_dance_lo.mp4',
+    blackrose:'assets/cpbg/blackrose_dance_lo.mp4',
+    atp:      'assets/cpbg/atp_dance_lo.mp4'
+  };
   const grpId = (ext && ext.group) || '';
-  const grpVideo = 'assets/cpbg/glowsis_anime_lo.mp4';
+  const grpVideo = GROUP_STAGE[grpId] || 'assets/cpbg/glowsis_anime_lo.mp4';
   document.getElementById('char-profile').innerHTML = `
     <div class="cp-modal">
       <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
