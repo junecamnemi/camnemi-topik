@@ -3829,22 +3829,24 @@ function viewKoreaLife() {
     <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
   const hero = tabHeroHTML('rank', rankMeOverlayHTML());
   const cards = [
-    { id:'why', icon:'🇰🇷', title: (kl.why&&kl.why.title)||'Why Korea?', sub:'Beats AU, USA, CN & JP', grad:'linear-gradient(135deg,#7B6CF6,#EC4899)' },
-    { id:'univs', icon:'🎓', title:'Universities', sub:'6 you can enter on IELTS / TOPIK', grad:'linear-gradient(135deg,#0EA5E9,#7B6CF6)' },
-    { id:'apps', icon:'📱', title:'Recommend apps', sub:'Naver Map, Coupang, Baemin & more', grad:'linear-gradient(135deg,#F472B6,#FBBF24)' },
-    { id:'live', icon:'🏠', title:'How to live', sub:'Transport, food, health, visa & more', grad:'linear-gradient(135deg,#34D399,#0EA5E9)' }
+    { id:'why',   title:(kl.why&&kl.why.title)||'Why Korea?',   sub:(LANG==='ko'?'한국의 봄·여름·가을·겨울':'Korea in all four seasons'), v:'assets/korea_bg/why.mp4' },
+    { id:'univs', title:'Universities',                          sub:(LANG==='ko'?'IELTS·TOPIK으로 갈 수 있는 대학':'6 you can enter on IELTS / TOPIK'), v:'assets/korea_bg/univs.mp4' },
+    { id:'apps',  title:'Recommend apps',                        sub:(LANG==='ko'?'나를 살게 해주는 한국 앱들':'Naver Map, Coupang, Baemin & more'), v:'assets/korea_bg/apps.mp4' },
+    { id:'live',  title:'How to live',                           sub:(LANG==='ko'?'교통·음식·건강·비자 등':'Transport, food, health, visa & more'), v:'assets/korea_bg/live.mp4' }
   ];
   const grid = cards.map(c => `
-    <button class="kl3-card" onclick="openKoreaSection('${c.id}')" style="--kg:${c.grad}">
-      <div class="kl3-ico">${c.icon}</div>
-      <div class="kl3-title">${esc(c.title)}</div>
-      <div class="kl3-sub">${esc(c.sub)}</div>
-      <div class="kl3-go">${LANG==='ko'?'열기':'Open'} →</div>
+    <button class="kl3-tile" onclick="openKoreaSection('${c.id}')">
+      <video class="kl3-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="${c.v}" type="video/mp4"></video>
+      <span class="kl3-cap">
+        <span class="kl3-title">${esc(c.title)}</span>
+        <span class="kl3-sub">${esc(c.sub)}</span>
+        <span class="kl3-go">${LANG==='ko'?'열기':'Open'} →</span>
+      </span>
     </button>`).join('');
   return `${hero}
     <div class="kl-home kl3-home">
       <div class="kl-intro">${LANG==='ko'?'한국 유학의 첫걸음 — 왜, 어디로, 어떻게, 무엇으로':'Your Korea journey — why, where, how & what to use'}</div>
-      <div class="kl3-grid kl3-4">${grid}</div>
+      <div class="kl3-tiles">${grid}</div>
     </div>`;
 }
 function openKoreaSection(sec){

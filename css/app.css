@@ -2107,3 +2107,21 @@ body.has-back .app-header .brand { margin-left: 0; }
   box-shadow: 0 8px 22px rgba(60,40,120,.10);
 }
 [data-theme="dark"] .home-korea-wrap { background: rgba(255,255,255,.04); }
+
+/* ---------- Korea Life tab — full-width animated (video) tiles ---------- */
+.kl3-tiles { display: flex; flex-direction: column; gap: 14px; margin-top: 6px; }
+.kl3-tile {
+  position: relative; width: 100%; min-height: 190px; border: none; cursor: pointer;
+  border-radius: 22px; overflow: hidden; color: #fff; text-align: left; padding: 0;
+  font-family: var(--ios-font); box-shadow: 0 10px 24px rgba(60,40,120,.18);
+  -webkit-tap-highlight-color: transparent;
+}
+.kl3-tile .kl3-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.kl3-tile::after { content:''; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, rgba(8,5,24,.22), rgba(8,5,24,.62)); }
+.kl3-tile .kl3-cap {
+  position: relative; z-index: 2; min-height: 190px; padding: 20px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 6px;
+}
+.kl3-tile .kl3-title { font-size: 26px; font-weight: 900; letter-spacing: -.4px; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.kl3-tile .kl3-sub { font-size: 13.5px; font-weight: 600; opacity: .95; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+.kl3-tile .kl3-go { font-size: 12.5px; font-weight: 700; margin-top: 6px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.24); text-shadow: 0 1px 4px rgba(0,0,0,.4); }
