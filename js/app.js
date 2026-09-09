@@ -1594,8 +1594,15 @@ function buildDaily() {
     APP.dailyAnswers = saved.done || {};
     APP.aiMode = false;
   } else {
-    // build a set for the chosen section (default: balanced mix)
-    let pool = freshQuestionPool({ level: APP.level, need: 10 });
+    // build a set for the chosen section (default: balanced mix).
+    // Difficulty follows the user's selected T level (myLevel): T1-2 = TOPIK I,
+    // T3-6 = TOPIK II. This keeps the AI TOPIK level selector connected to the
+    // actual question difficulty below.
+    const tLv = (typeof myLevel === 'function') ? myLevel() : 3;
+    const band = (tLv <= 2) ? 'I' : 'II';
+    let pool = freshQuestionPool({ level: band, need: 10 });
+    // prefer questions closest to the selected T so difficulty visibly tracks the choice
+    pool = pool.slice().sort((a, b) => Math.abs((a.level||3) - tLv) - Math.abs((b.level||3) - tLv));
     let picked = [];
     if (sec === 'vocab') {
       pool = pool.filter(q => q.type === 'vocab' || q.section === 'reading');
@@ -1895,7 +1902,11 @@ async function startSection(sec, lv, type) {
     return;
   }
   const byType = (pool) => (type ? pool.filter(q => q.type === type) : pool);
-  let pool = byType(freshQuestionPool({ level: target, section: sec, type: type, need: 10 }));
+  // Difficulty tracks the chosen T level: T1-2 = TOPIK I, T3-6 = TOPIK II (band),
+  // then prefer questions closest to the selected T.
+  const sBand = target <= 2 ? 'I' : 'II';
+  let pool = byType(freshQuestionPool({ level: sBand, section: sec, type: type, need: 10 }));
+  pool = pool.sort((a, b) => Math.abs((a.level||3) - target) - Math.abs((b.level||3) - target));
   if (pool.length < 10) pool = byType(freshQuestionPool({ section: sec, type: type, need: 10 }));
   if (pool.length < 10) pool = byType(freshQuestionPool({ type: type, need: 10 }));
   const shuf = pool.slice().sort(() => Math.random() - 0.5);
