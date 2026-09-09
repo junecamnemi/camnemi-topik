@@ -239,8 +239,6 @@ function closeCharPicker() {
   const sheet = $id('char-picker');
   if (ov) ov.classList.remove('show');
   if (sheet) sheet.classList.remove('show');
-  const bg = sheet && sheet.querySelector('video.cp-bg');
-  if (bg) { try { bg.pause(); } catch (e) {} }
   document.body.style.overflow = '';
 }
 function setCharTab(g) {
