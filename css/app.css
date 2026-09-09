@@ -721,12 +721,12 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 /* ---------- Main headline + My Status + My Level (one card under hero) ---------- */
 .hm-level-block {
   margin-top: 14px; border-radius: 22px; overflow: hidden;
-  background: linear-gradient(180deg, rgba(139,92,246,.12), rgba(249,168,212,.10));
-  border: 1px solid rgba(139,92,246,.2);
-  padding: 18px 16px 6px;
+  background: linear-gradient(180deg, rgba(139,92,246,.10), rgba(249,168,212,.08));
+  border: 1px solid rgba(139,92,246,.16);
+  padding: 16px 14px 6px;
 }
-.hm-main-msg { text-align:center; margin-bottom: 12px; }
-.hmm-title { font-size: 23px; font-weight: 900; letter-spacing: -.3px; line-height: 1.2; }
+.hm-main-msg { text-align:center; margin-bottom: 10px; }
+.hmm-title { font-size: 17px; font-weight: 900; letter-spacing: -.2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hmm-a { color: var(--ios-label); }
 .hmm-sep { color: var(--ios-secondary-label); }
 .hmm-b {
@@ -734,14 +734,11 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
-.hmm-sub { font-size: 11.5px; color: var(--ios-secondary-label); font-weight: 700; margin-top: 4px; }
-.hm-status { background: var(--ios-card); border-radius: 16px; padding: 6px 6px; margin-bottom: 12px; }
-.hm-level-block .home-mylevel-fold {
-  margin-top: 0; border-radius: 14px;
-  background: var(--ios-card);
-  border: 1px solid rgba(139,92,246,.16);
-}
-.hm-level-block .lt-home-card { margin-top: 12px; }
+.hmm-sub { font-size: 11px; color: var(--ios-secondary-label); font-weight: 700; margin-top: 2px; }
+/* inner sections are flat inside the one card — no nested card containers */
+.hm-status { margin: 0 -2px; }
+.hm-level-block .home-mylevel-fold,
+.hm-level-block .lt-home-card { margin-top: 0; border:none; background:transparent; border-radius:0; }
 /* ---------- Home greeting (Aiko style) ---------- */
 .home-greet { display: flex; align-items: center; gap: 12px; }
 .greet-h { font-size: 19px; font-weight: 800; color: #FFFFFF; line-height: 1.25; text-shadow: 0 1px 8px rgba(15,10,40,.55); }

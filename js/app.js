@@ -419,6 +419,7 @@ const ICONS = {
   pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
   user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/>',
   edit: '<path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/>',
+  unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/><circle cx="12" cy="16" r="1.6"/><path d="M12 16v2"/>',
   bookmark: '<path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
   shield: '<path d="M12 2l7 3v6c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V5z"/><path d="M9 12l2 2 4-4"/>'
 };
@@ -1028,7 +1029,7 @@ function tabHeroHTML(tab, overlay) {
     <video autoplay muted loop playsinline preload="metadata" style="object-position:${clip.pos}">
       <source src="${clip.v}" type="video/mp4"></video>
     <div class="scene-overlay">${inner}</div>
-    <button class="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎ Edit</button>
+    <button class="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">${ic('unlock',11)} ${LANG==='ko'?'언락':'Unlock'}</button>
     ${chip}
   </div>`;
 }
@@ -1087,7 +1088,7 @@ function viewHome() {
           <p class="greet-s">${t('home_greet_sub')}</p>
         </div>
       </div>
-      <button class="char-edit-btn" id="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">✎ Edit</button>
+      <button class="char-edit-btn" id="char-edit-btn" onclick="openCharPicker()" title="${LANG==='ko'?'캐릭터 바꾸기':'Change character'}">${ic('unlock',11)} ${LANG==='ko'?'언락':'Unlock'}</button>
       <div class="scene-meta">
         <span class="wx-chip" id="wx-chip">${wxc ? greetWxText(wxc) : (LANG === 'ko' ? '서울 · --°' : 'Seoul · --°')}</span>
         <span class="meta-dot">•</span>
