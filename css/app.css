@@ -262,14 +262,12 @@ body.has-back .app-header .brand { margin-left: 34px; }
   border: 1.5px solid #fff;
 }
 .char-name { display: block; font-size: 10.5px; font-weight: 700; color: var(--ios-label); margin-top: 4px; }
-/* locked character cells (level-gated unlocks) */
-.char-cell.locked { cursor: not-allowed; opacity: .85; }
-.char-lock {
-  position: absolute; inset: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 2px;
-  font-size: 22px; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5);
+/* locked character cells (level-gated unlocks) — face stays clean, tap to view profile */
+.char-cell.locked { cursor: pointer; opacity: 1; }
+.char-lock-tag {
+  display: inline-block; margin-top: 2px; font-size: 8.5px; font-weight: 800;
+  color: var(--ios-secondary-label); background: var(--ios-fill); border-radius: 999px; padding: 1px 7px;
 }
-.char-lock em { font-style: normal; font-size: 9px; font-weight: 800; color: #fff; background: rgba(0,0,0,.45); border-radius: 999px; padding: 1px 7px; }
 .char-crown { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font-size: 17px; filter: drop-shadow(0 1px 3px rgba(0,0,0,.25)); z-index: 2; }
 /* picker unlock progress status */
 .cp-status { display: flex; align-items: center; gap: 8px; padding: 2px 4px 10px; font-size: 12px; font-weight: 700; color: var(--ios-label); }

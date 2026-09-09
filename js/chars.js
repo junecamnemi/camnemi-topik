@@ -257,12 +257,12 @@ function charGridHTML(g) {
     const locked = !isCharUnlocked(c.id);
     const needLv = charUnlockLevel(c.id);
     return `
-    <div class="char-cell ${c.id === cur ? 'sel' : ''} ${locked ? 'locked' : ''}" onclick="viewCharProfile('${c.id}')" title="${locked ? (LANG === 'ko' ? `Lv ${needLv}에 해제` : LANG === 'km' ? `ដោះសោនៅ Lv ${needLv}` : `Unlocks at Lv ${needLv}`) : ''}">
-      <div class="char-face"><img src="${charFace(c)}" alt="${esc(c.name)}" loading="lazy" ${locked ? 'style="filter:grayscale(1) brightness(.55);"' : ''}>
-        ${locked ? `<span class="char-lock">🔒<em>Lv ${needLv}</em></span>` : ''}
+    <div class="char-cell ${c.id === cur ? 'sel' : ''} ${locked ? 'locked' : ''}" onclick="viewCharProfile('${c.id}')">
+      <div class="char-face"><img src="${charFace(c)}" alt="${esc(c.name)}" loading="lazy">
         ${crownUnlocked() && c.id === cur ? '<span class="char-crown">👑</span>' : ''}
       </div>
       <span class="char-name">${esc(c.name)}</span>
+      ${locked ? `<span class="char-lock-tag">🔒 Lv ${needLv}</span>` : ''}
     </div>`;
   }).join('');
 }
