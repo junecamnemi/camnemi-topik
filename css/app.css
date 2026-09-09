@@ -208,12 +208,32 @@ body.has-back .app-header .brand { margin-left: 34px; }
 /* ---------- Character picker sheet ---------- */
 .char-picker {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 320;
-  background: var(--ios-bg); border-radius: 24px 24px 0 0;
-  padding: 16px 16px 30px; max-height: 78vh; overflow-y: auto;
+  background: #120c2a;
+  border-radius: 24px 24px 0 0;
+  max-height: 82vh; overflow: hidden;
   transform: translateY(105%); transition: transform .28s cubic-bezier(.22,.8,.36,1);
   box-shadow: 0 -10px 40px rgba(0,0,0,.18);
 }
 .char-picker.show { transform: translateY(0); }
+.cp-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.cp-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(10,6,26,.72), rgba(10,6,26,.62) 55%, rgba(10,6,26,.9)); }
+.cp-scroll { position: relative; z-index: 2; padding: 16px 16px 30px; max-height: 82vh; overflow-y: auto; }
+.cp-scroll::-webkit-scrollbar { display:none; }
+/* picker sits over a dark stage-video backdrop → force readable light chrome */
+.char-picker .cp-scroll .cp-head b,
+.char-picker .cp-scroll .cp-status,
+.char-picker .cp-scroll .cp-name,
+.char-picker .cp-scroll .char-name { color:#fff; }
+.char-picker .cp-scroll .cp-x,
+.char-picker .cp-scroll .cp-status-n,
+.char-picker .cp-scroll .cp-status-sub,
+.char-picker .cp-scroll .cp-name small { color:rgba(255,255,255,.75); }
+.char-picker .cp-scroll .cp-tabs .ctab { background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.25); }
+.char-picker .cp-scroll .cp-status-bar { background:rgba(255,255,255,.22); }
+.char-picker .cp-scroll .char-lock-tag { color:rgba(255,255,255,.85); background:rgba(0,0,0,.4); }
+.char-picker .cp-scroll .cp-name-input { background:rgba(255,255,255,.9); color:#1a1429; }
+.char-picker .cp-scroll .cp-rename .btn-primary { background:var(--grad-brand); }
+.char-picker .cp-scroll .cp-face { border-color:rgba(255,255,255,.35); background:rgba(0,0,0,.25); }
 /* character profile popup (tap a char → see profile → Select to apply) */
 .char-profile { position: fixed; inset: 0; z-index: 340; display: flex; align-items: center; justify-content: center;
   background: rgba(18,12,42,.5); opacity: 0; pointer-events: none; transition: opacity .2s; }
