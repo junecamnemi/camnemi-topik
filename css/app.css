@@ -134,9 +134,7 @@
 .app-header {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 60;
-  background: rgba(247, 244, 255, .2);
-  -webkit-backdrop-filter: saturate(150%) blur(8px);
-  backdrop-filter: saturate(150%) blur(8px);
+  background: rgba(247, 244, 255, .88);
   border-bottom: 0.5px solid transparent;
   padding: 10px 20px 8px;
   display: flex; align-items: center; gap: 10px;
@@ -386,8 +384,6 @@ body.has-back .app-header .brand { margin-left: 34px; }
   transform: translateX(-50%);
   width: calc(100% - 28px); max-width: 540px; z-index: 200;
   background: rgba(255, 255, 255, .92);
-  -webkit-backdrop-filter: saturate(150%) blur(10px);
-  backdrop-filter: saturate(150%) blur(10px);
   border: 1px solid rgba(255, 255, 255, .6);
   border-radius: 26px;
   box-shadow: 0 12px 40px rgba(91, 91, 214, .18), 0 2px 8px rgba(23, 21, 34, .06);
@@ -585,7 +581,6 @@ body.has-back .app-header .brand { margin-left: 34px; }
   height: 96px;
   box-sizing: border-box;
   box-shadow: 0 4px 14px rgba(0,0,0,.08);
-  backdrop-filter: blur(4px);
 }
 .aq-cell.aq-spin {
   animation: aqSpin 5s linear infinite;
@@ -707,7 +702,6 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   display: flex; align-items: center; justify-content: center;
   background: rgba(255,255,255,.22);
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
-  backdrop-filter: blur(2px);
 }
 .aq-redo .aq-txt { flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .aq-redo .aq-txt b { font-size: 17px; font-weight: 800; line-height: 1.15; letter-spacing:.2px;
@@ -751,7 +745,7 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
   display: inline-flex; align-items: center; gap: 3px;
   background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.38); color: #fff;
   font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 999px;
-  cursor: pointer; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,.14); opacity: .92; letter-spacing:.3px;
 }
 /* keep the banner's inner content aligned with the app column on wide screens */
@@ -761,8 +755,6 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
    fills the very top of the screen; text flips to white over dark scenes */
 body.has-hero .app-header {
   background: rgba(247, 244, 255, .2);
-  -webkit-backdrop-filter: saturate(150%) blur(8px);
-  backdrop-filter: saturate(150%) blur(8px);
   border-bottom-color: transparent;
   box-shadow: none;
 }
@@ -797,7 +789,6 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
   width: 30px; height: 30px; border-radius: 50%; border: none; cursor: pointer;
   background: rgba(255,255,255,.22); color: #fff; font-size: 20px; line-height: 1;
   display: flex; align-items: center; justify-content: center;
-  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   box-shadow: 0 2px 8px rgba(0,0,0,.2); opacity: 0; transition: opacity .3s;
 }
 .seoul-scene:hover .scene-carousel-nav { opacity: .9; }
@@ -980,7 +971,7 @@ body.has-hero-dark .app-header .brand span { color: #fff; text-shadow: 0 1px 8px
 .fs-girl { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
 
 /* ---------- Week calendar ---------- */
-.wc-card { padding: 10px 12px !important; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); backdrop-filter: blur(6px); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
+.wc-card { padding: 10px 12px !important; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
 .wc-nav { background: none; border: none; color: var(--ios-secondary-label); font-size: 14px; font-weight: 800; cursor: pointer; padding: 2px 6px; border-radius: 8px; }
 .wc-nav:hover { background: var(--ios-fill); }
 .wc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
@@ -1705,7 +1696,7 @@ select { font-family: var(--ios-font); }
 }
 
 /* ---------- Level + Weak points combined card ---------- */
-.lw-card { padding: 16px 18px; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); backdrop-filter: blur(6px); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
+.lw-card { padding: 16px 18px; background: color-mix(in srgb, var(--ios-card, #fff) 82%, transparent); border: 1px solid color-mix(in srgb, var(--ios-separator, #999) 25%, transparent); }
 .lw-top { display: flex; gap: 18px; align-items: flex-start; }
 .lw-level { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .lw-lvl {
@@ -1846,7 +1837,7 @@ select { font-family: var(--ios-font); }
 #ai-redo-ov {
   position: fixed; inset: 0; z-index: 9999; display: none;
   align-items: center; justify-content: center; padding: 24px;
-  background: rgba(8,5,22,.62); backdrop-filter: blur(7px);
+  background: rgba(8,5,22,.62);
 }
 /* dim moving gradient wash behind */
 .ar-ov-bg {
@@ -1938,7 +1929,6 @@ select { font-family: var(--ios-font); }
   display:inline-flex; align-items:center; gap:7px;
   padding:3px 12px; border-radius:999px; pointer-events:none;
   background:rgba(12,8,34,.42); border:1px solid rgba(255,255,255,.25);
-  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
   color:#fff; font-size:11px; font-weight:700; white-space:nowrap;
 }
 .scene-hero.tab-hero .hero-stat-chip i { width:1px; height:12px; background:rgba(255,255,255,.35); display:inline-block; }
