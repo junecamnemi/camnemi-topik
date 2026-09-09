@@ -844,9 +844,12 @@ function render() {
     case 'my': s.innerHTML = viewMy(); bindMy(); break;
     case 'challenge': s.innerHTML = viewChallenge(); bindChallenge(); break;
     case 'schedule': s.innerHTML = viewSchedule(); bindSchedule(); break;
+    case 'chat': s.innerHTML = (typeof viewChat === 'function') ? viewChat() : viewHome(); if (typeof bindChat === 'function') bindChat(); break;
   }
   renderSchedBanner();
   updateBackBtn();
+  // stop the chat poller when not viewing chat
+  if (APP.tab !== 'chat' && typeof window.stopChat === 'function') { try { window.stopChat(); } catch (e) {} }
   // expression cycle only lives on the home tab
   if (APP.tab !== 'home') stopFxCycle();
   // performance: pause autoplay bg videos that scroll out of view
@@ -1055,6 +1058,11 @@ function viewHome() {
       <div class="hmm-title"><span class="hmm-a">Studying TOPIK with AI</span><span class="hmm-b">Unlock Your K-POP Idol</span></div>
       <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
     </div>
+    <button class="chat-launch" onclick="go('chat')">
+      <span class="chat-launch-ico">${ic('chat', 18) || '💬'}</span>
+      <span class="chat-launch-t"><b>${LANG==='ko'?'캐릭터와 채팅':'Chat with your character'}</b><small>${LANG==='ko'?'궁금한 걸 물어보세요':'Ask me anything'}</small></span>
+      <span class="chat-launch-arr">→</span>
+    </button>
     <div class="sec-h hm-record-h"><h2>${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
     <div class="hm-record-block">
       <div class="hm-status">${statusCardHTML(true)}</div>
