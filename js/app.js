@@ -1112,16 +1112,6 @@ function viewHome() {
   // Core feature tiles: AI TOPIK + Textbook, tall stacked banners with video backgrounds
   const featureTilesHTML = `
     <div class="home-tiles">
-      <button class="home-tile ai-redo-tile" onclick="go('daily')">
-        <video class="ht-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-          <source src="assets/home_bg/no_idol_ai_topik_silent.mp4" type="video/mp4"></video>
-        <span class="ht-cap">
-          <span class="ht-ico">${ic('spark',30)}</span>
-          <span class="ht-t">AI TOPIK</span>
-          <span class="ht-stat">${totalSolvedQuestions()} ${LANG==='ko'?'문제':LANG==='km'?'':'questions'} · ${overallAccuracy()}%</span>
-          <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
-        </span>
-      </button>
       <button class="home-tile textbook-tile" onclick="go('book')">
         <video class="ht-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
           <source src="assets/home_bg/no_idol_textbook_silent.mp4" type="video/mp4"></video>
@@ -1130,6 +1120,16 @@ function viewHome() {
           <span class="ht-t">Textbook</span>
           <span class="ht-stat">${fmtStudyMin(totalStudyMinutes())}</span>
           <span class="ht-s">${LANG==='ko'?'교과서로 공부해요':'Study with the textbook'}</span>
+        </span>
+      </button>
+      <button class="home-tile ai-redo-tile" onclick="go('daily')">
+        <video class="ht-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+          <source src="assets/home_bg/no_idol_ai_topik_silent.mp4" type="video/mp4"></video>
+        <span class="ht-cap">
+          <span class="ht-ico">${ic('spark',30)}</span>
+          <span class="ht-t">AI TOPIK</span>
+          <span class="ht-stat">${totalSolvedQuestions()} ${LANG==='ko'?'문제':LANG==='km'?'':'questions'} · ${overallAccuracy()}%</span>
+          <span class="ht-s">${LANG==='ko'?'너의 약점을 파악해서 5문제를 계속 풀어봐.':'Find your weak spots and keep solving 5 problems'}</span>
         </span>
       </button>
     </div>`;
@@ -1252,7 +1252,7 @@ function viewHome() {
       <div class="hmm-title"><span class="hmm-a">Studying Korean</span><span class="hmm-sep">,</span> <span class="hmm-b">Unlock Your Idol</span></div>
       <div class="hmm-sub">${LANG==='ko'?'한국어를 공부해 나만의 아이돌을 깨워보세요':'Practice Korean and power up your own K-pop idol'}</div>
     </div>
-    <div class="sec-h hm-record-h"><h2>📊 ${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
+    <div class="sec-h hm-record-h"><h2>${LANG==='ko'?'내 학습 기록':'My Study Record'}</h2></div>
     <div class="hm-record-block">
       <div class="hm-status">${statusCardHTML(true)}</div>
       ${levelCard}
@@ -1261,7 +1261,7 @@ function viewHome() {
         <div class="hmf-body">${journeyCardHTML()}</div>
       </details>
     </div>
-    <div class="sec-h" style="margin-top:20px;"><h2>🎓 ${LANG==='ko'?'한국어 공부':'Study Korean Language'}</h2></div>
+    <div class="sec-h" style="margin-top:20px;"><h2>${LANG==='ko'?'한국어 공부':'Study Korean Language'}</h2></div>
     ${featureTilesHTML}
     </div>
   `;
@@ -3048,6 +3048,19 @@ function journeyCardHTML() {
     const note = ko
       ? '문제를 맞히면 20% 보너스, 연속 정답이면 10%씩 추가돼요. 문제 10개 또는 교재 60분마다 레벨이 올라요.'
       : 'Correct answers give +20% and streaks +10% each. 10 questions OR 60 textbook minutes raise a level.';
+    let ncHtml = '';
+    try {
+      if (typeof nextCharUnlock === 'function') {
+        const nc = nextCharUnlock();
+        if (nc) {
+          ncHtml = `<div style="margin-top:12px;border-top:1px dashed rgba(139,92,246,.25);padding:10px 12px 2px;background:rgba(139,92,246,.06);border-radius:12px;">
+            <div style="font-size:11.5px;font-weight:900;">🎁 ${ko?'다음 캐릭터':'Next character'} 🔒</div>
+            <div style="font-size:13px;font-weight:800;color:var(--ios-purple);margin-top:3px;">${ko?'언락까지 문제 ':'unlocks in ~'}<b>${nc.remainQ}</b> ${ko?'개 남음':'questions'}</div>
+            <div style="font-size:10px;color:var(--ios-secondary-label);margin-top:2px;">${ko?'캐릭터':'Characters'} ${nc.unlocked}/${nc.totalChars} · ${ko?'문제 Lv':'Quiz Lv'} ${nc.nextLv} ${ko?'도달 시':'needed'}</div>
+          </div>`;
+        }
+      }
+    } catch (e) {}
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
         <div class="ml-badge" style="flex:none;width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:0 4px 14px rgba(124,58,237,.3);">
@@ -3061,6 +3074,7 @@ function journeyCardHTML() {
       </div>
       ${track('✏', ko?'문제 풀기':'Solve questions', j.qInto, j.qNeed, j.qSegPct)}
       ${track('📖', ko?'텍스트북 공부':'Study textbook', j.bInto, j.bNeed, j.bSegPct)}
+      ${ncHtml}
       <div style="font-size:10.5px;font-weight:600;margin-top:10px;color:var(--ios-secondary-label);line-height:1.45;">${note}</div>
     </div>`;
   } catch (e) { return ''; }

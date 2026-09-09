@@ -108,21 +108,35 @@ function syncCharFromAccount() {
   } catch (e) { console.warn('char sync:', e); }
   return false;
 }
-/* ---------- Level-based character unlocks ----------
-   · Level 1–10: 3 new characters per level (L1→3, L2→6, … L10→30)
-   · Level 11–40: 1 new character per level (L40 → all 60 unlocked)
-   · Name can always be changed (even at L1)
-   · Level 10+  : character action animations (flip-book FX) unlock
-   · Level 50+  : glowing ring around the avatar
-   · Level 80+  : 👑 crown on the avatar            */
+/* ---------- Level-based character unlocks (NEW: problem level from weighted
+   progress P/10) ----------
+   · Problem level 1–10: 3 new characters per level (L1→3, L2→6, … L10→30)
+   · Problem level 11–40: 1 new character per level (L40 → all 60 unlocked) */
 function myAppLevel() {
-  try { return (typeof xpLevel === 'function' && typeof xpTotal === 'function') ? xpLevel(xpTotal()) : 1; }
-  catch (e) { return 1; }
+  try {
+    if (typeof currentJourney === 'function') { const j = currentJourney(); if (j) return j.qLv; }
+    return 1;
+  } catch (e) { return 1; }
 }
 function unlockedCharCount() {
   const lv = myAppLevel();
   if (lv <= 10) return Math.min(30, lv * 3);        // 3/level up to 30
   return Math.min(60, 30 + (lv - 10));              // +1/level → 60 at L40
+}
+/* Questions remaining until the next character unlocks.
+   Returns { done, nextLv, remainQ, unlocked, totalChars } or null when all unlocked. */
+function nextCharUnlock() {
+  try {
+    const j = (typeof currentJourney === 'function') ? currentJourney() : null;
+    const qLv = (j && j.qLv) || 0;
+    const P = (j && j.P) || 0;
+    const unlocked = unlockedCharCount();
+    if (unlocked >= 60) return null;
+    // next problem level that adds the next character
+    const nextLv = unlocked < 30 ? Math.floor(unlocked / 3) + 1 : (unlocked - 30) + 11;
+    const qToLv = nextLv * 10 - P;                 // weighted units to reach nextLv
+    return { nextLv: nextLv, remainQ: Math.max(0, Math.ceil(qToLv)), unlocked: unlocked, totalChars: 60 };
+  } catch (e) { return null; }
 }
 function charUnlockLevel(id) {
   const idx = (window.CHAR_LIST || []).findIndex(c => c.id === id);

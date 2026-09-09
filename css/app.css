@@ -639,7 +639,8 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .home-tile {
   position: relative; overflow: hidden; flex: 1; width: 0; min-height: 200px; border-radius: 20px;
   display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer;
-  border: none; padding: 0;
+  border: 1.5px solid rgba(255,255,255,.55); box-shadow: 0 8px 22px rgba(60,40,120,.14);
+  padding: 0;
   font-family: var(--ios-font, system-ui); color: #fff;
   -webkit-tap-highlight-color: transparent;
 }
@@ -720,7 +721,7 @@ details.home-mylevel-fold > .hmf-body { padding: 0 14px 14px; }
 
 /* ---------- Hero message text (standalone under hero) ---------- */
 .hm-main-msg { text-align:center; padding: 16px 16px 2px; }
-.hmm-title { font-size: 18px; font-weight: 900; letter-spacing: -.2px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hmm-title { font-size: 24px; font-weight: 900; letter-spacing: -.3px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hmm-a { color: var(--ios-label); }
 .hmm-sep { color: var(--ios-secondary-label); }
 .hmm-b {
