@@ -2099,3 +2099,11 @@ body.has-back .app-header .brand { margin-left: 0; }
 }
 .home-korea-card .hk-t { font-size: 22px; font-weight: 900; letter-spacing: -.3px; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
 .home-korea-card .hk-go { font-size: 12px; font-weight: 700; opacity: .95; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.22); text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+
+/* ---------- Home Korea Life section — bordered card wrap ---------- */
+.home-korea-wrap {
+  margin-top: 24px; padding: 14px; border-radius: 20px;
+  border: 1px solid rgba(139,92,246,.25); background: rgba(255,255,255,.5);
+  box-shadow: 0 8px 22px rgba(60,40,120,.10);
+}
+[data-theme="dark"] .home-korea-wrap { background: rgba(255,255,255,.04); }

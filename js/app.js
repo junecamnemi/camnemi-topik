@@ -1069,8 +1069,10 @@ function viewHome() {
     </div>
     <div class="sec-h" style="margin-top:20px;"><h2>${LANG==='ko'?'한국어 공부':'Study Korean Language'}</h2></div>
     ${featureTilesHTML}
-    <div class="sec-h" style="margin-top:24px;"><h2>🇰🇷 Korea Life</h2><span class="sub" style="cursor:pointer;" onclick="go('rank')">${LANG==='ko'?'전체 보기':'View all'} →</span></div>
-    <div class="home-korea-row">${homeKoreaLifeHTML()}</div>
+    <div class="home-korea-wrap">
+          <div class="sec-h" style="margin:0 0 10px;"><h2>Korea Life</h2><span class="sub" style="cursor:pointer;" onclick="go('rank')">${LANG==='ko'?'전체 보기':'View all'} →</span></div>
+          <div class="home-korea-row">${homeKoreaLifeHTML()}</div>
+        </div>
     </div>
   `;
 }
