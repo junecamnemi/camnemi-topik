@@ -241,6 +241,24 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .cpf-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
 .cpf-veil { position: absolute; inset: 0; z-index: 1; background: rgba(14,8,30,.45); }
 .char-profile .cp-card { position: relative; z-index: 2; }
+/* profile card sits directly on the group stage video → transparent glass + light text */
+.char-profile .cp-card {
+  background: rgba(8,4,22,.42);
+  border: 1px solid rgba(255,255,255,.25);
+  box-shadow: 0 12px 40px rgba(0,0,0,.45);
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+}
+.char-profile .cp-card .cp-close { color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.5); }
+.char-profile .cp-card .cp-avatar { border-color: rgba(255,255,255,.85); }
+.char-profile .cp-card .cp-name,
+.char-profile .cp-card .cp-pos,
+.char-profile .cp-card .cp-group,
+.char-profile .cp-card .cp-spec,
+.char-profile .cp-card .cp-intro { color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.6); }
+.char-profile .cp-card .cp-name small { color:rgba(255,255,255,.8); }
+.char-profile .cp-card .cp-meta span { color:#fff; background:rgba(255,255,255,.22); text-shadow:0 1px 2px rgba(0,0,0,.4); }
+.char-profile .cp-card .cp-charm { color:#ffe3f1; background:rgba(236,72,153,.35); }
+.char-profile .cp-card .btn { background: linear-gradient(135deg,#7C3AED,#EC4899); }
 .cp-card { background: #fff; border-radius: 22px; padding: 22px; width: min(320px, 86vw); max-height: 80vh; overflow-y: auto;
   position: relative; box-shadow: 0 12px 40px rgba(0,0,0,.25); text-align: center; }
 .cp-close { position: absolute; top: 10px; right: 14px; font-size: 16px; color: #a79bc9; background: none; border: none; cursor: pointer; }
