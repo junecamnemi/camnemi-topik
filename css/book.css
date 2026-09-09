@@ -104,10 +104,12 @@
 
 /* study-time strip under the Book hero: Today | Total */
 .book-stat-strip {
-  display:flex; align-items:center; gap:16px; justify-content:center;
-  margin: 10px 16px 2px; padding: 10px 16px; border-radius: 14px;
+  display:flex; flex-direction:column; gap:8px;
+  margin: 10px 4px 2px; padding: 10px 16px; border-radius: 14px;
   background: var(--ios-card); border:1px solid var(--ios-separator);
 }
+.bss-cap { font-size:11px; font-weight:800; letter-spacing:.3px; color:var(--ios-secondary-label); }
+.bss-row { display:flex; align-items:center; justify-content:center; gap:18px; }
 .bss-cell { display:flex; flex-direction:column; align-items:center; gap:1px; }
 .bss-k { font-size:10px; font-weight:800; letter-spacing:.4px; color:var(--ios-tertiary-label); text-transform:uppercase; }
 .bss-v { font-size:18px; font-weight:900; color:var(--ios-label); }
