@@ -58,6 +58,7 @@ const LS = {
   section:  'camnemi_topik_section',    // { [section]: { qids[], done:{} } }
   mylevel:  'camnemi_topik_mylevel',    // 1-6 — default practice level (set in My)
   studyTime:'camnemi_topik_study_time', // { 'YYYY-MM-DD': { reading:min, listening:min, vocab:min, mock:min } }
+  qprog:    'camnemi_topik_qprog',      // { P: float weighted progress, cur: consecutive-correct } → problem level = floor(P/10)
   ltResult: 'camnemi_topik_lt_result',  // { lvl, at, bands:[{band,pct}], weak:band }
   bookmarks:'camnemi_topik_bookmarks',  // [ {qid, at} ] — saved questions for review
   aibank:   'camnemi_topik_aibank',       // [ question ] — accumulated AI-written questions
@@ -2410,12 +2411,27 @@ function navSection(d) {
 function addStudyTime(type, mins) {
   try {
     if (!mins || !['reading', 'listening', 'vocab', 'mock', 'aiRedo', 'book'].includes(type)) return;
+    const before = (type === 'book') ? totalBookMin() : 0;
     const today = new Date().toISOString().slice(0, 10);
     const all = lsGet(LS.studyTime, {});
     all[today] = all[today] || { reading: 0, listening: 0, vocab: 0, mock: 0, aiRedo: 0, book: 0 };
     all[today][type] = (all[today][type] || 0) + mins;
     lsSet(LS.studyTime, all);
+    // Textbook reward level: every 60 book-minutes = +1 level. Detect crossing.
+    if (type === 'book') {
+      const after = totalBookMin(all);
+      const bLv = Math.floor(before / 60), aLv = Math.floor(after / 60);
+      if (aLv > bLv && typeof celebrateLevelUp === 'function') celebrateLevelUp('book', aLv, bLv);
+    }
   } catch (e) { /* non-fatal */ }
+}
+function totalBookMin(precomputed) {
+  try {
+    const all = precomputed || lsGet(LS.studyTime, {});
+    let s = 0;
+    for (const k in all) { const m = all[k] || {}; s += (m.book || 0); }
+    return s;
+  } catch (e) { return 0; }
 }
 function finishSection() {
   if (APP.sectionLoading) {
@@ -2490,6 +2506,7 @@ function viewMy() {
   const acc = (() => { try { return accuracyStats().overall; } catch (e) { return 0; } })();
   const due = (() => { try { return dueCards().length; } catch (e) { return 0; } })();
   const lvl = xpProgress();
+  const jn = (function(){ try { return currentJourney() || { lv:0, maxed:false }; } catch(e){ return { lv:0, maxed:false }; } })();
   const wrongN = lsGet(LS.wrong, []).length;
   const scores = lsGet(LS.scores, []);
   const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
@@ -2526,7 +2543,7 @@ function viewMy() {
       ${umRow('spark', LANG==='ko'?'✨ 유사문제 AI 다시 풀기 (5개)':LANG==='km'?'':'✨ AI Redo — similar problems (5)', `aiRedoFromMy()`)}
     </div>
     <div class="app-card" style="padding:6px 14px;">
-      ${umRow('target', t('xp_level') + ' ' + lvl.lv + ' · ' + t('xp_to_next', { n: lvl.maxed ? 0 : lvl.need - lvl.into, l: lvl.lv + 1 }), `go('progress')`)}
+      ${umRow('target', t('xp_level') + ' ' + jn.lv + ' (' + t('xp_to_next', { n: jn.maxed ? 0 : jn.lv + 1, l: jn.lv + 1 }) + ')', `go('progress')`)}
       ${umRow('trophy', t('menu_best', { s: best || '—' }), `go('progress')`)}
     </div>`;
   const settings = `
@@ -2892,12 +2909,40 @@ function overallAccuracy() {
 }
 /* 현재 아이돌 여정 진행 — 실데이터 연결 */
 function currentJourney() {
+  // NEW reward model — rewards only from solving questions or studying the
+  // textbook.  Weighted problem progress P: wrong +1 · correct +1.2 · each
+  // consecutive correct +0.1 → problem level = floor(P/10).  Textbook: every
+  // 60 minutes of book study = +1 level.  Idol level = problem + textbook.
   try {
-    if (!window.IDOL_JOURNEY || !window.idolJourneyProgress) return null;
-    const hours = totalStudyMinutes() / 60;
-    const qs = totalSolvedQuestions();
-    const acc = (typeof accuracyStats === 'function' ? accuracyStats().overall : 0);
-    return window.idolJourneyProgress(hours, qs, acc);
+    const qp = lsGet(LS.qprog, { P: 0, cur: 0 });
+    const P = Math.max(0, qp.P || 0);
+    const qLv = Math.floor(P / 10);
+    const qInto = P - qLv * 10;              // progress into current problem level (0..10)
+    const bookMin = totalBookMin();
+    const bLv = Math.floor(bookMin / 60);
+    const bInto = bookMin - bLv * 60;        // progress into current book level (0..60)
+    const lv = qLv + bLv;                    // combined idol level
+    const maxed = false;
+    const names = window.IDOL_JOURNEY && window.IDOL_JOURNEY.stages;
+    const stageIdx = ((lv) % 10) + 1;
+    const stageArr = (names && names[Math.min(6, lv)]) || null;
+    const stageName = stageArr ? stageArr[Math.min(9, lv % 10)] : ('Lv ' + lv);
+    const stageNameEn = stageName;
+    return {
+      lv: lv, qLv: qLv, bLv: bLv,
+      lvName: '여정 Lv' + lv, lvNameEn: 'Journey Lv' + lv,
+      stageName: stageName, stageNameEn: stageNameEn,
+      stageIdx: stageIdx,
+      qInto: Math.round(qInto * 10) / 10, qNeed: 10,
+      bInto: Math.round(bInto), bNeed: 60,
+      qSegPct: Math.min(100, Math.round(qInto / 10 * 100)),
+      bSegPct: Math.min(100, Math.round(bInto / 60 * 100)),
+      segPct: Math.min(100, Math.round(((qInto + bInto) / (10 + 60)) * 100)),
+      totalQ: Math.floor(P), totalH: Math.round(bookMin / 60 * 10) / 10,
+      P: Math.round(P * 10) / 10, bookMin: bookMin,
+      maxed: false, lvDone: false, lvAccBlocked: false, acc: 0, accGate: 0,
+      nextLv: null
+    };
   } catch (e) { return null; }
 }
 /* 홈 'My Status' 카드 — 오늘 진행 + 누적 요약 칩. 제목은 별도 섹션 헤더로. 각 칩 탭하면 설명 모달. */
@@ -2972,96 +3017,69 @@ function closeStatusModal() {
 function journeySummaryHTML() {
   try {
     const j = currentJourney();
-    if (!j || !window.IDOL_JOURNEY) return '';
+    if (!j) return '';
     const ko = LANG === 'ko';
-    const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
-    // collapsed one-liner per state
-    let state;
-    if (j.maxed) state = ko ? '데뷔 완료! 최고의 아이돌 🏆' : (j.lvRewardEn || j.lvReward);
-    else if (j.lvAccBlocked) state = ko ? `정답률 ${j.accGate}%+ 필요 (현재 ${j.acc}%)` : `Need ${j.accGate}%+ accuracy (now ${j.acc}%)`;
-    else if (j.lv === 0) state = ko ? '아직 오디션을 준비중이에요' : 'Preparing for the audition';
-    else if (j.lvDone) state = ko ? '보상 달성!' : 'Reward unlocked!';
-    else state = ko ? `${(j.stageName||'')} · 다음 단계로` : `Next stage`;
-    const fmtH0 = (h) => {
-      if (h == null || isNaN(h)) return ko ? '0시간' : '0m';
-      const total = Math.max(0, Math.ceil(h));
-      if (total < 60) return total + (ko ? '분' : 'm');
-      const hh = Math.floor(total / 60), mm = total % 60;
-      return mm === 0 ? hh + (ko ? '시간' : 'h') : hh + (ko ? '시간 ' : 'h ') + mm + (ko ? '분' : 'm');
-    };
-    const meta = `${fmtH0(j.totalH * 60)} · ${j.totalQ} ${ko?'문제':'Q'}`;
+    const lvBadge = 'Lv' + j.lv;
+    const state = ko ? `문제 Lv${j.qLv} · 교재 Lv${j.bLv}` : `Quiz Lv${j.qLv} · Book Lv${j.bLv}`;
     return `<span class="jsm-lv">${lvBadge}</span>
-      <span class="jsm-txt"><b>${esc(ko ? j.lvName : (j.lvNameEn || j.lvName))}</b><em>${esc(state)}</em></span>
-      <span class="jsm-meta">${meta}</span>`;
+      <span class="jsm-txt"><b>${ko?'아이돌 여정':'Idol Journey'} Lv${j.lv}</b><em>${esc(state)}</em></span>
+      <span class="jsm-meta">✏ ${j.qInto}/${j.qNeed} · 📖 ${j.bInto}m/${j.bNeed}m</span>`;
   } catch (e) { return ''; }
 }
 function journeyCardHTML() {
   try {
     const j = currentJourney();
-    if (!j || !window.IDOL_JOURNEY) return '';
-    const J = window.IDOL_JOURNEY;
+    if (!j) return '';
     const ko = LANG === 'ko';
-    const lvName = ko ? j.lvName : (j.lvNameEn || j.lvName);
-    const nextName = ko ? (j.nextStage || '') : (j.nextStageEn || j.nextStage || '');
-    const lvBadge = j.lv === 0 ? 'Lv0' : 'Lv' + j.lv;
-    const barPct = j.segPct;
-    const fmtH = (h) => {
-      if (h == null || isNaN(h)) return ko ? '0시간' : '0m';
-      const total = Math.max(0, Math.ceil(h));
-      const hh = Math.floor(total / 60), mm = total % 60;
-      if (hh <= 0) return mm + (ko ? '분' : 'm');
-      if (mm === 0) return hh + (ko ? '시간' : 'h');
-      return hh + (ko ? '시간 ' : 'h ') + mm + (ko ? '분' : 'm');
-    };
-    const totalHStr = fmtH(j.totalH * 60);
-    let status;
-    if (j.maxed) status = '🏆 ' + (ko ? j.lvReward : (j.lvRewardEn || j.lvReward));
-    else if (j.lvAccBlocked) status = ko ? `🔒 정답률 ${j.accGate}% 이상 필요 (현재 ${j.acc}%)` : `🔒 Need ${j.accGate}%+ accuracy to unlock (now ${j.acc}%)`;
-    else if (j.lv === 0) status = ko ? `${totalHStr} · ${j.totalQ}문제를 채워 데뷔팀 후보로!` : `Reach ${totalHStr} study & advance your debut!`;
-    else status = ko ? `${j.lvName} 보상 달성! 다음은 ${j.nextStage || ''}` : `${lvName} unlocked! Next: ${nextName || ''}`;
-    const accOK = j.acc >= j.accGate;
+    const lvBadge = 'Lv' + j.lv;
+    const track = (ico, label, into, need, pct) => `
+      <div style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-size:10px;font-weight:800;letter-spacing:.4px;opacity:.7;">${ico} ${label}</span>
+          <span style="font-size:10.5px;font-weight:800;color:var(--ios-purple);">${into} / ${need}${typeof need==='number' && need>50 ? '분':'개'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+          <div style="flex:1;height:8px;border-radius:99px;background:rgba(139,92,246,.14);overflow:hidden;">
+            <div style="width:${pct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#EC4899);"></div>
+          </div>
+          <span style="font-size:10px;font-weight:800;color:var(--ios-purple);width:34px;text-align:right;">${pct}%</span>
+        </div>
+      </div>`;
+    const note = ko
+      ? '문제를 맞히면 20% 보너스, 연속 정답이면 10%씩 추가돼요. 문제 10개 또는 교재 60분마다 레벨이 올라요.'
+      : 'Correct answers give +20% and streaks +10% each. 10 questions OR 60 textbook minutes raise a level.';
     return `<div class="app-card journey-card mylevel-card" style="margin-top:16px;overflow:hidden;position:relative;border:1px solid rgba(139,92,246,.25);background:linear-gradient(135deg, rgba(139,92,246,.10), rgba(236,72,153,.08));">
       <div style="display:flex;align-items:center;gap:12px;">
-        <div class="ml-badge" style="flex:none;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:0 4px 14px rgba(124,58,237,.3);">
+        <div class="ml-badge" style="flex:none;width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;line-height:1;box-shadow:0 4px 14px rgba(124,58,237,.3);">
           <span style="font-size:16px;">${lvBadge}</span>
         </div>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:9.5px;font-weight:800;letter-spacing:1px;opacity:.55;">${ko?'My Level':'My Level'}</div>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <b style="font-size:15px;">${esc(lvName)}</b>
-          </div>
-          <div style="font-size:11.5px;color:var(--ios-secondary-label);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${totalHStr} · ${j.totalQ} ${ko?'문제':'Q'}</div>
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:1px;opacity:.55;">${ko?'아이돌 여정 · My Level':'Idol Journey · My Level'}</div>
+          <b style="font-size:15px;">${ko?'문제 Lv':'Quiz Lv'}${j.qLv} + ${ko?'교재 Lv':'Book Lv'}${j.bLv} = Lv${j.lv}</b>
+          <div style="font-size:11px;color:var(--ios-secondary-label);margin-top:1px;">✏ ${j.P} ${ko?'가중점수':'pts'} · 📖 ${j.bookMin}m</div>
         </div>
-        <div style="font-size:10px;color:var(--ios-purple);font-weight:800;letter-spacing:.5px;flex:none;">${ko?'단계':'Stage'} ${j.stageIdx}/10</div>
       </div>
-      ${j.maxed ? '' : `
-      <div class="ml-cond" style="margin-top:12px;border-top:1px dashed rgba(139,92,246,.25);padding-top:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;">
-          <span style="font-size:11px;font-weight:800;color:var(--ios-purple);">NEXT · ${nextName ? esc(nextName.replace(/^Lv\s?/,'Lv ')) : ''}</span>
-          <span style="font-size:11px;font-weight:700;">${ko?'정답률':'Accuracy'} ${j.acc}% / ${j.accGate}%</span>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:7px;">
-          <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
-            <div style="font-size:9px;font-weight:700;opacity:.65;">${ko?'남은 공부':'Study left'}</div>
-            <b style="font-size:15px;">${fmtH(j.remH * 60)}</b>
-          </div>
-          <div style="flex:1;background:rgba(139,92,246,.08);border-radius:12px;padding:7px 10px;">
-            <div style="font-size:9px;font-weight:700;opacity:.65;">${ko?'남은 문제':'Questions left'}</div>
-            <b style="font-size:15px;">${j.remQ}</b>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:9px;">
-          <div style="flex:1;height:7px;border-radius:99px;background:rgba(139,92,246,.14);overflow:hidden;">
-            <div style="width:${barPct}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#EC4899);"></div>
-          </div>
-          <span style="font-size:10px;font-weight:700;color:var(--ios-purple);">${barPct}%</span>
-        </div>
-      </div>`}
-      <div style="font-size:10.5px;font-weight:600;margin-top:8px;color:${j.maxed ? '#16a34a' : j.lvAccBlocked ? '#d97706' : 'var(--ios-secondary-label)'};">${status}</div>
+      ${track('✏', ko?'문제 풀기':'Solve questions', j.qInto, j.qNeed, j.qSegPct)}
+      ${track('📖', ko?'텍스트북 공부':'Study textbook', j.bInto, j.bNeed, j.bSegPct)}
+      <div style="font-size:10.5px;font-weight:600;margin-top:10px;color:var(--ios-secondary-label);line-height:1.45;">${note}</div>
     </div>`;
   } catch (e) { return ''; }
 }
 function openJourneyDetail() { go('my'); }
+
+/* Level-up celebration for the new reward model (called from recordResult &
+   addStudyTime when a problem/textbook level crosses a 10/60 threshold). */
+let _lvlUpShown = 0;
+function celebrateLevelUp(kind, newLv) {
+  try {
+    const ko = LANG === 'ko';
+    const label = kind === 'book'
+      ? (ko ? `교재 Lv${newLv}` : `Book Lv${newLv}`)
+      : (ko ? `문제 Lv${newLv}` : `Quiz Lv${newLv}`);
+    if (typeof toast === 'function') toast(`🎉 ${label} · Level up!`);
+    if (typeof render === 'function') { try { render(); } catch (e) {} }
+  } catch (e) {}
+}
 
 /* 정답률 바 렌더 헬퍼 */
 function toggleTip(btn) {
@@ -3462,6 +3480,22 @@ function recordResult(q, correct) {
   if (correct) p.correct += 1;
   prog[q.id] = p;
   lsSet(LS.progress, prog);
+  // Weighted problem progress (new reward model): wrong +1 · correct +1.2
+  // (20% bonus) · consecutive correct adds +0.1 each. Problem level = floor(P/10).
+  try {
+    const qp = lsGet(LS.qprog, { P: 0, cur: 0 });
+    let qp2;
+    if (correct) {
+      const cur = (qp.cur || 0) + 1;
+      qp2 = { P: (qp.P || 0) + 1.2 + 0.1 * (cur - 1), cur: cur };
+    } else {
+      qp2 = { P: (qp.P || 0) + 1, cur: 0 };
+    }
+    const beforeLv = Math.floor((qp.P || 0) / 10);
+    const afterLv = Math.floor(qp2.P / 10);
+    lsSet(LS.qprog, qp2);
+    if (afterLv > beforeLv) { if (typeof celebrateLevelUp === 'function') celebrateLevelUp('problem', afterLv, beforeLv); }
+  } catch (e) {}
   // today-solved registry: every answer (daily 10, AI TOPIK sections, mock, AI Redo,
   // review) funnels through recordResult, so mark the question on today's date here.
   // Keeps existing daily.done values (real answer picks) intact; only fills blanks.
