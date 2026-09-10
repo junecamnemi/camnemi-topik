@@ -112,6 +112,17 @@ async function emailLogin(email, password) {
   return { ok: true };
 }
 
+/* Send a password-reset email. Returns {ok, msg} for UI feedback. */
+async function emailResetPassword(email) {
+  if (!_sb) await initAuth();
+  if (!email) return { ok: false, msg: '이메일을 입력하세요.' };
+  const { data, error } = await _sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/login.html'
+  });
+  if (error) return { ok: false, msg: error.message };
+  return { ok: true };
+}
+
 /* ---------- OAuth callback (login.html) ---------- */
 async function handleAuthCallback() {
   if (!_sb) await initAuth();
