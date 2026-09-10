@@ -740,7 +740,8 @@ function levelOf(q) { return q.level <= 2 ? 'I' : 'II'; }
 
 /* ---------- tab routing ---------- */
 function go(tab, noPush) {
-  if (tab !== APP.tab) {
+  const isTabSwitch = (tab !== APP.tab);
+  if (isTabSwitch) {
     if (!noPush) {
       APP.navStack.push(APP.tab);
       if (APP.navStack.length > 20) APP.navStack.shift();
@@ -755,6 +756,19 @@ function go(tab, noPush) {
     ensureBookData().then(() => { if (APP.tab === 'book') render(); });
   }
   render();
+  // A fresh tab should start at the top (don't carry the previous tab's scroll).
+  if (isTabSwitch) resetScrollTop();
+}
+/* Reset the page scroll to the very top (covers window, html and body — the app
+   scrolls the document, but this is belt-and-braces across browsers/webviews). */
+function resetScrollTop() {
+  const toTop = () => { try { window.scrollTo(0, 0); } catch (e) {}
+    const de = document.documentElement, bd = document.body;
+    if (de) de.scrollTop = 0; if (bd) bd.scrollTop = 0; };
+  toTop();
+  // once more after layout settles (images/videos below the fold can shift height)
+  if (typeof requestAnimationFrame === 'function') requestAnimationFrame(toTop);
+  setTimeout(toTop, 60);
 }
 /* Back navigation — pops the tab stack (used by the header back button AND the Android hardware back via popstate) */
 function goBack() {
@@ -817,6 +831,17 @@ function initVideoPauseOptimizer() {
 function render() {
   const s = $id('screen');
   if (!s) return;
+  // --- preserve <video> elements across re-renders: the innerHTML swap below
+  //     destroys and recreates every video, which restarts playback (hero, carousel,
+  //     feature tiles). Detach them keyed by src first, then re-attach the same live
+  //     element whenever the new markup asks for the same src — so nothing restarts
+  //     on a button tap / same-tab re-render; only a genuine clip change reloads. ---
+  const _vidMap = new Map();
+  s.querySelectorAll('video').forEach(v => {
+    const srcEl = v.querySelector('source');
+    const key = v.getAttribute('src') || (srcEl && srcEl.getAttribute('src')) || '';
+    if (key && !_vidMap.has(key)) { _vidMap.set(key, v); v.remove(); }
+  });
   // full-bleed hero: tabs with a hero banner (home scene OR tab hero clips) get
   // the transparent glass header so every tab's header matches home.
   const heroTabs = { home:1, book:1, daily:1, rank:1, my:1 };
@@ -854,6 +879,27 @@ function render() {
   }
   renderSchedBanner();
   updateBackBtn();
+  // re-attach preserved videos whose src is unchanged (keeps playback uninterrupted);
+  // anything not reused is torn down so detached media doesn't linger.
+  {
+    const reused = new Set();
+    s.querySelectorAll('video').forEach(nv => {
+      const srcEl = nv.querySelector('source');
+      const key = nv.getAttribute('src') || (srcEl && srcEl.getAttribute('src')) || '';
+      const old = key && _vidMap.get(key);
+      if (!old) return;
+      reused.add(key);
+      old.className = nv.className;
+      ['style', 'data-scene-video', 'data-pos'].forEach(a => {
+        const val = nv.getAttribute(a); if (val != null) old.setAttribute(a, val);
+      });
+      nv.replaceWith(old);
+      if (old.paused) { try { old.play().catch(() => {}); } catch (e) {} }
+    });
+    _vidMap.forEach((v, key) => {
+      if (!reused.has(key)) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }
+    });
+  }
   // stop the chat poller when not viewing chat
   if (APP.tab !== 'chat' && typeof window.stopChat === 'function') { try { window.stopChat(); } catch (e) {} }
   // expression cycle only lives on the home tab
