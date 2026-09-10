@@ -289,14 +289,15 @@ function viewCharProfile(id) {
   // group stage-video backdrop: show the character's GROUP dance video behind the card.
   // Map the completed group stage clips; groups still being produced fall back to
   // the GLOWSIS anime stage clip so the backdrop is never empty.
-  // Per-character vertical profile video (idol activity: recording / dance practice
-  // / ad shoot / stage). Characters without one yet fall back to the stage clip.
-  const CHAR_VID = { 'f-01':1, 'f-02':1, 'f-03':1, 'f-04':1 };
+  // Per-character vertical profile video (idol activity: recording / dance / stage /
+  // ad shoot / MV set / fan-sign / radio / red carpet …). Falls back to the stage
+  // clip for any character whose profile video isn't generated yet.
+  const CHAR_VID = { 'f-01':1, 'f-02':1, 'f-03':1, 'f-04':1, 'f-05':1, 'f-06':1, 'f-07':1, 'f-08':1, 'f-09':1, 'f-10':1, 'f-11':1, 'f-12':1, 'f-13':1, 'f-14':1, 'f-15':1, 'f-16':1, 'f-17':1, 'f-18':1, 'f-19':1, 'f-20':1, 'f-21':1, 'f-22':1, 'f-23':1, 'f-24':1, 'f-25':1, 'f-26':1, 'f-27':1, 'f-28':1, 'f-29':1, 'f-30':1, 'm-01':1, 'm-02':1, 'm-03':1, 'm-04':1, 'm-05':1, 'm-06':1, 'm-07':1, 'm-08':1, 'm-09':1, 'm-10':1, 'm-11':1, 'm-12':1, 'm-13':1, 'm-14':1, 'm-15':1, 'm-16':1, 'm-17':1, 'm-18':1, 'm-19':1, 'm-20':1, 'm-21':1, 'm-22':1, 'm-23':1, 'm-24':1, 'm-25':1, 'm-26':1, 'm-27':1, 'm-28':1, 'm-29':1, 'm-30':1 };
   const grpVideo = CHAR_VID[id] ? `assets/chars_prof/${id}.mp4` : 'assets/cpbg/glowsis_anime_lo.mp4';
   document.getElementById('char-profile').innerHTML = `
     <div class="cp-modal">
-      <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-        <source src="${grpVideo}" type="video/mp4"></video>
+      <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"
+        src="${grpVideo}" onerror="this.onerror=null;this.src='assets/cpbg/glowsis_anime_lo.mp4';"></video>
       <div class="cpf-veil"></div>
       <div class="cp-card">
         <button class="cp-close" onclick="closeCharProfile()">✕</button>
