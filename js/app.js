@@ -3214,8 +3214,9 @@ function bumpQuest(key, step = 1) {
   lsSet(LS.quests, q);
   if (justDone) {
     const bonus = key === 'mock' ? 100 : key === 'flash' ? 30 : 50;
-    toast(t('quest_done') + ' ' + t('xp_reward', { n: bonus }));
     addXP(bonus, 'quest:' + key);
+    // Quest-complete reward shown via the character praise popup (not a plain toast).
+    if (typeof praiseQuest === 'function') praiseQuest(key, bonus);
   }
   return q;
 }
@@ -3505,32 +3506,45 @@ const PRAISE_LINES = {
   en: ['맞았어! 잘했어~ 🎉', 'Great job! You got it! 💜', 'That was perfect! ✨', "You're so smart! 😍", 'Amazing — keep it up! 🚀', '정확해요! 대단해요! 🌟'],
   ko: ['정답! 너무 잘했어~ 🎉', '완벽해! 역시 우리 유저야 💜', '정확해! 최고야 ✨', '어려운 문제도 풀었네! 😍', '진짜 대단해! 계속 가자 🚀', '대단해요! 정말 멋져요! 🌟']
 };
+/* Quest-complete praise — replaces the old plain "✓ Done +50 XP" toast with the
+   character's own cheering popup (same style as the correct-answer one). */
+const QUEST_LINES = {
+  en: ['오늘 목표 달성! 최고야~ 🎯', '일일 목표 클리어! 💪', '오늘의 할 일 다 했네! 🏆'],
+  ko: ['오늘 목표 달성! 최고야~ 🎯', '일일 목표 클리어! 💪', '오늘의 할 일 다 했네! 🏆']
+};
 let _praiseTimer = null;
+function _praisePopup(msg, score, nameOverride) {
+  const c = myChar();
+  const face = c ? charFace(c) : '';
+  const name = nameOverride || myCharName() || (c && c.name) || '';
+  let el = document.getElementById('praise-pop');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'praise-pop';
+    el.className = 'praise-pop';
+    document.body.appendChild(el);
+  }
+  el.innerHTML = `${face ? `<img class="pp-ava" src="${esc(face)}" alt="">` : '<span class="pp-ava pp-ava-emoji">😊</span>'}
+    <div class="pp-txt"><b class="pp-name">${esc(name)}</b><span class="pp-msg">${esc(msg)}</span>
+      ${score ? `<span class="pp-score">+${score} XP</span>` : ''}</div>`;
+  el.classList.remove('show');
+  void el.offsetWidth;            // reflow → restart animation
+  el.classList.add('show');
+  if (_praiseTimer) clearTimeout(_praiseTimer);
+  _praiseTimer = setTimeout(() => { el.classList.remove('show'); }, 2400);
+}
+function praiseQuest(key, bonus) {
+  const lang = (LANG === 'ko' || LANG === 'km') ? 'ko' : 'en';
+  const lines = QUEST_LINES[lang] || QUEST_LINES.en;
+  _praisePopup(lines[Math.floor(Math.random() * lines.length)], bonus);
+}
 function praiseCorrect(q) {
   try {
-    const c = myChar();
-    const face = c ? charFace(c) : '';
-    const name = myCharName() || (c && c.name) || '';
     const lang = (LANG === 'ko' || LANG === 'km') ? 'ko' : 'en';
     const lines = PRAISE_LINES[lang] || PRAISE_LINES.en;
     const msg = lines[Math.floor(Math.random() * lines.length)];
     const score = XP_RULES.correct || 10;    // shown together with the praise
-    let el = document.getElementById('praise-pop');
-    if (!el) {
-      el = document.createElement('div');
-      el.id = 'praise-pop';
-      el.className = 'praise-pop';
-      document.body.appendChild(el);
-    }
-    el.innerHTML = `${face ? `<img class="pp-ava" src="${esc(face)}" alt="">` : '<span class="pp-ava pp-ava-emoji">😊</span>'}
-      <div class="pp-txt"><b class="pp-name">${esc(name)}</b><span class="pp-msg">${esc(msg)}</span>
-        <span class="pp-score">+${score} XP</span></div>`;
-    // restart animation so rapid corrects re-play cleanly
-    el.classList.remove('show');
-    void el.offsetWidth;            // reflow
-    el.classList.add('show');
-    if (_praiseTimer) clearTimeout(_praiseTimer);
-    _praiseTimer = setTimeout(() => { el.classList.remove('show'); }, 2400);
+    _praisePopup(msg, score);
   } catch (e) {}
 }
 /* ---------- Bookmarks (save a question to review later) ---------- */
