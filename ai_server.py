@@ -466,6 +466,33 @@ async def daily_bank(req: Request):
     # cap at 10 per request (same UX as section practice)
     return {"questions": out[:10], "ai": True, "source": "daily-bank", "total": len(out)}
 
+# ---- today's vocab set (20 questions) — written by daily_bank.py ----
+DAILY_VOCAB_PATH = os.path.join(APP_ROOT, "data", "daily-vocab.json")
+
+@app.get("/api/daily-vocab")
+async def daily_vocab(req: Request):
+    exclude_raw = (req.query_params.get("exclude") or "").strip()
+    exclude = set(x for x in exclude_raw.split(",") if x)
+    try:
+        with open(DAILY_VOCAB_PATH, encoding="utf-8") as f:
+            qs = json.load(f)
+    except Exception:
+        qs = []
+    out = [q for q in qs if q.get("id") not in exclude]
+    return {"questions": out, "ai": True, "source": "daily-vocab", "total": len(out)}
+
+# ---- today's mock tests (TOPIK I + TOPIK II) — written by daily_bank.py ----
+DAILY_MOCKS_PATH = os.path.join(APP_ROOT, "data", "daily-mocks.json")
+
+@app.get("/api/daily-mocks")
+async def daily_mocks():
+    try:
+        with open(DAILY_MOCKS_PATH, encoding="utf-8") as f:
+            mocks = json.load(f)
+    except Exception:
+        mocks = []
+    return {"mocks": mocks, "ai": True, "source": "daily-mocks", "total": len(mocks)}
+
 # serve the static app from the same origin → ONE tunnel/URL for everything
 # (mounted LAST so /api/* and /health win over static)
 app.mount("/", StaticFiles(directory=APP_ROOT, html=True), name="app")

@@ -35,3 +35,5 @@ _vocabfreq.json
 _build_kwimg.js
 _homeCheck2.png
 probe_fl.html
+data/daily-vocab.json
+data/daily-mocks.json
