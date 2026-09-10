@@ -519,11 +519,19 @@ function freqInfo(q) {
     [...(window.TOPIK1_BANK || []), ...(window.TOPIK2_BANK || [])].forEach(b => {
       if (!b.freq || !b.freqNote) return;
       const k = b.section + ':' + b.type;
-      if (!_freqMap[k]) _freqMap[k] = { n: b.freq, note: b.freqNote };
+      if (!_freqMap[k]) _freqMap[k] = { n: b.freq, note: b.freqNote, lv: b.level };
     });
   }
   const f = _freqMap[q.section + ':' + q.type];
-  return f || null;
+  if (!f) return null;
+  // Don't attach a TOPIK II caption to a TOPIK I question (or vice-versa):
+  // the section:type key is coarse, so a T1 vocab item could inherit T2's note.
+  const isT2Note = /TOPIK II/.test(f.note);
+  const isT1Note = /TOPIK I(?!I)/.test(f.note);
+  const qLv = q.level || 0;
+  if (isT2Note && qLv <= 2) return null;
+  if (isT1Note && qLv >= 3) return null;
+  return f;
 }
 /* freqNote strings are stored in Korean (data-side). Localize for en/km so the
    UI never leaks Hangul when the app language is English/Khmer. */
@@ -3443,6 +3451,40 @@ function recordResult(q, correct) {
     st.last = today;
     lsSet(LS.streak, st);
   }
+  // Celebrate a correct answer with a praise popup from the current character.
+  if (correct) praiseCorrect(q);
+}
+/* Praise popup — the current character slides up from the bottom to cheer a
+   correct answer. Rotates a few supportive lines; avatar shows the character. */
+const PRAISE_LINES = {
+  en: ['맞았어! 잘했어~ 🎉', 'Great job! You got it! 💜', 'That was perfect! ✨', "You're so smart! 😍", 'Amazing — keep it up! 🚀', '정확해요! 대단해요! 🌟'],
+  ko: ['정답! 너무 잘했어~ 🎉', '완벽해! 역시 우리 유저야 💜', '정확해! 최고야 ✨', '어려운 문제도 풀었네! 😍', '진짜 대단해! 계속 가자 🚀', '대단해요! 정말 멋져요! 🌟']
+};
+let _praiseTimer = null;
+function praiseCorrect(q) {
+  try {
+    const c = myChar();
+    const face = c ? charFace(c) : '';
+    const name = myCharName() || (c && c.name) || '';
+    const lang = (LANG === 'ko' || LANG === 'km') ? 'ko' : 'en';
+    const lines = PRAISE_LINES[lang] || PRAISE_LINES.en;
+    const msg = lines[Math.floor(Math.random() * lines.length)];
+    let el = document.getElementById('praise-pop');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'praise-pop';
+      el.className = 'praise-pop';
+      document.body.appendChild(el);
+    }
+    el.innerHTML = `${face ? `<img class="pp-ava" src="${esc(face)}" alt="">` : '<span class="pp-ava pp-ava-emoji">😊</span>'}
+      <div class="pp-txt"><b class="pp-name">${esc(name)}</b><span class="pp-msg">${esc(msg)}</span></div>`;
+    // restart animation so rapid corrects re-play cleanly
+    el.classList.remove('show');
+    void el.offsetWidth;            // reflow
+    el.classList.add('show');
+    if (_praiseTimer) clearTimeout(_praiseTimer);
+    _praiseTimer = setTimeout(() => { el.classList.remove('show'); }, 2400);
+  } catch (e) {}
 }
 /* ---------- Bookmarks (save a question to review later) ---------- */
 function isBookmarked(qid) {
