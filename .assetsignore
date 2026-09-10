@@ -1,0 +1,55 @@
+# Files never uploaded as Workers static assets.
+# Mirrors .gitignore so a local `wrangler deploy` behaves exactly like the CI clone
+# (CI only ever sees tracked files, but this keeps local deploys safe too).
+
+# --- repo / tooling ---
+.git/
+.gitignore
+node_modules/
+.wrangler/
+wrangler.jsonc
+.assetsignore
+
+# --- local secrets / config ---
+js/config.js
+.env
+*.local
+assets/audio/tts_cache/
+
+# --- generated daily data ---
+data/daily-bank.json
+data/.daily-seen.json
+data/daily-bank.log
+data/daily-vocab.json
+data/daily-mocks.json
+
+# --- big local video frames ---
+tammy-videos/
+.ref/
+
+# --- dead / stale assets archived locally ---
+_archive_dead/
+
+# --- local scratch / build leftovers ---
+.qa/
+_dictbuild/
+_dictchunks/
+_vocabchunks/
+_vocab_backup/
+_vocab_montage/
+_profilesrc.json
+_profilesrc2/
+_profilesrc3/
+_regen/
+_zoom/
+_char_preview/
+_kl/
+_kwimg.json
+_vocab_src.json
+_vocabfreq.js
+_vocabfreq.json
+_build_kwimg.js
+_homeCheck2.png
+probe_fl.html
+__pycache__/
+*.pyc
