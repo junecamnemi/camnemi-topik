@@ -4043,8 +4043,7 @@ function reviewCard(q, opts) {
   </div>`;
   const passage = (q.passage ? `<div class="q-passage">${q.passage}</div>` : '')
     + (q.passageGl ? `<div class="passage-gloss">📖 ${esc(q.passageGl)}</div>` : '')
-    + (q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);">📌 ${t('q_given')}: ${q.given}</div>` : '')
-    + (q.dialogue && q.section === 'listening' ? `<div class="q-dialogue" style="font-weight:700;font-size:14px;line-height:1.6;margin:6px 0 4px;padding:9px 11px;background:var(--ios-card);border-left:3px solid var(--ios-blue-2);border-radius:8px;color:var(--ios-label);">${q.dialogue}</div>` : '');
+    + (q.given ? `<div class="q-given" style="font-weight:800;font-size:14px;line-height:1.5;margin:6px 0 4px;padding:8px 10px;background:var(--ios-fill);border-radius:10px;color:var(--ios-label);border:1px dashed var(--ios-separator);">📌 ${t('q_given')}: ${q.given}</div>` : '');
   // options (read-only; correct one highlighted green, wrong answers plain)
   let optsHtml = '';
   if (q.section === 'writing') {
