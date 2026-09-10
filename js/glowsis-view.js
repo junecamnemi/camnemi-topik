@@ -108,6 +108,25 @@ let _book = { book: '1a', unit: 0, page: 0 }; // active book + unit + page
 let _bookOpenAt = null;           // timestamp when the book reader was opened (study-time tracking)
 const BOOK_SESSION_KEY = 'camnemi_topik_book_session'; // { book, unit, page } — restore on return
 
+/* ---- lazy loading of the extra textbook data (GLOWSIS_1B … GLOWSIS_6B) ----
+   These ~3.8MB of unit data are only needed inside the Textbook tab, so they are
+   NOT loaded at startup (see app.html). ensureBookData() injects them on demand and
+   resolves once every book global is present; safe to call repeatedly. */
+const _BOOK_DATA_FILES = ['1b','2a','2b','3a','3b','4a','4b','5a','5b','6a','6b']
+  .map(id => `data/glowsis-book-${id}.js`);
+let _bookDataP = null;
+function ensureBookData() {
+  if (_bookDataP) return _bookDataP;
+  _bookDataP = Promise.all(_BOOK_DATA_FILES.map(src => new Promise(res => {
+    if (document.querySelector(`script[data-lazyload="${src}"]`)) return res();
+    const s = document.createElement('script');
+    s.src = src; s.dataset.lazyload = src; s.async = false;
+    s.onload = res; s.onerror = res;
+    document.head.appendChild(s);
+  })));
+  return _bookDataP;
+}
+
 /* ---- multi-book registry ----
    Each book's units live in its own global (window.GLOWSIS_BOOK = 1A; future books
    add window.GLOWSIS_1B, GLOWSIS_2A, …). bookUnits() returns the ACTIVE book's units. */

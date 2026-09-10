@@ -749,6 +749,11 @@ function go(tab, noPush) {
   }
   APP.tab = tab;
   document.querySelectorAll('.tab-item').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  // Textbook data (GLOWSIS_1B…6B, ~3.8MB) is lazy-loaded on first entry so it never
+  // blocks the initial app load; re-render once it arrives.
+  if (tab === 'book' && typeof ensureBookData === 'function') {
+    ensureBookData().then(() => { if (APP.tab === 'book') render(); });
+  }
   render();
 }
 /* Back navigation — pops the tab stack (used by the header back button AND the Android hardware back via popstate) */

@@ -11,3 +11,6 @@ data/daily-bank.log
 
 # big generated video frames (too large for git — keep repo under GitHub limits)
 tammy-videos/
+
+# dead/stale assets archived locally (not deployed)
+_archive_dead/
