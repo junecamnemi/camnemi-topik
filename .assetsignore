@@ -11,7 +11,7 @@ wrangler.jsonc
 .assetsignore
 
 # --- local secrets / config ---
-js/config.js
+# js/config.js — PUBLIC anon key, must ship (email/Social login needs it)
 .env
 *.local
 assets/audio/tts_cache/
