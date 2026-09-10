@@ -563,12 +563,24 @@ function ensureVocabDict(cb){
   document.head.appendChild(s);
 }
 function openVocabWord(k) {
-  const w = vocabDict(k);
+  let w = vocabDict(k);
   if (!w) {
-    // dict not loaded yet (shouldn't happen since openVocab ensures it) — try loading then retry
-    if (typeof toast === 'function') toast('...');
+    // dict not loaded yet — load it (async) then open the word, with a clear
+    // loading message instead of a bare "…" so the tap isn't a dead end.
+    if (typeof toast === 'function') toast(window.LANG === 'ko' ? '단어사전 불러오는 중…' : 'Loading dictionary…');
+    const retry = (ok) => {
+      if (!ok) { if (typeof toast === 'function') toast(window.LANG === 'ko' ? '잠시 후 다시 눌러주세요' : 'Please try again'); return; }
+      renderVocabWord(k);
+    };
+    if (typeof ensureVocabDict === 'function') ensureVocabDict(retry);
+    else retry(false);
     return;
   }
+  renderVocabWord(k);
+}
+function renderVocabWord(k) {
+  const w = vocabDict(k);
+  if (!w) { if (typeof toast === 'function') toast(window.LANG === 'ko' ? '단어를 찾을 수 없어요' : 'Word not found'); return; }
   _vb.hist = _vb.hist || [];
   const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const stars = '★'.repeat(Math.max(1,Math.min(3,w.star||1)));
