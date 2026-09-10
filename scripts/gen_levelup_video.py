@@ -60,6 +60,13 @@ def main():
                   'f-03':'assets/glowsis/dahee.webp','f-04':'assets/glowsis/roy.webp'}.get(cid)
     if not anchor_src:
         raise SystemExit('unknown char (use f-01..f-04 for now)')
+    # identity lock: name each character's hair/outfit so the clip can't drift
+    IDENT = {
+        'f-01': 'her long straight black hair and light-blue denim jacket over a white top',
+        'f-02': 'her short brown hair with the beige baseball cap, white crop top and olive cargo pants',
+        'f-03': 'her short ASH-BLONDE bob hair (keep it light blonde, never black) and pink hoodie',
+        'f-04': 'her hair and outfit exactly as in the reference image',
+    }
     anchor = os.path.join(ROOT, anchor_src)
     print("uploading anchor", anchor)
     url = upload(anchor, key)
@@ -67,8 +74,9 @@ def main():
     prompt = ("The same girl celebrates happily: she throws both hands up and laughs, "
               "colorful confetti and sparkles burst around her, she does a small joyful jump, "
               "bright purple and pink concert stage lights shimmer behind her. "
-              "Keep her face, black hair and outfit exactly identical. Portrait framing, "
-              "lower body not visible. No text, no letters, no watermark, no logos.")
+              f"Keep {IDENT.get(cid,'her face and outfit')} EXACTLY identical to the reference in every frame — "
+              "do not change her hair color. Portrait framing, lower body not visible. "
+              "No text, no letters, no watermark, no logos.")
     print("submitting i2i...")
     job = submit(url, prompt, key)
     print("job:", job.get("request_id"), job.get("status"))
