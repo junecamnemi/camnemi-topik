@@ -66,6 +66,7 @@ window.LEVEL5_BANK = [
   { id: "LV5R03", section: "reading", type: "comprehension", level: 5, points: 3,
     qGl: "Read the passage and choose the correct answer.",
     q: "다음을 읽고 물음에 답하십시오.",
+    subq: "글의 내용과 같은 것을 고르십시오.",
     passage: "회사는 지난달부터 주 4일 근무제를 시범 운영하고 있다. 시행 두 달 만에 직원들의 만족도는 크게 올랐지만, 업무량은 줄어들지 않았다는 지적도 나온다. 이에 회사 측은 업무 효율을 높이기 위한 교육을 도입할 계획이라고 밝혔다. 일부에서는 근무일이 줄면 고객 응대 시간이 짧아져 서비스 품질이 떨어질 것을 우려하는 목소리도 있다.",
     passageGl: "The company has been piloting a four-day workweek since last month. Within two months of implementation, employee satisfaction rose significantly, but there are also criticisms that the workload has not decreased. In response, the company announced plans to introduce training to raise work efficiency. Some also voice concern that shorter working days will shorten customer service hours and lower service quality.",
     options: [
@@ -94,6 +95,7 @@ window.LEVEL5_BANK = [
   { id: "LV5R04", section: "reading", type: "comprehension", level: 5, points: 3,
     qGl: "Read the passage and choose the correct answer.",
     q: "다음을 읽고 물음에 답하십시오.",
+    subq: "글의 내용과 같은 것을 고르십시오.",
     passage: "재활용품을 분리배출할 때 가장 흔한 실수는 내용물을 헹구지 않고 버리는 것이다. 음식물 찌꺼기가 묻은 플라스틱은 재활용 과정에서 오염을 일으켜 결국 일반 쓰레기로 처리된다. 전문가들은 라벨을 떼는 것보다 내용물을 깨끗이 씻는 것이 더 중요하다고 강조한다. 또한 비닐류는 재질에 따라 재활용 여부가 달라지므로 지역의 안내를 확인할 필요가 있다.",
     passageGl: "The most common mistake when separating recyclables is throwing them out without rinsing the contents. Plastic with food residue causes contamination during the recycling process and is eventually treated as general waste. Experts emphasize that washing the contents cleanly is more important than removing the label. Also, since whether vinyl can be recycled depends on its material, it is necessary to check local guidance.",
     options: [
