@@ -313,6 +313,7 @@ function viewCharProfile(id) {
       </div>
     </div>`;
   const pf = $id('char-profile'); if (pf) pf.classList.add('open');
+  if (typeof bindVideoLoading === 'function') bindVideoLoading(pf);
 }
 function closeCharProfile(){
   const pf=$id('char-profile'); if(pf) pf.classList.remove('open');

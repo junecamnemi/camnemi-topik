@@ -770,6 +770,24 @@ function resetScrollTop() {
   if (typeof requestAnimationFrame === 'function') requestAnimationFrame(toTop);
   setTimeout(toTop, 60);
 }
+/* Mark background videos ready once their first frame is available so the CSS
+   loading placeholder fades out (and the hero spinner hides). Bound once per
+   element; safe to call on every render. */
+function bindVideoLoading(root) {
+  const scope = root || document;
+  scope.querySelectorAll('video').forEach(v => {
+    const markReady = () => {
+      v.classList.add('is-ready');
+      const hero = v.closest('.scene-hero, .seoul-scene');
+      if (hero) hero.classList.add('is-loaded');
+    };
+    if (v.readyState >= 2) { markReady(); return; }
+    if (v.__loadBound) return;
+    v.__loadBound = 1;
+    const onReady = () => { if (v.readyState >= 2) markReady(); };
+    ['loadeddata', 'canplay', 'playing', 'loadedmetadata'].forEach(ev => v.addEventListener(ev, onReady));
+  });
+}
 /* Back navigation — pops the tab stack (used by the header back button AND the Android hardware back via popstate) */
 function goBack() {
   // ---- Book sub-screens: route contextually, not via the tab stack ----
@@ -900,6 +918,8 @@ function render() {
       if (!reused.has(key)) { try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {} }
     });
   }
+  // show loading placeholder / spinner until each bg clip can play
+  bindVideoLoading(s);
   // stop the chat poller when not viewing chat
   if (APP.tab !== 'chat' && typeof window.stopChat === 'function') { try { window.stopChat(); } catch (e) {} }
   // expression cycle only lives on the home tab
