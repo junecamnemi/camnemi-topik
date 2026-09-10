@@ -1,5 +1,5 @@
 # secrets / local config
-js/config.js
+# js/config.js — PUBLIC anon key, must ship (needed for email/Social login on GitHub Pages)
 .env
 *.local
 assets/audio/tts_cache/
