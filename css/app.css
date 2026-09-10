@@ -227,32 +227,38 @@ body.has-back .app-header .brand { margin-left: 34px; }
   display: flex; flex-direction: column; }
 .cp-modal .cpf-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
 .cp-modal .cpf-veil { position: absolute; inset: 0; z-index: 1; background: rgba(12,6,28,.4); }
-/* profile card sits over the video inside the modal → transparent glass + light text */
+/* profile card sits over the video inside the modal → left-aligned, compact,
+   semi-transparent so the character video shows through on the right */
 .cp-modal .cp-card {
-  position: relative; z-index: 2; margin: 0; width: auto;
-  background: transparent; border: none; box-shadow: none; border-radius: 0;
-  display: flex; flex-direction: column; align-items: center;
-  overflow-y: auto; padding: 20px 20px 24px; min-height: 0;
+  position: absolute; z-index: 2; left: 14px; top: 50%; transform: translateY(-50%);
+  margin: 0; width: min(190px, 52vw); max-height: 78vh;
+  background: rgba(20,12,44,.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.18); box-shadow: 0 12px 36px rgba(0,0,0,.4);
+  border-radius: 16px; text-align: left;
+  display: flex; flex-direction: column; align-items: flex-start;
+  overflow-y: auto; padding: 16px 16px 18px; min-height: 0;
 }
 .cp-modal .cp-card::-webkit-scrollbar { display:none; }
 .cp-modal .cp-card .cp-close { color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.5); z-index:3; }
-.cp-modal .cp-card .cp-avatar { border-color: rgba(255,255,255,.85); }
+.cp-modal .cp-card .cp-avatar { border-color: rgba(255,255,255,.85); margin: 0 0 10px; }
 .cp-modal .cp-card .cp-name,
 .cp-modal .cp-card .cp-pos,
 .cp-modal .cp-card .cp-group,
 .cp-modal .cp-card .cp-spec,
-.cp-modal .cp-card .cp-intro { color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.6); }
+.cp-modal .cp-card .cp-intro { color:#fff; text-shadow:0 1px 4px rgba(0,0,0,.6); text-align:left; }
 .cp-modal .cp-card .cp-name small { color:rgba(255,255,255,.8); }
+.cp-modal .cp-card .cp-meta { justify-content: flex-start; }
 .cp-modal .cp-card .cp-meta span { color:#fff; background:rgba(255,255,255,.22); text-shadow:0 1px 2px rgba(0,0,0,.4); }
 .cp-modal .cp-card .cp-charm { color:#ffe3f1; background:rgba(236,72,153,.35); }
 .cp-modal .cp-card .btn { background: linear-gradient(135deg,#7C3AED,#EC4899); }
-.cp-card { background: #fff; border-radius: 22px; padding: 22px; width: min(320px, 86vw); max-height: 80vh; overflow-y: auto;
-  position: relative; box-shadow: 0 12px 40px rgba(0,0,0,.25); text-align: center; }
-.cp-close { position: absolute; top: 10px; right: 14px; font-size: 16px; color: #a79bc9; background: none; border: none; cursor: pointer; }
-.cp-avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin: 6px auto 10px; display: block;
-  border: 3px solid #fff; box-shadow: 0 6px 18px rgba(91,63,212,.25); }
-.cp-name { font-size: 22px; font-weight: 900; color: #2b2547; }
-.cp-name small { font-size: 13px; font-weight: 700; color: #a79bc9; margin-left: 5px; }
+.cp-card { background: rgba(255,255,255,.92); border-radius: 18px; padding: 14px 16px; width: min(210px, 56vw); max-height: 78vh; overflow-y: auto;
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%); text-align: left;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.cp-close { position: absolute; top: 8px; right: 10px; font-size: 15px; color: #7c729e; background: none; border: none; cursor: pointer; z-index:3; }
+.cp-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; margin: 0 0 8px; display: block;
+  border: 2.5px solid #fff; box-shadow: 0 6px 18px rgba(91,63,212,.25); }
+.cp-name { font-size: 18px; font-weight: 900; color: #2b2547; text-align:left; }
+.cp-name small { font-size: 11px; font-weight: 700; color: #a79bc9; margin-left: 4px; }
 .cp-pos { font-size: 13px; font-weight: 800; color: #7b3ff2; margin-top: 4px; }
 .cp-group { font-size: 12px; font-weight: 700; color: #8a83a6; margin-top: 2px; }
 .cp-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 12px; }
