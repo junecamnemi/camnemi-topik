@@ -254,18 +254,23 @@ body.has-back .app-header .brand { margin-left: 34px; }
 .cp-modal .cp-card .cp-meta span { color:#fff; background:rgba(255,255,255,.22); text-shadow:0 1px 2px rgba(0,0,0,.4); }
 .cp-modal .cp-card .cp-charm { color:#ffe3f1; background:rgba(236,72,153,.35); }
 .cp-modal .cp-card .btn { background: linear-gradient(135deg,#7C3AED,#EC4899); }
-/* compact spacing so the profile fits the bottom 30% strip cleanly */
-.cp-modal .cp-card .cp-avatar { width: 42px; height: 42px; margin: 0 0 6px; border-width: 2px; }
+/* compact spacing so the profile fits without scrolling */
+.cp-modal .cp-card .cp-head-row { display: flex; align-items: center; gap: 10px; width: 100%; }
+.cp-modal .cp-card .cp-head-text { min-width: 0; flex: 1; }
+.cp-modal .cp-card .cp-head-text .cp-name { font-size: 17px; margin: 0; line-height: 1.15; }
+.cp-modal .cp-card .cp-head-text .cp-pos { font-size: 11.5px; margin-top: 1px; }
+.cp-modal .cp-card .cp-head-text .cp-group { font-size: 10.5px; margin-top: 1px; }
+.cp-modal .cp-card .cp-avatar { width: 44px; height: 44px; margin: 0; border-width: 2px; flex: none; }
 .cp-modal .cp-card .cp-name { font-size: 17px; margin: 0; }
-.cp-modal .cp-card .cp-pos { font-size: 12px; margin-top: 2px; }
-.cp-modal .cp-card .cp-group { font-size: 11px; margin-top: 1px; }
-.cp-modal .cp-card .cp-meta { margin-top: 8px; gap: 5px; }
+.cp-modal .cp-card .cp-pos { font-size: 11.5px; margin-top: 1px; }
+.cp-modal .cp-card .cp-group { font-size: 10.5px; margin-top: 1px; }
+.cp-modal .cp-card .cp-meta { margin-top: 7px; gap: 5px; }
 .cp-modal .cp-card .cp-meta span { padding: 3px 8px; font-size: 10.5px; }
-.cp-modal .cp-card .cp-charm { margin-top: 8px; padding: 6px 9px; font-size: 12px; }
-.cp-modal .cp-card .cp-spec { margin-top: 6px; font-size: 11px; }
-.cp-modal .cp-card .cp-intro { font-size: 11px; margin-top: 4px;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.cp-modal .cp-card .btn { margin-top: 10px !important; padding: 9px 0; font-size: 13px; }
+.cp-modal .cp-card .cp-charm { margin-top: 6px; padding: 5px 9px; font-size: 11.5px; }
+.cp-modal .cp-card .cp-spec { margin-top: 5px; font-size: 10.5px; }
+.cp-modal .cp-card .cp-intro { font-size: 10.5px; margin-top: 3px;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.cp-modal .cp-card .btn { margin-top: 8px !important; padding: 8px 0; font-size: 12.5px; }
 .cp-card { background: rgba(255,255,255,.92); border-radius: 18px; padding: 14px 16px; width: min(210px, 56vw); max-height: 78vh; overflow-y: auto;
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%); text-align: left;
   box-shadow: 0 12px 40px rgba(0,0,0,.25); }

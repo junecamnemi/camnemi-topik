@@ -301,9 +301,14 @@ function viewCharProfile(id) {
       <div class="cpf-veil"></div>
       <div class="cp-card">
         <button class="cp-close" onclick="closeCharProfile()">✕</button>
-        <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
-        <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
-        ${pos}${groupLine}${meta}${charm}${specialty}${intro}
+        <div class="cp-head-row">
+          <img class="cp-avatar" src="${charFace(c)}" alt="${esc(c.name)}">
+          <div class="cp-head-text">
+            <div class="cp-name">${esc(c.name)} <small>${ext?esc(ext.name_ko||''):''}</small></div>
+            ${pos}${groupLine}
+          </div>
+        </div>
+        ${meta}${charm}${specialty}${intro}
         ${btn}
       </div>
     </div>`;
