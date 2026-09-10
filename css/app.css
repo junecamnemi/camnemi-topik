@@ -1401,8 +1401,27 @@ table.kl-compare { border-collapse:collapse; width:100%; min-width:640px; backgr
 .kl-compare th:first-child { border-radius:14px 0 0 0; }
 .kl-compare td { padding:9px 8px; font-size:10.5px; color:var(--ios-label); border-top:1px solid var(--ios-separator); vertical-align:top; }
 .kl-compare .kc-country { font-weight:800; color:var(--ios-purple,#8B5CF6); white-space:nowrap; }
+/* Universities by goal — topic cards */
+.uni-topics{display:flex;flex-direction:column;gap:10px;padding:0 2px;}
+.univ-topic{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  padding:14px;border-radius:18px;border:1px solid var(--ios-separator);
+  background:var(--ios-card,#fff);box-shadow:0 6px 20px rgba(0,0,0,.06);cursor:pointer;
+  transition:transform .12s ease,box-shadow .12s ease;}
+.univ-topic:active{transform:scale(.985);box-shadow:0 3px 10px rgba(0,0,0,.1);}
+.ut-ico{width:46px;height:46px;border-radius:14px;flex:none;display:flex;align-items:center;justify-content:center;
+  font-size:24px;background:linear-gradient(135deg,rgba(167,139,250,.22),rgba(249,168,212,.24));}
+.ut-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.ut-title{font-size:15px;font-weight:900;color:var(--ios-label);line-height:1.2;}
+.ut-sub{font-size:11.5px;color:var(--ios-secondary-label);font-weight:600;line-height:1.3;}
+.ut-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none;}
+.ut-lvl{font-size:10px;font-weight:900;letter-spacing:.5px;padding:3px 8px;border-radius:999px;
+  color:#fff;background:linear-gradient(135deg,#A78BFA,#7C3AED);}
+.ut-count{font-size:10.5px;color:var(--ios-secondary-label);font-weight:700;}
+.ut-arr{font-size:20px;color:var(--ios-purple);font-weight:900;flex:none;}
+[data-theme="dark"] .univ-topic{background:rgba(30,28,48,.75);border-color:rgba(255,255,255,.08);}
+
 /* university cards */
-.univ-card { padding:15px; }
+ { padding:15px; }
 .univ-head { display:flex; align-items:center; gap:11px; }
 .univ-ico { font-size:30px; }
 .univ-name { font-weight:900; font-size:17px; color:var(--ios-label); }

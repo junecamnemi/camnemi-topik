@@ -4210,9 +4210,35 @@ function renderWhy(){
   window.scrollTo(0,0);
 }
 function renderUnivs(){
-  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const u=window.KOREA_LIFE.univs;
-  const items=(u.items||[]).map(uni=>`
+  const topics=(u.topics||[]).map((t,i)=>`
+    <button class="univ-topic" onclick="openUnivTopic('${t.id}')">
+      <span class="ut-ico">${t.icon}</span>
+      <span class="ut-body">
+        <span class="ut-title">${esc(t.title)}</span>
+        <span class="ut-sub">${esc(t.sub||'')}</span>
+      </span>
+      <span class="ut-meta">
+        <span class="ut-lvl">${esc(t.level||'')}</span>
+        <span class="ut-count">${(t.schools||[]).length} ${LANG==='ko'?'개 학교':'schools'}</span>
+      </span>
+      <span class="ut-arr">›</span>
+    </button>`).join('');
+  document.getElementById('screen').innerHTML = `
+    <div class="kl-detail-view">
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button>
+        <span style="font-size:12px;font-weight:800;color:var(--ios-secondary-label);">${esc(u.title||'')}</span></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">🎓</span><div><div class="kl3-sec-title">${esc(u.title||'Universities')}</div><div class="kl3-sec-sub">${esc(u.intro||'')}</div></div></div>
+      <div class="kl-body uni-topics" style="margin-top:8px;">${topics}</div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function openUnivTopic(id){
+  const esc = window.esc||function(s){return String(s==null?'':s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
+  const u=window.KOREA_LIFE.univs;
+  const t=(u.topics||[]).find(x=>x.id===id); if(!t) return;
+  const items=(t.schools||[]).map(uni=>`
     <div class="kl-block univ-card">
       <div class="univ-head">${uni.logo?`<img class="univ-logo-img" src="${esc(uni.logo)}" alt="${esc(uni.en)}">`:`<span class="univ-ico">${uni.icon}</span>`}
         <div><div class="univ-name">${esc(uni.name)}</div><div class="univ-en">${esc(uni.en)} · ${esc(uni.rank)}</div></div></div>
@@ -4228,15 +4254,18 @@ function renderUnivs(){
       </div>
       ${uni.note?`<div class="univ-note">💬 ${esc(uni.note)}</div>`:''}
     </div>`).join('');
+  _klStack.push(()=>renderUnivs());
   document.getElementById('screen').innerHTML = `
     <div class="kl-detail-view">
-      <div class="idol-gv-head"><button class="back-btn-mini" onclick="koreaBack()">← Home</button></div>
-      <div class="kl3-sec-head"><span class="kl3-sec-ico">🎓</span><div><div class="kl3-sec-title">Recommended universities</div><div class="kl3-sec-sub">${esc(u.intro||'')}</div></div></div>
+      <div class="idol-gv-head"><button class="back-btn-mini" onclick="openUnivTopicsBack()">← ${LANG==='ko'?'주제':'Topics'}</button></div>
+      <div class="kl3-sec-head"><span class="kl3-sec-ico">${t.icon}</span><div><div class="kl3-sec-title">${esc(t.title)}</div><div class="kl3-sec-sub">${esc(t.sub||'')} · ${t.level||''}</div></div></div>
       <div class="kl-body" style="margin-top:8px;">${items}</div>
     </div>`;
   window.scrollTo(0,0);
 }
-window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderApps=renderApps; window.renderLiveHome=renderLiveHome; window.toggleApp=toggleApp;
+function openUnivTopicsBack(){ _klStack.length? _klStack.pop()() : renderUnivs(); }
+
+window.openKoreaSection=openKoreaSection;window.openKoreaSection=openKoreaSection; window.renderWhy=renderWhy; window.renderUnivs=renderUnivs; window.renderApps=renderApps; window.renderLiveHome=renderLiveHome; window.toggleApp=toggleApp;
 let _klStack = [];
 function _klBackTarget(fn){ _klStack.push(fn); }
 function openKoreaCat(cid){
