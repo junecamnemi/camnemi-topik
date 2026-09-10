@@ -4093,12 +4093,18 @@ function viewRank() {
   return viewKoreaLife();
 }
 function bindRank() { /* Korea Life is static — nothing to load */ }
+function koreaLifeOverlayHTML() {
+  return '<div style="text-align:left;">'
+    + '<div style="font-size:11px;font-weight:800;letter-spacing:2px;opacity:.92;">' + (LANG==='ko'?'한국 생활 가이드':'KOREA LIFE') + '</div>'
+    + '<div style="font-size:22px;font-weight:900;line-height:1.15;max-width:210px;">' + (LANG==='ko'?'너의 한국 여행':'Your Korea journey') + '</div>'
+    + '</div>';
+}
 function viewKoreaLife() {
   const esc = window.esc || function(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));};
   const kl = window.KOREA_LIFE;
-  if (!kl) return `${tabHeroHTML('rank', rankMeOverlayHTML())}
-    <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
-  const hero = tabHeroHTML('rank', rankMeOverlayHTML());
+  if (!kl) return `${tabHeroHTML('rank', koreaLifeOverlayHTML())}
+      <div class="rk-note app-card" style="margin:16px;"><span class="sub">Loading Korea Life…</span></div>`;
+    const hero = tabHeroHTML('rank', koreaLifeOverlayHTML());
   const cards = [
     { id:'why',   title:(kl.why&&kl.why.title)||'Why Korea?',   sub:(LANG==='ko'?'한국 대표 풍경':'Scenery of Korea'),   v:'assets/korea_bg/why_l.mp4' },
     { id:'univs', title:'Universities',                          sub:(LANG==='ko'?'고려대 · 대학 생활':'KU campus & study'), v:'assets/korea_bg/univs_l.mp4' },
