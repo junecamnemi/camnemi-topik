@@ -289,13 +289,10 @@ function viewCharProfile(id) {
   // group stage-video backdrop: show the character's GROUP dance video behind the card.
   // Map the completed group stage clips; groups still being produced fall back to
   // the GLOWSIS anime stage clip so the backdrop is never empty.
-  const GROUP_STAGE = {
-    glowsis:  'assets/cpbg/glowsis_dance_lo.mp4',
-    blackrose:'assets/cpbg/blackrose_dance_lo.mp4',
-    atp:      'assets/cpbg/atp_dance_lo.mp4'
-  };
-  const grpId = (ext && ext.group) || '';
-  const grpVideo = GROUP_STAGE[grpId] || 'assets/cpbg/glowsis_anime_lo.mp4';
+  // Per-character vertical profile video (idol activity: recording / dance practice
+  // / ad shoot / stage). Characters without one yet fall back to the stage clip.
+  const CHAR_VID = { 'f-01':1, 'f-02':1, 'f-03':1, 'f-04':1 };
+  const grpVideo = CHAR_VID[id] ? `assets/chars_prof/${id}.mp4` : 'assets/cpbg/glowsis_anime_lo.mp4';
   document.getElementById('char-profile').innerHTML = `
     <div class="cp-modal">
       <video class="cpf-bg" id="cpf-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
