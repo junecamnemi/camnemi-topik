@@ -2987,54 +2987,9 @@ function celebrateLevelUp(kind, newLv) {
     const label = kind === 'book'
       ? (ko ? `교재 Lv${newLv}` : `Book Lv${newLv}`)
       : (ko ? `문제 Lv${newLv}` : `Quiz Lv${newLv}`);
-    // full-screen celebration video (per selected character; f-01 fallback)
-    const cid = (typeof myCharId === 'function') ? myCharId() : 'f-01';
-    const vids = ['f-01', 'f-02', 'f-03', 'f-04'];
-    const use = vids.indexOf(cid) >= 0 ? cid : 'f-01';
-    const name = (typeof myCharName === 'function' && (myCharName() || '')) || '';
-    showLevelUpVideo(use, newLv, label, name, ko);
+    if (typeof toast === 'function') toast(`🎉 ${label} · Level up!`);
+    if (typeof render === 'function') { try { render(); } catch (e) {} }
   } catch (e) {}
-}
-
-/* Full-screen, plays-once level-up celebration video overlay. */
-function showLevelUpVideo(charId, lv, label, name, ko) {
-  let ov = document.getElementById('levelup-overlay');
-  if (!ov) {
-    ov = document.createElement('div');
-    ov.id = 'levelup-overlay';
-    ov.className = 'levelup-overlay';
-    document.body.appendChild(ov);
-  }
-  ov.innerHTML = `
-    <div class="lv-stage">
-      <video class="lv-video" id="lv-video" autoplay muted playsinline preload="auto"
-        src="assets/levelup/${charId}.mp4"></video>
-      <button class="lv-close" onclick="closeLevelUpVideo()">✕</button>
-      <div class="lv-cap">
-        <div class="lv-kicker">${ko ? '레벨 업' : 'LEVEL UP'}</div>
-        <div class="lv-title">${ko ? '축하해요!' : 'Congrats!'}<br><em>Lv ${lv}</em></div>
-        <div class="lv-sub">${name ? esc(name) + ' · ' : ''}${esc(label)}</div>
-      </div>
-    </div>`;
-  const v = document.getElementById('lv-video');
-  if (v) {
-    v.addEventListener('ended', closeLevelUpVideo);
-    v.addEventListener('error', () => setTimeout(closeLevelUpVideo, 600));
-    v.play().catch(() => {});
-  }
-  void ov.offsetWidth;
-  ov.classList.add('show');
-  // safety auto-close in case 'ended' never fires
-  clearTimeout(window._lvTimer);
-  window._lvTimer = setTimeout(closeLevelUpVideo, 7000);
-}
-function closeLevelUpVideo() {
-  const ov = document.getElementById('levelup-overlay');
-  if (!ov) return;
-  const v = document.getElementById('lv-video');
-  if (v) { try { v.pause(); } catch (e) {} }
-  ov.classList.remove('show');
-  clearTimeout(window._lvTimer);
 }
 
 /* 정답률 바 렌더 헬퍼 */
