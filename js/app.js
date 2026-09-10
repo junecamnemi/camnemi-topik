@@ -2264,10 +2264,7 @@ function viewMy() {
   const acc = (() => { try { return accuracyStats().overall; } catch (e) { return 0; } })();
   const due = (() => { try { return dueCards().length; } catch (e) { return 0; } })();
   const lvl = xpProgress();
-  const jn = (function(){ try { return currentJourney() || { lv:0, maxed:false }; } catch(e){ return { lv:0, maxed:false }; } })();
   const wrongN = lsGet(LS.wrong, []).length;
-  const scores = lsGet(LS.scores, []);
-  const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
   const head = authed ? `
     <div class="um-head">
       <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
@@ -2294,14 +2291,17 @@ function viewMy() {
   const rows = `
     <div class="app-card" style="padding:6px 14px;">
       ${umRow('progress', t('menu_progress'), `go('progress')`)}
-      ${umRow('notes', t('wrong_link') + ' (' + wrongN + ')', `go('wrong')`)}
-      ${umRow('schedule', t('menu_schedule'), `go('schedule')`)}
     </div>
-    <div class="app-card" style="padding:6px 14px;">
-    </div>
-    <div class="app-card" style="padding:6px 14px;">
-      ${umRow('target', t('xp_level') + ' ' + jn.lv + ' (' + t('xp_to_next', { n: jn.maxed ? 0 : jn.lv + 1, l: jn.lv + 1 }) + ')', `go('progress')`)}
-      ${umRow('trophy', t('menu_best', { s: best || '—' }), `go('progress')`)}
+    <div class="my-btn-row">
+      <button class="my-action-btn" onclick="go('schedule')">
+        <span class="mab-ico">📅</span>
+        <span class="mab-t">${t('menu_schedule')}</span>
+      </button>
+      <button class="my-action-btn" onclick="go('wrong')">
+        <span class="mab-ico">📝</span>
+        <span class="mab-t">${t('wrong_link')}</span>
+        ${wrongN ? `<span class="mab-badge">${wrongN}</span>` : ''}
+      </button>
     </div>`;
   const settings = `
     <div class="sec-h"><h2>${t('menu_theme')} / ${t('menu_lang')}</h2></div>
@@ -4074,25 +4074,34 @@ function viewWrong() {
   const hasData = acc.byType.length > 0;
   const ko = LANG === 'ko', km = LANG === 'km';
   const L = (a,b,c)=> km?c:(ko?a:b);
+  const tab = APP.wrongTab === 'bookmarks' ? 'bookmarks' : 'wrong';
   const typeRows = groupedReviewItems(wrong.map(w=>w.qid), {});
   const bmRows = groupedReviewItems(bookmarks.map(w=>w.qid), {});
-  const srcCount = (lsGet(LS.wrong,[]).length) + (lsGet(LS.bookmarks,[]).length);
   return `
-    <div class="sec-h"><h2>📊 ${t('wrong_title')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
-    <div class="app-card">
-      <b style="font-size:13px;color:var(--ios-blue);">${t('wrong_by_type')}</b>
-      ${hasData ? acc.byType.map(r => accBar(typeLabel(r.k), r.p, qSub(r.c, r.n))).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_no_data')}</p>`}
+    <div class="wt-tabs">
+      <button class="wt-tab ${tab==='wrong'?'on':''}" onclick="setWrongTab('wrong')">
+        ${L('오답','Wrong','')}${wrong.length?` <span class="wt-n">${wrong.length}</span>`:''}
+      </button>
+      <button class="wt-tab ${tab==='bookmarks'?'on':''}" onclick="setWrongTab('bookmarks')">
+        🔖 ${L('북마크','Bookmarked','')}${bookmarks.length?` <span class="wt-n">${bookmarks.length}</span>`:''}
+      </button>
     </div>
-
-    ${typeRows.types.length ? `
-    <div class="sec-h"><h2>${t('wrong_notes')}</h2><span class="sub">${t('recent', { n: wrong.length })}</span></div>
-    <div class="rw-groups">${typeRows.html}</div>` : `<div class="sec-h"><h2>${t('wrong_notes')}</h2></div><div class="app-card"><p class="sub">${L('아직 틀린 문제가 없어요 — 계속 연습하세요!','No wrong answers yet — keep practicing!','')}</p></div>`}
-
-    ${bmRows.types.length ? `
-    <div class="sec-h"><h2>🔖 ${L('북마크한 문제','Bookmarked questions','សំណួរដែលបានរក្សាទុក')}</h2><span class="sub">${bookmarks.length+' '+(L('개','saved',''))}</span></div>
-    <div class="rw-groups">${bmRows.html}</div>` : `<div class="sec-h"><h2>🔖 ${L('북마크한 문제','Bookmarked questions','')}</h2></div><div class="app-card"><p class="sub">${L('북마크한 문제가 없어요 — 문제에서 북마크를 눌러 저장하세요!','No bookmarks yet — tap the bookmark on any question to save it!','')}</p></div>`}
+    ${tab === 'wrong' ? `
+      <div class="sec-h"><h2>📊 ${t('wrong_by_type')}</h2><span class="sub">${t('overall')} ${acc.overall}%</span></div>
+      <div class="app-card">
+        ${hasData ? acc.byType.map(r => accBar(typeLabel(r.k), r.p, qSub(r.c, r.n))).join('') : `<p class="sub" style="margin-top:6px;">${t('wrong_no_data')}</p>`}
+      </div>
+      ${typeRows.types.length ? `
+      <div class="sec-h"><h2>${t('wrong_notes')}</h2><span class="sub">${t('recent', { n: wrong.length })}</span></div>
+      <div class="rw-groups">${typeRows.html}</div>` : `<div class="sec-h"><h2>${t('wrong_notes')}</h2></div><div class="app-card"><p class="sub">${L('아직 틀린 문제가 없어요 — 계속 연습하세요!','No wrong answers yet — keep practicing!','')}</p></div>`}
+    ` : `
+      ${bmRows.types.length ? `
+      <div class="sec-h"><h2>🔖 ${L('북마크한 문제','Bookmarked questions','សំណួរដែលបានរក្សាទុក')}</h2><span class="sub">${bookmarks.length+' '+(L('개','saved',''))}</span></div>
+      <div class="rw-groups">${bmRows.html}</div>` : `<div class="sec-h"><h2>🔖 ${L('북마크한 문제','Bookmarked questions','')}</h2></div><div class="app-card"><p class="sub">${L('북마크한 문제가 없어요 — 문제에서 북마크를 눌러 저장하세요!','No bookmarks yet — tap the bookmark on any question to save it!','')}</p></div>`}
+    `}
   `;
 }
+function setWrongTab(t) { APP.wrongTab = t; render(); }
 function bindWrong() {}
 
 /* Group review items (wrong / bookmarked qids) by TYPE → LEVEL into collapsible

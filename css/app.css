@@ -2126,3 +2126,35 @@ body.has-back .app-header .brand { margin-left: 0; }
 .kl3-tile .kl3-title { font-size: 23px; font-weight: 900; letter-spacing: -.4px; text-shadow: 0 2px 12px rgba(0,0,0,.7); }
 .kl3-tile .kl3-sub { font-size: 13px; font-weight: 600; opacity: .95; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
 .kl3-tile .kl3-go { font-size: 12px; font-weight: 700; margin-top: 6px; padding: 5px 13px; border-radius: 999px; background: rgba(255,255,255,.24); text-shadow: 0 1px 4px rgba(0,0,0,.5); }
+
+/* ---------- My: schedule / wrong-note action buttons ---------- */
+.my-btn-row { display: flex; gap: 12px; margin-top: 12px; }
+.my-action-btn {
+  position: relative; flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+  padding: 16px 15px; border-radius: 18px; cursor: pointer; text-align: left;
+  border: 1px solid var(--ios-separator); background: var(--ios-card); color: var(--ios-label);
+  font-family: var(--ios-font); box-shadow: 0 6px 18px rgba(60,40,120,.10);
+  -webkit-tap-highlight-color: transparent;
+}
+.my-action-btn:active { transform: scale(.985); }
+.my-action-btn .mab-ico { font-size: 22px; line-height: 1; }
+.my-action-btn .mab-t { font-size: 13.5px; font-weight: 800; letter-spacing: -.2px; color: var(--ios-label); }
+.my-action-btn .mab-badge {
+  position: absolute; top: 12px; right: 12px; min-width: 20px; height: 20px; padding: 0 6px;
+  border-radius: 999px; background: var(--ios-pink, #EC4899); color: #fff;
+  font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+
+/* ---------- Wrong note: Wrong / Bookmarked tabs ---------- */
+.wt-tabs {
+  display: flex; gap: 6px; background: var(--ios-fill); border-radius: 14px; padding: 4px; margin-bottom: 14px;
+}
+.wt-tab {
+  flex: 1; border: none; background: transparent; cursor: pointer; color: var(--ios-secondary-label);
+  font-family: var(--ios-font); font-size: 14px; font-weight: 800; padding: 10px 0; border-radius: 11px;
+}
+.wt-tab.on { background: var(--ios-card); color: var(--ios-label); box-shadow: 0 2px 8px rgba(60,40,120,.12); }
+.wt-tab .wt-n {
+  display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 2px; border-radius: 999px;
+  background: var(--ios-blue); color: #fff; font-size: 10.5px; font-weight: 800; vertical-align: middle;
+}
