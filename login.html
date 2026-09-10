@@ -18,11 +18,11 @@
   .stage-bg::after { content:''; position:absolute; inset:0;
     background:linear-gradient(180deg, rgba(30,20,54,.78) 0%, rgba(30,20,54,.22) 38%, rgba(30,20,54,.62) 100%); }
 
-  /* Layout — content docked to the bottom; uses a spacer so content never
-     overflows up under the fixed title (it scrolls instead of overlapping). */
-  .auth-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center;
-    padding:110px 20px max(20px, env(safe-area-inset-bottom)); box-sizing:border-box; position:relative; }
-  .auth-wrap .spacer { flex:1 1 auto; min-height:0; }
+  /* Layout — content vertically centered so the explore button never gets
+     pushed off-screen on short viewports. */
+  .auth-wrap { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:140px 20px max(16px, env(safe-area-inset-bottom)); box-sizing:border-box; position:relative; }
+  .auth-wrap .spacer { flex:0 0 auto; height:0; }
 
   /* Whole-screen hero title — pinned to the top so the idol art stays visible */
   .hero-title { position:fixed; top:0; left:0; right:0; z-index:5; text-align:center; color:#fff;
@@ -34,12 +34,12 @@
     -webkit-text-fill-color:transparent; text-shadow:0 8px 40px rgba(0,0,0,.5); }
   .hero-title p { font-size:13.5px; font-weight:600; color:#e6dcff; margin:11px 0 0; opacity:.95; }
 
-  /* Compact auth card — social login only */
+  /* Auth card — more opaque so the background video doesn't overwhelm text */
   .auth-card {
     width:100%; max-width:360px;
-    background:rgba(24,16,44,.42); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-    border:1px solid rgba(233,213,255,.16); border-radius:22px;
-    padding:22px 22px 20px; box-shadow:0 22px 55px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+    background:rgba(28,19,52,.72); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(233,213,255,.18); border-radius:22px;
+    padding:22px 22px 20px; box-shadow:0 22px 55px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
     text-align:center;
   }
   .auth-card .auth-hint { font-size:12.5px; font-weight:600; color:#d9cdf3; margin:0 0 16px; }
