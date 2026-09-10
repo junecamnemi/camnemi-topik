@@ -64,7 +64,8 @@ const LS = {
   bookmarks:'camnemi_topik_bookmarks',  // [ {qid, at} ] — saved questions for review
   aibank:   'camnemi_topik_aibank',       // [ question ] — accumulated AI-written questions
   heroScene:'camnemi_topik_hero_scene',   // int — home hero carousel scene the user last viewed
-  dailyNotified: 'camnemi_topik_daily_notified' // 'YYYY-MM-DD' — last day the "today's set arrived" notice fired
+  dailyNotified: 'camnemi_topik_daily_notified', // 'YYYY-MM-DD' — last day the "today's set arrived" notice fired
+  myCharsOpen: 'camnemi_topik_mychars_open'   // bool — My Characters collection expanded?
 };
 
 /* ---------- i18n (EN default · 한국어 · ភាសាខ្មែរ) ---------- */
@@ -2353,6 +2354,13 @@ function bindMy() {
     vid.addEventListener('click', () => { openCharPicker(); });
   }
 }
+/* My Characters collection — folded to a single row by default; tap the header to expand. */
+function toggleMyChars() {
+  const card = $id('my-chars-card'); if (!card) return;
+  const open = card.classList.toggle('collapsed') === false;   // true when NOT collapsed
+  lsSet(LS.myCharsOpen, open);
+  const caret = $id('my-chars-caret'); if (caret) caret.textContent = open ? '▾' : '▸';
+}
 
 /* ================= MY (profile & hub) ================= */
 function viewMy() {
@@ -2447,9 +2455,13 @@ function viewMy() {
   const _allChars = window.CHAR_LIST || [];
   const _unlockedN = _allChars.filter(c => { try { return isCharUnlocked(c.id); } catch (e) { return false; } }).length;
   const _curId = myCharId();
+  const _charsOpen = lsGet(LS.myCharsOpen, false) === true;   // collection starts folded (one row)
   const charsBlock = `
-    <div class="sec-h" style="margin-top:20px;"><h2>🎤 ${LANG==='ko'?'내 캐릭터':LANG==='km'?'តួអង្គរបស់ខ្ញុំ':'My Characters'}</h2><span class="sub">${_unlockedN}/${_allChars.length}</span></div>
-    <div class="app-card my-chars-card">
+    <div class="sec-h my-chars-head" style="margin-top:20px;cursor:pointer;" onclick="toggleMyChars()">
+      <h2>🎤 ${LANG==='ko'?'내 캐릭터':LANG==='km'?'តួអង្គរបស់ខ្ញុំ':'My Characters'}</h2>
+      <span class="sub"><span id="my-chars-count">${_unlockedN}/${_allChars.length}</span> <span id="my-chars-caret" class="my-chars-caret">${_charsOpen ? '▾' : '▸'}</span></span>
+    </div>
+    <div class="app-card my-chars-card ${_charsOpen ? '' : 'collapsed'}" id="my-chars-card">
       <div class="my-chars-grid">
         ${_allChars.map(c => {
           let unlocked = false; try { unlocked = isCharUnlocked(c.id); } catch (e) {}

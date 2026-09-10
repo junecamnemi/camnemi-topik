@@ -2257,3 +2257,10 @@ video.is-ready { animation: none; background-image: none; }
   padding: 2px 7px; border-radius: 999px; background: var(--ios-purple); color: #fff; vertical-align: middle; }
 .dab-bell { border: 1px solid var(--ios-separator); background: var(--ios-fill); border-radius: 999px;
   padding: 6px 9px; font-size: 12px; cursor: pointer; color: var(--ios-label); }
+/* My Characters — folded default (single row, horizontally scrollable) */
+.my-chars-head { user-select: none; }
+.my-chars-caret { display: inline-block; font-weight: 900; }
+.my-chars-card.collapsed .my-chars-grid { display: flex; flex-wrap: nowrap; overflow-x: auto;
+  gap: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.my-chars-card.collapsed .my-chars-grid::-webkit-scrollbar { display: none; }
+.my-chars-card.collapsed .my-char { flex: 0 0 auto; width: 50px; height: 50px; }
