@@ -14,3 +14,24 @@ tammy-videos/
 
 # dead/stale assets archived locally (not deployed)
 _archive_dead/
+
+# local scratch / build leftovers (never deploy)
+.qa/
+_dictbuild/
+_dictchunks/
+_vocabchunks/
+_vocab_backup/
+_vocab_montage/
+_profilesrc.json
+_profilesrc2/
+_profilesrc3/
+_regen/
+_zoom/
+_char_preview/
+_kwimg.json
+_vocab_src.json
+_vocabfreq.js
+_vocabfreq.json
+_build_kwimg.js
+_homeCheck2.png
+probe_fl.html
