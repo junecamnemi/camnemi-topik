@@ -277,7 +277,7 @@ function viewCharProfile(id) {
   const meta = ext ? `
     <div class="cp-meta">
       <span>🎂 ${esc(ext.birthday||'')}</span><span>🩸 ${esc(ext.blood||'')}</span><span>🧠 ${esc(ext.mbti||'')}</span>
-      <span>🌏 ${esc(ext.nationality||'')}</span><span>📏 ${ext.height?ext.height+'cm':''}</span>
+      <span>📏 ${ext.height?ext.height+'cm':''}</span>
     </div>` : '';
   const charm = ext && ext.charm ? `<div class="cp-charm">✨ ${esc(ext.charm)}</div>` : '';
   const intro = ext && ext.intro ? `<div class="cp-intro">${esc(ext.intro)}</div>` : '';
