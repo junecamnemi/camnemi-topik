@@ -34,7 +34,11 @@ function _notifyAuth() {
 async function initAuth() {
   try {
     const supabase = await loadSupabaseJS();
-    _sb = supabase.createClient(cfgUrl(), cfgKey());
+    // persistSession:true keeps the session in localStorage so it survives reloads;
+    // detectSessionInUrl:true lets the magic-link / OTP token in the URL be picked up.
+    _sb = supabase.createClient(cfgUrl(), cfgKey(), {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
     // restore session
     const { data: { session } } = await _sb.auth.getSession();
     _session = session || null;
