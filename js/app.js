@@ -3469,6 +3469,7 @@ function praiseCorrect(q) {
     const lang = (LANG === 'ko' || LANG === 'km') ? 'ko' : 'en';
     const lines = PRAISE_LINES[lang] || PRAISE_LINES.en;
     const msg = lines[Math.floor(Math.random() * lines.length)];
+    const score = XP_RULES.correct || 10;    // shown together with the praise
     let el = document.getElementById('praise-pop');
     if (!el) {
       el = document.createElement('div');
@@ -3477,7 +3478,8 @@ function praiseCorrect(q) {
       document.body.appendChild(el);
     }
     el.innerHTML = `${face ? `<img class="pp-ava" src="${esc(face)}" alt="">` : '<span class="pp-ava pp-ava-emoji">😊</span>'}
-      <div class="pp-txt"><b class="pp-name">${esc(name)}</b><span class="pp-msg">${esc(msg)}</span></div>`;
+      <div class="pp-txt"><b class="pp-name">${esc(name)}</b><span class="pp-msg">${esc(msg)}</span>
+        <span class="pp-score">+${score} XP</span></div>`;
     // restart animation so rapid corrects re-play cleanly
     el.classList.remove('show');
     void el.offsetWidth;            // reflow
