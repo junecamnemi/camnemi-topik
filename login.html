@@ -56,6 +56,25 @@
   .oauth-btn.facebook { background:rgba(24,119,242,.22); color:#fff; border-color:rgba(255,255,255,.18); }
   .oauth-btn.facebook:hover { background:rgba(24,119,242,.32); }
 
+  /* Email sign-up / sign-in (with email verification) */
+  .ea-tabs { display:flex; gap:6px; background:rgba(255,255,255,.07); border-radius:12px; padding:4px; margin-bottom:14px; }
+  .ea-tab { flex:1; border:none; background:transparent; color:#cbbcf0; font-weight:800; font-size:13.5px;
+    padding:9px 0; border-radius:9px; cursor:pointer; font-family:inherit; }
+  .ea-tab.active { background:linear-gradient(135deg,#7C3AED,#EC4899); color:#fff; }
+  .ea-input { width:100%; box-sizing:border-box; margin-bottom:10px; padding:12px 14px; border-radius:13px;
+    border:1px solid rgba(233,213,255,.2); background:rgba(255,255,255,.08); color:#fff; font-size:14.5px;
+    font-family:inherit; outline:none; }
+  .ea-input::placeholder { color:#b8a9dc; }
+  .ea-input:focus { border-color:#A78BFA; background:rgba(255,255,255,.13); }
+  .ea-submit { width:100%; padding:13px 16px; border:none; border-radius:14px; cursor:pointer; color:#fff;
+    font-size:15px; font-weight:900; font-family:inherit;
+    background:linear-gradient(135deg,#7C3AED,#EC4899); box-shadow:0 8px 22px rgba(124,58,237,.4); }
+  .ea-submit:disabled { opacity:.6; cursor:default; }
+  .ea-msg { margin-top:11px; font-size:12.5px; font-weight:700; line-height:1.5; border-radius:11px; padding:0; }
+  .ea-msg.show { padding:10px 12px; }
+  .ea-msg.ok { background:rgba(52,211,153,.16); border:1px solid rgba(52,211,153,.45); color:#a7f3d0; }
+  .ea-msg.err { background:rgba(248,113,113,.16); border:1px solid rgba(248,113,113,.45); color:#fecaca; }
+
   .welcome-banner { background:rgba(167,139,250,.16); border:1px solid rgba(167,139,250,.4); color:#e9d5ff; border-radius:12px; padding:11px 16px; margin-bottom:14px; font-size:14px; font-weight:600; }
 
   /* Bottom — AI TOPIK START gradient bar (one horizontal line, full width) */
@@ -109,10 +128,25 @@
 
   <div class="spacer"></div>
 
-  <!-- Compact social login -->
+  <!-- Compact auth: email sign-up/sign-in + social -->
   <div class="auth-card">
     <p class="auth-hint">Sign in to save your progress</p>
     <div id="auth-status"></div>
+
+    <!-- Email (with verification) -->
+    <div class="email-auth">
+      <div class="ea-tabs">
+        <button class="ea-tab active" id="ea-tab-login" onclick="eaSetMode('login')">Log in</button>
+        <button class="ea-tab" id="ea-tab-signup" onclick="eaSetMode('signup')">Sign up</button>
+      </div>
+      <input class="ea-input" id="ea-name" type="text" placeholder="Name (이름)" autocomplete="name" style="display:none;">
+      <input class="ea-input" id="ea-email" type="email" placeholder="Email" autocomplete="email">
+      <input class="ea-input" id="ea-pw" type="password" placeholder="Password (6+ chars)" autocomplete="current-password">
+      <button class="ea-submit" id="ea-submit" onclick="eaSubmit()">Log in</button>
+      <div class="ea-msg" id="ea-msg"></div>
+    </div>
+
+    <div class="divider-mini">or continue with</div>
     <button class="oauth-btn google" onclick="loginWith('google')">
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
       Continue with Google
@@ -138,16 +172,74 @@
 </div>
 
 <script src="js/config.js"></script>
-<script src="js/auth.js"></script>
+<script src="js/auth.js?v=emailauth1"></script>
 <script>
   function goBrowse() { window.location.href = 'app.html'; }
 
-  // OAuth callback handling
+  /* ---- Email sign-up / sign-in with verification ---- */
+  let eaMode = 'login';
+  function eaSetMode(m) {
+    eaMode = m;
+    document.getElementById('ea-tab-login').classList.toggle('active', m === 'login');
+    document.getElementById('ea-tab-signup').classList.toggle('active', m === 'signup');
+    document.getElementById('ea-name').style.display = (m === 'signup') ? 'block' : 'none';
+    document.getElementById('ea-submit').textContent = (m === 'signup') ? 'Sign up' : 'Log in';
+    eaMsg('');
+  }
+  function eaMsg(text, kind) {
+    const el = document.getElementById('ea-msg');
+    if (!text) { el.className = 'ea-msg'; el.textContent = ''; return; }
+    el.className = 'ea-msg show ' + (kind || 'ok');
+    el.innerHTML = text;
+  }
+  async function eaSubmit() {
+    const email = (document.getElementById('ea-email').value || '').trim();
+    const pw = document.getElementById('ea-pw').value || '';
+    const name = (document.getElementById('ea-name').value || '').trim();
+    if (!email || !pw) { eaMsg('이메일과 비밀번호를 입력하세요.', 'err'); return; }
+    if (eaMode === 'signup' && pw.length < 6) { eaMsg('비밀번호는 6자 이상이어야 합니다.', 'err'); return; }
+    const btn = document.getElementById('ea-submit');
+    btn.disabled = true;
+    eaMsg(eaMode === 'signup' ? '가입 중…' : '로그인 중…', 'ok');
+    try {
+      if (eaMode === 'signup') {
+        const r = await emailSignup(email, pw, name);
+        if (!r.ok) { eaMsg('가입 실패: ' + r.msg, 'err'); }
+        else if (r.confirm) {
+          eaMsg('✅ 인증 메일을 보냈어요!<br>' + email + ' 받은편지함에서 <b>인증 링크</b>를 눌러 가입을 완료하세요.<br><span style="opacity:.8">(스팸함도 확인해 주세요)</span>', 'ok');
+        } else {
+          window.location.href = 'app.html?welcome=1';
+        }
+      } else {
+        const r = await emailLogin(email, pw);
+        if (!r.ok) { eaMsg('로그인 실패: ' + r.msg, 'err'); }
+        else { window.location.href = 'app.html?welcome=1'; }
+      }
+    } catch (e) { eaMsg('오류: ' + (e && e.message ? e.message : e), 'err'); }
+    btn.disabled = false;
+  }
+  // Enter key submits
+  ['ea-name','ea-email','ea-pw'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') eaSubmit(); });
+  });
+
+  // OAuth callback + verified banner + already-logged-in handling
   (async function () {
     if (!window.initAuth) return;
     await initAuth();
     const hash = window.location.hash;
     if (hash && (hash.includes('access_token') || hash.includes('error'))) { return handleAuthCallback(); }
+    if (/[?&]verified=1/.test(location.search)) {
+      const s = getSession();
+      if (s) {
+        document.getElementById('auth-status').innerHTML =
+          '<div class="welcome-banner">✓ 인증 완료! 로그인되었습니다. 이동 중…</div>';
+        setTimeout(()=>{ window.location.href='app.html?welcome=1'; }, 900);
+        return;
+      }
+      eaMsg('이메일 인증이 완료됐어요. 이제 로그인하세요.', 'ok');
+    }
     const s = getSession();
     if (s) {
       document.getElementById('auth-status').innerHTML =

@@ -92,9 +92,10 @@ function logout() {
 /* ---------- Email + password login (no external setup needed) ---------- */
 async function emailSignup(email, password, name) {
   if (!_sb) await initAuth();
+  const redirectTo = location.origin + location.pathname.replace(/[^/]*$/, 'login.html') + '?verified=1';
   const { data, error } = await _sb.auth.signUp({
     email, password,
-    options: { data: { full_name: name } }
+    options: { data: { full_name: name }, emailRedirectTo: redirectTo }
   });
   if (error) return { ok: false, msg: error.message };
   // If email confirmation is required, the user must click the link first.
