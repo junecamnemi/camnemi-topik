@@ -72,6 +72,7 @@
   .ea-submit:disabled { opacity:.6; cursor:default; }
   .ea-forgot { margin-top:11px; text-align:center; font-size:12.5px; font-weight:700; color:#cbbcf0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
   .ea-forgot:hover { color:#A78BFA; }
+  .ea-hint { margin-top:10px; font-size:11.5px; font-weight:600; color:#cbbcf0; line-height:1.5; text-align:center; }
   .ea-msg { margin-top:11px; font-size:12.5px; font-weight:700; line-height:1.5; border-radius:11px; padding:0; }
   .ea-msg.show { padding:10px 12px; }
   .ea-msg.ok { background:rgba(52,211,153,.16); border:1px solid rgba(52,211,153,.45); color:#a7f3d0; }
@@ -135,17 +136,11 @@
     <p class="auth-hint">Sign in to save your progress</p>
     <div id="auth-status"></div>
 
-    <!-- Email (with verification) -->
+    <!-- Email magic-link (passwordless: enter email -> get a sign-in link) -->
     <div class="email-auth">
-      <div class="ea-tabs">
-        <button class="ea-tab active" id="ea-tab-login" onclick="eaSetMode('login')">Log in</button>
-        <button class="ea-tab" id="ea-tab-signup" onclick="eaSetMode('signup')">Sign up</button>
-      </div>
-      <input class="ea-input" id="ea-name" type="text" placeholder="Name (이름)" autocomplete="name" style="display:none;">
       <input class="ea-input" id="ea-email" type="email" placeholder="Email" autocomplete="email">
-      <input class="ea-input" id="ea-pw" type="password" placeholder="Password (6+ chars)" autocomplete="current-password">
-      <button class="ea-submit" id="ea-submit" onclick="eaSubmit()">Log in</button>
-      <div class="ea-forgot" id="ea-forgot" onclick="eaForgot()">비밀번호를 잊으셨나요? · Forgot password?</div>
+      <button class="ea-submit" id="ea-submit" onclick="eaMagic()">✉️ Send sign-in link</button>
+      <div class="ea-hint">인증 메일을 보내면 그 링크로 바로 로그인돼요 (비밀번호 불필요).<br>Enter your email — we'll send you a secure sign-in link.</div>
       <div class="ea-msg" id="ea-msg"></div>
     </div>
 
@@ -175,74 +170,35 @@
 </div>
 
 <script src="js/config.js"></script>
-<script src="js/auth.js?v=emailauth1"></script>
+<script src="js/auth.js?v=emailauth2"></script>
 <script>
   function goBrowse() { window.location.href = 'app.html'; }
 
-  /* ---- Email sign-up / sign-in with verification ---- */
-  let eaMode = 'login';
-  function eaSetMode(m) {
-    eaMode = m;
-    document.getElementById('ea-tab-login').classList.toggle('active', m === 'login');
-    document.getElementById('ea-tab-signup').classList.toggle('active', m === 'signup');
-    document.getElementById('ea-name').style.display = (m === 'signup') ? 'block' : 'none';
-    document.getElementById('ea-submit').textContent = (m === 'signup') ? 'Sign up' : 'Log in';
-    const fg = document.getElementById('ea-forgot'); if (fg) fg.style.display = (m === 'signup') ? 'none' : 'block';
-    eaMsg('');
-  }
+  /* ---- Email magic-link (passwordless sign in / sign up) ---- */
   function eaMsg(text, kind) {
     const el = document.getElementById('ea-msg');
     if (!text) { el.className = 'ea-msg'; el.textContent = ''; return; }
     el.className = 'ea-msg show ' + (kind || 'ok');
     el.innerHTML = text;
   }
-  async function eaSubmit() {
+  async function eaMagic() {
     const email = (document.getElementById('ea-email').value || '').trim();
-    const pw = document.getElementById('ea-pw').value || '';
-    const name = (document.getElementById('ea-name').value || '').trim();
-    if (!email || !pw) { eaMsg('이메일과 비밀번호를 입력하세요.', 'err'); return; }
-    if (eaMode === 'signup' && pw.length < 6) { eaMsg('비밀번호는 6자 이상이어야 합니다.', 'err'); return; }
+    if (!email) { eaMsg('로그인할 <b>이메일</b>을 입력해 주세요.', 'err'); return; }
     const btn = document.getElementById('ea-submit');
     btn.disabled = true;
-    eaMsg(eaMode === 'signup' ? '가입 중…' : '로그인 중…', 'ok');
+    eaMsg('인증 메일을 보내는 중…', 'ok');
     try {
-      if (eaMode === 'signup') {
-        const r = await emailSignup(email, pw, name);
-        if (!r.ok) { eaMsg('가입 실패: ' + r.msg, 'err'); }
-        else if (r.confirm) {
-          eaMsg('✅ 인증 메일을 보냈어요!<br>' + email + ' 받은편지함에서 <b>인증 링크</b>를 눌러 가입을 완료하세요.<br><span style="opacity:.8">(스팸함도 확인해 주세요)</span>', 'ok');
-        } else {
-          window.location.href = 'app.html?welcome=1';
-        }
-      } else {
-        const r = await emailLogin(email, pw);
-        if (!r.ok) { eaMsg('로그인 실패: ' + r.msg, 'err'); }
-        else { window.location.href = 'app.html?welcome=1'; }
-      }
-    } catch (e) { eaMsg('오류: ' + (e && e.message ? e.message : e), 'err'); }
-    btn.disabled = false;
-  }
-  // Enter key submits
-  ['ea-name','ea-email','ea-pw'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') eaSubmit(); });
-  });
-
-  // Forgot password: send a reset email via Supabase
-  async function eaForgot() {
-    const email = (document.getElementById('ea-email').value || '').trim();
-    if (!email) { eaMsg('비밀번호를 재설정할 <b>이메일</b>을 입력해 주세요.', 'err'); return; }
-    const btn = document.getElementById('ea-submit'); btn.disabled = true;
-    eaMsg('비밀번호 재설정 메일을 보내는 중…', 'ok');
-    try {
-      const r = await emailResetPassword(email);
+      const r = await emailMagicLink(email);
       if (!r.ok) { eaMsg('실패: ' + r.msg, 'err'); }
       else {
-        eaMsg('✅ <b>비밀번호 재설정 메일</b>을 보냈어요!<br>' + email + ' 받은편지함에서 링크를 눌러 새 비밀번호를 설정하세요.<br><span style="opacity:.8">(스팸함도 확인해 주세요)</span>', 'ok');
+        eaMsg('✅ <b>인증 메일</b>을 보냈어요!<br>' + email + ' 받은편지함에서 <b>로그인 링크</b>를 눌러 시작하세요.<br><span style="opacity:.8">(스팸함도 확인해 주세요)</span>', 'ok');
       }
     } catch (e) { eaMsg('오류: ' + (e && e.message ? e.message : e), 'err'); }
     btn.disabled = false;
   }
+  // Enter key in the email field submits
+  const eaf = document.getElementById('ea-email');
+  if (eaf) eaf.addEventListener('keydown', e => { if (e.key === 'Enter') eaMagic(); });
 
   // OAuth callback + verified banner + already-logged-in handling
   (async function () {

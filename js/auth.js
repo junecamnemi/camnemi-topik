@@ -102,6 +102,20 @@ async function emailSignup(email, password, name) {
   if (!data.session) return { ok: true, confirm: true };
   return { ok: true, confirm: false };
 }
+
+/* Passwordless email magic-link login/signup (no password). Sends a one-time
+   OTP / magic link to the email; clicking it signs the user in. */
+async function emailMagicLink(email) {
+  if (!_sb) await initAuth();
+  if (!email) return { ok: false, msg: '이메일을 입력하세요.' };
+  const redirectTo = location.origin + location.pathname.replace(/[^/]*$/, 'login.html') + '?verified=1';
+  const { data, error } = await _sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: redirectTo }
+  });
+  if (error) return { ok: false, msg: error.message };
+  return { ok: true };
+}
 async function emailLogin(email, password) {
   if (!_sb) await initAuth();
   const { data, error } = await _sb.auth.signInWithPassword({ email, password });
