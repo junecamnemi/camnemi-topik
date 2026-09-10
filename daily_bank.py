@@ -88,6 +88,14 @@ def gen_into_seen(level, section, count, seen, qtype="", force_section=None, kee
         for q in qs:
             if force_section:
                 q["section"] = force_section
+            # QA gate — reject any question that would render broken
+            try:
+                import qa_lib
+                if qa_lib.validate_question(q):
+                    log(f"  [qa] dropped bad question: {qa_lib.validate_question(q)[:1]}")
+                    continue
+            except Exception:
+                pass
             h = qhash(q)
             if h in seen:
                 continue

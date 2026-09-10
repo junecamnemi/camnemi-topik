@@ -187,6 +187,20 @@ def _normalize(q, idx, level, section):
     for i, o in enumerate(opts):
         if not isinstance(o, dict) or not o.get("t"):
             return None, f"option {i} missing text"
+    # full QA gate — reject questions that would render broken (missing prompt,
+    # bad underline, cross-level tag, dup options, missing passage, etc.)
+    try:
+        import qa_lib
+        probs = qa_lib.validate_question(q)
+        # only hard-fail on the structural codes (keep soft warnings)
+        hard = [p for p in probs if p.split(":")[0] in (
+            "EMPTY_Q", "BARE_INSTRUCTION", "NO_OPTIONS", "EMPTY_OPTION", "DUP_OPTION",
+            "BAD_CORRECT", "UNDERLINE_MISSING", "NO_PASSAGE", "LISTENING_NO_SCRIPT",
+            "FREQ_LEVEL_MISMATCH", "NO_GIVEN")]
+        if hard:
+            return None, "; ".join(hard)
+    except Exception:
+        pass
     return q, None
 
 def _pick_types(level, section, n):
