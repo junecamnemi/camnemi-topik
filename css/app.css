@@ -2158,3 +2158,13 @@ body.has-back .app-header .brand { margin-left: 0; }
   display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 2px; border-radius: 999px;
   background: var(--ios-blue); color: #fff; font-size: 10.5px; font-weight: 800; vertical-align: middle;
 }
+
+/* ---------- My: inline progress summary card ---------- */
+.my-prog-card { padding: 16px; }
+.my-prog-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.my-prog-lv { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+.my-prog-lv b { font-size: 30px; font-weight: 900; line-height: 1; color: var(--ios-purple); }
+.my-prog-lv span { font-size: 11.5px; font-weight: 700; color: var(--ios-secondary-label); }
+.my-prog-pct { font-size: 15px; font-weight: 900; color: var(--ios-blue); }
+.my-prog-bar { height: 8px; border-radius: 999px; background: var(--ios-fill); overflow: hidden; margin-top: 11px; }
+.my-prog-bar > span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--ios-blue), var(--ios-purple)); }

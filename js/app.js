@@ -142,7 +142,7 @@ const T = {
     menu_stats: 'My stats', menu_streak: 'Day streak', menu_acc: 'Accuracy', menu_due: 'Flashcards due',
     menu_progress: 'My progress', menu_schedule: 'TOPIK schedule', menu_level: 'Test level',
     menu_theme: 'Theme', menu_lang: 'Language', menu_sync: 'Sync my data', menu_synced: '✓ Synced', menu_sync_err: 'Sync failed',
-    menu_best: 'Best score: {s}',
+    menu_best: 'Best score: {s}', best_label: 'Best score', prog_prep: 'TOPIK preparation', prog_detail: 'Details',
     xp_level: 'Level', xp_to_next: '{n} XP to Level {l}', xp_levelup: '🎉 Level up! You reached Level {l}', xp_reward: '+{n} XP',
     quest_title: 'Daily quests', quest_daily: 'Solve {n}/{t} questions', quest_flash: 'Review {n}/{t} flashcards', quest_mock: 'Finish {n}/{t} mock test', quest_done: '✓ Done', quest_reward: '+{n} XP',
     chal_title: 'Weak-spot challenge', chal_sub: 'Beat your weakest type in 5 minutes', chal_start: '⚔️ Start challenge', chal_time: 'Time', chal_correct: 'Correct', chal_conquer: '🏆 Conquered {t}!', chal_fail: 'Keep training — try again!', chal_reward: '+{n} XP bonus', chal_q: 'Question {i}/{n}', chal_done: 'Challenge finished', chal_conquered_before: 'Conquered {n}×', chal_again: 'Challenge again',
@@ -222,7 +222,7 @@ const T = {
     menu_stats: '내 통계', menu_streak: '연속 학습일', menu_acc: '정답률', menu_due: '복습 카드',
     menu_progress: '내 진행 상황', menu_schedule: 'TOPIK 시험 일정', menu_level: '시험 레벨',
     menu_theme: '테마', menu_lang: '언어', menu_sync: '내 데이터 동기화', menu_synced: '✓ 동기화됨', menu_sync_err: '동기화 실패',
-    menu_best: '최고 점수: {s}',
+    menu_best: '최고 점수: {s}', best_label: '최고 점수', prog_prep: 'TOPIK 준비', prog_detail: '자세히',
     xp_level: '레벨', xp_to_next: '레벨 {l}까지 {n} XP', xp_levelup: '🎉 레벨업! 레벨 {l}에 도달했어요', xp_reward: '+{n} XP',
     quest_title: '데일리 미션', quest_daily: '문제 {n}/{t}개 풀기', quest_flash: '복습 카드 {n}/{t}장', quest_mock: '모의고사 {n}/{t}회', quest_done: '✓ 완료', quest_reward: '+{n} XP',
     chal_title: '약점 정복 챌린지', chal_sub: '5분 안에 가장 약한 유형을 정복하세요', chal_start: '⚔️ 챌린지 시작', chal_time: '시간', chal_correct: '정답', chal_conquer: '🏆 {t} 정복!', chal_fail: '더 연습하고 다시 도전하세요!', chal_reward: '+{n} XP 보너스', chal_q: '문제 {i}/{n}', chal_done: '챌린지 완료', chal_conquered_before: '{n}회 정복', chal_again: '다시 도전',
@@ -302,7 +302,7 @@ const T = {
     menu_stats: 'ស្ថិតិរបស់ខ្ញុំ', menu_streak: 'ថ្ងៃបន្ត', menu_acc: 'ភាពត្រឹមត្រូវ', menu_due: 'បៀរពិនិត្យ',
     menu_progress: 'វឌ្ឍនភាពរបស់ខ្ញុំ', menu_schedule: 'កាលវិភាគប្រឡង', menu_level: 'កម្រិតប្រឡង',
     menu_theme: 'របៀប', menu_lang: 'ភាសា', menu_sync: 'ធ្វើសមកាលកម្មទិន្នន័យ', menu_synced: '✓ បានធ្វើសមកាលកម្ម', menu_sync_err: 'សមកាលកម្មបរាជ័យ',
-    menu_best: 'ពិន្ទុខ្ពស់បំផុត: {s}',
+    menu_best: 'ពិន្ទុខ្ពស់បំផុត: {s}', best_label: 'ពិន្ទុខ្ពស់បំផុត', prog_prep: 'ការត្រៀម TOPIK', prog_detail: 'លម្អិត',
     xp_level: 'កម្រិត', xp_to_next: '{n} XP ទៅកម្រិត {l}', xp_levelup: '🎉 ឡើងកម្រិត! អ្នកបានដល់កម្រិត {l}', xp_reward: '+{n} XP',
     quest_title: 'បេសកកម្មប្រចាំថ្ងៃ', quest_daily: 'ដោះស្រាយ {n}/{t} សំណួរ', quest_flash: 'ពិនិត្យ {n}/{t} បៀរ', quest_mock: 'ប្រឡងសាក {n}/{t} វគ្គ', quest_done: '✓ រួចរាល់', quest_reward: '+{n} XP',
     chal_title: 'បេសកកម្មយកឈ្នះចំណុចខ្សោយ', chal_sub: 'យកឈ្នះប្រភេទខ្សោយបំផុតក្នុង ៥ នាទី', chal_start: '⚔️ ចាប់ផ្តើម', chal_time: 'ពេល', chal_correct: 'ត្រឹមត្រូវ', chal_conquer: '🏆 បានយកឈ្នះ {t}!', chal_fail: 'ហ្វឹកហាត់បន្ថែម ហើយព្យាយាមម្តងទៀត!', chal_reward: '+{n} XP បន្ថែម', chal_q: 'សំណួរ {i}/{n}', chal_done: 'បេសកកម្មបានបញ្ចប់', chal_conquered_before: 'បានយកឈ្នះ {n}ដង', chal_again: 'ព្យាយាមម្តងទៀត',
@@ -2265,6 +2265,8 @@ function viewMy() {
   const due = (() => { try { return dueCards().length; } catch (e) { return 0; } })();
   const lvl = xpProgress();
   const wrongN = lsGet(LS.wrong, []).length;
+  const scores = lsGet(LS.scores, []);
+  const best = scores.length ? Math.max(...scores.map(s => s.score)) : 0;
   const head = authed ? `
     <div class="um-head">
       <span class="um-avatar" style="overflow:hidden;background:var(--ios-fill);"><img src="${charFace(myChar())}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:50%;" onclick="openCharPicker&&openCharPicker()"></span>
@@ -2282,16 +2284,22 @@ function viewMy() {
       </div>
       <a class="btn btn-primary btn-sm" style="margin-left:auto;" href="login.html">${t('menu_login')}</a>
     </div>`;
-  const stats = `
-    <div class="um-stats">
-      <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',12)} ${t('menu_streak')}</span></div>
-      <div class="stat-box"><b>${acc}%</b><span style="color:var(--ios-blue);">${ic('chart',12)} ${t('menu_acc')}</span></div>
-      <div class="stat-box"><b>L${lvl.lv}</b><span style="color:var(--ios-green);">${lvl.xp} XP</span></div>
+  const progressBlock = `
+    <div class="sec-h" style="margin-top:20px;"><h2>📈 ${t('menu_progress')}</h2><span class="sub" style="cursor:pointer;" onclick="go('progress')">${t('prog_detail')} →</span></div>
+    <div class="app-card my-prog-card">
+      <div class="my-prog-top">
+        <div class="my-prog-lv"><b>L${lvl.lv}</b><span>${lvl.xp} ${LANG==='ko'?'문제 풀이':LANG==='km'?'':'solved'} · ${lvl.into}/${lvl.need}</span></div>
+        <span class="my-prog-pct">${lvl.pct}%</span>
+      </div>
+      <div class="my-prog-bar"><span style="width:${lvl.pct}%"></span></div>
+      <div class="um-stats" style="margin-top:13px;">
+        <div class="stat-box"><b>${streak.count}</b><span style="color:var(--ios-orange);">${ic('flame',12)} ${t('menu_streak')}</span></div>
+        <div class="stat-box"><b>${acc}%</b><span style="color:var(--ios-blue);">${ic('chart',12)} ${t('menu_acc')}</span></div>
+        <div class="stat-box"><b>${best || '—'}</b><span style="color:var(--ios-green);">${ic('trophy',12)} ${t('best_label')}</span></div>
+      </div>
     </div>`;
-  const rows = `
-    <div class="app-card" style="padding:6px 14px;">
-      ${umRow('progress', t('menu_progress'), `go('progress')`)}
-    </div>
+  const prepBlock = `
+    <div class="sec-h" style="margin-top:20px;"><h2>🎯 ${t('prog_prep')}</h2></div>
     <div class="my-btn-row">
       <button class="my-action-btn" onclick="go('schedule')">
         <span class="mab-ico">📅</span>
@@ -2338,7 +2346,8 @@ function viewMy() {
       </div>
     </div>`;
   return `${tabHeroHTML('my', myOverlay)}
-    ${rows}
+    ${progressBlock}
+    ${prepBlock}
     ${settings}
   `;
 }
