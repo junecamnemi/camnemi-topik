@@ -1,5 +1,5 @@
 /* Camnemi TOPIK service worker — offline-first caching for static assets */
-const CACHE = 'camnemi-topik-v3';
+const CACHE = 'camnemi-topik-v4';
 const ASSETS = [
   './',
   './app.html',
@@ -40,11 +40,13 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match(e.request).then(hit => hit || caches.match('./app.html'))));
     return;
   }
+  // Non-HTML (css/js/img/video): network-first so cache-busted versioned assets
+  // (?v=...) are always fetched fresh; offline → cached copy. Avoids stale-CSS issues.
   e.respondWith(
-    caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
+    fetch(e.request).then(res => {
       const clone = res.clone();
       if (res.ok && url.origin === location.origin) caches.open(CACHE).then(c => c.put(e.request, clone));
       return res;
-    }).catch(() => caches.match('./app.html')))
+    }).catch(() => caches.match(e.request).then(hit => hit || caches.match('./app.html')))
   );
 });
